@@ -1,0 +1,8 @@
+test_cases:
+  - name: "Data Comparison 200220261215033"
+    input_file: "200220261215033.dat"
+    expected_output: "200220261215033.json"
+    should_succeed: true
+    transaction_type: "x12"
+    description: "User supplied data comparison test"
+    notes: ""

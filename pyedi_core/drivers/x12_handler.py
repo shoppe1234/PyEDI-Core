@@ -248,12 +248,15 @@ class X12Handler(TransactionProcessor):
             
             # Store for transform() - either map path or None (will use default)
             result = {
-                "segments": sequential_segments,
-                "_transaction_type": txn_id,
-                "_source_file": path.name,
-                "_map_file": map_file,
-                "_is_unmapped": map_file is None
-            }
+    "document": {
+        "config": config,  # This adds the delimiters/version back in
+        "segments": sequential_segments
+    },
+    "_transaction_type": txn_id,
+    "_source_file": path.name,
+    "_map_file": map_file,
+    "_is_unmapped": map_file is None
+}
             
             # If no match found, use default and log WARNING
             if map_file is None:

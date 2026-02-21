@@ -1,0 +1,1432 @@
+{
+  "document": {
+    "config": {
+      "element_separator": "^",
+      "segment_terminator": "~",
+      "sub_element_separator": ">",
+      "version": "00501"
+    },
+    "segments": [
+      {
+        "segment": "ISA",
+        "fields": [
+          {
+            "name": "ISA01",
+            "content": "ISA"
+          },
+          {
+            "name": "ISA02",
+            "content": "00"
+          },
+          {
+            "name": "ISA03",
+            "content": "          "
+          },
+          {
+            "name": "ISA04",
+            "content": "00"
+          },
+          {
+            "name": "ISA05",
+            "content": "          "
+          },
+          {
+            "name": "ISA06",
+            "content": "14"
+          },
+          {
+            "name": "ISA07",
+            "content": "00640009801    "
+          },
+          {
+            "name": "ISA08",
+            "content": "ZZ"
+          },
+          {
+            "name": "ISA09",
+            "content": "GHXCA          "
+          },
+          {
+            "name": "ISA10",
+            "content": "260220"
+          },
+          {
+            "name": "ISA11",
+            "content": "1215"
+          },
+          {
+            "name": "ISA12",
+            "content": "U"
+          },
+          {
+            "name": "ISA13",
+            "content": "00401"
+          },
+          {
+            "name": "ISA14",
+            "content": "000000243"
+          },
+          {
+            "name": "ISA15",
+            "content": "0"
+          },
+          {
+            "name": "ISA16",
+            "content": "T"
+          },
+          {
+            "name": "ISA17",
+            "content": "|"
+          }
+        ]
+      },
+      {
+        "segment": "GS",
+        "fields": [
+          {
+            "name": "GS01",
+            "content": "GS"
+          },
+          {
+            "name": "GS02",
+            "content": "IN"
+          },
+          {
+            "name": "GS03",
+            "content": "00640009801"
+          },
+          {
+            "name": "GS04",
+            "content": "GHXCA"
+          },
+          {
+            "name": "GS05",
+            "content": "20260220"
+          },
+          {
+            "name": "GS06",
+            "content": "1215"
+          },
+          {
+            "name": "GS07",
+            "content": "238"
+          },
+          {
+            "name": "GS08",
+            "content": "X"
+          },
+          {
+            "name": "GS09",
+            "content": "004010"
+          }
+        ]
+      },
+      {
+        "segment": "ST",
+        "fields": [
+          {
+            "name": "ST01",
+            "content": "ST"
+          },
+          {
+            "name": "ST02",
+            "content": "810"
+          },
+          {
+            "name": "ST03",
+            "content": "0001"
+          },
+          {
+            "name": "ST04",
+            "content": ""
+          }
+        ]
+      },
+      {
+        "segment": "BIG",
+        "fields": [
+          {
+            "name": "BIG01",
+            "content": "20260123"
+          },
+          {
+            "name": "BIG02",
+            "content": "9031529337"
+          },
+          {
+            "name": "BIG03",
+            "content": "20260123"
+          },
+          {
+            "name": "BIG04",
+            "content": "Grocery"
+          },
+          {
+            "name": "BIG05",
+            "content": ""
+          },
+          {
+            "name": "BIG06",
+            "content": ""
+          },
+          {
+            "name": "BIG07",
+            "content": "DR"
+          }
+        ]
+      },
+      {
+        "segment": "N1",
+        "fields": [
+          {
+            "name": "N101",
+            "content": "BT"
+          },
+          {
+            "name": "N102",
+            "content": "AB HEALTH SERVICES"
+          },
+          {
+            "name": "N103",
+            "content": "91"
+          },
+          {
+            "name": "N104",
+            "content": "722286942"
+          }
+        ]
+      },
+      {
+        "segment": "N1",
+        "fields": [
+          {
+            "name": "N101",
+            "content": "ST"
+          },
+          {
+            "name": "N102",
+            "content": "MISERICORDIA HOSPITAL"
+          },
+          {
+            "name": "N103",
+            "content": "91"
+          },
+          {
+            "name": "N104",
+            "content": "89103"
+          }
+        ]
+      },
+      {
+        "segment": "N3",
+        "fields": [
+          {
+            "name": "N301",
+            "content": " "
+          }
+        ]
+      },
+      {
+        "segment": "N4",
+        "fields": [
+          {
+            "name": "N401",
+            "content": "EDMONTON"
+          },
+          {
+            "name": "N402",
+            "content": "AB"
+          },
+          {
+            "name": "N403",
+            "content": "T5R 4H5"
+          }
+        ]
+      },
+      {
+        "segment": "N1",
+        "fields": [
+          {
+            "name": "N101",
+            "content": "SF"
+          },
+          {
+            "name": "N102",
+            "content": "GFS"
+          },
+          {
+            "name": "N103",
+            "content": "9"
+          },
+          {
+            "name": "N104",
+            "content": "243903713"
+          }
+        ]
+      },
+      {
+        "segment": "N3",
+        "fields": [
+          {
+            "name": "N301",
+            "content": "290212 Township Road 261"
+          }
+        ]
+      },
+      {
+        "segment": "N4",
+        "fields": [
+          {
+            "name": "N401",
+            "content": "Rocky View City"
+          },
+          {
+            "name": "N402",
+            "content": "AB"
+          },
+          {
+            "name": "N403",
+            "content": "T4A 0V6"
+          }
+        ]
+      },
+      {
+        "segment": "N1",
+        "fields": [
+          {
+            "name": "N101",
+            "content": "RE"
+          },
+          {
+            "name": "N102",
+            "content": "GFS"
+          },
+          {
+            "name": "N103",
+            "content": "9"
+          },
+          {
+            "name": "N104",
+            "content": "243903713"
+          }
+        ]
+      },
+      {
+        "segment": "N3",
+        "fields": [
+          {
+            "name": "N301",
+            "content": "290212 Township Road 261"
+          }
+        ]
+      },
+      {
+        "segment": "N4",
+        "fields": [
+          {
+            "name": "N401",
+            "content": "Rocky View City"
+          },
+          {
+            "name": "N402",
+            "content": "AB"
+          },
+          {
+            "name": "N403",
+            "content": "T4A 0V6"
+          }
+        ]
+      },
+      {
+        "segment": "ITD",
+        "fields": [
+          {
+            "name": "ITD01",
+            "content": "05"
+          },
+          {
+            "name": "ITD02",
+            "content": "3"
+          },
+          {
+            "name": "ITD03",
+            "content": ""
+          },
+          {
+            "name": "ITD04",
+            "content": ""
+          },
+          {
+            "name": "ITD05",
+            "content": ""
+          },
+          {
+            "name": "ITD06",
+            "content": ""
+          },
+          {
+            "name": "ITD07",
+            "content": "30"
+          }
+        ]
+      },
+      {
+        "segment": "DTM",
+        "fields": [
+          {
+            "name": "DTM01",
+            "content": "003"
+          },
+          {
+            "name": "DTM02",
+            "content": "20260123"
+          }
+        ]
+      },
+      {
+        "segment": "IT1",
+        "fields": [
+          {
+            "name": "IT101",
+            "content": "10"
+          },
+          {
+            "name": "IT102",
+            "content": "2"
+          },
+          {
+            "name": "IT103",
+            "content": "CA"
+          },
+          {
+            "name": "IT104",
+            "content": "51.61"
+          },
+          {
+            "name": "IT105",
+            "content": "CP"
+          },
+          {
+            "name": "IT106",
+            "content": "VC"
+          },
+          {
+            "name": "IT107",
+            "content": "1151980"
+          },
+          {
+            "name": "IT108",
+            "content": "UK"
+          },
+          {
+            "name": "IT109",
+            "content": "10761720951030"
+          }
+        ]
+      },
+      {
+        "segment": "PID",
+        "fields": [
+          {
+            "name": "PID01",
+            "content": "F"
+          },
+          {
+            "name": "PID02",
+            "content": ""
+          },
+          {
+            "name": "PID03",
+            "content": ""
+          },
+          {
+            "name": "PID04",
+            "content": ""
+          },
+          {
+            "name": "PID05",
+            "content": "STARCH CORN CANADA"
+          }
+        ]
+      },
+      {
+        "segment": "IT1",
+        "fields": [
+          {
+            "name": "IT101",
+            "content": "20"
+          },
+          {
+            "name": "IT102",
+            "content": "1"
+          },
+          {
+            "name": "IT103",
+            "content": "CA"
+          },
+          {
+            "name": "IT104",
+            "content": "24.27"
+          },
+          {
+            "name": "IT105",
+            "content": "CP"
+          },
+          {
+            "name": "IT106",
+            "content": "VC"
+          },
+          {
+            "name": "IT107",
+            "content": "1445649"
+          },
+          {
+            "name": "IT108",
+            "content": "UK"
+          },
+          {
+            "name": "IT109",
+            "content": "00031200018892"
+          }
+        ]
+      },
+      {
+        "segment": "TXI",
+        "fields": [
+          {
+            "name": "TXI01",
+            "content": "CG"
+          },
+          {
+            "name": "TXI02",
+            "content": "1.22"
+          }
+        ]
+      },
+      {
+        "segment": "PID",
+        "fields": [
+          {
+            "name": "PID01",
+            "content": "F"
+          },
+          {
+            "name": "PID02",
+            "content": ""
+          },
+          {
+            "name": "PID03",
+            "content": ""
+          },
+          {
+            "name": "PID04",
+            "content": ""
+          },
+          {
+            "name": "PID05",
+            "content": "DRINK SPARKLING LT CRAN CAN 15PCT"
+          }
+        ]
+      },
+      {
+        "segment": "IT1",
+        "fields": [
+          {
+            "name": "IT101",
+            "content": "30"
+          },
+          {
+            "name": "IT102",
+            "content": "1"
+          },
+          {
+            "name": "IT103",
+            "content": "CA"
+          },
+          {
+            "name": "IT104",
+            "content": "24.27"
+          },
+          {
+            "name": "IT105",
+            "content": "CP"
+          },
+          {
+            "name": "IT106",
+            "content": "VC"
+          },
+          {
+            "name": "IT107",
+            "content": "1445652"
+          },
+          {
+            "name": "IT108",
+            "content": "UK"
+          },
+          {
+            "name": "IT109",
+            "content": "00031200019196"
+          }
+        ]
+      },
+      {
+        "segment": "TXI",
+        "fields": [
+          {
+            "name": "TXI01",
+            "content": "CG"
+          },
+          {
+            "name": "TXI02",
+            "content": "1.21"
+          }
+        ]
+      },
+      {
+        "segment": "PID",
+        "fields": [
+          {
+            "name": "PID01",
+            "content": "F"
+          },
+          {
+            "name": "PID02",
+            "content": ""
+          },
+          {
+            "name": "PID03",
+            "content": ""
+          },
+          {
+            "name": "PID04",
+            "content": ""
+          },
+          {
+            "name": "PID05",
+            "content": "DRINK SPARKLING PINK CRAN 15 PCT CAN"
+          }
+        ]
+      },
+      {
+        "segment": "IT1",
+        "fields": [
+          {
+            "name": "IT101",
+            "content": "40"
+          },
+          {
+            "name": "IT102",
+            "content": "1"
+          },
+          {
+            "name": "IT103",
+            "content": "CA"
+          },
+          {
+            "name": "IT104",
+            "content": "24.27"
+          },
+          {
+            "name": "IT105",
+            "content": "CP"
+          },
+          {
+            "name": "IT106",
+            "content": "VC"
+          },
+          {
+            "name": "IT107",
+            "content": "1445648"
+          },
+          {
+            "name": "IT108",
+            "content": "UK"
+          },
+          {
+            "name": "IT109",
+            "content": "00031200018977"
+          }
+        ]
+      },
+      {
+        "segment": "TXI",
+        "fields": [
+          {
+            "name": "TXI01",
+            "content": "CG"
+          },
+          {
+            "name": "TXI02",
+            "content": "1.21"
+          }
+        ]
+      },
+      {
+        "segment": "PID",
+        "fields": [
+          {
+            "name": "PID01",
+            "content": "F"
+          },
+          {
+            "name": "PID02",
+            "content": ""
+          },
+          {
+            "name": "PID03",
+            "content": ""
+          },
+          {
+            "name": "PID04",
+            "content": ""
+          },
+          {
+            "name": "PID05",
+            "content": "DRINK SPARKLING CRAN MANGO CAN"
+          }
+        ]
+      },
+      {
+        "segment": "IT1",
+        "fields": [
+          {
+            "name": "IT101",
+            "content": "50"
+          },
+          {
+            "name": "IT102",
+            "content": "7"
+          },
+          {
+            "name": "IT103",
+            "content": "CA"
+          },
+          {
+            "name": "IT104",
+            "content": "90.78"
+          },
+          {
+            "name": "IT105",
+            "content": "CP"
+          },
+          {
+            "name": "IT106",
+            "content": "VC"
+          },
+          {
+            "name": "IT107",
+            "content": "1139721"
+          },
+          {
+            "name": "IT108",
+            "content": "UK"
+          },
+          {
+            "name": "IT109",
+            "content": "10749017020904"
+          }
+        ]
+      },
+      {
+        "segment": "PID",
+        "fields": [
+          {
+            "name": "PID01",
+            "content": "F"
+          },
+          {
+            "name": "PID02",
+            "content": ""
+          },
+          {
+            "name": "PID03",
+            "content": ""
+          },
+          {
+            "name": "PID04",
+            "content": ""
+          },
+          {
+            "name": "PID05",
+            "content": "CUPCAKE ORIG VAR"
+          }
+        ]
+      },
+      {
+        "segment": "IT1",
+        "fields": [
+          {
+            "name": "IT101",
+            "content": "60"
+          },
+          {
+            "name": "IT102",
+            "content": "2"
+          },
+          {
+            "name": "IT103",
+            "content": "CA"
+          },
+          {
+            "name": "IT104",
+            "content": "16.44"
+          },
+          {
+            "name": "IT105",
+            "content": "CP"
+          },
+          {
+            "name": "IT106",
+            "content": "VC"
+          },
+          {
+            "name": "IT107",
+            "content": "1230118"
+          },
+          {
+            "name": "IT108",
+            "content": "UK"
+          },
+          {
+            "name": "IT109",
+            "content": "00628965001797"
+          }
+        ]
+      },
+      {
+        "segment": "PID",
+        "fields": [
+          {
+            "name": "PID01",
+            "content": "F"
+          },
+          {
+            "name": "PID02",
+            "content": ""
+          },
+          {
+            "name": "PID03",
+            "content": ""
+          },
+          {
+            "name": "PID04",
+            "content": ""
+          },
+          {
+            "name": "PID05",
+            "content": "APPETIZER SAMOSA VEG FILLED FZN"
+          }
+        ]
+      },
+      {
+        "segment": "IT1",
+        "fields": [
+          {
+            "name": "IT101",
+            "content": "70"
+          },
+          {
+            "name": "IT102",
+            "content": "2"
+          },
+          {
+            "name": "IT103",
+            "content": "CA"
+          },
+          {
+            "name": "IT104",
+            "content": "69.5"
+          },
+          {
+            "name": "IT105",
+            "content": "CP"
+          },
+          {
+            "name": "IT106",
+            "content": "VC"
+          },
+          {
+            "name": "IT107",
+            "content": "1333949"
+          },
+          {
+            "name": "IT108",
+            "content": "UK"
+          },
+          {
+            "name": "IT109",
+            "content": "00620868117377"
+          }
+        ]
+      },
+      {
+        "segment": "PID",
+        "fields": [
+          {
+            "name": "PID01",
+            "content": "F"
+          },
+          {
+            "name": "PID02",
+            "content": ""
+          },
+          {
+            "name": "PID03",
+            "content": ""
+          },
+          {
+            "name": "PID04",
+            "content": ""
+          },
+          {
+            "name": "PID05",
+            "content": "CHICKEN BRST 4Z B/S 17PCT IQF"
+          }
+        ]
+      },
+      {
+        "segment": "IT1",
+        "fields": [
+          {
+            "name": "IT101",
+            "content": "80"
+          },
+          {
+            "name": "IT102",
+            "content": "1"
+          },
+          {
+            "name": "IT103",
+            "content": "CA"
+          },
+          {
+            "name": "IT104",
+            "content": "63.3"
+          },
+          {
+            "name": "IT105",
+            "content": "CP"
+          },
+          {
+            "name": "IT106",
+            "content": "VC"
+          },
+          {
+            "name": "IT107",
+            "content": "1319114"
+          },
+          {
+            "name": "IT108",
+            "content": "UK"
+          },
+          {
+            "name": "IT109",
+            "content": "00626493240107"
+          }
+        ]
+      },
+      {
+        "segment": "PID",
+        "fields": [
+          {
+            "name": "PID01",
+            "content": "F"
+          },
+          {
+            "name": "PID02",
+            "content": ""
+          },
+          {
+            "name": "PID03",
+            "content": ""
+          },
+          {
+            "name": "PID04",
+            "content": ""
+          },
+          {
+            "name": "PID05",
+            "content": "DONUT PLAIN CAKE MINI"
+          }
+        ]
+      },
+      {
+        "segment": "IT1",
+        "fields": [
+          {
+            "name": "IT101",
+            "content": "90"
+          },
+          {
+            "name": "IT102",
+            "content": "2"
+          },
+          {
+            "name": "IT103",
+            "content": "CA"
+          },
+          {
+            "name": "IT104",
+            "content": "85.8"
+          },
+          {
+            "name": "IT105",
+            "content": "CP"
+          },
+          {
+            "name": "IT106",
+            "content": "VC"
+          },
+          {
+            "name": "IT107",
+            "content": "1236526"
+          },
+          {
+            "name": "IT108",
+            "content": "UK"
+          },
+          {
+            "name": "IT109",
+            "content": "10057483591034"
+          }
+        ]
+      },
+      {
+        "segment": "PID",
+        "fields": [
+          {
+            "name": "PID01",
+            "content": "F"
+          },
+          {
+            "name": "PID02",
+            "content": ""
+          },
+          {
+            "name": "PID03",
+            "content": ""
+          },
+          {
+            "name": "PID04",
+            "content": ""
+          },
+          {
+            "name": "PID05",
+            "content": "CROISSANT PERFECT RTB U/BKD"
+          }
+        ]
+      },
+      {
+        "segment": "IT1",
+        "fields": [
+          {
+            "name": "IT101",
+            "content": "100"
+          },
+          {
+            "name": "IT102",
+            "content": "1"
+          },
+          {
+            "name": "IT103",
+            "content": "CA"
+          },
+          {
+            "name": "IT104",
+            "content": "71.74"
+          },
+          {
+            "name": "IT105",
+            "content": "CP"
+          },
+          {
+            "name": "IT106",
+            "content": "VC"
+          },
+          {
+            "name": "IT107",
+            "content": "1415947"
+          },
+          {
+            "name": "IT108",
+            "content": "UK"
+          },
+          {
+            "name": "IT109",
+            "content": "10626493220403"
+          }
+        ]
+      },
+      {
+        "segment": "PID",
+        "fields": [
+          {
+            "name": "PID01",
+            "content": "F"
+          },
+          {
+            "name": "PID02",
+            "content": ""
+          },
+          {
+            "name": "PID03",
+            "content": ""
+          },
+          {
+            "name": "PID04",
+            "content": ""
+          },
+          {
+            "name": "PID05",
+            "content": "DONUT APPLE FRITTER"
+          }
+        ]
+      },
+      {
+        "segment": "IT1",
+        "fields": [
+          {
+            "name": "IT101",
+            "content": "110"
+          },
+          {
+            "name": "IT102",
+            "content": "1"
+          },
+          {
+            "name": "IT103",
+            "content": "CA"
+          },
+          {
+            "name": "IT104",
+            "content": "79.59"
+          },
+          {
+            "name": "IT105",
+            "content": "CP"
+          },
+          {
+            "name": "IT106",
+            "content": "VC"
+          },
+          {
+            "name": "IT107",
+            "content": "5982205"
+          },
+          {
+            "name": "IT108",
+            "content": "UK"
+          },
+          {
+            "name": "IT109",
+            "content": "00049800107250"
+          }
+        ]
+      },
+      {
+        "segment": "PID",
+        "fields": [
+          {
+            "name": "PID01",
+            "content": "F"
+          },
+          {
+            "name": "PID02",
+            "content": ""
+          },
+          {
+            "name": "PID03",
+            "content": ""
+          },
+          {
+            "name": "PID04",
+            "content": ""
+          },
+          {
+            "name": "PID05",
+            "content": "ICING CREAM CHEESE FZN"
+          }
+        ]
+      },
+      {
+        "segment": "IT1",
+        "fields": [
+          {
+            "name": "IT101",
+            "content": "120"
+          },
+          {
+            "name": "IT102",
+            "content": "1"
+          },
+          {
+            "name": "IT103",
+            "content": "CA"
+          },
+          {
+            "name": "IT104",
+            "content": "45.41"
+          },
+          {
+            "name": "IT105",
+            "content": "CP"
+          },
+          {
+            "name": "IT106",
+            "content": "VC"
+          },
+          {
+            "name": "IT107",
+            "content": "1340549"
+          },
+          {
+            "name": "IT108",
+            "content": "UK"
+          },
+          {
+            "name": "IT109",
+            "content": "10757932366908"
+          }
+        ]
+      },
+      {
+        "segment": "PID",
+        "fields": [
+          {
+            "name": "PID01",
+            "content": "F"
+          },
+          {
+            "name": "PID02",
+            "content": ""
+          },
+          {
+            "name": "PID03",
+            "content": ""
+          },
+          {
+            "name": "PID04",
+            "content": ""
+          },
+          {
+            "name": "PID05",
+            "content": "CAKE POP UNWRAPPED FZN"
+          }
+        ]
+      },
+      {
+        "segment": "IT1",
+        "fields": [
+          {
+            "name": "IT101",
+            "content": "130"
+          },
+          {
+            "name": "IT102",
+            "content": "77.14"
+          },
+          {
+            "name": "IT103",
+            "content": "CA"
+          },
+          {
+            "name": "IT104",
+            "content": "8.75"
+          },
+          {
+            "name": "IT105",
+            "content": "CP"
+          },
+          {
+            "name": "IT106",
+            "content": "VC"
+          },
+          {
+            "name": "IT107",
+            "content": "1324944"
+          },
+          {
+            "name": "IT108",
+            "content": "UK"
+          },
+          {
+            "name": "IT109",
+            "content": "90620868183382"
+          }
+        ]
+      },
+      {
+        "segment": "PID",
+        "fields": [
+          {
+            "name": "PID01",
+            "content": "F"
+          },
+          {
+            "name": "PID02",
+            "content": ""
+          },
+          {
+            "name": "PID03",
+            "content": ""
+          },
+          {
+            "name": "PID04",
+            "content": ""
+          },
+          {
+            "name": "PID05",
+            "content": "TURKEY WHL SEMI-BNLS BANQUET FZN"
+          }
+        ]
+      },
+      {
+        "segment": "TDS",
+        "fields": [
+          {
+            "name": "TDS01",
+            "content": "210083"
+          }
+        ]
+      },
+      {
+        "segment": "TXI",
+        "fields": [
+          {
+            "name": "TXI01",
+            "content": "CG"
+          },
+          {
+            "name": "TXI02",
+            "content": "3.64"
+          }
+        ]
+      },
+      {
+        "segment": "SAC",
+        "fields": [
+          {
+            "name": "SAC01",
+            "content": "C"
+          },
+          {
+            "name": "SAC02",
+            "content": "B570"
+          },
+          {
+            "name": "SAC03",
+            "content": ""
+          },
+          {
+            "name": "SAC04",
+            "content": ""
+          },
+          {
+            "name": "SAC05",
+            "content": "720"
+          },
+          {
+            "name": "SAC06",
+            "content": ""
+          },
+          {
+            "name": "SAC07",
+            "content": ""
+          },
+          {
+            "name": "SAC08",
+            "content": ""
+          },
+          {
+            "name": "SAC09",
+            "content": ""
+          },
+          {
+            "name": "SAC10",
+            "content": ""
+          },
+          {
+            "name": "SAC11",
+            "content": ""
+          },
+          {
+            "name": "SAC12",
+            "content": ""
+          },
+          {
+            "name": "SAC13",
+            "content": ""
+          },
+          {
+            "name": "SAC14",
+            "content": ""
+          },
+          {
+            "name": "SAC15",
+            "content": "Bottle Deposits"
+          }
+        ]
+      },
+      {
+        "segment": "CTT",
+        "fields": [
+          {
+            "name": "CTT01",
+            "content": "13"
+          }
+        ]
+      },
+      {
+        "segment": "SE",
+        "fields": [
+          {
+            "name": "SE01",
+            "content": "SE"
+          },
+          {
+            "name": "SE02",
+            "content": "48"
+          },
+          {
+            "name": "SE03",
+            "content": "0001"
+          }
+        ]
+      },
+      {
+        "segment": "GE",
+        "fields": [
+          {
+            "name": "GE01",
+            "content": "GE"
+          },
+          {
+            "name": "GE02",
+            "content": "1"
+          },
+          {
+            "name": "GE03",
+            "content": "238"
+          }
+        ]
+      },
+      {
+        "segment": "IEA",
+        "fields": [
+          {
+            "name": "IEA01",
+            "content": "IEA"
+          },
+          {
+            "name": "IEA02",
+            "content": "1"
+          },
+          {
+            "name": "IEA03",
+            "content": "000000243"
+          }
+        ]
+      }
+    ]
+  }
+}

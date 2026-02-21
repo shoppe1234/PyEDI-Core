@@ -15,9 +15,11 @@ from typing import Any, Dict, List, Optional, Union
 import yaml
 from pydantic import BaseModel, Field
 
+from .config import AppConfig, CsvSchemaEntry
 from .core import error_handler
 from .core import logger as core_logger
 from .core import manifest
+from .core import schema_compiler
 from .drivers.base import DriverRegistry, TransactionProcessor, get_driver
 
 
@@ -59,46 +61,56 @@ class Pipeline:
         Args:
             config_path: Path to YAML configuration file
         """
-        self._config = self._load_config(config_path)
-        self._transaction_registry = self._config.get("transaction_registry", {})
+        # Load config using Pydantic model
+        self._config = AppConfig.load_from_yaml(config_path)
+        
+        # Store registry for quick access
+        self._transaction_registry = self._config.transaction_registry
+        self._csv_schema_registry = self._config.csv_schema_registry
         
         # Configure logger
-        observability = self._config.get("observability", {})
-        core_logger.configure(observability)
+        core_logger.configure(self._config.observability.model_dump())
         
         # Store directory paths
-        self._directories = self._config.get("directories", {})
-        self._inbound_dirs = self._directories.get("inbound", ["./inbound"])
-        self._outbound_dir = self._directories.get("outbound", "./outbound")
-        self._failed_dir = self._directories.get("failed", "./failed")
-        self._manifest_path = self._directories.get("manifest", ".processed")
+        self._directories = self._config.directories
+        inbound_dirs = self._directories.inbound
+        self._inbound_dirs = [inbound_dirs] if isinstance(inbound_dirs, str) else inbound_dirs
+        self._outbound_dir = self._directories.outbound
+        self._failed_dir = self._directories.failed
+        self._manifest_path = self._directories.processed
         
         # System config
-        system = self._config.get("system", {})
-        self._source_system_id = system.get("source_system_id", "unknown")
-        self._max_workers = system.get("max_workers", 8)
-        self._dry_run = system.get("dry_run", False)
-        self._return_payload = system.get("return_payload", False)
+        self._source_system_id = self._config.system.source_system_id
+        self._max_workers = self._config.system.max_workers
+        self._dry_run = self._config.system.dry_run
+        self._return_payload = self._config.system.return_payload
     
-    def _load_config(self, config_path: str) -> Dict[str, Any]:
-        """Load configuration from YAML file."""
-        path = Path(config_path)
-        if not path.exists():
-            # Return default config
-            return {
-                "system": {"source_system_id": "unknown", "max_workers": 8},
-                "observability": {"log_level": "INFO", "output": "console"},
-                "directories": {
-                    "inbound": ["./inbound"],
-                    "outbound": "./outbound",
-                    "failed": "./failed",
-                    "manifest": ".processed"
-                },
-                "transaction_registry": {}
-            }
+    def _resolve_csv_schema(self, file_path: Path) -> CsvSchemaEntry:
+        """
+        Match a CSV file to its registry entry via inbound_dir.
         
-        with open(path, "r") as f:
-            return yaml.safe_load(f)
+        Args:
+            file_path: Path to the CSV file
+            
+        Returns:
+            CsvSchemaEntry from the registry
+            
+        Raises:
+            ValueError: If no matching entry found
+        """
+        # Resolve the file's parent directory
+        inbound_dir = str(file_path.parent.resolve())
+        
+        # Scan the csv_schema_registry for matching inbound_dir
+        for entry_name, entry in self._csv_schema_registry.items():
+            registry_inbound_dir = str(Path(entry.inbound_dir).resolve())
+            if registry_inbound_dir == inbound_dir:
+                return entry
+        
+        # No match found - raise error with details
+        raise ValueError(
+            f"No csv_schema_registry entry found for inbound directory: {inbound_dir}"
+        )
     
     def run(
         self,
@@ -224,12 +236,49 @@ class Pipeline:
             
             driver.set_correlation_id(correlation_id)
             
-            # Get mapping rules
-            map_yaml = self._get_mapping_rules(file_path, driver)
+            # Get mapping rules - CSV files use schema registry
+            map_yaml = None
+            transaction_type = "unknown"
+            compiled_yaml_path = None
+            
+            # Check if this is a CSV file - use csv_schema_registry
+            if Path(file_path).suffix.lower() == '.csv':
+                csv_entry = self._resolve_csv_schema(Path(file_path))
+                
+                # Use schema_compiler for hash check and compile-or-load
+                compiled_yaml_path = csv_entry.compiled_output
+                source_dsl_path = csv_entry.source_dsl
+                
+                # Compile or load the schema
+                try:
+                    schema_compiler.compile_dsl(
+                        source_dsl_path,
+                        compiled_dir=str(Path(compiled_yaml_path).parent),
+                        correlation_id=correlation_id
+                    )
+                except Exception as e:
+                    logger.warning(f"Schema compilation/loading issue: {e}")
+                
+                # Load the compiled map YAML
+                from .core import mapper
+                try:
+                    map_yaml = mapper.load_map(compiled_yaml_path)
+                except Exception as e:
+                    raise ValueError(f"Failed to load compiled map: {e}")
+                
+                transaction_type = csv_entry.transaction_type
+                
+                # Pass compiled_yaml_path to CSV handler
+                if hasattr(driver, 'set_compiled_yaml_path'):
+                    driver.set_compiled_yaml_path(compiled_yaml_path)
+            else:
+                # Non-CSV files use traditional mapping
+                map_yaml = self._get_mapping_rules(file_path, driver)
+                if map_yaml:
+                    transaction_type = map_yaml.get("transaction_type", "unknown")
+            
             if not map_yaml:
                 raise ValueError(f"No mapping rules found for file: {file_path}")
-            
-            transaction_type = map_yaml.get("transaction_type", "unknown")
             
             # Execute pipeline stages
             logger = logger.bind(stage="DETECTION", transaction_type=transaction_type)
@@ -250,7 +299,7 @@ class Pipeline:
             if not do_dry_run:
                 logger = logger.bind(stage="WRITE")
                 logger.info(f"Stage: WRITE")
-                output_path = self._get_output_path(filename)
+                output_path = self._get_output_path(filename, transaction_type)
                 driver.write(transformed_data, output_path)
             
             # Return payload if requested
@@ -277,6 +326,79 @@ class Pipeline:
                 output_path=output_path,
                 payload=payload,
                 errors=[],
+                processing_time_ms=processing_time
+            )
+            
+        except error_handler.PyEDIError as e:
+            # Handle known PyEDI errors
+            errors.append(str(e))
+            processing_time = int((time.time() - start_time) * 1000)
+            
+            logger.error(f"Processing failed", error=str(e), processing_time_ms=processing_time)
+            
+            # Handle failure (unless dry-run)
+            if not do_dry_run:
+                error_handler.handle_failure(
+                    file_path=file_path,
+                    stage=error_handler.Stage.DETECTION,
+                    reason=str(e),
+                    exception=e,
+                    correlation_id=correlation_id,
+                    failed_dir=self._failed_dir,
+                    manifest_path=self._manifest_path,
+                    skip_manifest=do_dry_run
+                )
+            
+            return PipelineResult(
+                status="FAILED",
+                correlation_id=correlation_id,
+                source_file=filename,
+                transaction_type="",
+                output_path=None,
+                payload=None,
+                errors=errors,
+                processing_time_ms=processing_time
+            )
+            
+        except ValueError as e:
+            # Handle ValueError (includes csv_schema_registry lookup failures)
+            errors.append(str(e))
+            processing_time = int((time.time() - start_time) * 1000)
+            
+            # Determine the stage - CSV registry errors are DETECTION stage
+            stage = error_handler.Stage.DETECTION
+            if "csv_schema_registry" in str(e):
+                logger.error(
+                    f"CSV schema lookup failed",
+                    error=str(e),
+                    correlation_id=correlation_id,
+                    processing_time_ms=processing_time
+                )
+            else:
+                logger.error(f"Processing failed", error=str(e), processing_time_ms=processing_time)
+                stage = error_handler.Stage.TRANSFORMATION
+            
+            # Handle failure (unless dry-run)
+            if not do_dry_run:
+                error_handler.handle_failure(
+                    file_path=file_path,
+                    stage=stage,
+                    reason=str(e),
+                    exception=None,
+                    correlation_id=correlation_id,
+                    failed_dir=self._failed_dir,
+                    manifest_path=self._manifest_path,
+                    skip_manifest=do_dry_run
+                )
+            
+            return PipelineResult(
+                status="FAILED",
+                correlation_id=correlation_id,
+                source_file=filename,
+                transaction_type="",
+                output_path=None,
+                payload=None,
+                errors=errors,
                 processing_time_ms=processing_time
             )
             
@@ -417,7 +539,7 @@ class Pipeline:
                 pass
         
         if format_name:
-            return get_driver(format_name, config=self._config)
+            return get_driver(format_name, config=self._config.model_dump())
         
         return None
     
@@ -484,7 +606,7 @@ class Pipeline:
         
         return False
     
-    def _get_output_path(self, filename: str) -> str:
+    def _get_output_path(self, filename: str, transaction_type: str = "") -> str:
         """Get output path for a processed file."""
         # Create output directory
         Path(self._outbound_dir).mkdir(parents=True, exist_ok=True)

@@ -2,7 +2,7 @@
 CSV Handler - pandas-based driver for CSV files.
 
 Handles CSV file processing with schema enforcement from compiled YAML.
-Triggers LegacySchemaCompiler check before processing.
+The handler receives the compiled_yaml_path from pipeline.py via csv_schema_registry.
 """
 
 import json
@@ -24,6 +24,7 @@ class CSVHandler(TransactionProcessor):
     Transaction processor for CSV files.
     
     Uses pandas for CSV reading with schema enforcement from compiled YAML.
+    The compiled_yaml_path is set explicitly by pipeline.py via csv_schema_registry.
     """
     
     def __init__(
@@ -31,7 +32,8 @@ class CSVHandler(TransactionProcessor):
         correlation_id: Optional[str] = None,
         config: Optional[Dict[str, Any]] = None,
         schema_dir: Optional[str] = None,
-        compiled_schema_dir: Optional[str] = None
+        compiled_schema_dir: Optional[str] = None,
+        compiled_yaml_path: Optional[str] = None
     ):
         """
         Initialize CSV handler.
@@ -41,10 +43,21 @@ class CSVHandler(TransactionProcessor):
             config: Configuration dictionary
             schema_dir: Directory for source DSL schemas
             compiled_schema_dir: Directory for compiled YAML schemas
+            compiled_yaml_path: Explicit path to compiled YAML map (from pipeline.py)
         """
         super().__init__(correlation_id, config)
         self._schema_dir = schema_dir or "./schemas/source"
         self._compiled_schema_dir = compiled_schema_dir or "./schemas/compiled"
+        self._compiled_yaml_path = compiled_yaml_path
+    
+    def set_compiled_yaml_path(self, compiled_yaml_path: str) -> None:
+        """
+        Set the compiled YAML path from pipeline.py.
+        
+        Args:
+            compiled_yaml_path: Path to the compiled YAML map file
+        """
+        self._compiled_yaml_path = compiled_yaml_path
     
     def read(self, file_path: str) -> Dict[str, Any]:
         """
@@ -66,7 +79,7 @@ class CSVHandler(TransactionProcessor):
         
         self.logger.info(f"Reading CSV file", file_path=file_path)
         
-        # Check if we have a compiled schema
+        # Get schema - prefer explicit path from pipeline, fall back to discovery
         schema = self._get_schema_for_file(file_path)
         
         try:
@@ -139,12 +152,48 @@ class CSVHandler(TransactionProcessor):
         """
         Get compiled schema for a CSV file.
         
+        First checks for explicit compiled_yaml_path from pipeline.py,
+        then falls back to discovery by filename.
+        
         Args:
             file_path: Path to CSV file
             
         Returns:
             Compiled schema dict or None
+            
+        Raises:
+            ValueError: If compiled_yaml_path is explicitly set but doesn't exist
         """
+        # First priority: explicit path from pipeline.py via csv_schema_registry
+        if self._compiled_yaml_path:
+            schema_path = Path(self._compiled_yaml_path)
+            if schema_path.exists():
+                try:
+                    with open(schema_path, "r") as f:
+                        return yaml.safe_load(f)
+                except Exception as e:
+                    self.logger.warning(f"Failed to load compiled schema from {schema_path}: {e}")
+                    # If explicit path fails, this is a validation error
+                    error_handler.handle_failure(
+                        file_path=file_path,
+                        stage=error_handler.Stage.VALIDATION,
+                        reason=f"Failed to load compiled YAML map from {self._compiled_yaml_path}: {str(e)}",
+                        exception=e,
+                        correlation_id=self.correlation_id
+                    )
+                    raise ValueError(f"Compiled YAML map not accessible: {self._compiled_yaml_path}")
+            else:
+                # Explicit path was provided but doesn't exist - this is a validation error
+                error_handler.handle_failure(
+                    file_path=file_path,
+                    stage=error_handler.Stage.VALIDATION,
+                    reason=f"Compiled YAML map does not exist: {self._compiled_yaml_path}",
+                    exception=None,
+                    correlation_id=self.correlation_id
+                )
+                raise ValueError(f"Compiled YAML map does not exist: {self._compiled_yaml_path}")
+        
+        # Fallback: discover schema by filename (legacy behavior)
         path = Path(file_path)
         base_name = path.stem
         

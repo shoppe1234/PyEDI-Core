@@ -290,5 +290,237 @@ class TestPipelineIntegration:
         assert "test_file.json" in output_path
 
 
+class TestCsvSchemaRegistry:
+    """Tests for CSV Schema Registry functionality."""
+    
+    def test_csv_schema_entry_validation(self):
+        """Test CsvSchemaEntry Pydantic model validates correctly."""
+        from pyedi_core.config import CsvSchemaEntry
+        
+        entry = CsvSchemaEntry(
+            source_dsl="./schemas/source/test.txt",
+            compiled_output="./schemas/compiled/test.yaml",
+            inbound_dir="./inbound/csv/test",
+            transaction_type="810"
+        )
+        
+        assert entry.source_dsl == "./schemas/source/test.txt"
+        assert entry.compiled_output == "./schemas/compiled/test.yaml"
+        assert entry.inbound_dir == "./inbound/csv/test"
+        assert entry.transaction_type == "810"
+    
+    def test_csv_schema_entry_missing_field(self):
+        """Test CsvSchemaEntry raises error for missing required field."""
+        from pyedi_core.config import CsvSchemaEntry
+        from pydantic import ValidationError
+        
+        with pytest.raises(ValidationError) as exc_info:
+            CsvSchemaEntry(
+                source_dsl="./schemas/source/test.txt",
+                # missing compiled_output
+                inbound_dir="./inbound/csv/test",
+                transaction_type="810"
+            )
+        
+        # Check error message is human-readable
+        error = exc_info.value
+        assert "compiled_output" in str(error)
+    
+    def test_app_config_csv_schema_registry(self):
+        """Test AppConfig includes csv_schema_registry field."""
+        from pyedi_core.config import AppConfig
+        
+        # Create a config with csv_schema_registry
+        config_data = {
+            "system": {"max_workers": 4},
+            "transaction_registry": {"810": "./rules/test.yaml"},
+            "csv_schema_registry": {
+                "test_entry": {
+                    "source_dsl": "./schemas/source/test.txt",
+                    "compiled_output": "./schemas/compiled/test.yaml",
+                    "inbound_dir": "./inbound/csv/test",
+                    "transaction_type": "810"
+                }
+            },
+            "directories": {
+                "inbound": "./inbound",
+                "outbound": "./outbound",
+                "failed": "./failed",
+                "processed": ".processed"
+            }
+        }
+        
+        config = AppConfig(**config_data)
+        
+        assert "test_entry" in config.csv_schema_registry
+        assert config.csv_schema_registry["test_entry"].transaction_type == "810"
+    
+    def test_app_config_missing_csv_registry_field(self):
+        """Test AppConfig handles missing csv_schema_registry gracefully."""
+        from pyedi_core.config import AppConfig
+        
+        # Config without csv_schema_registry
+        config_data = {
+            "system": {"max_workers": 4},
+            "transaction_registry": {},
+            "directories": {
+                "inbound": "./inbound",
+                "outbound": "./outbound",
+                "failed": "./failed",
+                "processed": ".processed"
+            }
+        }
+        
+        config = AppConfig(**config_data)
+        
+        # Should default to empty dict
+        assert config.csv_schema_registry == {}
+
+
+class TestPipelineCsvSchemaResolution:
+    """Tests for Pipeline CSV schema resolution."""
+    
+    def test_resolve_csv_schema_known_directory(self, tmp_path):
+        """Test _resolve_csv_schema returns correct entry for known inbound_dir."""
+        from pyedi_core.config import AppConfig, CsvSchemaEntry
+        
+        # Create test directories
+        inbound_dir = tmp_path / "inbound" / "gfs_ca"
+        inbound_dir.mkdir(parents=True)
+        
+        # Create config with csv_schema_registry
+        config_data = {
+            "system": {"max_workers": 4},
+            "transaction_registry": {},
+            "csv_schema_registry": {
+                "gfs_ca_810": {
+                    "source_dsl": "./schemas/source/gfsGenericOut810FF.txt",
+                    "compiled_output": "./schemas/compiled/gfs_ca_810_map.yaml",
+                    "inbound_dir": str(inbound_dir),
+                    "transaction_type": "810"
+                }
+            },
+            "directories": {
+                "inbound": "./inbound",
+                "outbound": "./outbound",
+                "failed": "./failed",
+                "processed": ".processed"
+            }
+        }
+        
+        config = AppConfig(**config_data)
+        
+        # Create pipeline with test config
+        from pyedi_core.pipeline import Pipeline
+        
+        class TestPipeline(Pipeline):
+            def __init__(self, config):
+                self._config = config
+                self._csv_schema_registry = config.csv_schema_registry
+        
+        pipeline = TestPipeline(config)
+        
+        # Create a test CSV file in the registered directory
+        test_file = inbound_dir / "test.csv"
+        test_file.write_text("col1,col2\nval1,val2\n")
+        
+        # Resolve the schema
+        result = pipeline._resolve_csv_schema(test_file)
+        
+        assert result is not None
+        assert result.transaction_type == "810"
+        assert result.source_dsl == "./schemas/source/gfsGenericOut810FF.txt"
+    
+    def test_resolve_csv_schema_unknown_directory(self, tmp_path):
+        """Test _resolve_csv_schema raises error for unknown directory."""
+        from pyedi_core.config import AppConfig
+        from pyedi_core.pipeline import Pipeline
+        
+        # Create config with empty csv_schema_registry
+        config_data = {
+            "system": {"max_workers": 4},
+            "transaction_registry": {},
+            "csv_schema_registry": {},
+            "directories": {
+                "inbound": "./inbound",
+                "outbound": "./outbound",
+                "failed": "./failed",
+                "processed": ".processed"
+            }
+        }
+        
+        config = AppConfig(**config_data)
+        
+        class TestPipeline(Pipeline):
+            def __init__(self, config):
+                self._config = config
+                self._csv_schema_registry = config.csv_schema_registry
+        
+        pipeline = TestPipeline(config)
+        
+        # Create a test CSV file in an unregistered directory
+        unknown_dir = tmp_path / "unknown_dir"
+        unknown_dir.mkdir(parents=True)
+        test_file = unknown_dir / "test.csv"
+        test_file.write_text("col1,col2\nval1,val2\n")
+        
+        # Should raise ValueError
+        with pytest.raises(ValueError) as exc_info:
+            pipeline._resolve_csv_schema(test_file)
+        
+        assert "csv_schema_registry" in str(exc_info.value)
+        assert "No csv_schema_registry entry found" in str(exc_info.value)
+
+
+class TestCsvHandlerCompiledYamlPath:
+    """Tests for CSV Handler compiled_yaml_path functionality."""
+    
+    def test_csv_handler_accepts_compiled_yaml_path(self):
+        """Test CSVHandler accepts compiled_yaml_path in constructor."""
+        from pyedi_core.drivers import CSVHandler
+        
+        handler = CSVHandler(
+            compiled_yaml_path="./schemas/compiled/test_map.yaml"
+        )
+        
+        assert handler._compiled_yaml_path == "./schemas/compiled/test_map.yaml"
+    
+    def test_csv_handler_set_compiled_yaml_path(self):
+        """Test CSVHandler set_compiled_yaml_path method."""
+        from pyedi_core.drivers import CSVHandler
+        
+        handler = CSVHandler()
+        handler.set_compiled_yaml_path("./schemas/compiled/another_map.yaml")
+        
+        assert handler._compiled_yaml_path == "./schemas/compiled/another_map.yaml"
+    
+    def test_csv_handler_missing_compiled_yaml_path_triggers_error(self, tmp_path):
+        """Test CSVHandler triggers error_handler when compiled_yaml_path doesn't exist."""
+        from pyedi_core.drivers import CSVHandler
+        from pyedi_core.core import error_handler
+        from unittest.mock import patch, MagicMock
+        
+        # Create a CSV file
+        csv_file = tmp_path / "test.csv"
+        csv_file.write_text("col1,col2\nval1,val2\n")
+        
+        # Set up handler with non-existent compiled_yaml_path
+        handler = CSVHandler(compiled_yaml_path="/nonexistent/path/map.yaml")
+        
+        # Mock error_handler.handle_failure to prevent file operations
+        with patch.object(error_handler, 'handle_failure') as mock_handle_failure:
+            # Attempt to read - should trigger validation error
+            try:
+                handler.read(str(csv_file))
+            except ValueError:
+                pass  # Expected to raise
+            
+            # Verify handle_failure was called at VALIDATION stage
+            mock_handle_failure.assert_called()
+            call_kwargs = mock_handle_failure.call_args[1]
+            assert call_kwargs['stage'] == error_handler.Stage.VALIDATION
+            assert "does not exist" in call_kwargs['reason']
+
+
 if __name__ == "__main__":
     pytest.main([__file__, "-v"])

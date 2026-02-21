@@ -1,0 +1,10 @@
+system:
+  max_workers: 8
+  dry_run: false
+transaction_registry:
+  200220261215033: "./rules/200220261215033.yaml"
+directories:
+  inbound: "./inbound"
+  outbound: "./outbound"
+  failed: "./failed"
+  processed: "./processed"

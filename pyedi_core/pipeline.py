@@ -397,6 +397,7 @@ class Pipeline:
             ".csv": "csv",
             ".edi": "x12",
             ".x12": "x12",
+            ".dat": "x12",
             ".xml": "xml",
             ".cxml": "cxml"
         }

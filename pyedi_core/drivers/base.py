@@ -145,7 +145,7 @@ class TransactionProcessor(ABC):
         path = Path(file_path)
         extension = path.suffix.lower()
         
-        if extension in ('.edi', '.x12'):
+        if extension in ('.edi', '.x12', '.dat'):
             return 'x12'
         elif extension == '.csv':
             return 'csv'

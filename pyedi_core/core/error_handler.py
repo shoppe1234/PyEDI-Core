@@ -96,8 +96,9 @@ def handle_failure(
     
     # Move file to failed directory
     source_file = Path(file_path)
+    destination_file = failed_path / source_file.name
+    
     if source_file.exists():
-        destination_file = failed_path / source_file.name
         
         # Handle duplicate filenames in failed directory
         counter = 1

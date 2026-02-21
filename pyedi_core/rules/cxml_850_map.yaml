@@ -1,0 +1,26 @@
+# cXML 850 Purchase Order Mapping Rules
+
+transaction_type: 'cXML_850_PURCHASE_ORDER'
+input_format: 'cXML'
+schema:
+  root: 'cXML'
+mapping:
+  header:
+    order_id:
+      source: 'OrderRequest.OrderRequestHeader.@orderID'
+    order_date:
+      source: 'OrderRequest.OrderRequestHeader.@orderDate'
+    total_amount:
+      source: 'OrderRequest.OrderRequestHeader.@orderTotal'
+  lines:
+    - line_number:
+        source: 'OrderRequestLine.@lineNumber'
+      quantity:
+        source: 'OrderRequestLine.Quantity.@quantity'
+      unit_price:
+        source: 'UnitPrice.Price.@amount'
+      product_id:
+        source: 'ItemID.SupplierID.@supplierId'
+  summary:
+    total:
+      source: 'OrderRequest.OrderRequestHeader.@orderTotal'

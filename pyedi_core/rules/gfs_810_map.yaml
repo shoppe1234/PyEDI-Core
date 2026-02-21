@@ -1,0 +1,37 @@
+# GFS 810 Invoice Mapping Rules
+
+transaction_type: '810_INVOICE'
+input_format: 'X12'
+schema:
+  delimiter: '*'
+  segments:
+    - name: 'ISA'
+      required: true
+    - name: 'ST'
+      required: true
+    - name: 'BEG'
+      required: true
+mapping:
+  header:
+    invoice_number:
+      source: 'BEG.02'
+    purchase_order_number:
+      source: 'BEG.03'
+    invoice_date:
+      source: 'REF.02'  # Would need REF segment handling
+    sender_id:
+      source: 'ISA.06'
+    receiver_id:
+      source: 'ISA.08'
+  lines:
+    - line_number:
+        source: 'IT1.01'
+      quantity:
+        source: 'IT1.02'
+      unit_price:
+        source: 'IT1.03'
+      product_id:
+        source: 'IT1.06'
+  summary:
+    invoice_amount:
+      source: 'TDS.01'

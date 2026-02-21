@@ -1,0 +1,63 @@
+[build-system]
+requires = ["setuptools>=65.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pyedi-core"
+version = "1.0.0"
+description = "Configuration-driven EDI, CSV, and XML processing engine"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [
+    {name = "PyEDI Team", email = "team@pyedi.example.com"}
+]
+requires-python = ">=3.10"
+dependencies = [
+    "pyyaml>=6.0",
+    "pydantic>=2.0",
+    "structlog>=23.0",
+    "pandas>=2.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "pytest-mock>=3.12",
+    "pytest-cov>=4.1",
+    "pytest-benchmark>=4.0",
+]
+api = [
+    "fastapi>=0.110",
+    "uvicorn>=0.27",
+]
+
+[project.scripts]
+pyedi = "pyedi_core.main:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["pyedi_core*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+markers = [
+    "unit: fast, no I/O, runs in seconds",
+    "integration: uses fixture files, runs in under a minute",
+    "scale: heavy, run before releases only"
+]
+
+[tool.coverage.run]
+source = ["pyedi_core"]
+omit = ["*/tests/*", "*/test_*.py"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+]

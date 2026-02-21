@@ -1,0 +1,21 @@
+# Default X12 Passthrough Mapping
+# Used for unknown transaction types - provides raw passthrough
+
+transaction_type: 'UNKNOWN_X12'
+input_format: 'X12'
+schema:
+  delimiter: '*'
+mapping:
+  header:
+    sender_id:
+      source: 'ISA.06'
+    receiver_id:
+      source: 'ISA.08'
+    transaction_set_control_number:
+      source: 'ST.02'
+  lines:
+    - segment:
+        source: 'segment'
+  summary:
+    raw_segments:
+      source: 'segments'

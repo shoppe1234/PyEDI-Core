@@ -1,0 +1,44 @@
+# GFS CSV Invoice Mapping Rules
+
+transaction_type: 'GFS_CSV_INVOICE'
+input_format: 'CSV'
+schema:
+  delimiter: ','
+  columns:
+    - name: 'Invoice Number'
+      type: string
+      required: true
+    - name: 'Invoice Date'
+      type: date
+      format: '%m/%d/%Y'
+    - name: 'Net Case Price'
+      type: float
+      default: 0.0
+    - name: 'Item Number'
+      type: string
+      required: false
+    - name: 'Quantity'
+      type: integer
+      default: 0
+mapping:
+  header:
+    invoice_id:
+      source: 'Invoice Number'
+      transform: strip
+    date:
+      source: 'Invoice Date'
+      transform:
+        name: to_date
+        format: '%m/%d/%Y'
+  lines:
+    - item_id:
+        source: 'Item Number'
+      unit_price:
+        source: 'Net Case Price'
+        transform: to_float
+      quantity:
+        source: 'Quantity'
+        transform: to_int
+  summary:
+    total_amount:
+      source: 'Net Case Price'

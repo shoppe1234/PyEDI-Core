@@ -1,0 +1,35 @@
+# GFS 850 Purchase Order Mapping Rules
+
+transaction_type: '850_PURCHASE_ORDER'
+input_format: 'X12'
+schema:
+  delimiter: '*'
+  segments:
+    - name: 'ISA'
+      required: true
+    - name: 'ST'
+      required: true
+    - name: 'BEG'
+      required: true
+mapping:
+  header:
+    po_number:
+      source: 'BEG.03'
+    po_date:
+      source: 'BEG.05'
+    sender_id:
+      source: 'ISA.06'
+    receiver_id:
+      source: 'ISA.08'
+  lines:
+    - line_number:
+        source: 'PO1.01'
+      quantity:
+        source: 'PO1.02'
+      unit_price:
+        source: 'PO1.04'
+      product_id:
+        source: 'PO1.07'
+  summary:
+    total_amount:
+      source: 'TDS.01'

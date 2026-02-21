@@ -1,0 +1,33 @@
+# GFS 856 Ship Notice/Manifest Mapping Rules
+
+transaction_type: '856_SHIP_NOTICE'
+input_format: 'X12'
+schema:
+  delimiter: '*'
+  segments:
+    - name: 'ISA'
+      required: true
+    - name: 'ST'
+      required: true
+    - name: 'BSN'
+      required: true
+mapping:
+  header:
+    shipment_id:
+      source: 'BSN.02'
+    ship_date:
+      source: 'BSN.05'
+    sender_id:
+      source: 'ISA.06'
+    receiver_id:
+      source: 'ISA.08'
+  lines:
+    - line_number:
+        source: 'SN1.01'
+      quantity:
+        source: 'SN1.02'
+      unit:
+        source: 'SN1.03'
+  summary:
+    total_ship_quantity:
+      source: 'TT1.01'

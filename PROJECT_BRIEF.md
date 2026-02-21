@@ -1,0 +1,1 @@
+Build PyEDI-Core exactly as described in SPECIFICATION.md. Follow section 10 ‘Coding Agent Handoff Instructions’ and the Phase 1 build order strictly. Never hardcode transaction logic

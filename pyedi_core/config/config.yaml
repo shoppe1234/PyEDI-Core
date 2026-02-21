@@ -1,0 +1,31 @@
+# PyEDI-Core Configuration
+
+system:
+  source_system_id: 'gfs'          # Stamped in every JSON envelope
+  max_workers: 8                   # ThreadPoolExecutor concurrency
+  dry_run: false                   # Override with --dry-run CLI flag
+  return_payload: false            # Return JSON in memory vs disk-only
+
+observability:
+  log_level: INFO
+  output: console                  # console | file | both
+  log_file: ./logs/pyedi.log
+  format: pretty                   # pretty | json
+
+directories:
+  inbound:
+    - ./inbound/x12
+    - ./inbound/csv
+    - ./inbound/xml
+  outbound: ./outbound
+  failed:  ./failed
+  manifest: ./.processed
+
+transaction_registry:
+  '810': ./rules/gfs_810_map.yaml
+  '850': ./rules/gfs_850_map.yaml
+  '856': ./rules/gfs_856_map.yaml
+  gfs_csv: ./rules/gfs_csv_map.yaml
+  cxml_850: ./rules/cxml_850_map.yaml
+  _default_x12: ./rules/default_x12_map.yaml
+  _rules_dir: ./rules

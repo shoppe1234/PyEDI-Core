@@ -1,0 +1,225 @@
+package com.gfs.customer.ca.core.system.schemas ;
+
+def flatFileSchema gfsGenericOut810FF {
+	delimited = true
+	delimiter = ","
+	escapeWrapCharacter = "\""
+	sampleFile = "/com.gfs.customer.ca.tp.burgerKing/samples/BK_BERRY701_INVOICE_182910862_260919_044326.CSV"
+
+	_Invoice Invoice []
+
+	def record Header {
+		fieldIdentifier {
+			value = "0"
+			field = SourceWarehouse
+		}
+
+		SourceWarehouse String
+		StoreLocation String
+		LocationName String
+		InvoiceNumber String
+		InvoiceDate String
+		ItemNumber String
+		LineNumber String
+		SCC String
+		GLCode String
+		ItemDescription String
+		Supplier String
+		Brand String
+		CategoryDescription String
+		SubCategoryDescription String
+		CaseSize String
+		PackageSize String
+		PackageUnit String
+		UnitOfMeasure String
+		PriceByUom String
+		PackDescription String
+		CasePrice String
+		NetCasePrice String
+		PstTaxable String
+		GstTaxable String
+		QuantityOrdered String
+		QuantityShipped String
+		ExtendedPrice String
+		PstAmount String
+		GstAmount String
+		Total String
+		Factor String
+		ContainerDeposit String
+		EcologyFee String
+		Credit String
+		SpecialOrderJitRegular String
+		QuantityShort String
+		CatchWeight String
+		CreditCode String
+		CreditCodeDescription String
+		PriceBookHeadingNumber String
+		ItemClassCode String
+		CustomerNumber String
+	}
+
+	def record Details {
+		fieldIdentifier {
+			value = "0"
+			field = SourceWarehouse
+		}
+
+		SourceWarehouse String
+		StoreLocation String
+		LocationName String
+		InvoiceNumber String
+		InvoiceDate String
+		ItemNumber String
+		LineNumber String
+		SCC String
+		GLCode String
+		ItemDescription String
+		Supplier String
+		Brand String
+		CategoryDescription String
+		SubCategoryDescription String
+		CaseSize Decimal
+		PackageSize String
+		PackageUnit String
+		UnitOfMeasure String
+		PriceByUom String
+		PackDescription String
+		CasePrice Decimal (
+			writeOnNull = "0"
+		)
+		NetCasePrice Decimal (
+			writeOnNull = "0"
+		)
+		PstTaxable String
+		GstTaxable String
+		QuantityOrdered Decimal (
+			writeOnNull = "0"
+		)
+		QuantityShipped Decimal (
+			writeOnNull = "0"
+		)
+		ExtendedPrice Decimal (
+			writeOnNull = "0"
+		)
+		PstAmount Decimal (
+			writeOnNull = "0"
+		)
+		GstAmount Decimal (
+			writeOnNull = "0"
+		)
+		Total Decimal
+		Factor String
+		ContainerDeposit Decimal (
+			writeOnNull = "0"
+		)
+		EcologyFee Decimal (
+			writeOnNull = "0"
+		)
+		Credit Decimal (
+			writeOnNull = "0"
+		)
+		SpecialOrderJitRegular String
+		QuantityShort Integer (
+			writeOnNull = "0"
+		)
+		CatchWeight Decimal (
+			writeOnNull = "0"
+		)
+		CreditCode String
+		CreditCodeDescription String
+		PriceBookHeadingNumber String
+		ItemClassCode String
+		CustomerNumber String
+	}
+
+	def record Summary {
+		fieldIdentifier {
+			value = "0"
+			field = SourceWarehouse
+		}
+
+		SourceWarehouse String
+		StoreLocation String
+		LocationName String
+		InvoiceNumber String
+		InvoiceDate String
+		ItemNumber String
+		LineNumber String
+		SCC String
+		GLCode String
+		ItemDescription String
+		Supplier String
+		Brand String
+		CategoryDescription String
+		SubCategoryDescription String
+		CaseSize Decimal
+		PackageSize String
+		PackageUnit String
+		UnitOfMeasure String
+		PriceByUom String
+		PackDescription String
+		CasePrice Decimal (
+			writeOnNull = "0"
+		)
+		NetCasePrice Decimal (
+			writeOnNull = "0"
+		)
+		PstTaxable String
+		GstTaxable String
+		QuantityOrdered Decimal (
+			writeOnNull = "0"
+		)
+		QuantityShipped Decimal (
+			writeOnNull = "0"
+		)
+		ExtendedPrice Decimal (
+			writeOnNull = "0"
+		)
+		PstAmount Decimal (
+			writeOnNull = "0"
+		)
+		GstAmount Decimal (
+			writeOnNull = "0"
+		)
+		Total Decimal
+		Factor String
+		ContainerDeposit Decimal (
+			writeOnNull = "0"
+		)
+		EcologyFee Decimal (
+			writeOnNull = "0"
+		)
+		Credit Decimal (
+			writeOnNull = "0"
+		)
+		SpecialOrderJitRegular String
+		QuantityShort Integer (
+			writeOnNull = "0"
+		)
+		CatchWeight Decimal (
+			writeOnNull = "0"
+		)
+		CreditCode String
+		CreditCodeDescription String
+		PriceBookHeadingNumber String
+		ItemClassCode String
+		CustomerNumber String
+	}
+
+	def recordSequence Invoice {
+
+		_Header Header []
+		_detailRecGrp detailRecGrp []
+	}
+
+	def recordSequence detailRecGrp {
+
+		_Details Details []
+		_summaryRecGrp summaryRecGrp []
+	}
+
+	def recordSequence summaryRecGrp {
+
+		_Summary Summary []
+	}
+}

@@ -75,18 +75,15 @@ def _parse_dsl_record(record_text: str) -> Dict[str, Any]:
         result["type"] = "detail"
     
     # Extract field definitions
-    # Pattern: field_name Type
-    valid_types = ["String", "string", "Integer", "int", "Decimal", "float", 
-                   "double", "Boolean", "bool", "Date", "datetime"]
-    type_or = '|'.join(valid_types)
+    # Pattern: field_name: type [default value]
     field_pattern = re.compile(
-        rf'^\s*([A-Za-z0-9_]+)\s+({type_or})', re.MULTILINE
+        r'(\w+)\s*:\s*(\w+)(?:\s*=\s*(["\'].*?["\']|\d+\.?\d*))?'
     )
     
     for match in field_pattern.finditer(record_text):
         field_name = match.group(1)
         field_type = match.group(2)
-        default_value = None
+        default_value = match.group(3)
         
         # Map DSL types to YAML types
         type_mapping = {
@@ -164,14 +161,7 @@ def _compile_to_yaml(record_defs: List[Dict], source_filename: str) -> Dict[str,
         
         for field in record_def.get("fields", []):
             field_name = field["name"]
-            
-            # Determine source_path based on record type
             source_path = field_name
-            if record_type == "header":
-                source_path = f"header.{field_name}"
-            elif record_type == "summary":
-                source_path = f"summary.{field_name}"
-            # For detail, source_path remains field_name
             
             if record_type == "header":
                 yaml_map["mapping"]["header"][field_name] = {
@@ -186,8 +176,7 @@ def _compile_to_yaml(record_defs: List[Dict], source_filename: str) -> Dict[str,
                 
             elif record_type == "detail":
                 # For detail/line items
-                # Only add if not already present (to avoid duplicates if multiple detail records exist)
-                if not any(field_name in l for l in yaml_map["mapping"]["lines"]):
+                if not any(l.get("source") == source_path for l in yaml_map["mapping"]["lines"]):
                     yaml_map["mapping"]["lines"].append({
                         field_name: {
                             "source": source_path
@@ -218,8 +207,7 @@ def compile_dsl(
     source_file: str,
     compiled_dir: str = DEFAULT_SCHEMA_COMPILED_DIR,
     archive_dir: str = DEFAULT_SCHEMA_ARCHIVE_DIR,
-    correlation_id: Optional[str] = None,
-    target_yaml_path: Optional[str] = None
+    correlation_id: Optional[str] = None
 ) -> Dict[str, Any]:
     """
     Compile a DSL file to YAML format with version awareness.
@@ -246,20 +234,14 @@ def compile_dsl(
     source_filename = source_path.name
     
     # Determine compiled YAML path
-    if target_yaml_path:
-        yaml_path = Path(target_yaml_path)
-        compiled_path = yaml_path.parent
-        compiled_path.mkdir(parents=True, exist_ok=True)
-        yaml_filename = yaml_path.name
-        meta_filename = yaml_path.stem + ".meta.json"
-        meta_path = compiled_path / meta_filename
-    else:
-        compiled_path = Path(compiled_dir)
-        compiled_path.mkdir(parents=True, exist_ok=True)
-        yaml_filename = source_path.stem + ".yaml"
-        yaml_path = compiled_path / yaml_filename
-        meta_filename = source_path.stem + ".meta.json"
-        meta_path = compiled_path / meta_filename
+    compiled_path = Path(compiled_dir)
+    compiled_path.mkdir(parents=True, exist_ok=True)
+    
+    yaml_filename = source_path.stem + ".yaml"
+    yaml_path = compiled_path / yaml_filename
+    
+    meta_filename = source_path.stem + ".meta.json"
+    meta_path = compiled_path / meta_filename
     
     # Check if compiled YAML already exists
     if yaml_path.exists() and meta_path.exists():
@@ -309,34 +291,9 @@ def compile_dsl(
     with open(source_path, "r", encoding="utf-8") as f:
         dsl_content = f.read()
     
-    # Parse record definitions using brace counting
-    record_matches = []
-    start_pattern = re.compile(r'def\s+record\s+\w+\s*\{')
-    
-    search_pos = 0
-    while True:
-        match = start_pattern.search(dsl_content, search_pos)
-        if not match:
-            break
-            
-        start_idx = match.start()
-        brace_count = 0
-        end_idx = -1
-        
-        for i in range(match.end() - 1, len(dsl_content)):
-            if dsl_content[i] == '{':
-                brace_count += 1
-            elif dsl_content[i] == '}':
-                brace_count -= 1
-                if brace_count == 0:
-                    end_idx = i + 1
-                    break
-                    
-        if end_idx != -1:
-            record_matches.append(dsl_content[start_idx:end_idx])
-            search_pos = end_idx
-        else:
-            break
+    # Parse record definitions
+    record_pattern = re.compile(r'def\s+record\s+\w+\s*\{[^}]*\}', re.DOTALL)
+    record_matches = record_pattern.findall(dsl_content)
     
     if not record_matches:
         raise ValueError(f"No valid record definitions found in {source_file}")
@@ -370,8 +327,7 @@ def get_compiled_schema(
     source_file: str,
     compiled_dir: str = DEFAULT_SCHEMA_COMPILED_DIR,
     archive_dir: str = DEFAULT_SCHEMA_ARCHIVE_DIR,
-    correlation_id: Optional[str] = None,
-    target_yaml_path: Optional[str] = None
+    correlation_id: Optional[str] = None
 ) -> Optional[Dict[str, Any]]:
     """
     Get compiled schema for a source file, compiling if necessary.
@@ -390,8 +346,7 @@ def get_compiled_schema(
             source_file=source_file,
             compiled_dir=compiled_dir,
             archive_dir=archive_dir,
-            correlation_id=correlation_id,
-            target_yaml_path=target_yaml_path
+            correlation_id=correlation_id
         )
     except Exception as e:
         logger.error(f"Failed to compile schema: {e}", source_file=source_file)

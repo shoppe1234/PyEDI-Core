@@ -1,0 +1,6 @@
+transaction_type: "810"
+input_format: "x12"
+mapping:
+  header: {}
+  lines: []
+  summary: {}

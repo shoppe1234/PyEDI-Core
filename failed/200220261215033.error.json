@@ -1,0 +1,8 @@
+{
+  "stage": "TRANSFORMATION",
+  "reason": "No mapping rules found for file: tests\\user_supplied\\200220261215033.dat",
+  "exception": "ValueError: No mapping rules found for file: tests\\user_supplied\\200220261215033.dat",
+  "correlation_id": "8101c5d1-fa43-4b23-9c90-7b8628d928fb",
+  "timestamp": "2026-02-21T16:13:08.110640+00:00",
+  "source_file": "200220261215033.dat"
+}

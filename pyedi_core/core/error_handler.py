@@ -24,6 +24,10 @@ class Stage:
     TRANSFORMATION = "TRANSFORMATION"
     WRITE = "WRITE"
 
+class PyEDIError(Exception):
+    """Base exception for PyEDI core errors."""
+    pass
+
 
 # Default directories
 DEFAULT_FAILED_DIR = "./failed"

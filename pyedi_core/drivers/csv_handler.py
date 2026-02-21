@@ -109,6 +109,30 @@ class CSVHandler(TransactionProcessor):
                 # Read without schema
                 df = pd.read_csv(file_path)
             
+            # Sanitize Dataframe columns to match schema definitions (remove spaces/special chars)
+            if schema and "schema" in schema and "columns" in schema["schema"]:
+                import re
+                schema_cols = [c["name"] for c in schema["schema"]["columns"]]
+                unique_schema_cols = []
+                for c in schema_cols:
+                    if c not in unique_schema_cols:
+                        unique_schema_cols.append(c)
+                
+                new_cols = []
+                for df_col in df.columns:
+                    matched = False
+                    norm_df = re.sub(r'[^a-zA-Z0-9]', '', str(df_col)).lower()
+                    for s_col in unique_schema_cols:
+                        norm_s = re.sub(r'[^a-zA-Z0-9]', '', str(s_col)).lower()
+                        if norm_df == norm_s:
+                            new_cols.append(s_col)
+                            matched = True
+                            break
+                    if not matched:
+                        new_cols.append(df_col)
+                df.columns = new_cols
+
+            
             # Convert to dict with records
             # Handle both flat (header-only) and detailed (with line items) formats
             data = df.to_dict(orient="records")
@@ -236,6 +260,14 @@ class CSVHandler(TransactionProcessor):
         
         # Use mapper to apply mapping rules
         transformed = mapper.map_data(raw_data, map_yaml)
+        
+        # Add expected envelope
+        if "envelope" not in transformed:
+            transformed["envelope"] = {}
+        
+        transformed["envelope"]["schema_version"] = map_yaml.get("schema_version", "1.0")
+        transformed["envelope"]["transaction_type"] = map_yaml.get("transaction_type", "unknown")
+        transformed["envelope"]["input_format"] = map_yaml.get("input_format", "CSV")
         
         self.logger.info(
             "CSV transformation complete",

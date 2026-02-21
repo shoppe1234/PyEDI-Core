@@ -254,7 +254,8 @@ class Pipeline:
                     schema_compiler.compile_dsl(
                         source_dsl_path,
                         compiled_dir=str(Path(compiled_yaml_path).parent),
-                        correlation_id=correlation_id
+                        correlation_id=correlation_id,
+                        target_yaml_path=compiled_yaml_path
                     )
                 except Exception as e:
                     logger.warning(f"Schema compilation/loading issue: {e}")

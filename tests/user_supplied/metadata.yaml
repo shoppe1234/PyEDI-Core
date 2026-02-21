@@ -1,8 +1,8 @@
 test_cases:
-  - name: "Data Comparison 200220261215033"
-    input_file: "200220261215033.dat"
-    expected_output: "200220261215033.json"
+  - name: "UnivT701 Demo Invoice CSV"
+    input_file: "inputs/UnivT701_small.csv"
+    expected_output: "expected_outputs/UnivT701_small.json"
     should_succeed: true
-    transaction_type: "x12"
-    description: "User supplied data comparison test"
-    notes: ""
+    transaction_type: "gfs_ca_810"
+    target_inbound_dir: "./inbound/csv/gfs_ca"
+    description: "Verify processing of GFS Canada CSV using gfsGenericOut810FF schema."

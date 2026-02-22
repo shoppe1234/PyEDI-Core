@@ -3,8 +3,17 @@ import yaml
 import json
 import shutil
 import os
+import math
+import warnings
 from pathlib import Path
 from pyedi_core import Pipeline
+
+@pytest.fixture(scope="session", autouse=True)
+def clear_outputs():
+    outputs_dir = Path("tests/user_supplied/outputs")
+    if outputs_dir.exists():
+        shutil.rmtree(outputs_dir)
+    outputs_dir.mkdir(parents=True, exist_ok=True)
 
 # Load user-supplied test cases
 def load_test_cases():
@@ -22,106 +31,143 @@ def load_test_cases():
 def test_user_supplied_file(test_case):
     """Test each user-supplied file against expected output"""
     
-    # Setup
     input_path = Path('tests/user_supplied') / test_case['input_file']
     expected_path = Path('tests/user_supplied') / test_case['expected_output']
+    output_path = Path('tests/user_supplied') / test_case['output_file']
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    
+    from pyedi_core.drivers.x12_handler import X12Handler
     
     pipeline = Pipeline(config_path='./config/config.yaml')
     
-    # Handle CSV mapping (PCR-2025-002)
     target_inbound_dir = test_case.get('target_inbound_dir')
     run_path = input_path
     copied_path = None
     
-    if target_inbound_dir:
-        # Copy to the required target inbound directory
-        target_dir = Path(target_inbound_dir)
-        target_dir.mkdir(parents=True, exist_ok=True)
-        copied_path = target_dir / input_path.name
-        shutil.copy(input_path, copied_path)
-        run_path = copied_path
-        
+    dry_run = test_case.get('dry_run', True)
+    skip_fields = set(test_case.get('skip_fields', []))
+    
     try:
-        # Run pipeline
-        result = pipeline.run(file=str(run_path), return_payload=True, dry_run=True)
+        actual_payload = None
+        status = 'SUCCESS'
+        errors = []
         
-        # Validate success/failure expectation
-        if test_case['should_succeed']:
-            assert result.status == 'SUCCESS', \
-                f"Expected success but got {result.status}. Errors: {result.errors}"
+        if target_inbound_dir:
+            target_dir = Path(target_inbound_dir)
+            target_dir.mkdir(parents=True, exist_ok=True)
+            copied_path = target_dir / input_path.name
+            shutil.copy(input_path, copied_path)
+            run_path = copied_path
             
-            # Load expected output
+            # Run pipeline
+            result = pipeline.run(file=str(run_path), return_payload=True, dry_run=dry_run)
+            status = result.status
+            errors = result.errors
+            actual_payload = result.payload
+        else:
+            # Direct handler bypass for pure unmapped data comparisons
+            if test_case.get('transaction_type') == 'x12':
+                driver = X12Handler()
+                actual_payload = driver.read(str(input_path))
+                status = 'SUCCESS'
+            else:
+                pytest.fail("Test case lacks target_inbound_dir and is not a direct x12 comparison.")
+        
+        # Always dump the payload to output_path
+        with open(output_path, 'w') as f:
+            json.dump(actual_payload, f, indent=2)
+
+        if test_case['should_succeed']:
+            if status != 'SUCCESS':
+                pytest.fail(f"Expected success but got {status}. Errors: {errors}")
+            
             with open(expected_path) as f:
                 expected = json.load(f)
             
-            # Compare actual vs expected
-            assert_output_matches(result.payload, expected, test_case['name'])
+            with open(output_path) as f:
+                actual = json.load(f)
+                
+            discrepancies = []
+            compare_outputs(actual, expected, skip_fields, test_case['name'], discrepancies, path="")
+            
+            # Size discrepancy check
+            actual_size = output_path.stat().st_size
+            expected_size = expected_path.stat().st_size
+            if actual_size != expected_size:
+                diff_pct = ((actual_size - expected_size) / expected_size) * 100
+                size_msg = f"Size diff: expected={expected_size}b, actual={actual_size}b ({diff_pct:+.1f}%)"
+                if abs(diff_pct) > 1.0: # Only care if > 1% diff
+                    discrepancies.append(size_msg)
+            
+            if discrepancies:
+                print(f"\nDISCREPANCY REPORT — {test_case['name']}")
+                for d in discrepancies:
+                    print(f"  - {d}")
+                                # If there are actual field discrepancies (not just size), fail the test
+                    # unless we want to treat it as non-fatal. The prompt says "Reports 
+                    # discrepancies as warnings, not hard failures (unless fields that must 
+                    # match actually differ)". We use 'strict' flag to control this.
+                    field_diffs = [d for d in discrepancies if not d.startswith("Size diff")]
+                    
+                    is_strict = test_case.get('strict', True)
+                    if field_diffs and is_strict:
+                        pytest.fail(f"Found {len(field_diffs)} field discrepancies compared to expected output.")
+                    else:
+                        warnings.warn(f"Non-fatal discrepancies found for {test_case['name']}:\n" + "\n".join(discrepancies))
             
         else:
-            # Should fail
-            assert result.status == 'FAILED', \
-                f"Expected failure but got {result.status}"
-            
-            # Check error stage if specified
+            if result.status != 'FAILED':
+                pytest.fail(f"Expected failure but got {result.status}")
+                
             if 'expected_error_stage' in test_case:
                 error_json_path = Path('./failed') / f"{run_path.stem}.error.json"
-                assert error_json_path.exists(), "No error.json found"
+                if not error_json_path.exists():
+                    pytest.fail("No error.json found")
                 
                 with open(error_json_path) as f:
                     error_data = json.load(f)
                 
-                assert error_data['stage'] == test_case['expected_error_stage'], \
-                    f"Expected error at {test_case['expected_error_stage']} " \
-                    f"but got {error_data['stage']}"
+                if error_data.get('stage') != test_case['expected_error_stage']:
+                    pytest.fail(f"Expected error at {test_case['expected_error_stage']} but got {error_data.get('stage')}")
+                    
     finally:
-        # Clean up copied file
         if copied_path and copied_path.exists():
             os.remove(copied_path)
 
-def assert_output_matches(actual, expected, test_name):
-    """Deep comparison of actual vs expected output"""
-    
-    # Compare envelope
-    assert actual['envelope']['schema_version'] == expected['envelope']['schema_version']
-    assert actual['envelope']['transaction_type'] == expected['envelope']['transaction_type']
-    assert actual['envelope']['input_format'] == expected['envelope']['input_format']
-    # Note: Don't compare UUIDs and timestamps as they're generated
-    
-    # Compare payload structure
-    assert set(actual.keys()) == set(expected.keys()), \
-        f"Payload keys don't match for {test_name}"
-
-    # Compare header
-    if 'header' in expected:
-        assert_dict_matches(
-            actual['header'],
-            expected['header'],
-            f"{test_name} header"
-        )
-    
-    # Compare lines
-    if 'lines' in expected:
-        assert len(actual['lines']) == len(expected['lines']), \
-            f"Line count mismatch for {test_name}"
-
-import math
-
-def assert_dict_matches(actual, expected, context):
-    """Deep compare two dictionaries for the test suite"""
-    assert set(actual.keys()) == set(expected.keys()), f"Keys mismatch in {context}"
-    for k in expected:
-        if isinstance(expected[k], dict):
-            assert_dict_matches(actual[k], expected[k], f"{context}.{k}")
-        elif isinstance(expected[k], list):
-            assert len(actual[k]) == len(expected[k]), f"List length mismatch in {context}.{k}"
-            for i, (a, e) in enumerate(zip(actual[k], expected[k])):
-                if isinstance(e, dict):
-                    assert_dict_matches(a, e, f"{context}.{k}[{i}]")
-                else:
-                    if isinstance(a, float) and isinstance(e, float) and math.isnan(a) and math.isnan(e):
-                        continue
-                    assert a == e, f"Value mismatch in {context}.{k}[{i}]: expected {e}, got {a}"
-        else:
-            if isinstance(actual[k], float) and isinstance(expected[k], float) and math.isnan(actual[k]) and math.isnan(expected[k]):
+def compare_outputs(actual, expected, skip_fields, context, discrepancies, path=""):
+    """Deep compare two dictionaries and collect discrepancies."""
+    if isinstance(expected, dict) and isinstance(actual, dict):
+        all_keys = set(expected.keys()) | set(actual.keys())
+        for k in all_keys:
+            if k in skip_fields:
                 continue
-            assert actual[k] == expected[k], f"Value mismatch in {context}.{k}: expected {expected[k]}, got {actual[k]}"
+                
+            current_path = f"{path}.{k}" if path else k
+            
+            if k not in actual:
+                discrepancies.append(f"Missing key in actual: '{current_path}'")
+                continue
+            if k not in expected:
+                discrepancies.append(f"Unexpected key in actual: '{current_path}'")
+                continue
+                
+            compare_outputs(actual[k], expected[k], skip_fields, context, discrepancies, current_path)
+            
+    elif isinstance(expected, list) and isinstance(actual, list):
+        if len(actual) != len(expected):
+            discrepancies.append(f"List length mismatch at '{path}': expected {len(expected)}, got {len(actual)}")
+        else:
+            for i, (a, e) in enumerate(zip(actual, expected)):
+                compare_outputs(a, e, skip_fields, context, discrepancies, f"{path}[{i}]")
+            
+    else:
+        # Value comparison
+        if isinstance(actual, float) and isinstance(expected, float) and math.isnan(actual) and math.isnan(expected):
+            return
+            
+        if isinstance(actual, (int, float)) and isinstance(expected, (int, float)) and type(actual) == type(expected):
+            if abs(actual - expected) >= 0.01:
+                discrepancies.append(f"Value mismatch at '{path}': expected {expected}, got {actual}")
+        else:
+            if actual != expected:
+                discrepancies.append(f"Value mismatch at '{path}': expected '{expected}', got '{actual}'")

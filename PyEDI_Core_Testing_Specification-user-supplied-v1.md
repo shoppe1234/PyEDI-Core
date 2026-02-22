@@ -1,13 +1,13 @@
 # PyEDI-Core Testing Specification
 ## Code Review & Validation Protocol
 
-**Version:** 1.1  
-**Target:** Phase 1-4 Implementation  
-**Date:** February 21, 2026  
+**Version:** 1.2  
+**Target:** Phase 1-5 Implementation  
+**Date:** February 22, 2026  
 **Spec Baseline:** PyEDI_Core_Specification_v2.1  
 **Purpose:** Systematic validation of PyEDI-Core implementation against specification
 
-> **v1.1 Update Note:** This testing specification has been updated to reflect changes introduced in PyEDI_Core_Specification_v2.1 (PCR-2025-001 and PCR-2025-002). Key changes: X12 driver tests now validate that `x12_handler.py` performs no independent ST segment inspection (badx12 handles detection); CSV routing tests now validate `csv_schema_registry` / `inbound_dir` lookup rather than filename/extension inference; a new non-negotiable rule check for CSV routing has been added to the Code Review Checklist.
+> **v1.2 Update Note:** This version reflects the Phase 5 test harness refactor (PCR-2025-003). The user-supplied test harness now supports physical output writing to `tests/user_supplied/outputs/`, per-test-case `dry_run`, `skip_fields`, and `strict` controls, pre-run cleanup of the `outputs/` directory, and a non-hard-failure discrepancy reporting model. See [Change Control](#change-control) for the full history.
 
 ---
 
@@ -182,20 +182,19 @@ Before running tests, create a `tests/user_supplied/` directory and place your r
 ```
 tests/
 ├── user_supplied/
-│   ├── README.md                      # Your documentation of what each file is
 │   ├── inputs/
-│   │   ├── production_810_sample.edi  # Real X12 invoice from production
-│   │   ├── production_850_sample.edi  # Real X12 PO from production
-│   │   ├── gfs_invoice_2025.csv       # Real CSV invoice
-│   │   ├── partner_cxml_po.xml        # Real cXML from trading partner
-│   │   └── edge_case_1.csv            # Known problematic file
-│   ├── expected_outputs/
-│   │   ├── production_810_sample.json # What you EXPECT output to be
-│   │   ├── production_850_sample.json # What you EXPECT output to be
-│   │   ├── gfs_invoice_2025.json      # What you EXPECT output to be
-│   │   ├── partner_cxml_po.json       # What you EXPECT output to be
-│   │   └── edge_case_1.json           # Expected output (or error)
-│   └── metadata.yaml                  # Describes each test case
+│   │   ├── 200220261215033.dat          # Raw X12 EDI from production
+│   │   ├── UnivT701_small.csv           # Real GFS Canada CSV invoice
+│   │   └── NA_810_MARGINEDGE_20260129.txt  # Real MarginEdge TXT file
+│   ├── expected_outputs/               # CONTROLLED baseline — do not overwrite manually
+│   │   ├── 200220261215033.json
+│   │   ├── UnivT701_small.json
+│   │   └── NA_810_MARGINEDGE_20260129.json
+│   ├── outputs/                        # GENERATED — cleared on every test run
+│   │   ├── 200220261215033.json        # Actual pipeline output (for diffing)
+│   │   ├── UnivT701_small.json
+│   │   └── NA_810_MARGINEDGE_20260129.json
+│   └── metadata.yaml                   # Describes each test case
 ```
 
 #### metadata.yaml Format
@@ -203,32 +202,58 @@ tests/
 Create a `tests/user_supplied/metadata.yaml` describing your test cases:
 
 ```yaml
+# tests/user_supplied/metadata.yaml
 test_cases:
-  - name: "Production 810 Invoice - January 2025"
-    input_file: "inputs/production_810_sample.edi"
-    expected_output: "expected_outputs/production_810_sample.json"
+  - name: "UnivT701 Demo Invoice CSV"
+    input_file: "inputs/UnivT701_small.csv"
+    output_file: "outputs/UnivT701_small.json"         # where actual output is written
+    expected_output: "expected_outputs/UnivT701_small.json"
     should_succeed: true
-    transaction_type: "810"
-    description: "Real invoice from GFS, January 2025. Should process without errors."
-    notes: "This file has all required fields and follows standard format."
-    
-  - name: "Edge Case - Missing PO Number"
-    input_file: "inputs/edge_case_1.csv"
-    expected_output: "expected_outputs/edge_case_1.json"
-    should_succeed: false
-    expected_error_stage: "VALIDATION"
+    dry_run: true                                      # uses in-memory pipeline payload
+    skip_fields: ["id", "timestamp", "correlation_id", "_source_file"]
+    transaction_type: "gfs_ca_810"
     target_inbound_dir: "./inbound/csv/gfs_ca"
-    description: "CSV with missing required PO Number field. Must be placed in target_inbound_dir to match schema registry."
-    notes: "Should fail validation and route to ./failed/"
-    
-  - name: "Partner cXML Purchase Order"
-    input_file: "inputs/partner_cxml_po.xml"
-    expected_output: "expected_outputs/partner_cxml_po.json"
+    description: "Verify processing of GFS Canada CSV using gfsGenericOut810FF schema."
+
+  - name: "MarginEdge 810 Text File"
+    input_file: "inputs/NA_810_MARGINEDGE_20260129.txt"
+    output_file: "outputs/NA_810_MARGINEDGE_20260129.json"
+    expected_output: "expected_outputs/NA_810_MARGINEDGE_20260129.json"
     should_succeed: true
-    transaction_type: "850"
-    description: "Real cXML from trading partner XYZ Corp."
-    notes: "Uses non-standard nested structure in ItemOut elements."
+    dry_run: true
+    skip_fields: ["id", "timestamp", "correlation_id", "_source_file"]
+    transaction_type: "810"
+    target_inbound_dir: "./inbound/csv/margin_edge"
+    description: "Verify processing of Margin Edge TXT using tpm810SourceFF schema."
+
+  - name: "x12 Data Comparison 200220261215033"
+    input_file: "inputs/200220261215033.dat"
+    output_file: "outputs/200220261215033.json"
+    expected_output: "expected_outputs/200220261215033.json"
+    should_succeed: true
+    dry_run: false                                     # pipeline writes file physically
+    strict: false                                      # discrepancies warned, not failed
+    skip_fields: ["id", "timestamp", "correlation_id", "_source_file"]
+    transaction_type: "x12"
+    description: "User supplied data comparison test"
 ```
+
+#### metadata.yaml Field Reference
+
+| Field | Type | Required | Default | Description |
+|---|---|---|---|---|
+| `name` | string | ✅ | — | Human-readable test case name |
+| `input_file` | string | ✅ | — | Path relative to `tests/user_supplied/` |
+| `output_file` | string | ✅ | — | Where actual output is written (relative to `tests/user_supplied/`) |
+| `expected_output` | string | ✅ | — | Controlled baseline to compare against |
+| `should_succeed` | bool | ✅ | — | Whether the pipeline should succeed |
+| `dry_run` | bool | ❌ | `true` | `false` = pipeline writes to filesystem; `true` = in-memory only |
+| `skip_fields` | list[str] | ❌ | `[]` | Field names skipped at any nesting depth (runtime-generated values) |
+| `strict` | bool | ❌ | `true` | `false` = discrepancies are warned not failed |
+| `transaction_type` | string | ❌ | — | `"x12"` triggers direct `X12Handler` bypass when no `target_inbound_dir` |
+| `target_inbound_dir` | string | ❌ | — | Directory to place file for `csv_schema_registry` routing |
+| `expected_error_stage` | string | ❌ | — | Required when `should_succeed: false` |
+| `description` | string | ❌ | — | Human-readable description of the test |
 
 ### Standard Test Data (Synthetic)
 
@@ -730,142 +755,153 @@ import yaml
 import json
 import shutil
 import os
+import math
+import warnings
 from pathlib import Path
 from pyedi_core import Pipeline
 
-# Load user-supplied test cases
+# ── Session-scoped fixture: wipe and recreate outputs/ before entire test run ──
+@pytest.fixture(scope="session", autouse=True)
+def clear_outputs():
+    outputs_dir = Path("tests/user_supplied/outputs")
+    if outputs_dir.exists():
+        shutil.rmtree(outputs_dir)
+    outputs_dir.mkdir(parents=True, exist_ok=True)
+
 def load_test_cases():
     """Load test cases from metadata.yaml"""
     metadata_path = Path('tests/user_supplied/metadata.yaml')
     if not metadata_path.exists():
-        pytest.skip("No user-supplied test data found")
-    
+        return []
     with open(metadata_path) as f:
         metadata = yaml.safe_load(f)
-    
     return metadata.get('test_cases', [])
 
 @pytest.mark.parametrize("test_case", load_test_cases())
 def test_user_supplied_file(test_case):
     """Test each user-supplied file against expected output"""
-    
-    # Setup
-    input_path = Path('tests/user_supplied') / test_case['input_file']
+    input_path    = Path('tests/user_supplied') / test_case['input_file']
     expected_path = Path('tests/user_supplied') / test_case['expected_output']
-    
-    pipeline = Pipeline(config_path='./config/config.yaml')
-    
-    # Handle CSV mapping (PCR-2025-002)
+    output_path   = Path('tests/user_supplied') / test_case['output_file']
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+
+    from pyedi_core.drivers.x12_handler import X12Handler
+    pipeline     = Pipeline(config_path='./config/config.yaml')
+    dry_run      = test_case.get('dry_run', True)
+    skip_fields  = set(test_case.get('skip_fields', []))
     target_inbound_dir = test_case.get('target_inbound_dir')
-    run_path = input_path
-    copied_path = None
-    
-    if target_inbound_dir:
-        # Copy to the required target inbound directory
-        target_dir = Path(target_inbound_dir)
-        target_dir.mkdir(parents=True, exist_ok=True)
-        copied_path = target_dir / input_path.name
-        shutil.copy(input_path, copied_path)
-        run_path = copied_path
-        
+    run_path     = input_path
+    copied_path  = None
+
     try:
-        # Run pipeline
-        result = pipeline.run(file=str(run_path), return_payload=True)
-        
-        # Validate success/failure expectation
+        actual_payload = None
+        status = 'SUCCESS'
+        errors = []
+
+        if target_inbound_dir:
+            # CSV/TXT: must be placed in the registered inbound_dir (PCR-2025-002)
+            target_dir   = Path(target_inbound_dir)
+            target_dir.mkdir(parents=True, exist_ok=True)
+            copied_path  = target_dir / input_path.name
+            shutil.copy(input_path, copied_path)
+            run_path     = copied_path
+            result       = pipeline.run(file=str(run_path), return_payload=True, dry_run=dry_run)
+            status       = result.status
+            errors       = result.errors
+            actual_payload = result.payload
+        else:
+            # Direct handler bypass for unmapped X12 structural comparisons
+            if test_case.get('transaction_type') == 'x12':
+                driver         = X12Handler()
+                actual_payload = driver.read(str(input_path))
+            else:
+                pytest.fail("Test case lacks target_inbound_dir and is not a direct x12 comparison.")
+
+        # Always write actual output — even on failure — for diffing
+        with open(output_path, 'w') as f:
+            json.dump(actual_payload, f, indent=2)
+
         if test_case['should_succeed']:
-            assert result.status == 'SUCCESS', \
-                f"Expected success but got {result.status}. Errors: {result.errors}"
-            
-            # Load expected output
+            if status != 'SUCCESS':
+                pytest.fail(f"Expected success but got {status}. Errors: {errors}")
+
             with open(expected_path) as f:
                 expected = json.load(f)
-            
-            # Compare actual vs expected
-            assert_output_matches(result.payload, expected, test_case['name'])
-            
+            with open(output_path) as f:
+                actual = json.load(f)
+
+            discrepancies = []
+            compare_outputs(actual, expected, skip_fields, test_case['name'], discrepancies)
+
+            # File size check (warns if > 1% diff)
+            actual_size   = output_path.stat().st_size
+            expected_size = expected_path.stat().st_size
+            if abs(actual_size - expected_size) / expected_size > 0.01:
+                diff_pct = ((actual_size - expected_size) / expected_size) * 100
+                discrepancies.append(
+                    f"Size diff: expected={expected_size}b, actual={actual_size}b ({diff_pct:+.1f}%)"
+                )
+
+            if discrepancies:
+                print(f"\nDISCREPANCY REPORT — {test_case['name']}")
+                for d in discrepancies:
+                    print(f"  - {d}")
+
+                field_diffs = [d for d in discrepancies if not d.startswith("Size diff")]
+                is_strict   = test_case.get('strict', True)
+                if field_diffs and is_strict:
+                    pytest.fail(f"Found {len(field_diffs)} field discrepancies.")
+                else:
+                    warnings.warn(
+                        f"Non-fatal discrepancies for {test_case['name']}:\n" +
+                        "\n".join(discrepancies)
+                    )
         else:
-            # Should fail
-            assert result.status == 'FAILED', \
-                f"Expected failure but got {result.status}"
-            
-            # Check error stage if specified
+            if status != 'FAILED':
+                pytest.fail(f"Expected failure but got {status}")
             if 'expected_error_stage' in test_case:
                 error_json_path = Path('./failed') / f"{run_path.stem}.error.json"
-                assert error_json_path.exists(), "No error.json found"
-                
+                if not error_json_path.exists():
+                    pytest.fail("No error.json found")
                 with open(error_json_path) as f:
                     error_data = json.load(f)
-                
-                assert error_data['stage'] == test_case['expected_error_stage'], \
-                    f"Expected error at {test_case['expected_error_stage']} " \
-                    f"but got {error_data['stage']}"
+                if error_data.get('stage') != test_case['expected_error_stage']:
+                    pytest.fail(
+                        f"Expected error at {test_case['expected_error_stage']} "
+                        f"but got {error_data.get('stage')}"
+                    )
     finally:
-        # Clean up copied file
         if copied_path and copied_path.exists():
             os.remove(copied_path)
-        
 
-
-def assert_output_matches(actual, expected, test_name):
-    """Deep comparison of actual vs expected output"""
-    
-    # Compare envelope
-    assert actual['envelope']['schema_version'] == expected['envelope']['schema_version']
-    assert actual['envelope']['transaction_type'] == expected['envelope']['transaction_type']
-    assert actual['envelope']['input_format'] == expected['envelope']['input_format']
-    # Note: Don't compare UUIDs and timestamps as they're generated
-    
-    # Compare payload structure
-    assert set(actual['payload'].keys()) == set(expected['payload'].keys()), \
-        f"Payload keys don't match for {test_name}"
-    
-    # Compare header
-    if 'header' in expected['payload']:
-        assert_dict_matches(
-            actual['payload']['header'],
-            expected['payload']['header'],
-            f"{test_name} header"
-        )
-    
-    # Compare lines
-    if 'lines' in expected['payload']:
-        assert len(actual['payload']['lines']) == len(expected['payload']['lines']), \
-            f"Line count mismatch for {test_name}"
-        
-        for i, (actual_line, expected_line) in enumerate(
-            zip(actual['payload']['lines'], expected['payload']['lines'])
-        ):
-            assert_dict_matches(
-                actual_line,
-                expected_line,
-                f"{test_name} line {i}"
-            )
-    
-    # Compare summary
-    if 'summary' in expected['payload']:
-        assert_dict_matches(
-            actual['payload']['summary'],
-            expected['payload']['summary'],
-            f"{test_name} summary"
-        )
-
-def assert_dict_matches(actual, expected, context):
-    """Compare two dicts with helpful error messages"""
-    for key, expected_value in expected.items():
-        assert key in actual, f"Missing key '{key}' in {context}"
-        
-        actual_value = actual[key]
-        
-        # Handle numeric comparisons with tolerance
-        if isinstance(expected_value, (int, float)) and isinstance(actual_value, (int, float)):
-            assert abs(actual_value - expected_value) < 0.01, \
-                f"Value mismatch for '{key}' in {context}: " \
-                f"expected {expected_value}, got {actual_value}"
+def compare_outputs(actual, expected, skip_fields, context, discrepancies, path=""):
+    """Recursively collect discrepancies without asserting."""
+    if isinstance(expected, dict) and isinstance(actual, dict):
+        for k in set(expected.keys()) | set(actual.keys()):
+            if k in skip_fields:
+                continue
+            current_path = f"{path}.{k}" if path else k
+            if k not in actual:
+                discrepancies.append(f"Missing key in actual: '{current_path}'")
+                continue
+            if k not in expected:
+                discrepancies.append(f"Unexpected key in actual: '{current_path}'")
+                continue
+            compare_outputs(actual[k], expected[k], skip_fields, context, discrepancies, current_path)
+    elif isinstance(expected, list) and isinstance(actual, list):
+        if len(actual) != len(expected):
+            discrepancies.append(f"List length mismatch at '{path}': expected {len(expected)}, got {len(actual)}")
         else:
-            assert actual_value == expected_value, \
-                f"Value mismatch for '{key}' in {context}: " \
-                f"expected {expected_value}, got {actual_value}"
+            for i, (a, e) in enumerate(zip(actual, expected)):
+                compare_outputs(a, e, skip_fields, context, discrepancies, f"{path}[{i}]")
+    else:
+        if isinstance(actual, float) and isinstance(expected, float) and math.isnan(actual) and math.isnan(expected):
+            return
+        if isinstance(actual, (int, float)) and isinstance(expected, (int, float)) and type(actual) == type(expected):
+            if abs(actual - expected) >= 0.01:
+                discrepancies.append(f"Value mismatch at '{path}': expected {expected}, got {actual}")
+        elif actual != expected:
+            discrepancies.append(f"Value mismatch at '{path}': expected '{expected}', got '{actual}'")
 ```
 
 ### Running User-Supplied Tests
@@ -886,21 +922,32 @@ pytest tests/integration/test_user_supplied_data.py \
 
 ### Troubleshooting User-Supplied Test Failures
 
-When a user-supplied test fails, the error message will tell you:
-1. **Which test case failed** (name from metadata.yaml)
-2. **What was different** (specific field and values)
-3. **Where to find the actual output** (./outbound/ directory)
+When a user-supplied test fails or emits discrepancies, the output will tell you:
+1. **Which test case** (name from `metadata.yaml`)
+2. **What was different** — specific field path and values in the `DISCREPANCY REPORT` block
+3. **Actual output** written to `tests/user_supplied/outputs/{filename}.json` (always, even on failure)
 
 **Common failure reasons:**
+- `output_file` path doesn't match `input_file` stem
 - Expected output has wrong format (check JSON syntax)
-- Expected output doesn't match map.yaml rules
-- Input file has data your expected output doesn't account for
+- Expected output doesn't match `map.yaml` rules
 - Numeric precision differences (cents vs dollars)
+- Pipeline returned extra internal keys (add to `skip_fields` or set `strict: false`)
 
 **How to fix:**
-1. Check the actual output: `cat outbound/{filename}.json | jq '.'`
-2. Compare to your expected: `cat tests/user_supplied/expected_outputs/{filename}.json | jq '.'`
-3. Update your expected output OR fix your map.yaml if the actual output is wrong
+```bash
+# Compare actual vs expected using jq
+jq '.' tests/user_supplied/outputs/UnivT701_small.json
+jq '.' tests/user_supplied/expected_outputs/UnivT701_small.json
+
+# Diff the two
+fc tests\user_supplied\outputs\UnivT701_small.json tests\user_supplied\expected_outputs\UnivT701_small.json
+```
+
+**Non-fatal discrepancies** (when `strict: false`):
+- Test will still `PASS` but emit a `UserWarning` to stdout with the discrepancy list
+- Use `pytest -s` to see the discrepancy report inline
+- Actual output is always in `tests/user_supplied/outputs/` for manual review
 
 ---
 
@@ -1729,6 +1776,66 @@ cat .processed
 # Clean up
 rm -rf outbound/* failed/* .processed logs/*
 ```
+
+---
+
+## Change Control
+
+This section tracks all specification changes in reverse chronological order.
+
+| Version | Date | Change Ref | Author | Summary |
+|---|---|---|---|---|
+| 1.2 | 2026-02-22 | PCR-2025-003 | Sean | Phase 5 test harness refactor |
+| 1.1 | 2026-02-21 | PCR-2025-001, PCR-2025-002 | Sean | X12 ST inspection and CSV inbound_dir routing rules |
+| 1.0 | 2026-02-21 | — | Sean | Initial specification |
+
+---
+
+### PCR-2025-003 — Phase 5 User-Supplied Test Harness Refactor
+**Date:** 2026-02-22  
+**Files Changed:**
+- `tests/integration/test_user_supplied_data.py` — full rewrite
+- `tests/user_supplied/metadata.yaml` — new fields added
+
+**Changes:**
+
+#### 1. `outputs/` directory — physical file writing
+- A new `tests/user_supplied/outputs/` directory now receives the actual payload written by the test harness on every run.
+- Actual output is **always written** — even when the comparison fails — so you can diff `outputs/` against `expected_outputs/` manually.
+- The `outputs/` directory is **automatically cleared** before each test session (via a `session`-scoped autouse pytest fixture).
+
+#### 2. Controlled baseline in `expected_outputs/`
+- `expected_outputs/` is the **controlled, do-not-overwrite** baseline.
+- Tests read both `outputs/<file>.json` (actual) and `expected_outputs/<file>.json` (expected) and compare them.
+- Test authors must manually promote `outputs/` → `expected_outputs/` when they accept a new baseline.
+
+#### 3. Per-test `dry_run` control
+- `metadata.yaml` gains a `dry_run` boolean field (default: `true`).
+- `dry_run: true` → pipeline returns in-memory payload; test serializes to `output_file`.
+- `dry_run: false` → pipeline writes to filesystem; test still captures payload to `output_file`.
+- The `00220261215033.dat` test case is set to `dry_run: false` (X12 handler writes natively).
+
+#### 4. `skip_fields` — runtime-generated field exclusion
+- `metadata.yaml` gains a `skip_fields` list (default: `[]`).
+- Fields in `skip_fields` are excluded at **any nesting depth** during recursive comparison.
+- Recommended default: `["id", "timestamp", "correlation_id", "_source_file"]`.
+
+#### 5. Non-hard-failure discrepancy reporting
+- Replaced `assert_output_matches` (which raised on first failure) with `compare_outputs` (which collects all discrepancies into a list).
+- All discrepancies are printed as a **DISCREPANCY REPORT** block to stdout (use `pytest -s` to see them).
+- File size differences > 1% are also included in the discrepancy list.
+- `metadata.yaml` gains a `strict` boolean field (default: `true`):
+  - `strict: true` → field discrepancies cause `pytest.fail()` (hard failure)
+  - `strict: false` → field discrepancies emit `warnings.warn()` (test still passes)
+  - Size differences are always non-fatal (warn only), regardless of `strict`.
+
+#### 6. Direct X12Handler bypass for unmapped structural comparisons
+- Test cases with `transaction_type: "x12"` and no `target_inbound_dir` bypass the full Pipeline and call `X12Handler.read()` directly.
+- This supports raw structural comparison of X12 EDI files that have no active map.yaml routing.
+
+#### 7. `output_file` is now a required field
+- Each test case in `metadata.yaml` must now include an `output_file` key pointing to where the actual output should be written within `tests/user_supplied/`.
+- Convention: output filename **must match input filename stem** (e.g., `inputs/foo.csv` → `outputs/foo.json`).
 
 ---
 

@@ -1,8 +1,8 @@
 {
-  "stage": "TRANSFORMATION",
-  "reason": "No mapping rules found for file: tests\\user_supplied\\200220261215033.dat",
-  "exception": "ValueError: No mapping rules found for file: tests\\user_supplied\\200220261215033.dat",
-  "correlation_id": "8101c5d1-fa43-4b23-9c90-7b8628d928fb",
-  "timestamp": "2026-02-21T16:13:08.110640+00:00",
+  "stage": "DETECTION",
+  "reason": "X12 file not found: tests\\user_supplied\\inputs\\200220261215033.dat",
+  "exception": "FileNotFoundError: X12 file not found: tests\\user_supplied\\inputs\\200220261215033.dat",
+  "correlation_id": "59d92c1f-eaf5-4950-8f61-d447d07a0935",
+  "timestamp": "2026-02-22T07:48:20.117320+00:00",
   "source_file": "200220261215033.dat"
 }

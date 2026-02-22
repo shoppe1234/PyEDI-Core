@@ -1,16 +1,33 @@
 test_cases:
   - name: "UnivT701 Demo Invoice CSV"
     input_file: "inputs/UnivT701_small.csv"
+    output_file: "outputs/UnivT701_small.json"
     expected_output: "expected_outputs/UnivT701_small.json"
     should_succeed: true
+    dry_run: true
+    skip_fields: ["id", "timestamp", "correlation_id", "_source_file"]
     transaction_type: "gfs_ca_810"
     target_inbound_dir: "./inbound/csv/gfs_ca"
     description: "Verify processing of GFS Canada CSV using gfsGenericOut810FF schema."
 
   - name: "MarginEdge 810 Text File"
     input_file: "inputs/NA_810_MARGINEDGE_20260129.txt"
+    output_file: "outputs/NA_810_MARGINEDGE_20260129.json"
     expected_output: "expected_outputs/NA_810_MARGINEDGE_20260129.json"
     should_succeed: true
+    dry_run: true
+    skip_fields: ["id", "timestamp", "correlation_id", "_source_file"]
     transaction_type: "810"
     target_inbound_dir: "./inbound/csv/margin_edge"
     description: "Verify processing of Margin Edge TXT using tpm810SourceFF schema."
+
+  - name: "x12 Data Comparison 200220261215033"
+    input_file: "inputs/200220261215033.dat"
+    output_file: "outputs/200220261215033.json"
+    expected_output: "expected_outputs/200220261215033.json"
+    should_succeed: true
+    dry_run: false
+    strict: false
+    skip_fields: ["id", "timestamp", "correlation_id", "_source_file"]
+    transaction_type: "x12"
+    description: "User supplied data comparison test"

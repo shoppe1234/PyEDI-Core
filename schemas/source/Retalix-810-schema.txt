@@ -1,0 +1,509 @@
+def flatFileSchema RetalixPIInvoiceFileSchemaSacFF {
+    sampleFile = "Retalix_810_Sample.txt"
+    
+    _<groupName> <GroupType> []
+    
+    def record O_TPID {
+        fieldIdentifier {
+            value = "O_TPID    "
+            field = recordID
+        }
+        recordID String (length=10)
+        tPCode String (length=10)
+        functionalGroupCode String (length=10)
+        messageID String (length=10)
+        messageClass String (length=10)
+    }
+    
+    def record OIN_DSTID {
+        fieldIdentifier {
+            value = "OIN_DSTID "
+            field = recordID
+        }
+        recordID String (length=10)
+    }
+    
+    def record OIN_HDRA {
+        fieldIdentifier {
+            value = "OIN_HDRA  "
+            field = recordID
+        }
+        recordID String (length=10)
+        companyNumber Decimal (length=3)
+        divisionNumber Decimal (length=3)
+        departmentNumber Decimal (length=3)
+        warehouseNumber Decimal (length=3)
+        customerNumber Decimal (length=10)
+    }
+    
+    def record TPM_HDR {
+        fieldIdentifier {
+            value = "TPM_HDR   "
+            field = recordID
+        }
+        recordID String (length=10)
+        invoiceNumber String (length=10)
+        originalInvoiceNumber String (length=10)
+        orderNumber String (length=10)
+        originalOrderNumber String (length=10)
+        SAPWarehouseNumber String (length=10)
+    }
+    
+    def record OIN_HDR1 {
+        fieldIdentifier {
+            value = "OIN_HDR1  "
+            field = recordID
+        }
+        recordID String (length=10)
+        orderNumber Decimal (length=7)
+        invoiceNumber Decimal (length=7)
+        orderDate String (length=8)
+        invoiceDate String (length=8)
+        shipDate String (length=8)
+        pONumber String (length=20)
+    }
+    
+    def record OIN_HDR2 {
+        fieldIdentifier {
+            value = "OIN_HDR2  "
+            field = recordID
+        }
+        recordID String (length=10)
+        creditDebitCode String (length=2)
+        originalOrderNumber String (length=7)
+    }
+    
+    def record OIN_HDR3 {
+        fieldIdentifier {
+            value = "OIN_HDR3  "
+            field = recordID
+        }
+        recordID String (length=10)
+    }
+    
+    def record OIN_HDR4 {
+        fieldIdentifier {
+            value = "OIN_HDR4  "
+            field = recordID
+        }
+        recordID String (length=10)
+    }
+    
+    def record OIN_HDR5 {
+        fieldIdentifier {
+            value = "OIN_HDR5  "
+            field = recordID
+        }
+        recordID String (length=10)
+        netInvoiceAmout ImpliedDecimal (length=10, fractionalDigits=2, readEmptyAsNull=true)
+        invoiceDate String (length=8)
+        customerNumber String (length=7)
+        deliveryDate String (length=8)
+    }
+    
+    def record OIN_REFH1 {
+        fieldIdentifier {
+            value = "OIN_REFH1 "
+            field = recordID
+        }
+        recordID String (length=10)
+        referenceNumber String (length=30)
+        referenceQual String (length=2)
+    }
+    
+    def record OIN_TRM1 {
+        fieldIdentifier {
+            value = "OIN_TRM1  "
+            field = recordID
+        }
+        recordID String (length=10)
+        termsTypeCode String (length=2)
+        termsDiscountPercent Decimal (length=5)
+        termsDiscountDueDate Decimal (length=8)
+        termsDiscountDays Decimal (length=3)
+        termsDiscountAmount String (length=9)
+        termsNetDueDate String (length=8)
+        termsNetDays String (length=3)
+        termsDescription String (length=25)
+    }
+    
+    def record OIN_ST1 {
+        fieldIdentifier {
+            value = "OIN_ST1   "
+            field = recordID
+        }
+        recordID String (length=10)
+        shipToName String (length=25)
+        addressQual String (length=2)
+        customerNumber String (length=9)
+        divisionNumber String (length=12)
+        shipToNumber String (length=9)
+        languageCode String (length=3)
+        buyerName String (length=25)
+    }
+    
+    def record OIN_ST2 {
+        fieldIdentifier {
+            value = "OIN_ST2   "
+            field = recordID
+        }
+        recordID String (length=10)
+        shipToAddress1 String (length=45)
+    }
+    
+    def record OIN_ST3 {
+        fieldIdentifier {
+            value = "OIN_ST3   "
+            field = recordID
+        }
+        recordID String (length=10)
+        shipToCity String (length=15)
+        shipToProvince String (length=2)
+        shipToPostal String (length=7)
+    }
+    
+    def record OIN_BT1 {
+        fieldIdentifier {
+            value = "OIN_BT1   "
+            field = recordID
+        }
+        recordID String (length=10)
+        billToName String (length=25)
+        addressQual String (length=2)
+        billToNumber String (length=9)
+    }
+    
+    def record OIN_BT2 {
+        fieldIdentifier {
+            value = "OIN_BT2   "
+            field = recordID
+        }
+        recordID String (length=10)
+        billToAddress1 String (length=25)
+        billToName2 String (length=30)
+    }
+    
+    def record OIN_BT3 {
+        fieldIdentifier {
+            value = "OIN_BT3   "
+            field = recordID
+        }
+        recordID String (length=10)
+        billToCity String (length=15)
+        billToProvince String (length=2)
+        billToPostal String (length=7)
+    }
+    
+    def record OIN_RE1 {
+        fieldIdentifier {
+            value = "OIN_RE1   "
+            field = recordID
+        }
+        recordID String (length=10)
+        remitToName String (length=25)
+        addressQual String (length=1)
+        divisionNumber String (length=2)
+        remitToNumber Decimal (length=13)
+    }
+    
+    def record OIN_RE2 {
+        fieldIdentifier {
+            value = "OIN_RE2   "
+            field = recordID
+        }
+        recordID String (length=10)
+        remitToAddress1 String (length=30)
+        remitToName2 String (length=30)
+    }
+    
+    def record OIN_RE3 {
+        fieldIdentifier {
+            value = "OIN_RE3   "
+            field = recordID
+        }
+        recordID String (length=10)
+        remitToCity String (length=15)
+        remitToProvince String (length=2)
+        remitToPostal String (length=7)
+    }
+    
+    def record OIN_DTL1 {
+        fieldIdentifier {
+            value = "OIN_DTL1  "
+            field = recordID
+        }
+        recordID String (length=10)
+        lineNumber Decimal (length=5)
+        distributorItemNumber Decimal (length=8)
+        buyerItemNumber String (length=2)
+        upcNumber Decimal (length=12)
+        ignore1 String (length=15)
+        unitOfMeasure String (length=2)
+        itemsPerUnit Decimal (length=4)
+        itemPriceGross ImpliedDecimal (length=9, fractionalDigits=2, readEmptyAsNull=true)
+        itemPriceNet ImpliedDecimal (length=9, fractionalDigits=2, readEmptyAsNull=true)
+        ignore2 String (length=9)
+        payableIndicator String (length=1)
+        substituteIndicator String (length=1)
+        creditIndicator String (length=1)
+        orderedQuantity Decimal (length=8)
+        ignore3 String (length=9)
+    }
+    
+    def record OIN_DTL2 {
+        fieldIdentifier {
+            value = "OIN_DTL2  "
+            field = recordID
+        }
+        recordID String (length=10)
+        itemDescription String (length=80)
+    }
+    
+    def record OIN_DTL3 {
+        fieldIdentifier {
+            value = "OIN_DTL3  "
+            field = recordID
+        }
+        recordID String (length=10)
+        quantityShipped ImpliedDecimal (length=7, fractionalDigits=2, readEmptyAsNull=true)
+        quantityOrdered ImpliedDecimal (length=7, fractionalDigits=2, readEmptyAsNull=true)
+        quantityReceived ImpliedDecimal (length=7, fractionalDigits=2, readEmptyAsNull=true)
+        quantityReturned ImpliedDecimal (length=7, fractionalDigits=2, readEmptyAsNull=true)
+        quantityCredit ImpliedDecimal (length=8, fractionalDigits=2, readEmptyAsNull=true)
+        extendedPrice ImpliedDecimal (length=18, fractionalDigits=2, readEmptyAsNull=true)
+        extendedPriceNet ImpliedDecimal (length=18, fractionalDigits=2, readEmptyAsNull=true)
+    }
+    
+    def record OIN_DTL4 {
+        fieldIdentifier {
+            value = "OIN_DTL4  "
+            field = recordID
+        }
+        recordID String (length=10)
+        vendorNumber Decimal (length=9)
+        vendorName String (length=20)
+        vendorItemNumber String (length=10)
+        categoryCode Integer (length=1)
+        categoryName String (length=20)
+        subCategoryCode Integer (length=5)
+        subCategoryDescription String (length=25)
+    }
+    
+    def record OIN_DTL4Z {
+        fieldIdentifier {
+            value = "OIN_DTL4Z "
+            field = recordID
+        }
+        recordID String (length=10)
+    }
+    
+    def record OIN_DTL5 {
+        fieldIdentifier {
+            value = "OIN_DTL5  "
+            field = recordID
+        }
+        recordID String (length=10)
+    }
+    
+    def record OIN_DTL6 {
+        fieldIdentifier {
+            value = "OIN_DTL6  "
+            field = recordID
+        }
+        recordID String (length=10)
+    }
+    
+    def record OIN_DTL7 {
+        fieldIdentifier {
+            value = "OIN_DTL7  "
+            field = recordID
+        }
+        recordID String (length=10)
+        phoneNumber String (length=20)
+    }
+    
+    def record OIN_DTL8 {
+        fieldIdentifier {
+            value = "OIN_DTL8  "
+            field = recordID
+        }
+        recordID String (length=10)
+    }
+    
+    def record OIN_DTL9 {
+        fieldIdentifier {
+            value = "OIN_DTL9  "
+            field = recordID
+        }
+        recordID String (length=10)
+    }
+    
+    def record OIN_DTL11 {
+        fieldIdentifier {
+            value = "OIN_DTL11 "
+            field = recordID
+        }
+        recordID String (length=10)
+        creditCode String (length=3, readEmptyAsNull=true)
+        creditCodeDescription String (length=25, readEmptyAsNull=true)
+    }
+    
+    def record OIN_TAXD1 {
+        fieldIdentifier {
+            value = "OIN_TAXD1 "
+            field = recordID
+        }
+        recordID String (length=10)
+        taxTypeCode String (length=2)
+        taxAmount ImpliedDecimal (length=13, fractionalDigits=2, readEmptyAsNull=true)
+        taxableAmount ImpliedDecimal (length=13, fractionalDigits=2, readEmptyAsNull=true)
+        taxRate ImpliedDecimal (length=8, fractionalDigits=4, readEmptyAsNull=true)
+    }
+    
+    def record OIN_SACD1 {
+        fieldIdentifier {
+            value = "OIN_SACD1 "
+            field = recordID
+        }
+        recordID String (length=10)
+        allowChargeIndicator String (length=1)
+        allowChargeCode String (length=4)
+        allowChargeAmount ImpliedDecimal (length=15, fractionalDigits=2, readEmptyAsNull=true)
+        percentQualifier String (length=1)
+        percent Integer (length=6)
+        ignore String (length=30)
+        allowChargeHandlingCode String (length=2)
+        referenceID String (length=30)
+    }
+    
+    def record OIN_SACD2 {
+        fieldIdentifier {
+            value = "OIN_SACD2 "
+            field = recordID
+        }
+        recordID String (length=10)
+        allowChargeDesc String (length=80)
+    }
+    
+    def record OIN_TTL1 {
+        fieldIdentifier {
+            value = "OIN_TTL1  "
+            field = recordID
+        }
+        recordID String (length=10)
+        lineCount ImpliedDecimal (length=6, fractionalDigits=0, readEmptyAsNull=true)
+        quantityCredit ImpliedDecimal (length=7, fractionalDigits=2, readEmptyAsNull=true)
+        extendedPriceNet ImpliedDecimal (length=9, fractionalDigits=2, readEmptyAsNull=true)
+        quantityCreditAmt ImpliedDecimal (length=8, fractionalDigits=2, readEmptyAsNull=true)
+        netInvoiceAmount ImpliedDecimal (length=9, fractionalDigits=2, readEmptyAsNull=true)
+        taxableAmount ImpliedDecimal (length=13, fractionalDigits=2, readEmptyAsNull=true)
+        taxAmount ImpliedDecimal (length=13, fractionalDigits=2, readEmptyAsNull=true)
+        depositAmount ImpliedDecimal (length=13, fractionalDigits=2, readEmptyAsNull=true)
+        otherChargeAmount ImpliedDecimal (length=7, fractionalDigits=2, readEmptyAsNull=true)
+    }
+    
+    def record OIN_TAXS1 {
+        fieldIdentifier {
+            value = "OIN_TAXS1 "
+            field = recordID
+        }
+        recordID String (length=10)
+        taxTypeCode String (length=2)
+        taxAmount ImpliedDecimal (length=13, fractionalDigits=2, readEmptyAsNull=true)
+        taxableAmount ImpliedDecimal (length=13, fractionalDigits=2, readEmptyAsNull=true)
+        taxRate ImpliedDecimal (length=8, fractionalDigits=4, readEmptyAsNull=true)
+    }
+    
+    def record OIN_SACS1 {
+        fieldIdentifier {
+            value = "OIN_SACS1 "
+            field = recordID
+        }
+        recordID String (length=10)
+        allowChargeIndicator String (length=1)
+        allowChargeCode String (length=4)
+        allowChargeAmount ImpliedDecimal (length=15, fractionalDigits=2, readEmptyAsNull=true)
+        percentQualifier String (length=1)
+        percent Integer (length=6)
+        ignore String (length=30)
+        allowChargeHandlingCode String (length=2)
+        referenceID String (length=30)
+    }
+    
+    def record OIN_SACS2 {
+        fieldIdentifier {
+            value = "OIN_SACS2 "
+            field = recordID
+        }
+        recordID String (length=10)
+        allowChargeDesc String (length=80)
+    }
+    
+    def record OIN_TAXS2 {
+        fieldIdentifier {
+            value = "OIN_TAXS2 "
+            field = recordID
+        }
+        recordID String (length=10)
+        taxTypeCode String (length=2)
+        taxDescription String (length=30)
+    }
+    
+    def recordSequence OTpidGroup {
+        groupOnRecord = true
+        
+        _O_TPID O_TPID [0..0]
+        _OIN_DSTID OIN_DSTID []
+        _OIN_HDRA OIN_HDRA []
+        _TPM_HDR TPM_HDR []
+        _OIN_HDR1 OIN_HDR1 []
+        _OIN_HDR2 OIN_HDR2 []
+        _OIN_HDR3 OIN_HDR3 []
+        _OIN_HDR4 OIN_HDR4 []
+        _OIN_HDR5 OIN_HDR5 [0..0]
+        _OIN_REFH1 OIN_REFH1 []
+        _OIN_TRM1 OIN_TRM1 []
+        _OIN_ST1 OIN_ST1 []
+        _OIN_ST2 OIN_ST2 []
+        _OIN_ST3 OIN_ST3 []
+        _OIN_BT1 OIN_BT1 []
+        _OIN_BT2 OIN_BT2 []
+        _OIN_BT3 OIN_BT3 []
+        _OIN_RE1 OIN_RE1 []
+        _OIN_RE2 OIN_RE2 []
+        _OIN_RE3 OIN_RE3 []
+        _OinDtl1Group OinDtl1Group []
+        _OIN_TTL1 OIN_TTL1 []
+        _OIN_TAXS1 OIN_TAXS1 [0..0]
+        _OinSacs1Group OinSacs1Group []
+    }
+    
+    def recordSequence OinDtl1Group {
+        groupType = UnorderedAfterStart
+        
+        _OIN_DTL1 OIN_DTL1 []
+        _OIN_DTL11 OIN_DTL11 []
+        _OIN_DTL2 OIN_DTL2 []
+        _OIN_DTL3 OIN_DTL3 []
+        _OIN_DTL4 OIN_DTL4 []
+        _OIN_DTL4Z OIN_DTL4Z []
+        _OIN_DTL5 OIN_DTL5 []
+        _OIN_DTL6 OIN_DTL6 [0..0]
+        _OIN_DTL7 OIN_DTL7 [0..0]
+        _OIN_DTL8 OIN_DTL8 [0..0]
+        _OIN_DTL9 OIN_DTL9 [0..0]
+        _OIN_TAXD1 OIN_TAXD1 []
+        _OinSacd1Group OinSacd1Group []
+    }
+    
+    def recordSequence OinSacd1Group {
+        _OIN_SACD1 OIN_SACD1 []
+        _OIN_SACD2 OIN_SACD2 [0..0]
+    }
+    
+    def recordSequence OinSacs1Group {
+        _OIN_SACS1 OIN_SACS1 [0..0]
+        _OIN_SACS2 OIN_SACS2 [0..0]
+        _OIN_TAXS2 OIN_TAXS2 [0..0]
+    }
+}

@@ -1,0 +1,833 @@
+schema_name: RetalixPIInvoiceFileSchemaSacFF
+input_format: FIXED_LENGTH
+record_id_field:
+  name: recordID
+  length: 10
+groups:
+  OTpidGroup:
+    name: OTpidGroup
+    group_on_record: true
+    invoice_boundary: true
+    group_type: ordered
+    members:
+    - record: 'O_TPID    '
+      group_ref: null
+      cardinality: zero_or_more
+    - record: 'OIN_DSTID '
+      group_ref: null
+      cardinality: zero_or_more
+    - record: 'OIN_HDRA  '
+      group_ref: null
+      cardinality: zero_or_more
+    - record: 'TPM_HDR   '
+      group_ref: null
+      cardinality: zero_or_more
+    - record: 'OIN_HDR1  '
+      group_ref: null
+      cardinality: zero_or_more
+    - record: 'OIN_HDR2  '
+      group_ref: null
+      cardinality: zero_or_more
+    - record: 'OIN_HDR3  '
+      group_ref: null
+      cardinality: zero_or_more
+    - record: 'OIN_HDR4  '
+      group_ref: null
+      cardinality: zero_or_more
+    - record: 'OIN_HDR5  '
+      group_ref: null
+      cardinality: zero_or_more
+    - record: 'OIN_REFH1 '
+      group_ref: null
+      cardinality: zero_or_more
+    - record: 'OIN_TRM1  '
+      group_ref: null
+      cardinality: zero_or_more
+    - record: 'OIN_ST1   '
+      group_ref: null
+      cardinality: zero_or_more
+    - record: 'OIN_ST2   '
+      group_ref: null
+      cardinality: zero_or_more
+    - record: 'OIN_ST3   '
+      group_ref: null
+      cardinality: zero_or_more
+    - record: 'OIN_BT1   '
+      group_ref: null
+      cardinality: zero_or_more
+    - record: 'OIN_BT2   '
+      group_ref: null
+      cardinality: zero_or_more
+    - record: 'OIN_BT3   '
+      group_ref: null
+      cardinality: zero_or_more
+    - record: 'OIN_RE1   '
+      group_ref: null
+      cardinality: zero_or_more
+    - record: 'OIN_RE2   '
+      group_ref: null
+      cardinality: zero_or_more
+    - record: 'OIN_RE3   '
+      group_ref: null
+      cardinality: zero_or_more
+    - record: OinDtl1Gro
+      group_ref: null
+      cardinality: zero_or_more
+    - record: 'OIN_TTL1  '
+      group_ref: null
+      cardinality: zero_or_more
+    - record: 'OIN_TAXS1 '
+      group_ref: null
+      cardinality: zero_or_more
+    - record: OinSacs1Gr
+      group_ref: null
+      cardinality: zero_or_more
+  OinDtl1Group:
+    name: OinDtl1Group
+    group_on_record: false
+    invoice_boundary: false
+    group_type: unordered_after_start
+    members:
+    - record: 'OIN_DTL1  '
+      group_ref: null
+      cardinality: zero_or_more
+    - record: 'OIN_DTL11 '
+      group_ref: null
+      cardinality: zero_or_more
+    - record: 'OIN_DTL2  '
+      group_ref: null
+      cardinality: zero_or_more
+    - record: 'OIN_DTL3  '
+      group_ref: null
+      cardinality: zero_or_more
+    - record: 'OIN_DTL4  '
+      group_ref: null
+      cardinality: zero_or_more
+    - record: 'OIN_DTL4Z '
+      group_ref: null
+      cardinality: zero_or_more
+    - record: 'OIN_DTL5  '
+      group_ref: null
+      cardinality: zero_or_more
+    - record: 'OIN_DTL6  '
+      group_ref: null
+      cardinality: zero_or_more
+    - record: 'OIN_DTL7  '
+      group_ref: null
+      cardinality: zero_or_more
+    - record: 'OIN_DTL8  '
+      group_ref: null
+      cardinality: zero_or_more
+    - record: 'OIN_DTL9  '
+      group_ref: null
+      cardinality: zero_or_more
+    - record: 'OIN_TAXD1 '
+      group_ref: null
+      cardinality: zero_or_more
+    - record: OinSacd1Gr
+      group_ref: null
+      cardinality: zero_or_more
+    anchor_record: 'OIN_DTL1  '
+  OinSacd1Group:
+    name: OinSacd1Group
+    group_on_record: false
+    invoice_boundary: false
+    group_type: ordered
+    members:
+    - record: 'OIN_SACD1 '
+      group_ref: null
+      cardinality: zero_or_more
+    - record: 'OIN_SACD2 '
+      group_ref: null
+      cardinality: zero_or_more
+  OinSacs1Group:
+    name: OinSacs1Group
+    group_on_record: false
+    invoice_boundary: false
+    group_type: ordered
+    members:
+    - record: 'OIN_SACS1 '
+      group_ref: null
+      cardinality: zero_or_more
+    - record: 'OIN_SACS2 '
+      group_ref: null
+      cardinality: zero_or_more
+    - record: 'OIN_TAXS2 '
+      group_ref: null
+      cardinality: zero_or_more
+records:
+  'O_TPID    ':
+    record_name: O_TPID
+    fields:
+    - name: recordID
+      type: string
+      length: 10
+    - name: tPCode
+      type: string
+      length: 10
+    - name: functionalGroupCode
+      type: string
+      length: 10
+    - name: messageID
+      type: string
+      length: 10
+    - name: messageClass
+      type: string
+      length: 10
+    record_id_value: 'O_TPID    '
+  'OIN_DSTID ':
+    record_name: OIN_DSTID
+    fields:
+    - name: recordID
+      type: string
+      length: 10
+    record_id_value: 'OIN_DSTID '
+  'OIN_HDRA  ':
+    record_name: OIN_HDRA
+    fields:
+    - name: recordID
+      type: string
+      length: 10
+    - name: companyNumber
+      type: decimal
+      length: 3
+    - name: divisionNumber
+      type: decimal
+      length: 3
+    - name: departmentNumber
+      type: decimal
+      length: 3
+    - name: warehouseNumber
+      type: decimal
+      length: 3
+    - name: customerNumber
+      type: decimal
+      length: 10
+    record_id_value: 'OIN_HDRA  '
+  'TPM_HDR   ':
+    record_name: TPM_HDR
+    fields:
+    - name: recordID
+      type: string
+      length: 10
+    - name: invoiceNumber
+      type: string
+      length: 10
+    - name: originalInvoiceNumber
+      type: string
+      length: 10
+    - name: orderNumber
+      type: string
+      length: 10
+    - name: originalOrderNumber
+      type: string
+      length: 10
+    - name: SAPWarehouseNumber
+      type: string
+      length: 10
+    record_id_value: 'TPM_HDR   '
+  'OIN_HDR1  ':
+    record_name: OIN_HDR1
+    fields:
+    - name: recordID
+      type: string
+      length: 10
+    - name: orderNumber
+      type: decimal
+      length: 7
+    - name: invoiceNumber
+      type: decimal
+      length: 7
+    - name: orderDate
+      type: string
+      length: 8
+    - name: invoiceDate
+      type: string
+      length: 8
+    - name: shipDate
+      type: string
+      length: 8
+    - name: pONumber
+      type: string
+      length: 20
+    record_id_value: 'OIN_HDR1  '
+  'OIN_HDR2  ':
+    record_name: OIN_HDR2
+    fields:
+    - name: recordID
+      type: string
+      length: 10
+    - name: creditDebitCode
+      type: string
+      length: 2
+    - name: originalOrderNumber
+      type: string
+      length: 7
+    record_id_value: 'OIN_HDR2  '
+  'OIN_HDR3  ':
+    record_name: OIN_HDR3
+    fields:
+    - name: recordID
+      type: string
+      length: 10
+    record_id_value: 'OIN_HDR3  '
+  'OIN_HDR4  ':
+    record_name: OIN_HDR4
+    fields:
+    - name: recordID
+      type: string
+      length: 10
+    record_id_value: 'OIN_HDR4  '
+  'OIN_HDR5  ':
+    record_name: OIN_HDR5
+    fields:
+    - name: recordID
+      type: string
+      length: 10
+    - name: netInvoiceAmout
+      type: implied_decimal
+      length: 10
+    - name: invoiceDate
+      type: string
+      length: 8
+    - name: customerNumber
+      type: string
+      length: 7
+    - name: deliveryDate
+      type: string
+      length: 8
+    record_id_value: 'OIN_HDR5  '
+  'OIN_REFH1 ':
+    record_name: OIN_REFH1
+    fields:
+    - name: recordID
+      type: string
+      length: 10
+    - name: referenceNumber
+      type: string
+      length: 30
+    - name: referenceQual
+      type: string
+      length: 2
+    record_id_value: 'OIN_REFH1 '
+  'OIN_TRM1  ':
+    record_name: OIN_TRM1
+    fields:
+    - name: recordID
+      type: string
+      length: 10
+    - name: termsTypeCode
+      type: string
+      length: 2
+    - name: termsDiscountPercent
+      type: decimal
+      length: 5
+    - name: termsDiscountDueDate
+      type: decimal
+      length: 8
+    - name: termsDiscountDays
+      type: decimal
+      length: 3
+    - name: termsDiscountAmount
+      type: string
+      length: 9
+    - name: termsNetDueDate
+      type: string
+      length: 8
+    - name: termsNetDays
+      type: string
+      length: 3
+    - name: termsDescription
+      type: string
+      length: 25
+    record_id_value: 'OIN_TRM1  '
+  'OIN_ST1   ':
+    record_name: OIN_ST1
+    fields:
+    - name: recordID
+      type: string
+      length: 10
+    - name: shipToName
+      type: string
+      length: 25
+    - name: addressQual
+      type: string
+      length: 2
+    - name: customerNumber
+      type: string
+      length: 9
+    - name: divisionNumber
+      type: string
+      length: 12
+    - name: shipToNumber
+      type: string
+      length: 9
+    - name: languageCode
+      type: string
+      length: 3
+    - name: buyerName
+      type: string
+      length: 25
+    record_id_value: 'OIN_ST1   '
+  'OIN_ST2   ':
+    record_name: OIN_ST2
+    fields:
+    - name: recordID
+      type: string
+      length: 10
+    - name: shipToAddress1
+      type: string
+      length: 45
+    record_id_value: 'OIN_ST2   '
+  'OIN_ST3   ':
+    record_name: OIN_ST3
+    fields:
+    - name: recordID
+      type: string
+      length: 10
+    - name: shipToCity
+      type: string
+      length: 15
+    - name: shipToProvince
+      type: string
+      length: 2
+    - name: shipToPostal
+      type: string
+      length: 7
+    record_id_value: 'OIN_ST3   '
+  'OIN_BT1   ':
+    record_name: OIN_BT1
+    fields:
+    - name: recordID
+      type: string
+      length: 10
+    - name: billToName
+      type: string
+      length: 25
+    - name: addressQual
+      type: string
+      length: 2
+    - name: billToNumber
+      type: string
+      length: 9
+    record_id_value: 'OIN_BT1   '
+  'OIN_BT2   ':
+    record_name: OIN_BT2
+    fields:
+    - name: recordID
+      type: string
+      length: 10
+    - name: billToAddress1
+      type: string
+      length: 25
+    - name: billToName2
+      type: string
+      length: 30
+    record_id_value: 'OIN_BT2   '
+  'OIN_BT3   ':
+    record_name: OIN_BT3
+    fields:
+    - name: recordID
+      type: string
+      length: 10
+    - name: billToCity
+      type: string
+      length: 15
+    - name: billToProvince
+      type: string
+      length: 2
+    - name: billToPostal
+      type: string
+      length: 7
+    record_id_value: 'OIN_BT3   '
+  'OIN_RE1   ':
+    record_name: OIN_RE1
+    fields:
+    - name: recordID
+      type: string
+      length: 10
+    - name: remitToName
+      type: string
+      length: 25
+    - name: addressQual
+      type: string
+      length: 1
+    - name: divisionNumber
+      type: string
+      length: 2
+    - name: remitToNumber
+      type: decimal
+      length: 13
+    record_id_value: 'OIN_RE1   '
+  'OIN_RE2   ':
+    record_name: OIN_RE2
+    fields:
+    - name: recordID
+      type: string
+      length: 10
+    - name: remitToAddress1
+      type: string
+      length: 30
+    - name: remitToName2
+      type: string
+      length: 30
+    record_id_value: 'OIN_RE2   '
+  'OIN_RE3   ':
+    record_name: OIN_RE3
+    fields:
+    - name: recordID
+      type: string
+      length: 10
+    - name: remitToCity
+      type: string
+      length: 15
+    - name: remitToProvince
+      type: string
+      length: 2
+    - name: remitToPostal
+      type: string
+      length: 7
+    record_id_value: 'OIN_RE3   '
+  'OIN_DTL1  ':
+    record_name: OIN_DTL1
+    fields:
+    - name: recordID
+      type: string
+      length: 10
+    - name: lineNumber
+      type: decimal
+      length: 5
+    - name: distributorItemNumber
+      type: decimal
+      length: 8
+    - name: buyerItemNumber
+      type: string
+      length: 2
+    - name: upcNumber
+      type: decimal
+      length: 12
+    - name: ignore1
+      type: string
+      length: 15
+    - name: unitOfMeasure
+      type: string
+      length: 2
+    - name: itemsPerUnit
+      type: decimal
+      length: 4
+    - name: itemPriceGross
+      type: implied_decimal
+      length: 9
+    - name: itemPriceNet
+      type: implied_decimal
+      length: 9
+    - name: ignore2
+      type: string
+      length: 9
+    - name: payableIndicator
+      type: string
+      length: 1
+    - name: substituteIndicator
+      type: string
+      length: 1
+    - name: creditIndicator
+      type: string
+      length: 1
+    - name: orderedQuantity
+      type: decimal
+      length: 8
+    - name: ignore3
+      type: string
+      length: 9
+    record_id_value: 'OIN_DTL1  '
+  'OIN_DTL2  ':
+    record_name: OIN_DTL2
+    fields:
+    - name: recordID
+      type: string
+      length: 10
+    - name: itemDescription
+      type: string
+      length: 80
+    record_id_value: 'OIN_DTL2  '
+  'OIN_DTL3  ':
+    record_name: OIN_DTL3
+    fields:
+    - name: recordID
+      type: string
+      length: 10
+    - name: quantityShipped
+      type: implied_decimal
+      length: 7
+    - name: quantityOrdered
+      type: implied_decimal
+      length: 7
+    - name: quantityReceived
+      type: implied_decimal
+      length: 7
+    - name: quantityReturned
+      type: implied_decimal
+      length: 7
+    - name: quantityCredit
+      type: implied_decimal
+      length: 8
+    - name: extendedPrice
+      type: implied_decimal
+      length: 18
+    - name: extendedPriceNet
+      type: implied_decimal
+      length: 18
+    record_id_value: 'OIN_DTL3  '
+  'OIN_DTL4  ':
+    record_name: OIN_DTL4
+    fields:
+    - name: recordID
+      type: string
+      length: 10
+    - name: vendorNumber
+      type: decimal
+      length: 9
+    - name: vendorName
+      type: string
+      length: 20
+    - name: vendorItemNumber
+      type: string
+      length: 10
+    - name: categoryCode
+      type: integer
+      length: 1
+    - name: categoryName
+      type: string
+      length: 20
+    - name: subCategoryCode
+      type: integer
+      length: 5
+    - name: subCategoryDescription
+      type: string
+      length: 25
+    record_id_value: 'OIN_DTL4  '
+  'OIN_DTL4Z ':
+    record_name: OIN_DTL4Z
+    fields:
+    - name: recordID
+      type: string
+      length: 10
+    record_id_value: 'OIN_DTL4Z '
+  'OIN_DTL5  ':
+    record_name: OIN_DTL5
+    fields:
+    - name: recordID
+      type: string
+      length: 10
+    record_id_value: 'OIN_DTL5  '
+  'OIN_DTL6  ':
+    record_name: OIN_DTL6
+    fields:
+    - name: recordID
+      type: string
+      length: 10
+    record_id_value: 'OIN_DTL6  '
+  'OIN_DTL7  ':
+    record_name: OIN_DTL7
+    fields:
+    - name: recordID
+      type: string
+      length: 10
+    - name: phoneNumber
+      type: string
+      length: 20
+    record_id_value: 'OIN_DTL7  '
+  'OIN_DTL8  ':
+    record_name: OIN_DTL8
+    fields:
+    - name: recordID
+      type: string
+      length: 10
+    record_id_value: 'OIN_DTL8  '
+  'OIN_DTL9  ':
+    record_name: OIN_DTL9
+    fields:
+    - name: recordID
+      type: string
+      length: 10
+    record_id_value: 'OIN_DTL9  '
+  'OIN_DTL11 ':
+    record_name: OIN_DTL11
+    fields:
+    - name: recordID
+      type: string
+      length: 10
+    - name: creditCode
+      type: string
+      length: 3
+    - name: creditCodeDescription
+      type: string
+      length: 25
+    record_id_value: 'OIN_DTL11 '
+  'OIN_TAXD1 ':
+    record_name: OIN_TAXD1
+    fields:
+    - name: recordID
+      type: string
+      length: 10
+    - name: taxTypeCode
+      type: string
+      length: 2
+    - name: taxAmount
+      type: implied_decimal
+      length: 13
+    - name: taxableAmount
+      type: implied_decimal
+      length: 13
+    - name: taxRate
+      type: implied_decimal
+      length: 8
+    record_id_value: 'OIN_TAXD1 '
+  'OIN_SACD1 ':
+    record_name: OIN_SACD1
+    fields:
+    - name: recordID
+      type: string
+      length: 10
+    - name: allowChargeIndicator
+      type: string
+      length: 1
+    - name: allowChargeCode
+      type: string
+      length: 4
+    - name: allowChargeAmount
+      type: implied_decimal
+      length: 15
+    - name: percentQualifier
+      type: string
+      length: 1
+    - name: percent
+      type: integer
+      length: 6
+    - name: ignore
+      type: string
+      length: 30
+    - name: allowChargeHandlingCode
+      type: string
+      length: 2
+    - name: referenceID
+      type: string
+      length: 30
+    record_id_value: 'OIN_SACD1 '
+  'OIN_SACD2 ':
+    record_name: OIN_SACD2
+    fields:
+    - name: recordID
+      type: string
+      length: 10
+    - name: allowChargeDesc
+      type: string
+      length: 80
+    record_id_value: 'OIN_SACD2 '
+  'OIN_TTL1  ':
+    record_name: OIN_TTL1
+    fields:
+    - name: recordID
+      type: string
+      length: 10
+    - name: lineCount
+      type: implied_decimal
+      length: 6
+    - name: quantityCredit
+      type: implied_decimal
+      length: 7
+    - name: extendedPriceNet
+      type: implied_decimal
+      length: 9
+    - name: quantityCreditAmt
+      type: implied_decimal
+      length: 8
+    - name: netInvoiceAmount
+      type: implied_decimal
+      length: 9
+    - name: taxableAmount
+      type: implied_decimal
+      length: 13
+    - name: taxAmount
+      type: implied_decimal
+      length: 13
+    - name: depositAmount
+      type: implied_decimal
+      length: 13
+    - name: otherChargeAmount
+      type: implied_decimal
+      length: 7
+    record_id_value: 'OIN_TTL1  '
+  'OIN_TAXS1 ':
+    record_name: OIN_TAXS1
+    fields:
+    - name: recordID
+      type: string
+      length: 10
+    - name: taxTypeCode
+      type: string
+      length: 2
+    - name: taxAmount
+      type: implied_decimal
+      length: 13
+    - name: taxableAmount
+      type: implied_decimal
+      length: 13
+    - name: taxRate
+      type: implied_decimal
+      length: 8
+    record_id_value: 'OIN_TAXS1 '
+  'OIN_SACS1 ':
+    record_name: OIN_SACS1
+    fields:
+    - name: recordID
+      type: string
+      length: 10
+    - name: allowChargeIndicator
+      type: string
+      length: 1
+    - name: allowChargeCode
+      type: string
+      length: 4
+    - name: allowChargeAmount
+      type: implied_decimal
+      length: 15
+    - name: percentQualifier
+      type: string
+      length: 1
+    - name: percent
+      type: integer
+      length: 6
+    - name: ignore
+      type: string
+      length: 30
+    - name: allowChargeHandlingCode
+      type: string
+      length: 2
+    - name: referenceID
+      type: string
+      length: 30
+    record_id_value: 'OIN_SACS1 '
+  'OIN_SACS2 ':
+    record_name: OIN_SACS2
+    fields:
+    - name: recordID
+      type: string
+      length: 10
+    - name: allowChargeDesc
+      type: string
+      length: 80
+    record_id_value: 'OIN_SACS2 '
+  'OIN_TAXS2 ':
+    record_name: OIN_TAXS2
+    fields:
+    - name: recordID
+      type: string
+      length: 10
+    - name: taxTypeCode
+      type: string
+      length: 2
+    - name: taxDescription
+      type: string
+      length: 30
+    record_id_value: 'OIN_TAXS2 '

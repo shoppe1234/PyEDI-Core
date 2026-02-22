@@ -15,7 +15,7 @@ from typing import Any, Dict, List, Optional, Union
 import yaml
 from pydantic import BaseModel, Field
 
-from .config import AppConfig, CsvSchemaEntry
+from .config import AppConfig, CsvSchemaEntry, FixedLengthSchemaEntry
 from .core import error_handler
 from .core import logger as core_logger
 from .core import manifest
@@ -27,6 +27,7 @@ from .drivers.base import DriverRegistry, TransactionProcessor, get_driver
 from .drivers.csv_handler import CSVHandler
 from .drivers.x12_handler import X12Handler
 from .drivers.xml_handler import XMLHandler
+from .drivers.fixed_length_handler import FixedLengthHandler
 
 
 # PipelineResult model - the return contract
@@ -67,6 +68,7 @@ class Pipeline:
         # Store registry for quick access
         self._transaction_registry = self._config.transaction_registry
         self._csv_schema_registry = self._config.csv_schema_registry
+        self._fixed_length_schema_registry = self._config.fixed_length_schema_registry
         
         # Configure logger
         core_logger.configure(self._config.observability.model_dump())
@@ -111,6 +113,52 @@ class Pipeline:
         raise ValueError(
             f"No csv_schema_registry entry found for inbound directory: {inbound_dir}"
         )
+    
+    def _resolve_fixed_length_schema(self, file_path: Path) -> FixedLengthSchemaEntry:
+        """
+        Match a fixed-length file to its registry entry via inbound_dir.
+        
+        Args:
+            file_path: Path to the fixed-length file
+            
+        Returns:
+            FixedLengthSchemaEntry from the registry
+            
+        Raises:
+            ValueError: If no matching entry found
+        """
+        # Resolve the file's parent directory
+        inbound_dir = str(file_path.parent.resolve())
+        
+        # Scan the fixed_length_schema_registry for matching inbound_dir
+        for entry_name, entry in self._fixed_length_schema_registry.items():
+            registry_inbound_dir = str(Path(entry.inbound_dir).resolve())
+            if registry_inbound_dir == inbound_dir:
+                return entry
+        
+        # No match found - raise error with details
+        raise ValueError(
+            f"No fixed_length_schema_registry entry found for inbound directory: {inbound_dir}"
+        )
+    
+    def _is_fixed_length_file(self, file_path: Path) -> bool:
+        """
+        Check if a file should be processed as fixed-length format.
+        
+        Args:
+            file_path: Path to check
+            
+        Returns:
+            True if file matches a fixed-length schema registry entry
+        """
+        inbound_dir = str(file_path.parent.resolve())
+        
+        for entry in self._fixed_length_schema_registry.values():
+            registry_inbound_dir = str(Path(entry.inbound_dir).resolve())
+            if registry_inbound_dir == inbound_dir:
+                return True
+        
+        return False
     
     def run(
         self,
@@ -241,8 +289,49 @@ class Pipeline:
             transaction_type = "unknown"
             compiled_yaml_path = None
             
+            # Check if this is a fixed-length file first (check registry before extension)
+            if self._is_fixed_length_file(Path(file_path)):
+                # Use fixed_length_schema_registry
+                fl_entry = self._resolve_fixed_length_schema(Path(file_path))
+                
+                # Use schema_compiler for hash check and compile-or-load
+                compiled_yaml_path = fl_entry.compiled_output
+                source_dsl_path = fl_entry.source_dsl
+                
+                # Detect schema type and compile appropriately
+                try:
+                    schema_type = schema_compiler.detect_schema_type(source_dsl_path)
+                    if schema_type == 'fixed_length':
+                        schema_compiler.compile_fixed_length(
+                            source_dsl_path,
+                            compiled_dir=str(Path(compiled_yaml_path).parent),
+                            correlation_id=correlation_id,
+                            target_yaml_path=compiled_yaml_path
+                        )
+                    else:
+                        schema_compiler.compile_dsl(
+                            source_dsl_path,
+                            compiled_dir=str(Path(compiled_yaml_path).parent),
+                            correlation_id=correlation_id,
+                            target_yaml_path=compiled_yaml_path
+                        )
+                except Exception as e:
+                    logger.warning(f"Schema compilation/loading issue: {e}")
+                
+                # Load the rules map YAML (not the compiled schema)
+                from .core import mapper
+                try:
+                    map_yaml = mapper.load_map(fl_entry.rules_map)
+                except Exception as e:
+                    raise ValueError(f"Failed to load rules map: {e}")
+                
+                transaction_type = fl_entry.transaction_type
+                
+                # Pass compiled_yaml_path to fixed-length handler
+                if hasattr(driver, 'set_compiled_yaml_path'):
+                    driver.set_compiled_yaml_path(compiled_yaml_path)
             # Check if this is a CSV/TXT flat file - use csv_schema_registry
-            if Path(file_path).suffix.lower() in ('.csv', '.txt'):
+            elif Path(file_path).suffix.lower() in ('.csv', '.txt'):
                 csv_entry = self._resolve_csv_schema(Path(file_path))
                 
                 # Use schema_compiler for hash check and compile-or-load
@@ -513,6 +602,11 @@ class Pipeline:
     def _detect_driver(self, file_path: str) -> Optional[TransactionProcessor]:
         """Detect file format and return appropriate driver."""
         path = Path(file_path)
+        
+        # First check if this is a fixed-length file (by registry)
+        if self._is_fixed_length_file(path):
+            return get_driver("fixed_length", config=self._config.model_dump())
+        
         extension = path.suffix.lower()
         
         # Map extension to format

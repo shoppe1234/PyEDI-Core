@@ -29,8 +29,22 @@ csv_schema_registry:
     inbound_dir:     ./inbound/csv/gfs_ca
     transaction_type: '810'
 
+# ── FIXED-LENGTH SCHEMA REGISTRY ────────────────────────────────
+# Fixed-length files use positional fields. The inbound_dir field
+# discriminates which schema to use. The DSL source defines record
+# layouts and the compiled YAML drives all parsing at runtime.
+fixed_length_schema_registry:
+  aramark_ca_810:
+    source_dsl:      ./schemas/source/Retalix-810-schema.txt
+    compiled_output: ./schemas/compiled/aramark_ca_810_map.yaml
+    inbound_dir:     ./inbound/fixed/aramark_ca
+    transaction_type: '810'
+    rules_map:       ./rules/aramark_ca_810_map.yaml
+
 directories:
-  inbound: "./inbound"
+  inbound: 
+    - "./inbound"
+    - "./inbound/fixed"
   outbound: "./outbound"
   failed: "./failed"
   processed: "./processed"

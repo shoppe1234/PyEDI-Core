@@ -19,6 +19,15 @@ class CsvSchemaEntry(BaseModel):
     transaction_type: str = Field(..., description="Transaction type (e.g., 810)")
 
 
+class FixedLengthSchemaEntry(BaseModel):
+    """Configuration entry for fixed-length schema registry."""
+    source_dsl: str = Field(..., description="Path to source DSL schema file")
+    compiled_output: str = Field(..., description="Path to compiled YAML map")
+    inbound_dir: str = Field(..., description="Inbound directory for fixed-length files")
+    transaction_type: str = Field(..., description="Transaction type (e.g., 810)")
+    rules_map: str = Field(..., description="Path to mapping rules YAML")
+
+
 class SystemConfig(BaseModel):
     """System configuration."""
     max_workers: int = Field(8, description="ThreadPoolExecutor max workers")
@@ -52,6 +61,10 @@ class AppConfig(BaseModel):
     csv_schema_registry: Dict[str, CsvSchemaEntry] = Field(
         default_factory=dict,
         description="CSV schema registry entries"
+    )
+    fixed_length_schema_registry: Dict[str, FixedLengthSchemaEntry] = Field(
+        default_factory=dict,
+        description="Fixed-length schema registry entries"
     )
     directories: DirectoriesConfig = Field(default_factory=DirectoriesConfig)
     observability: ObservabilityConfig = Field(default_factory=ObservabilityConfig)

@@ -1,0 +1,95 @@
+# Fixed-Length 810 Invoice Mapping Rules
+# Uses header/lines/summary structure from fixed-length handler
+
+transaction_type: "810"
+input_format: "FIXED_LENGTH"
+schema_version: "1.0"
+
+# Header mapping - maps flat header fields to EDI envelope
+header:
+  invoiceNumber:
+    source: "invoiceNumber"
+  invoiceDate:
+    source: "invoiceDate"
+  customerNumber:
+    source: "customerNumber"
+  orderNumber:
+    source: "orderNumber"
+  shipDate:
+    source: "shipDate"
+  pONumber:
+    source: "pONumber"
+  netInvoiceAmount:
+    source: "netInvoiceAmount"
+  termsTypeCode:
+    source: "termsTypeCode"
+  termsNetDays:
+    source: "termsNetDays"
+  
+  # Ship-to information
+  shipToName:
+    source: "shipToName"
+  shipToAddress1:
+    source: "shipToAddress1"
+  shipToCity:
+    source: "shipToCity"
+  shipToProvince:
+    source: "shipToProvince"
+  shipToPostal:
+    source: "shipToPostal"
+  
+  # Bill-to information
+  billToName:
+    source: "billToName"
+  billToNumber:
+    source: "billToNumber"
+  billToAddress1:
+    source: "billToAddress1"
+  billToCity:
+    source: "billToCity"
+  billToProvince:
+    source: "billToProvince"
+  billToPostal:
+    source: "billToPostal"
+
+# Line items mapping
+lines:
+  - lineNumber:
+      source: "lineNumber"
+  - distributorItemNumber:
+      source: "distributorItemNumber"
+  - buyerItemNumber:
+      source: "buyerItemNumber"
+  - upcNumber:
+      source: "upcNumber"
+  - unitOfMeasure:
+      source: "unitOfMeasure"
+  - itemsPerUnit:
+      source: "itemsPerUnit"
+  - orderedQuantity:
+      source: "orderedQuantity"
+  - itemPriceGross:
+      source: "itemPriceGross"
+  - itemPriceNet:
+      source: "itemPriceNet"
+  - extendedPrice:
+      source: "extendedPrice"
+  - extendedPriceNet:
+      source: "extendedPriceNet"
+  - itemDescription:
+      source: "itemDescription"
+
+# Summary mapping
+summary:
+  lineCount:
+    source: "lineCount"
+  quantityCredit:
+    source: "quantityCredit"
+  extendedPriceNet:
+    source: "extendedPriceNet"
+  netInvoiceAmount:
+    source: "netInvoiceAmount"
+  taxableAmount:
+    source: "taxableAmount"
+  taxAmount:
+    source: "taxAmount"

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE cXML SYSTEM "http://xml.cxml.org/schemas/cXML/1.2.014/cXML.dtd">
+<cXML version="1.2.014" xml:lang="en-US">
+  <Header>
+    <From><Credential domain="NetworkID"><Identity>buyer123</Identity></Credential></From>
+    <To><Credential domain="NetworkID"><Identity>supplier456</Identity></Credential></To>
+    <Sender><Credential domain="NetworkID"><Identity>buyer123</Identity></Credential></Sender>
+  </Header>
+  <Request>
+    <OrderRequest>
+      <OrderRequestHeader orderID="PO001" orderDate="2025-02-21">
+        <Total><Money currency="USD">500.00</Money></Total>
+        <ShipTo><Address><Name>Ship Name</Name></Address></ShipTo>
+        <BillTo><Address><Name>Bill Name</Name></Address></BillTo>
+      </OrderRequestHeader>
+      <ItemOut quantity="10">
+        <ItemID><SupplierPartID>ITEM001</SupplierPartID></ItemID>
+        <ItemDetail><UnitPrice><Money currency="USD">50.00</Money></UnitPrice></ItemDetail>
+      </ItemOut>
+    </OrderRequest>
+  </Request>
+</cXML>

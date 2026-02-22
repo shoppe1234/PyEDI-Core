@@ -312,6 +312,9 @@ schema:
   - name: HDRPurchaseOrderType
     type: string
     required: true
+  - name: RecordId
+    type: string
+    required: true
   - name: DTLDistributorItemNumber
     type: string
     required: true
@@ -603,6 +606,9 @@ schema:
   - name: DTLDiscountChargeBack
     type: string
     required: true
+  - name: RecordId
+    type: string
+    required: true
   - name: TPDocType
     type: string
     required: true
@@ -633,6 +639,9 @@ schema:
   - name: TPDivision
     type: string
     required: true
+  - name: RecordId
+    type: string
+    required: true
   - name: DHISTWeekToDateCaseQuantity
     type: float
     required: true
@@ -656,6 +665,9 @@ schema:
     required: true
   - name: DHISTPreviousYTDCaseQuantity
     type: float
+    required: true
+  - name: RecordId
+    type: string
     required: true
   - name: SUMType
     type: string
@@ -702,6 +714,9 @@ schema:
   - name: SUMAdjustments
     type: string
     required: true
+  - name: RecordId
+    type: string
+    required: true
   - name: TRInvoiceNumber
     type: string
     required: true
@@ -711,7 +726,13 @@ schema:
   - name: TRAdjustmentLines
     type: string
     required: true
+  - name: RecordId
+    type: string
+    required: true
   - name: TRInvoiceFile
+    type: string
+    required: true
+  - name: RecordId
     type: string
     required: true
   - name: HADJAllowanceChargeIndicator
@@ -757,6 +778,9 @@ schema:
     type: float
     required: true
   - name: HADJEdiChargeCode
+    type: string
+    required: true
+  - name: RecordId
     type: string
     required: true
   - name: DADJAllowanceChargeIndicator
@@ -1090,243 +1114,7 @@ schema:
     - DADJAdjustmentFeeCodeOtherOrHSTTaxAmount
     - DADJEdiChargeCode
 mapping:
-  header:
-    RecordId:
-      source: header.RecordId
-    HDRInvoiceNumber:
-      source: header.HDRInvoiceNumber
-    HDRInvoiceType:
-      source: header.HDRInvoiceType
-    HDRInvoiceDate:
-      source: header.HDRInvoiceDate
-    HDRGfsStoreInvoiceFlag:
-      source: header.HDRGfsStoreInvoiceFlag
-    HDRCustomerNumber:
-      source: header.HDRCustomerNumber
-    HDRFamilyNumber:
-      source: header.HDRFamilyNumber
-    HDRCustomerLanguageCode:
-      source: header.HDRCustomerLanguageCode
-    HDRCustomerGroupID:
-      source: header.HDRCustomerGroupID
-    HDRCustomerSuperGroupID:
-      source: header.HDRCustomerSuperGroupID
-    HDRCustomerUltraGroupID:
-      source: header.HDRCustomerUltraGroupID
-    HDRCustomerGroupName:
-      source: header.HDRCustomerGroupName
-    HDRCustomerSuperGroupName:
-      source: header.HDRCustomerSuperGroupName
-    HDRCustomerUltraGroupName:
-      source: header.HDRCustomerUltraGroupName
-    HDRShipToName:
-      source: header.HDRShipToName
-    HDRShipToStoreNumber:
-      source: header.HDRShipToStoreNumber
-    HDRShipToAddress1:
-      source: header.HDRShipToAddress1
-    HDRShipToAddress2:
-      source: header.HDRShipToAddress2
-    HDRShipToAddress3:
-      source: header.HDRShipToAddress3
-    HDRShipToCity:
-      source: header.HDRShipToCity
-    HDRShipToStateProvince:
-      source: header.HDRShipToStateProvince
-    HDRShipToZip:
-      source: header.HDRShipToZip
-    HDRShipToCountry:
-      source: header.HDRShipToCountry
-    HDRBillToID:
-      source: header.HDRBillToID
-    HDRBillToName:
-      source: header.HDRBillToName
-    HDRBillToAddress1:
-      source: header.HDRBillToAddress1
-    HDRBillToAddress2:
-      source: header.HDRBillToAddress2
-    HDRBillToAddress3:
-      source: header.HDRBillToAddress3
-    HDRBillToCity:
-      source: header.HDRBillToCity
-    HDRBillToStateProvince:
-      source: header.HDRBillToStateProvince
-    HDRBillToPostalCode:
-      source: header.HDRBillToPostalCode
-    HDRBillToCountry:
-      source: header.HDRBillToCountry
-    HDRRemitToName:
-      source: header.HDRRemitToName
-    HDRRemitToName2:
-      source: header.HDRRemitToName2
-    HDRRemitToIDQualifier:
-      source: header.HDRRemitToIDQualifier
-    HDRRemitToID:
-      source: header.HDRRemitToID
-    HDRRemitToAddress1:
-      source: header.HDRRemitToAddress1
-    HDRRemitToCity:
-      source: header.HDRRemitToCity
-    HDRRemitToStateProvince:
-      source: header.HDRRemitToStateProvince
-    HDRRemitToPostalCode:
-      source: header.HDRRemitToPostalCode
-    HDRCustomerPONumber:
-      source: header.HDRCustomerPONumber
-    HDROriginalOrderDate:
-      source: header.HDROriginalOrderDate
-    HDROrderNumber:
-      source: header.HDROrderNumber
-    HDRExternalTrackingID:
-      source: header.HDRExternalTrackingID
-    HDRUserDefinedCode1:
-      source: header.HDRUserDefinedCode1
-    HDRUserDefinedCode2:
-      source: header.HDRUserDefinedCode2
-    HDRShipmentType:
-      source: header.HDRShipmentType
-    HDRDeliveryDate:
-      source: header.HDRDeliveryDate
-    HDRLeavesDCDate:
-      source: header.HDRLeavesDCDate
-    HDROriginalInvoiceNumber:
-      source: header.HDROriginalInvoiceNumber
-    HDROriginalInvoiceDate:
-      source: header.HDROriginalInvoiceDate
-    HDRCreditReasonCode:
-      source: header.HDRCreditReasonCode
-    HDRCreditReasonDescription:
-      source: header.HDRCreditReasonDescription
-    HDRFRCreditReasonDescription:
-      source: header.HDRFRCreditReasonDescription
-    HDRRaNumber:
-      source: header.HDRRaNumber
-    HDRCurrencyTypeCode:
-      source: header.HDRCurrencyTypeCode
-    HDRInvoiceTotalNetAmount:
-      source: header.HDRInvoiceTotalNetAmount
-    HDRInvoiceTotalGrossAmount:
-      source: header.HDRInvoiceTotalGrossAmount
-    HDRTotalAdjustmentAmt:
-      source: header.HDRTotalAdjustmentAmt
-    HDRStateOrPstTaxDescription:
-      source: header.HDRStateOrPstTaxDescription
-    HDRStateOrPstTaxAmount:
-      source: header.HDRStateOrPstTaxAmount
-    HDRFederalOrGstTaxDescription:
-      source: header.HDRFederalOrGstTaxDescription
-    HDRFederalOrGstTaxAmount:
-      source: header.HDRFederalOrGstTaxAmount
-    HDROtherOrHSTTaxDescription:
-      source: header.HDROtherOrHSTTaxDescription
-    HDROtherOrHSTTaxAmount:
-      source: header.HDROtherOrHSTTaxAmount
-    HDRTotalTax:
-      source: header.HDRTotalTax
-    HDRTotalWeight:
-      source: header.HDRTotalWeight
-    HDRTotalCubeArea:
-      source: header.HDRTotalCubeArea
-    HDRCaseCount:
-      source: header.HDRCaseCount
-    HDRTermDiscountPercentage:
-      source: header.HDRTermDiscountPercentage
-    HDRCreditTermDescription:
-      source: header.HDRCreditTermDescription
-    HDRFRCreditTermDescription:
-      source: header.HDRFRCreditTermDescription
-    HDRTermDiscountDate:
-      source: header.HDRTermDiscountDate
-    HDRDiscountDays:
-      source: header.HDRDiscountDays
-    HDRTermDueDate:
-      source: header.HDRTermDueDate
-    HDRTermsNetDays:
-      source: header.HDRTermsNetDays
-    HDRPaymentType:
-      source: header.HDRPaymentType
-    HDRPaymentAmount:
-      source: header.HDRPaymentAmount
-    HDRPaymentAmountDue:
-      source: header.HDRPaymentAmountDue
-    HDRPrimaryDCNumber:
-      source: header.HDRPrimaryDCNumber
-    HDRDCNumber:
-      source: header.HDRDCNumber
-    HDRDCName:
-      source: header.HDRDCName
-    HDRDCAddress1:
-      source: header.HDRDCAddress1
-    HDRDCAddress2:
-      source: header.HDRDCAddress2
-    HDRDCCity:
-      source: header.HDRDCCity
-    HDRDCStateProvince:
-      source: header.HDRDCStateProvince
-    HDRDCZip:
-      source: header.HDRDCZip
-    HDRLegacyCanadaDivisionId:
-      source: header.HDRLegacyCanadaDivisionId
-    HDRLegacyCanadaDivisionLocation:
-      source: header.HDRLegacyCanadaDivisionLocation
-    HDRLegacyWarehouse:
-      source: header.HDRLegacyWarehouse
-    HDRRouteNumber:
-      source: header.HDRRouteNumber
-    HDRStopNumber:
-      source: header.HDRStopNumber
-    HDRRoadNetArrival:
-      source: header.HDRRoadNetArrival
-    HDROrderGuideNumber:
-      source: header.HDROrderGuideNumber
-    HDRActualDeliveryStartDate:
-      source: header.HDRActualDeliveryStartDate
-    HDRActualDeliveryStartTime:
-      source: header.HDRActualDeliveryStartTime
-    HDRActualDeliveryEndDate:
-      source: header.HDRActualDeliveryEndDate
-    HDRActualDeliveryEndTime:
-      source: header.HDRActualDeliveryEndTime
-    HDRDeliveryWindowStartDate:
-      source: header.HDRDeliveryWindowStartDate
-    HDRDeliveryWindowStartTime:
-      source: header.HDRDeliveryWindowStartTime
-    HDRDeliveryWindowEndDate:
-      source: header.HDRDeliveryWindowEndDate
-    HDRDeliveryWindowEndTime:
-      source: header.HDRDeliveryWindowEndTime
-    HDRPurchaseOrderType:
-      source: header.HDRPurchaseOrderType
-    HADJAllowanceChargeIndicator:
-      source: header.HADJAllowanceChargeIndicator
-    HADJAdjustmentOrFeeCode:
-      source: header.HADJAdjustmentOrFeeCode
-    HADJAjustmentOrFeeDescription:
-      source: header.HADJAjustmentOrFeeDescription
-    HADJAdjustmentOrFeePercentageRate:
-      source: header.HADJAdjustmentOrFeePercentageRate
-    HADJAdjustmentOrFeeAmount:
-      source: header.HADJAdjustmentOrFeeAmount
-    HADJStateProvidencePSTTaxDescription:
-      source: header.HADJStateProvidencePSTTaxDescription
-    HADJStateProvidencePSTTaxRate:
-      source: header.HADJStateProvidencePSTTaxRate
-    HADJStateProvidencePSTTaxAmount:
-      source: header.HADJStateProvidencePSTTaxAmount
-    HADJFederalOrGSTTaxDescription:
-      source: header.HADJFederalOrGSTTaxDescription
-    HADJFederalOrGSTTaxRate:
-      source: header.HADJFederalOrGSTTaxRate
-    HADJFederalOrGSTTaxAmount:
-      source: header.HADJFederalOrGSTTaxAmount
-    HADJOtherOrHSTTaxDescription:
-      source: header.HADJOtherOrHSTTaxDescription
-    HADJOtherOrHSTTaxRate:
-      source: header.HADJOtherOrHSTTaxRate
-    HADJOtherOrHSTTaxAmount:
-      source: header.HADJOtherOrHSTTaxAmount
-    HADJEdiChargeCode:
-      source: header.HADJEdiChargeCode
+  header: {}
   lines:
   - RecordId:
       source: RecordId
@@ -1862,36 +1650,4 @@ mapping:
       source: DADJAdjustmentFeeCodeOtherOrHSTTaxAmount
   - DADJEdiChargeCode:
       source: DADJEdiChargeCode
-  summary:
-    RecordId:
-      source: summary.RecordId
-    SUMType:
-      source: summary.SUMType
-    SUMGroupID:
-      source: summary.SUMGroupID
-    SUMGroupName:
-      source: summary.SUMGroupName
-    SUMFRGroupName:
-      source: summary.SUMFRGroupName
-    SUMGroupQuantity:
-      source: summary.SUMGroupQuantity
-    SUMGroupNetAmount:
-      source: summary.SUMGroupNetAmount
-    SUMGroupGrossAmount:
-      source: summary.SUMGroupGrossAmount
-    SUMGroupStatePSTTaxDescription:
-      source: summary.SUMGroupStatePSTTaxDescription
-    SUMGroupStatePSTTaxAmount:
-      source: summary.SUMGroupStatePSTTaxAmount
-    SUMGroupFedGSTTaxDescription:
-      source: summary.SUMGroupFedGSTTaxDescription
-    SUMGroupFedGSTTaxAmount:
-      source: summary.SUMGroupFedGSTTaxAmount
-    SUMGroupOtherHSTTaxDescription:
-      source: summary.SUMGroupOtherHSTTaxDescription
-    SUMGroupOtherHSTTaxAmount:
-      source: summary.SUMGroupOtherHSTTaxAmount
-    SUMGroupTotalGrossWeight:
-      source: summary.SUMGroupTotalGrossWeight
-    SUMAdjustments:
-      source: summary.SUMAdjustments
+  summary: {}

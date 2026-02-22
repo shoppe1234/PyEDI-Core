@@ -180,68 +180,49 @@ def _compile_to_yaml(record_defs: List[Dict], source_filename: str, delimiter: s
             if "fieldIdentifier" in record_def:
                 yaml_map["schema"]["records"][record_def["fieldIdentifier"]].append(field_name)
             
-            # Determine source_path based on record type
-            source_path = field_name
-            if not has_records:
-                if record_type == "header":
-                    source_path = f"header.{field_name}"
-                elif record_type == "summary":
-                    source_path = f"summary.{field_name}"
-            # For detail (or when we have records), source_path remains field_name
-            
-            if has_records:
-                if not any(field_name in l for l in yaml_map["mapping"]["lines"]):
-                    yaml_map["mapping"]["lines"].append({
-                        field_name: {
-                            "source": source_path
-                        }
-                    })
-                # Add to schema columns logically
+            # Add to schema columns if not already there
+            if not any(c["name"] == field_name for c in yaml_map["schema"]["columns"]):
                 yaml_map["schema"]["columns"].append({
                     "name": field_name,
                     "type": field.get("type", "string"),
                     "required": field.get("required", True)
                 })
-            else:
-                if record_type == "header":
-                    yaml_map["mapping"]["header"][field_name] = {
-                        "source": source_path
-                    }
-                    # Add to schema columns
-                    yaml_map["schema"]["columns"].append({
-                        "name": field_name,
-                        "type": field.get("type", "string"),
-                        "required": field.get("required", True)
-                    })
-                    
-                elif record_type == "detail":
-                    # Only add if not already present 
+
+            # Map based on record type
+            if record_type == "header":
+                # Map to header section
+                yaml_map["mapping"]["header"][field_name] = {
+                    "source": f"header.{field_name}"
+                }
+                # If multi-record schema, also map to lines (flat view support)
+                if has_records:
                     if not any(field_name in l for l in yaml_map["mapping"]["lines"]):
                         yaml_map["mapping"]["lines"].append({
                             field_name: {
-                                "source": source_path
+                                "source": field_name
                             }
                         })
-                    
-                    # Add to schema columns if not already there
-                    if not any(c["name"] == field_name for c in yaml_map["schema"]["columns"]):
-                        yaml_map["schema"]["columns"].append({
-                            "name": field_name,
-                            "type": field.get("type", "string"),
-                            "required": field.get("required", True)
-                        })
                         
-                elif record_type == "summary":
-                    yaml_map["mapping"]["summary"][field_name] = {
-                        "source": source_path
-                    }
-                    # Add to schema columns if not already there
-                    if not any(c["name"] == field_name for c in yaml_map["schema"]["columns"]):
-                        yaml_map["schema"]["columns"].append({
-                            "name": field_name,
-                            "type": field.get("type", "string"),
-                            "required": field.get("required", True)
+            elif record_type == "summary":
+                # Map to summary section
+                yaml_map["mapping"]["summary"][field_name] = {
+                    "source": f"summary.{field_name}"
+                }
+                if has_records:
+                    if not any(field_name in l for l in yaml_map["mapping"]["lines"]):
+                        yaml_map["mapping"]["lines"].append({
+                            field_name: {
+                                "source": field_name
+                            }
                         })
+
+            else: # detail
+                if not any(field_name in l for l in yaml_map["mapping"]["lines"]):
+                    yaml_map["mapping"]["lines"].append({
+                        field_name: {
+                            "source": field_name
+                        }
+                    })
     
     return yaml_map
 

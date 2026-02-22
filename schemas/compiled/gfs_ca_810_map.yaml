@@ -129,258 +129,50 @@ schema:
   - name: CustomerNumber
     type: string
     required: true
-  - name: SourceWarehouse
-    type: string
-    required: true
-  - name: StoreLocation
-    type: string
-    required: true
-  - name: LocationName
-    type: string
-    required: true
-  - name: InvoiceNumber
-    type: string
-    required: true
-  - name: InvoiceDate
-    type: string
-    required: true
-  - name: ItemNumber
-    type: string
-    required: true
-  - name: LineNumber
-    type: string
-    required: true
-  - name: SCC
-    type: string
-    required: true
-  - name: GLCode
-    type: string
-    required: true
-  - name: ItemDescription
-    type: string
-    required: true
-  - name: Supplier
-    type: string
-    required: true
-  - name: Brand
-    type: string
-    required: true
-  - name: CategoryDescription
-    type: string
-    required: true
-  - name: SubCategoryDescription
-    type: string
-    required: true
-  - name: CaseSize
-    type: float
-    required: true
-  - name: PackageSize
-    type: string
-    required: true
-  - name: PackageUnit
-    type: string
-    required: true
-  - name: UnitOfMeasure
-    type: string
-    required: true
-  - name: PriceByUom
-    type: string
-    required: true
-  - name: PackDescription
-    type: string
-    required: true
-  - name: CasePrice
-    type: float
-    required: true
-  - name: NetCasePrice
-    type: float
-    required: true
-  - name: PstTaxable
-    type: string
-    required: true
-  - name: GstTaxable
-    type: string
-    required: true
-  - name: QuantityOrdered
-    type: float
-    required: true
-  - name: QuantityShipped
-    type: float
-    required: true
-  - name: ExtendedPrice
-    type: float
-    required: true
-  - name: PstAmount
-    type: float
-    required: true
-  - name: GstAmount
-    type: float
-    required: true
-  - name: Total
-    type: float
-    required: true
-  - name: Factor
-    type: string
-    required: true
-  - name: ContainerDeposit
-    type: float
-    required: true
-  - name: EcologyFee
-    type: float
-    required: true
-  - name: Credit
-    type: float
-    required: true
-  - name: SpecialOrderJitRegular
-    type: string
-    required: true
-  - name: QuantityShort
-    type: integer
-    required: true
-  - name: CatchWeight
-    type: float
-    required: true
-  - name: CreditCode
-    type: string
-    required: true
-  - name: CreditCodeDescription
-    type: string
-    required: true
-  - name: PriceBookHeadingNumber
-    type: string
-    required: true
-  - name: ItemClassCode
-    type: string
-    required: true
-  - name: CustomerNumber
-    type: string
-    required: true
-  - name: SourceWarehouse
-    type: string
-    required: true
-  - name: StoreLocation
-    type: string
-    required: true
-  - name: LocationName
-    type: string
-    required: true
-  - name: InvoiceNumber
-    type: string
-    required: true
-  - name: InvoiceDate
-    type: string
-    required: true
-  - name: ItemNumber
-    type: string
-    required: true
-  - name: LineNumber
-    type: string
-    required: true
-  - name: SCC
-    type: string
-    required: true
-  - name: GLCode
-    type: string
-    required: true
-  - name: ItemDescription
-    type: string
-    required: true
-  - name: Supplier
-    type: string
-    required: true
-  - name: Brand
-    type: string
-    required: true
-  - name: CategoryDescription
-    type: string
-    required: true
-  - name: SubCategoryDescription
-    type: string
-    required: true
-  - name: CaseSize
-    type: float
-    required: true
-  - name: PackageSize
-    type: string
-    required: true
-  - name: PackageUnit
-    type: string
-    required: true
-  - name: UnitOfMeasure
-    type: string
-    required: true
-  - name: PriceByUom
-    type: string
-    required: true
-  - name: PackDescription
-    type: string
-    required: true
-  - name: CasePrice
-    type: float
-    required: true
-  - name: NetCasePrice
-    type: float
-    required: true
-  - name: PstTaxable
-    type: string
-    required: true
-  - name: GstTaxable
-    type: string
-    required: true
-  - name: QuantityOrdered
-    type: float
-    required: true
-  - name: QuantityShipped
-    type: float
-    required: true
-  - name: ExtendedPrice
-    type: float
-    required: true
-  - name: PstAmount
-    type: float
-    required: true
-  - name: GstAmount
-    type: float
-    required: true
-  - name: Total
-    type: float
-    required: true
-  - name: Factor
-    type: string
-    required: true
-  - name: ContainerDeposit
-    type: float
-    required: true
-  - name: EcologyFee
-    type: float
-    required: true
-  - name: Credit
-    type: float
-    required: true
-  - name: SpecialOrderJitRegular
-    type: string
-    required: true
-  - name: QuantityShort
-    type: integer
-    required: true
-  - name: CatchWeight
-    type: float
-    required: true
-  - name: CreditCode
-    type: string
-    required: true
-  - name: CreditCodeDescription
-    type: string
-    required: true
-  - name: PriceBookHeadingNumber
-    type: string
-    required: true
-  - name: ItemClassCode
-    type: string
-    required: true
-  - name: CustomerNumber
-    type: string
-    required: true
+  records:
+    '0':
+    - SourceWarehouse
+    - StoreLocation
+    - LocationName
+    - InvoiceNumber
+    - InvoiceDate
+    - ItemNumber
+    - LineNumber
+    - SCC
+    - GLCode
+    - ItemDescription
+    - Supplier
+    - Brand
+    - CategoryDescription
+    - SubCategoryDescription
+    - CaseSize
+    - PackageSize
+    - PackageUnit
+    - UnitOfMeasure
+    - PriceByUom
+    - PackDescription
+    - CasePrice
+    - NetCasePrice
+    - PstTaxable
+    - GstTaxable
+    - QuantityOrdered
+    - QuantityShipped
+    - ExtendedPrice
+    - PstAmount
+    - GstAmount
+    - Total
+    - Factor
+    - ContainerDeposit
+    - EcologyFee
+    - Credit
+    - SpecialOrderJitRegular
+    - QuantityShort
+    - CatchWeight
+    - CreditCode
+    - CreditCodeDescription
+    - PriceBookHeadingNumber
+    - ItemClassCode
+    - CustomerNumber
 mapping:
   header:
     SourceWarehouse:

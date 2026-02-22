@@ -241,6 +241,9 @@ class Pipeline:
             transaction_type = "unknown"
             compiled_yaml_path = None
             
+            # Stage 1: Read (and Detect/Validate)
+            # For CSV, we resolve schema first. For X12/XML, we read first to detect type.
+
             # Check if this is a CSV/TXT flat file - use csv_schema_registry
             if Path(file_path).suffix.lower() in ('.csv', '.txt'):
                 csv_entry = self._resolve_csv_schema(Path(file_path))
@@ -272,22 +275,35 @@ class Pipeline:
                 # Pass compiled_yaml_path to CSV handler
                 if hasattr(driver, 'set_compiled_yaml_path'):
                     driver.set_compiled_yaml_path(compiled_yaml_path)
-            else:
-                # Non-CSV files use traditional mapping
-                map_yaml = self._get_mapping_rules(file_path, driver)
-                if map_yaml:
-                    transaction_type = map_yaml.get("transaction_type", "unknown")
-            
-            if not map_yaml:
-                raise ValueError(f"No mapping rules found for file: {file_path}")
             
             # Execute pipeline stages
-            logger = logger.bind(stage="DETECTION", transaction_type=transaction_type)
-            
             # Stage 1: Read
             logger.info(f"Stage: READ")
             raw_data = driver.read(file_path)
             
+            # For non-CSV, determine mapping from read data (e.g. X12 parsed ST segment)
+            if not map_yaml:
+                # Check if driver returned map file info (X12Handler)
+                if isinstance(raw_data, dict) and raw_data.get("_map_file"):
+                    from .core import mapper
+                    map_file = raw_data["_map_file"]
+                    try:
+                        map_yaml = mapper.load_map(map_file)
+                        transaction_type = raw_data.get("_transaction_type", "unknown")
+                    except Exception as e:
+                        logger.warning(f"Failed to load map from driver: {e}")
+
+                # Fallback to legacy detection if not provided by driver
+                if not map_yaml:
+                    map_yaml = self._get_mapping_rules(file_path, driver)
+                    if map_yaml:
+                        transaction_type = map_yaml.get("transaction_type", "unknown")
+
+            if not map_yaml:
+                raise ValueError(f"No mapping rules found for file: {file_path}")
+
+            logger = logger.bind(stage="DETECTION", transaction_type=transaction_type)
+
             # Stage 2: Transform
             logger = logger.bind(stage="TRANSFORMATION")
             logger.info(f"Stage: TRANSFORMATION")
@@ -338,7 +354,8 @@ class Pipeline:
             logger.error(f"Processing failed", error=str(e), processing_time_ms=processing_time)
             
             # Handle failure (unless dry-run)
-            if not do_dry_run:
+            # Only handle if file still exists (wasn't already moved by driver)
+            if not do_dry_run and Path(file_path).exists():
                 error_handler.handle_failure(
                     file_path=file_path,
                     stage=error_handler.Stage.DETECTION,
@@ -380,7 +397,8 @@ class Pipeline:
                 stage = error_handler.Stage.TRANSFORMATION
             
             # Handle failure (unless dry-run)
-            if not do_dry_run:
+            # Only handle if file still exists (wasn't already moved by driver)
+            if not do_dry_run and Path(file_path).exists():
                 error_handler.handle_failure(
                     file_path=file_path,
                     stage=stage,
@@ -410,7 +428,8 @@ class Pipeline:
             logger.error(f"Processing failed", error=str(e), processing_time_ms=processing_time)
             
             # Handle failure (unless dry-run)
-            if not do_dry_run:
+            # Only handle if file still exists (wasn't already moved by driver)
+            if not do_dry_run and Path(file_path).exists():
                 error_handler.handle_failure(
                     file_path=file_path,
                     stage=error_handler.Stage.TRANSFORMATION,
@@ -552,19 +571,8 @@ class Pipeline:
         filename = Path(file_path).name
         
         # Try to match by transaction type in config
-        # First, try to detect transaction type from filename
-        import re
-        match = re.search(r'(\d{3})', filename)
-        
-        if match:
-            transaction_code = match.group(1)
-            map_file = self._transaction_registry.get(transaction_code)
-            
-            if map_file:
-                try:
-                    return mapper.load_map(map_file)
-                except Exception:
-                    pass
+        # PCR-2025-001: Removed filename-based transaction type guessing.
+        # X12 transaction type must be determined by badx12 parsing only.
         
         # Try by filename stem
         stem = Path(file_path).stem

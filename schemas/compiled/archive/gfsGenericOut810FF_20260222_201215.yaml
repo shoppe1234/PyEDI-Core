@@ -384,89 +384,89 @@ schema:
 mapping:
   header:
     SourceWarehouse:
-      source: SourceWarehouse
+      source: header.SourceWarehouse
     StoreLocation:
-      source: StoreLocation
+      source: header.StoreLocation
     LocationName:
-      source: LocationName
+      source: header.LocationName
     InvoiceNumber:
-      source: InvoiceNumber
+      source: header.InvoiceNumber
     InvoiceDate:
-      source: InvoiceDate
+      source: header.InvoiceDate
     ItemNumber:
-      source: ItemNumber
+      source: header.ItemNumber
     LineNumber:
-      source: LineNumber
+      source: header.LineNumber
     SCC:
-      source: SCC
+      source: header.SCC
     GLCode:
-      source: GLCode
+      source: header.GLCode
     ItemDescription:
-      source: ItemDescription
+      source: header.ItemDescription
     Supplier:
-      source: Supplier
+      source: header.Supplier
     Brand:
-      source: Brand
+      source: header.Brand
     CategoryDescription:
-      source: CategoryDescription
+      source: header.CategoryDescription
     SubCategoryDescription:
-      source: SubCategoryDescription
+      source: header.SubCategoryDescription
     CaseSize:
-      source: CaseSize
+      source: header.CaseSize
     PackageSize:
-      source: PackageSize
+      source: header.PackageSize
     PackageUnit:
-      source: PackageUnit
+      source: header.PackageUnit
     UnitOfMeasure:
-      source: UnitOfMeasure
+      source: header.UnitOfMeasure
     PriceByUom:
-      source: PriceByUom
+      source: header.PriceByUom
     PackDescription:
-      source: PackDescription
+      source: header.PackDescription
     CasePrice:
-      source: CasePrice
+      source: header.CasePrice
     NetCasePrice:
-      source: NetCasePrice
+      source: header.NetCasePrice
     PstTaxable:
-      source: PstTaxable
+      source: header.PstTaxable
     GstTaxable:
-      source: GstTaxable
+      source: header.GstTaxable
     QuantityOrdered:
-      source: QuantityOrdered
+      source: header.QuantityOrdered
     QuantityShipped:
-      source: QuantityShipped
+      source: header.QuantityShipped
     ExtendedPrice:
-      source: ExtendedPrice
+      source: header.ExtendedPrice
     PstAmount:
-      source: PstAmount
+      source: header.PstAmount
     GstAmount:
-      source: GstAmount
+      source: header.GstAmount
     Total:
-      source: Total
+      source: header.Total
     Factor:
-      source: Factor
+      source: header.Factor
     ContainerDeposit:
-      source: ContainerDeposit
+      source: header.ContainerDeposit
     EcologyFee:
-      source: EcologyFee
+      source: header.EcologyFee
     Credit:
-      source: Credit
+      source: header.Credit
     SpecialOrderJitRegular:
-      source: SpecialOrderJitRegular
+      source: header.SpecialOrderJitRegular
     QuantityShort:
-      source: QuantityShort
+      source: header.QuantityShort
     CatchWeight:
-      source: CatchWeight
+      source: header.CatchWeight
     CreditCode:
-      source: CreditCode
+      source: header.CreditCode
     CreditCodeDescription:
-      source: CreditCodeDescription
+      source: header.CreditCodeDescription
     PriceBookHeadingNumber:
-      source: PriceBookHeadingNumber
+      source: header.PriceBookHeadingNumber
     ItemClassCode:
-      source: ItemClassCode
+      source: header.ItemClassCode
     CustomerNumber:
-      source: CustomerNumber
+      source: header.CustomerNumber
   lines:
   - SourceWarehouse:
       source: SourceWarehouse
@@ -554,86 +554,86 @@ mapping:
       source: CustomerNumber
   summary:
     SourceWarehouse:
-      source: SourceWarehouse
+      source: summary.SourceWarehouse
     StoreLocation:
-      source: StoreLocation
+      source: summary.StoreLocation
     LocationName:
-      source: LocationName
+      source: summary.LocationName
     InvoiceNumber:
-      source: InvoiceNumber
+      source: summary.InvoiceNumber
     InvoiceDate:
-      source: InvoiceDate
+      source: summary.InvoiceDate
     ItemNumber:
-      source: ItemNumber
+      source: summary.ItemNumber
     LineNumber:
-      source: LineNumber
+      source: summary.LineNumber
     SCC:
-      source: SCC
+      source: summary.SCC
     GLCode:
-      source: GLCode
+      source: summary.GLCode
     ItemDescription:
-      source: ItemDescription
+      source: summary.ItemDescription
     Supplier:
-      source: Supplier
+      source: summary.Supplier
     Brand:
-      source: Brand
+      source: summary.Brand
     CategoryDescription:
-      source: CategoryDescription
+      source: summary.CategoryDescription
     SubCategoryDescription:
-      source: SubCategoryDescription
+      source: summary.SubCategoryDescription
     CaseSize:
-      source: CaseSize
+      source: summary.CaseSize
     PackageSize:
-      source: PackageSize
+      source: summary.PackageSize
     PackageUnit:
-      source: PackageUnit
+      source: summary.PackageUnit
     UnitOfMeasure:
-      source: UnitOfMeasure
+      source: summary.UnitOfMeasure
     PriceByUom:
-      source: PriceByUom
+      source: summary.PriceByUom
     PackDescription:
-      source: PackDescription
+      source: summary.PackDescription
     CasePrice:
-      source: CasePrice
+      source: summary.CasePrice
     NetCasePrice:
-      source: NetCasePrice
+      source: summary.NetCasePrice
     PstTaxable:
-      source: PstTaxable
+      source: summary.PstTaxable
     GstTaxable:
-      source: GstTaxable
+      source: summary.GstTaxable
     QuantityOrdered:
-      source: QuantityOrdered
+      source: summary.QuantityOrdered
     QuantityShipped:
-      source: QuantityShipped
+      source: summary.QuantityShipped
     ExtendedPrice:
-      source: ExtendedPrice
+      source: summary.ExtendedPrice
     PstAmount:
-      source: PstAmount
+      source: summary.PstAmount
     GstAmount:
-      source: GstAmount
+      source: summary.GstAmount
     Total:
-      source: Total
+      source: summary.Total
     Factor:
-      source: Factor
+      source: summary.Factor
     ContainerDeposit:
-      source: ContainerDeposit
+      source: summary.ContainerDeposit
     EcologyFee:
-      source: EcologyFee
+      source: summary.EcologyFee
     Credit:
-      source: Credit
+      source: summary.Credit
     SpecialOrderJitRegular:
-      source: SpecialOrderJitRegular
+      source: summary.SpecialOrderJitRegular
     QuantityShort:
-      source: QuantityShort
+      source: summary.QuantityShort
     CatchWeight:
-      source: CatchWeight
+      source: summary.CatchWeight
     CreditCode:
-      source: CreditCode
+      source: summary.CreditCode
     CreditCodeDescription:
-      source: CreditCodeDescription
+      source: summary.CreditCodeDescription
     PriceBookHeadingNumber:
-      source: PriceBookHeadingNumber
+      source: summary.PriceBookHeadingNumber
     ItemClassCode:
-      source: ItemClassCode
+      source: summary.ItemClassCode
     CustomerNumber:
-      source: CustomerNumber
+      source: summary.CustomerNumber

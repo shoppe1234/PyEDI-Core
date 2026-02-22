@@ -174,7 +174,7 @@ class Pipeline:
             path = Path(inbound_dir)
             if path.exists():
                 # Find all processable files
-                for ext in ("*.csv", "*.edi", "*.x12", "*.xml", "*.cxml"):
+                for ext in ("*.csv", "*.txt", "*.edi", "*.x12", "*.xml", "*.cxml"):
                     files.extend([str(f) for f in path.glob(ext)])
         return files
     
@@ -241,8 +241,8 @@ class Pipeline:
             transaction_type = "unknown"
             compiled_yaml_path = None
             
-            # Check if this is a CSV file - use csv_schema_registry
-            if Path(file_path).suffix.lower() == '.csv':
+            # Check if this is a CSV/TXT flat file - use csv_schema_registry
+            if Path(file_path).suffix.lower() in ('.csv', '.txt'):
                 csv_entry = self._resolve_csv_schema(Path(file_path))
                 
                 # Use schema_compiler for hash check and compile-or-load
@@ -518,6 +518,7 @@ class Pipeline:
         # Map extension to format
         format_map = {
             ".csv": "csv",
+            ".txt": "csv",
             ".edi": "x12",
             ".x12": "x12",
             ".dat": "x12",

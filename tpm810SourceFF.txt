@@ -1,0 +1,399 @@
+package com.gfs.core.system.tpm.schema ;
+
+def flatFileSchema tpm810SourceFF {
+	delimited = true 
+	delimiter = "|"
+	sampleFile = "/com.gfs.core.system/samples/TPM2_810_SampleMultiInv.txt"
+
+	_FileRecordGrp FileRecordGrp []
+
+	def record Header {
+		fieldIdentifier {
+			value = "HDR"
+			field = RecordId
+		}
+
+		RecordId String
+		/*DocID*/
+		HDRInvoiceNumber String
+		/**/
+		HDRInvoiceType String
+		/*DocDate*/
+		HDRInvoiceDate String
+		HDRGfsStoreInvoiceFlag String
+		/*CustomerID*/
+		HDRCustomerNumber String (
+			groupOnField = false )
+		HDRFamilyNumber String
+		HDRCustomerLanguageCode String
+		HDRCustomerGroupID String
+		HDRCustomerSuperGroupID String
+		HDRCustomerUltraGroupID String
+		HDRCustomerGroupName String
+		HDRCustomerSuperGroupName String
+		HDRCustomerUltraGroupName String
+		HDRShipToName String
+		HDRShipToStoreNumber String
+		HDRShipToAddress1 String
+		HDRShipToAddress2 String
+		HDRShipToAddress3 String
+		HDRShipToCity String
+		HDRShipToStateProvince String
+		HDRShipToZip String
+		HDRShipToCountry String
+		HDRBillToID String
+		HDRBillToName String
+		HDRBillToAddress1 String
+		HDRBillToAddress2 String
+		HDRBillToAddress3 String
+		HDRBillToCity String
+		HDRBillToStateProvince String
+		HDRBillToPostalCode String
+		HDRBillToCountry String
+		HDRRemitToName String
+		HDRRemitToName2 String
+		HDRRemitToIDQualifier String
+		HDRRemitToID String
+		HDRRemitToAddress1 String
+		HDRRemitToCity String
+		HDRRemitToStateProvince String
+		HDRRemitToPostalCode String
+		HDRCustomerPONumber String
+		HDROriginalOrderDate String
+		HDROrderNumber String
+		HDRExternalTrackingID String
+		HDRUserDefinedCode1 String
+		HDRUserDefinedCode2 String
+		HDRShipmentType String
+		HDRDeliveryDate String
+		HDRLeavesDCDate String
+		HDROriginalInvoiceNumber String
+		HDROriginalInvoiceDate String
+		HDRCreditReasonCode String
+		HDRCreditReasonDescription String
+		HDRFRCreditReasonDescription String
+		HDRRaNumber String
+		HDRCurrencyTypeCode String
+		HDRInvoiceTotalNetAmount Decimal
+		HDRInvoiceTotalGrossAmount Decimal
+		HDRTotalAdjustmentAmt Decimal
+		HDRStateOrPstTaxDescription String
+		HDRStateOrPstTaxAmount Decimal
+		HDRFederalOrGstTaxDescription String
+		HDRFederalOrGstTaxAmount Decimal
+		HDROtherOrHSTTaxDescription String
+		HDROtherOrHSTTaxAmount Decimal
+		HDRTotalTax Decimal
+		HDRTotalWeight Decimal
+		HDRTotalCubeArea Decimal
+		HDRCaseCount Decimal
+		HDRTermDiscountPercentage String
+		HDRCreditTermDescription String
+		HDRFRCreditTermDescription String
+		HDRTermDiscountDate String
+		HDRDiscountDays Integer
+		HDRTermDueDate String
+		HDRTermsNetDays Integer
+		HDRPaymentType String
+		HDRPaymentAmount Decimal
+		HDRPaymentAmountDue Decimal
+		HDRPrimaryDCNumber String
+		HDRDCNumber String
+		HDRDCName String
+		HDRDCAddress1 String
+		HDRDCAddress2 String
+		HDRDCCity String
+		HDRDCStateProvince String
+		HDRDCZip String
+		HDRLegacyCanadaDivisionId String
+		/*Department*/
+		HDRLegacyCanadaDivisionLocation String
+		HDRLegacyWarehouse String
+		HDRRouteNumber String
+		HDRStopNumber String
+		HDRRoadNetArrival String
+		HDROrderGuideNumber String
+		HDRActualDeliveryStartDate String
+		HDRActualDeliveryStartTime String
+		HDRActualDeliveryEndDate String
+		HDRActualDeliveryEndTime String
+		HDRDeliveryWindowStartDate String
+		HDRDeliveryWindowStartTime String
+		HDRDeliveryWindowEndDate String
+		HDRDeliveryWindowEndTime String
+		HDRPurchaseOrderType String
+	}
+
+	def record Detail {
+		groupOnRecord = true
+
+		fieldIdentifier {
+			value = "DTL"
+			field = RecordId
+		}
+
+		RecordId String
+		DTLDistributorItemNumber String
+		DTLCaseUPC String
+		DTLEachUPC String
+		DTLCaseGTIN String
+		DTLEachGTIN String
+		DTLSCC String
+		DTLUpc String
+		DTLAlternateMaterialNumber String
+		DTLCustomerItemCode String
+		DTLItemDescription String
+		DTLFRItemDescription String
+		DTLCustomerItemDescription String
+		DTLUserDefined1 String
+		DTLUserDefined2 String
+		DTLBrand String
+		DTLFRBrand String
+		DTLOrderQuantity Decimal
+		DTLShipQuantity Decimal
+		DTLCatchWeightActual Decimal
+		DTLUnitGrossWeight Decimal
+		DTLUnitNetWeight Decimal
+		DTLUnitPriceNet Decimal
+		DTLExtendedPriceNet Decimal
+		DTLLessCaseFlag String
+		DTLCatchWeightFlag String
+		DTLCostForSale Decimal
+		DTLTaxableFlag String
+		DTLStateOrPSTTaxDescription String
+		DTLStateOrPSTTaxRate Decimal
+		DTLStateOrPSTTaxAmt Decimal
+		DTLFedOrGSTTaxDescription String
+		DTLFedOrGSTTaxRate Decimal
+		DTLFedOrGSTTaxAmt Decimal
+		DTLOtherOrHSTTaxDescription String
+		DTLOtherOrHSTTaxRate Decimal
+		DTLOtherOrHSTTaxAmount Decimal
+		DTLCreditReasonCode String
+		DTLCreditReasonCodeDescription String
+		DTLOfferingCategoryID String
+		DTLOfferingCategoryDescription String
+		DTLFROfferingCategoryDescription String
+		DTLOfferingSubCategoryID String
+		DTLSubOfferingCategoryDescription String
+		DTLFRSubOfferingCategoryDescription String
+		DTLCustomerItemGroupID String
+		DTLCustomerGroupSequenceID String
+		DTLCustomGroupDescription String
+		DTLRFIStorageType String
+		DTLInvoicePrintSequence String
+		DTLSpecialOrderNumber String
+		DTLOutOfStockQuantity Decimal
+		DTLOrderDate String
+		DTLOrderNumber String
+		DTLSubstitutedItemCode String
+		DTLInvSubstitutionReasonCode String
+		DTLSubstitutionReasonDescription String
+		DTLDCNumber String
+		DTLOrderLineNumber String
+		DTLOrderEnteredVia String
+		DTLStockingCode String
+		DTLSellingUnit String
+		DTLSize String
+		DTLPackQuantity Decimal
+		DTLPackDescription String
+		DTLPack String
+		DTLInnerPackQuantity Decimal
+		DTLInnerPackUOM String
+		DTLServingsPerCase String
+		DTLServingsPerCaseUOM String
+		DTLVendorName String
+		DTLVendorNumber String
+		DTLVendorItemCode String
+		DTLVendorAddress1 String
+		DTLVendorAddress2 String
+		DTLVendorCity String
+		DTLVendorProvince String
+		DTLVendorPostalCode String
+		DTLVendorCountry String
+		DTLVendorPhoneNumber String
+		DTLManufactID String
+		DTLManufactItemNumber String
+		DTLManufactName String
+		DTLContractFlag String
+		DTLControlRestrictOpenFlag String
+		DTLBrandedItemFlag String
+		DTLCustomerOriginialOrderQuantity Decimal
+		DTLCustomerOriginialOrderUOM String
+		DTLManagedFreight Decimal
+		DTLBrokerName String
+		DTLDetailID String
+		DTLOriginalCustomerID String
+		DTLMarkupPerUnit Decimal
+		DTLFullCaseUOM String
+		DTLLessCaseUOM String
+		DTLAgencyBilledFlag String
+		DTLAddOnGiveBack String
+		DTLDiscountChargeBack String
+	}
+
+	def record TpId {
+		fieldIdentifier {
+			value = "TP"
+			field = RecordId
+		}
+
+		RecordId String
+		TPDocType String
+		TPEdiTradingPartnerCode String
+		TPAssociationID String
+		TPServiceUser String
+		TPTradingPartnerRefID String
+		TPSAPTradingPartnerName String
+		TPCreationDate String
+		TPCreationTime String
+		TPSalesOrg String
+		TPDivision String
+	}
+
+	def record DHIST {
+		fieldIdentifier {
+			value = "D_HIST"
+			field = RecordId
+		}
+
+		RecordId String
+		DHISTWeekToDateCaseQuantity Decimal
+		DHISTPreviousWeekCaseQuantity Decimal
+		DHISTPrevious30DaysCaseQuantity Decimal
+		DHISTPrevious60DaysCaseQuantity Decimal
+		DHISTPrevious90DaysCaseQuantity Decimal
+		DHISTYearToDateCaseQuantity Decimal
+		DHISTYearToDateNumberOfDays String
+		DHISTPreviousYTDCaseQuantity Decimal
+	}
+
+	def record Summary {
+		fieldIdentifier {
+			value = "SUM"
+			field = RecordId
+		}
+
+		RecordId String
+		SUMType String
+		SUMGroupID String
+		SUMGroupName String
+		SUMFRGroupName String
+		SUMGroupQuantity Decimal
+		SUMGroupNetAmount Decimal
+		SUMGroupGrossAmount Decimal
+		SUMGroupStatePSTTaxDescription String
+		SUMGroupStatePSTTaxAmount Decimal
+		SUMGroupFedGSTTaxDescription String
+		SUMGroupFedGSTTaxAmount Decimal
+		SUMGroupOtherHSTTaxDescription String
+		SUMGroupOtherHSTTaxAmount Decimal
+		SUMGroupTotalGrossWeight Decimal
+		SUMAdjustments String
+	}
+
+	def record Trailer {
+		fieldIdentifier {
+			value = "INV_TR"
+			field = RecordId
+		}
+
+		RecordId String
+		TRInvoiceNumber String
+		TRLineCount String
+		TRAdjustmentLines String
+	}
+
+	def record FileTrailer {
+		fieldIdentifier {
+			value = "FILE_TR"
+			field = RecordId
+		}
+
+		RecordId String
+		TRInvoiceFile String
+	}
+
+	def record HeaderAdjustment {
+		fieldIdentifier {
+			value = "H_ADJ"
+			field = RecordId
+		}
+
+		RecordId String
+		HADJAllowanceChargeIndicator String
+		HADJAdjustmentOrFeeCode String
+		HADJAjustmentOrFeeDescription String
+		HADJAdjustmentOrFeePercentageRate Decimal
+		HADJAdjustmentOrFeeAmount Decimal
+		HADJStateProvidencePSTTaxDescription String
+		HADJStateProvidencePSTTaxRate Decimal
+		HADJStateProvidencePSTTaxAmount Decimal
+		HADJFederalOrGSTTaxDescription String
+		HADJFederalOrGSTTaxRate Decimal
+		HADJFederalOrGSTTaxAmount Decimal
+		HADJOtherOrHSTTaxDescription String
+		HADJOtherOrHSTTaxRate Decimal
+		HADJOtherOrHSTTaxAmount Decimal
+		HADJEdiChargeCode String
+	}
+
+	def record DetailAdjustment {
+		fieldIdentifier {
+			value = "D_ADJ"
+			field = RecordId
+		}
+
+		RecordId String
+		DADJAllowanceChargeIndicator String
+		DADJAdjustmentFeeCode String
+		DADJAdjustmentFeeDescription String
+		DADJAdjustmentFeePercentageRate Decimal
+		DADJAdjustmentFeeAmount Decimal
+		DADJAdjustmentFeeCodeStateOrPSTTaxDescription String
+		DADJAdjustmentFeeCodeStateOrPSTTaxRate Decimal
+		DADJAdjustmentFeeCodeStateOrPSTTaxAmount Decimal
+		DADJAdjustmentFeeCodeFederalOrGSTTaxDescription String
+		DADJAdjustmentFeeCodeFederalOrGSTTaxRate Decimal
+		DADJAdjustmentFeeCodeFederalOrGSTTaxAmount Decimal
+		DADJAdjustmentFeeCodeOtherOrHSTTaxDescription String
+		DADJAdjustmentFeeCodeOtherOrHSTTaxRate Decimal
+		DADJAdjustmentFeeCodeOtherOrHSTTaxAmount Decimal
+		DADJEdiChargeCode String
+	}
+
+	def recordSequence FileRecordGrp {
+
+		_TpId TpId [1..*]
+		_InvRecordGrp InvRecordGrp []
+		_FileTrailer FileTrailer []
+	}
+
+	def recordSequence DetailGrp {
+
+		_Detail Detail []
+		_DetailAdjustmentRecordGroup DetailAdjustmentRecordGroup []
+		_DHIST DHIST []
+	}
+
+	def recordSequence HeaderAdjustmentRecordGroup {
+
+		_HeaderAdjustment HeaderAdjustment []
+	}
+
+	def recordSequence DetailAdjustmentRecordGroup {
+
+		_DetailAdjustment DetailAdjustment []
+	}
+
+	def recordSequence InvRecordGrp {
+		groupOnRecord = true
+
+		_Header Header [1..*] (
+			groupOnField = false )
+		_HeaderAdjustmentRecordGroup HeaderAdjustmentRecordGroup []
+		_DetailGrp DetailGrp []
+		_Summary Summary []
+		_Trailer Trailer []
+	}
+}

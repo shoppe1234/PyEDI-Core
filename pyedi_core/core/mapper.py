@@ -314,14 +314,24 @@ def map_data(data: Dict[str, Any], map_yaml: Dict[str, Any]) -> Dict[str, Any]:
                     for target_field, rule in line_rule.items():
                         if isinstance(rule, dict):
                             source_path = rule.get("source", target_field)
+                            
+                            clean_path = source_path[6:] if source_path.startswith("lines.") else source_path
+                            if "." not in clean_path and clean_path not in raw_line and "default" not in rule:
+                                continue
+                                
                             value = _get_nested_value(raw_line, source_path)
                             mapped_line[target_field] = _map_field(value, rule)
                         else:
+                            clean_path = rule[6:] if isinstance(rule, str) and rule.startswith("lines.") else rule
+                            if isinstance(clean_path, str) and "." not in clean_path and clean_path not in raw_line:
+                                continue
+                                
                             value = _get_nested_value(raw_line, rule)
                             mapped_line[target_field] = value
                 elif isinstance(line_rule, str):
                     # Simple field passthrough
-                    mapped_line[line_rule] = raw_line.get(line_rule)
+                    if line_rule in raw_line:
+                        mapped_line[line_rule] = raw_line.get(line_rule)
         
         if mapped_line:
             result["lines"].append(mapped_line)

@@ -6,3 +6,11 @@ test_cases:
     transaction_type: "gfs_ca_810"
     target_inbound_dir: "./inbound/csv/gfs_ca"
     description: "Verify processing of GFS Canada CSV using gfsGenericOut810FF schema."
+
+  - name: "MarginEdge 810 Text File"
+    input_file: "inputs/NA_810_MARGINEDGE_20260129.txt"
+    expected_output: "expected_outputs/NA_810_MARGINEDGE_20260129.json"
+    should_succeed: true
+    transaction_type: "810"
+    target_inbound_dir: "./inbound/csv/margin_edge"
+    description: "Verify processing of Margin Edge TXT using tpm810SourceFF schema."

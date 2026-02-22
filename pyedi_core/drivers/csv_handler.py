@@ -83,7 +83,48 @@ class CSVHandler(TransactionProcessor):
         schema = self._get_schema_for_file(file_path)
         
         try:
-            # Read CSV with pandas
+            records_schema = schema.get("schema", {}).get("records", {}) if schema else {}
+            
+            if records_schema:
+                # Manual parsing for heterogeneous multi-record file
+                delimiter = schema.get("schema", {}).get("delimiter", ",")
+                
+                result = {
+                    "header": {},
+                    "lines": [],
+                    "summary": {}
+                }
+                
+                with open(file_path, 'r', encoding='utf-8') as f:
+                    for line in f:
+                        line = line.rstrip('\n\r')
+                        if not line:
+                            continue
+                            
+                        parts = line.split(delimiter)
+                        if not parts:
+                            continue
+                            
+                        record_id = parts[0]
+                        if record_id in records_schema:
+                            record_cols = records_schema[record_id]
+                            
+                            row_dict = {}
+                            for i, col_name in enumerate(record_cols):
+                                if i < len(parts):
+                                    row_dict[col_name] = parts[i]
+                                else:
+                                    row_dict[col_name] = None
+                            
+                            result["lines"].append(row_dict)
+                                
+                self.logger.info(
+                    f"Flat file parsed manually",
+                    lines=len(result["lines"])
+                )
+                return result
+                
+            # Fallback: Read CSV with pandas (Homogeneous tabular data)
             if schema and "schema" in schema:
                 # Use schema for type enforcement
                 dtype = {}
@@ -99,8 +140,11 @@ class CSVHandler(TransactionProcessor):
                     elif col_type == "date":
                         parse_dates.append(col["name"])
                 
+                delimiter = schema.get("schema", {}).get("delimiter", ",")
+                
                 df = pd.read_csv(
                     file_path,
+                    sep=delimiter,
                     dtype=dtype if dtype else None,
                     parse_dates=parse_dates if parse_dates else False,
                     keep_default_na=True

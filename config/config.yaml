@@ -18,6 +18,11 @@ transaction_registry:
 # source schema and compiled YAML map. New trading partner schemas
 # are onboarded by adding a single entry here — zero Python changes.
 csv_schema_registry:
+  margin_edge_810:
+    source_dsl:      ./tpm810SourceFF.txt
+    compiled_output: ./schemas/compiled/margin_edge_810_map.yaml
+    inbound_dir:     ./inbound/csv/margin_edge
+    transaction_type: '810'
   gfs_ca_810:
     source_dsl:      ./schemas/source/gfsGenericOut810FF.txt
     compiled_output: ./schemas/compiled/gfs_ca_810_map.yaml

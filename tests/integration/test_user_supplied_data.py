@@ -43,7 +43,7 @@ def test_user_supplied_file(test_case):
         
     try:
         # Run pipeline
-        result = pipeline.run(file=str(run_path), return_payload=True)
+        result = pipeline.run(file=str(run_path), return_payload=True, dry_run=True)
         
         # Validate success/failure expectation
         if test_case['should_succeed']:

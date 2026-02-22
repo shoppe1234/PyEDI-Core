@@ -100,14 +100,17 @@ class X12Handler(TransactionProcessor):
             # --- STEP 1: INPUT SANITIZATION (Pre-Parse) ---
             # Port directly from edi_processor.py
             # Handle wrapped vs unwrapped format
-            if edi_content and len(edi_content) > 106:
-                # ISA segment is exactly 106 characters
-                # Position 105 (0-indexed) is the segment terminator
-                potential_terminator = edi_content[105]
-                
-                # If terminator is NOT newline, newlines are cosmetic - strip them
-                if potential_terminator not in ['\r', '\n']:
-                    edi_content = edi_content.replace('\n', '').replace('\r', '')
+
+            # ISA segment is exactly 106 characters
+            if len(edi_content) < 106:
+                raise ValueError("Invalid ISA segment: length must be exactly 106 characters")
+
+            # Position 105 (0-indexed) is the segment terminator
+            potential_terminator = edi_content[105]
+
+            # If terminator is NOT newline, newlines are cosmetic - strip them
+            if potential_terminator not in ['\r', '\n']:
+                edi_content = edi_content.replace('\n', '').replace('\r', '')
             
             self.logger.debug(
                 f"Input sanitization complete",

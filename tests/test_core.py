@@ -212,9 +212,9 @@ class TestSchemaCompiler:
         
         dsl_text = """
         def record Header {
-            invoice_number: String
-            invoice_date: Date
-            amount: Decimal = 0.0
+            invoice_number String
+            invoice_date Date
+            amount Decimal = 0.0
         }
         """
         

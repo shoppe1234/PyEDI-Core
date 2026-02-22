@@ -12,7 +12,8 @@ required_dirs = [
     "pyedi_core/rules",
     "tests",
     "tests/fixtures",
-    "config"
+    "config",
+    "inbound/csv/gfs_ca"
 ]
 
 required_files = [

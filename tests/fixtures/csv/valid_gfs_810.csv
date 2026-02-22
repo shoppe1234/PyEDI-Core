@@ -1,0 +1,3 @@
+Invoice Number,Invoice Date,PO Number,Item Number,Description,Quantity,Unit Price,Net Case Price,Extended Price
+INV001,02/21/2025,PO001,12345,Sample Item,10,25.00,24.00,240.00
+INV001,02/21/2025,PO001,67890,Another Item,5,50.00,48.00,240.00

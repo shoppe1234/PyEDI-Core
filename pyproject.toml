@@ -17,6 +17,7 @@ dependencies = [
     "pydantic>=2.0",
     "structlog>=23.0",
     "pandas>=2.0",
+    "badx12",
 ]
 
 [project.optional-dependencies]

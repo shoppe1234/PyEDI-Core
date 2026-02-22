@@ -84,6 +84,7 @@ class CSVHandler(TransactionProcessor):
         
         try:
             records_schema = schema.get("schema", {}).get("records", {}) if schema else {}
+            use_pandas = True
             
             if records_schema:
                 # Manual parsing for heterogeneous multi-record file
@@ -117,15 +118,18 @@ class CSVHandler(TransactionProcessor):
                                     row_dict[col_name] = None
                             
                             result["lines"].append(row_dict)
-                                
-                self.logger.info(
-                    f"Flat file parsed manually",
-                    lines=len(result["lines"])
-                )
-                return result
+
+                # If we successfully parsed lines manually, return the result
+                # Otherwise, fall back to pandas (e.g. schema has records but file is flat)
+                if result["lines"]:
+                    self.logger.info(
+                        f"Flat file parsed manually",
+                        lines=len(result["lines"])
+                    )
+                    return result
                 
             # Fallback: Read CSV with pandas (Homogeneous tabular data)
-            if schema and "schema" in schema:
+            if use_pandas and schema and "schema" in schema:
                 # Use schema for type enforcement
                 dtype = {}
                 parse_dates = []
@@ -261,32 +265,8 @@ class CSVHandler(TransactionProcessor):
                 )
                 raise ValueError(f"Compiled YAML map does not exist: {self._compiled_yaml_path}")
         
-        # Fallback: discover schema by filename (legacy behavior)
-        path = Path(file_path)
-        base_name = path.stem
-        
-        # Look for compiled schema
-        schema_file = Path(self._compiled_schema_dir) / f"{base_name}.yaml"
-        
-        if schema_file.exists():
-            try:
-                with open(schema_file, "r") as f:
-                    return yaml.safe_load(f)
-            except Exception as e:
-                self.logger.warning(f"Failed to load compiled schema: {e}")
-        
-        # Try to find source DSL and compile
-        source_schema = Path(self._schema_dir) / f"{base_name}.txt"
-        if source_schema.exists():
-            try:
-                return schema_compiler.compile_dsl(
-                    str(source_schema),
-                    compiled_dir=self._compiled_schema_dir,
-                    correlation_id=self.correlation_id
-                )
-            except Exception as e:
-                self.logger.warning(f"Failed to compile schema: {e}")
-        
+        # PCR-2025-002: Never silently infer schema from filename or extension.
+        # If no explicit compiled path is provided, we return None (no schema).
         return None
     
     def transform(self, raw_data: Dict[str, Any], map_yaml: Dict[str, Any]) -> Dict[str, Any]:

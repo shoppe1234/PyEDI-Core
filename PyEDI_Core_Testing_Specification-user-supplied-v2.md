@@ -1,13 +1,13 @@
 # PyEDI-Core Testing Specification
 ## Code Review & Validation Protocol
 
-**Version:** 1.2  
+**Version:** 2.0
 **Target:** Phase 1-5 Implementation  
-**Date:** February 22, 2026  
-**Spec Baseline:** PyEDI_Core_Specification_v2.1  
+**Date:** February 23, 2026
+**Spec Baseline:** PyEDI_Core_Specification_v2.3
 **Purpose:** Systematic validation of PyEDI-Core implementation against specification
 
-> **v1.2 Update Note:** This version reflects the Phase 5 test harness refactor (PCR-2025-003). The user-supplied test harness now supports physical output writing to `tests/user_supplied/outputs/`, per-test-case `dry_run`, `skip_fields`, and `strict` controls, pre-run cleanup of the `outputs/` directory, and a non-hard-failure discrepancy reporting model. See [Change Control](#change-control) for the full history.
+> **v2.0 Update Note:** This version adds comprehensive testing requirements for the Fixed-Length Handler (Driver D), including schema-driven parsing, implicit decimal conversion, and multi-document boundary detection. It also aligns with PyEDI Core Specification v2.3. See [Change Control](#change-control) for the full history.
 
 ---
 
@@ -367,7 +367,26 @@ INV001,02/21/2025,PO001,67890,Another Item,5,50.00,48.00,240.00
 - Extracts nested hierarchy
 - Produces normalized JSON
 
-#### 4. Error Cases
+#### 4. Fixed-Length Valid Invoice (valid_aramark_810.txt)
+
+**Structure:**
+```text
+O_TPID    HEADER    0001
+OIN_HDRA  INV001    20250221
+OIN_DTL1  ITEM123   0000150
+OIN_DTL1  ITEM456   0000200
+OIN_TTL1  0000350   0002
+```
+
+**Expected Behavior:**
+- `pipeline.py` scans `fixed_length_schema_registry` and matches the file's directory (e.g., `./inbound/fixed/aramark_ca/`)
+- Loads compiled YAML schema from registry
+- Parses records based on fixed positions (no delimiters)
+- Detects implicit decimals ("0000150" → 1.50)
+- Extracts header, line items, summary
+- Produces normalized JSON
+
+#### 5. Error Cases
 
 **malformed_810.edi:**
 ```
@@ -641,6 +660,7 @@ def test_missing_required_field():
 - `tests/unit/test_x12_handler.py`
 - `tests/unit/test_csv_handler.py`
 - `tests/unit/test_xml_handler.py`
+- `tests/unit/test_fixed_length_handler.py`
 
 Each driver test should verify:
 
@@ -741,6 +761,33 @@ def test_csv_schema_compiler_called_with_registry_source_dsl():
     # Run pipeline with a CSV in ./inbound/csv/gfs_ca/
     # Assert schema_compiler receives gfsGenericOut810FF.txt (source_dsl from registry)
     # Assert compiled output written to path specified in compiled_output registry field
+```
+
+**Additional fixed_length_handler.py tests (PCR-2025-004 — Fixed-Length Driver):**
+
+```python
+def test_fixed_length_routing_uses_inbound_dir():
+    """Fixed-length schema is resolved by inbound_dir match in registry"""
+    # Place file in ./inbound/fixed/aramark_ca/
+    # Assert pipeline selects aramark_ca_810 schema
+    # Assert correct compiled YAML loaded
+
+def test_implicit_decimal_conversion():
+    """Fields with implicit decimals are converted correctly"""
+    # Schema defines field with length 5, fractionalDigits 2
+    # Input "00150"
+    # Assert converted to float 1.50
+
+def test_multi_document_splitting():
+    """File with multiple invoices is split into multiple documents"""
+    # Input file with 3 invoices (detected by boundary record)
+    # Assert read() returns list of 3 documents
+
+def test_short_line_handling():
+    """Lines shorter than record ID length are logged and skipped"""
+    # Input file with empty or short lines
+    # Assert warning logged
+    # Assert no crash
 ```
 
 ### Test Suite: User-Supplied Data Validation
@@ -975,6 +1022,13 @@ def test_valid_cxml():
     """Valid cXML → success output"""
     # Run pipeline on valid_cxml_850.xml
     # Assert output JSON matches expected
+
+def test_valid_fixed_length():
+    """Valid Fixed-Length file → success output"""
+    # Place valid_aramark_810.txt in ./inbound/fixed/aramark_ca/
+    # Run pipeline
+    # Assert output JSON matches expected
+    # Assert transaction_type stamped from registry
 
 def test_malformed_file_to_failed():
     """Malformed file → ./failed/ with error.json"""
@@ -1315,6 +1369,12 @@ Every output file must conform to this structure:
   - ISA segment validated as 106 characters
   - Conditional newline stripping applied for non-newline-delimited EDI format
   - Newlines preserved when used as segment delimiter (ISA-newline format)
+
+- [ ] **Fixed-Length routing uses `fixed_length_schema_registry` inbound_dir** *(PCR-2025-004)*
+  - `config.yaml` contains a `fixed_length_schema_registry` block
+  - No hardcoded field positions in `fixed_length_handler.py` (must be schema-driven)
+  - `pipeline.py` routes files by directory match
+  - Multi-document splitting logic verified via boundary record check
 
 ### Module Isolation
 
@@ -1785,11 +1845,24 @@ This section tracks all specification changes in reverse chronological order.
 
 | Version | Date | Change Ref | Author | Summary |
 |---|---|---|---|---|
+| 2.0 | 2026-02-23 | PCR-2025-004 | Jules | Added Fixed-Length (Driver D) test requirements |
 | 1.2 | 2026-02-22 | PCR-2025-003 | Sean | Phase 5 test harness refactor |
 | 1.1 | 2026-02-21 | PCR-2025-001, PCR-2025-002 | Sean | X12 ST inspection and CSV inbound_dir routing rules |
 | 1.0 | 2026-02-21 | — | Sean | Initial specification |
 
 ---
+
+### PCR-2025-004 — Fixed-Length Handler (Driver D) Support
+**Date:** 2026-02-23
+**Files Changed:**
+- `tests/unit/test_fixed_length_handler.py` — new test suite
+- `tests/integration/test_pipeline_end_to_end.py` — new integration test
+
+**Changes:**
+1. Added test requirements for `FixedLengthHandler` (Driver D).
+2. Defined testing for schema-driven parsing and implicit decimal conversion.
+3. Added registry-based routing tests using `fixed_length_schema_registry`.
+4. Added multi-document file splitting test case.
 
 ### PCR-2025-003 — Phase 5 User-Supplied Test Harness Refactor
 **Date:** 2026-02-22  

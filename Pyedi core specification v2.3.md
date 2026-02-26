@@ -1,5 +1,7 @@
+# PyEDI-Core Specification v2.3
+
 1. Executive Summary
-PyEDI-Core is a configuration-driven, white-labeled ingestion and transformation engine that normalizes X12 EDI, CSV flat files, and XML (generic + cXML) into a standard JSON intermediate format. The engine is designed for deterministic, rule-based processing where all business logic is injected via YAML configuration — no hardcoded transaction logic exists in the codebase.
+PyEDI-Core is a configuration-driven, white-labeled ingestion and transformation engine that normalizes X12 EDI, CSV flat files, Fixed-Length positional files, and XML (generic + cXML) into a standard JSON intermediate format. The engine is designed for deterministic, rule-based processing where all business logic is injected via YAML configuration — no hardcoded transaction logic exists in the codebase.
 
 Core Philosophy
 Configuration over Convention. No if/else chains for transaction types. Every mapping, schema rule, and transformation is expressed in YAML. The Python engine is a generic executor — the YAML files are the business logic.
@@ -19,6 +21,7 @@ The primary goal of v1.0 is to take two normalized JSON outputs from the same or
 2.1 File & Module Structure
 Every concern is encapsulated as an independently callable module. main.py is the CLI entry point. pipeline.py is the orchestrator callable from CLI, external programs, or a REST API layer.
 
+```
 pyedi_core/
 ├── main.py                   # CLI entry point
 ├── pipeline.py               # Orchestrator — callable by any caller
@@ -35,9 +38,12 @@ pyedi_core/
 │   ├── base.py               # Abstract TransactionProcessor (ABC)
 │   ├── x12_handler.py        # badx12-based driver (open-ended ST segments)
 │   ├── csv_handler.py        # pandas-based driver
+│   ├── fixed_length_handler.py # Positional flat file driver
 │   └── xml_handler.py        # Generic + cXML driver
 ├── schemas/
 │   ├── source/               # Raw .txt DSL files from trading partners
+│   │   ├── Retalix-810-schema.txt # Example Fixed-Length schema
+│   │   └── ...
 │   └── compiled/
 │       ├── gfs_810_map.yaml  # Auto-compiled YAML maps
 │       ├── *.meta.json       # Hash + version sidecar per compiled schema
@@ -51,6 +57,7 @@ pyedi_core/
 ├── logs/
 │   └── pyedi.log             # Structured log output (when file mode enabled)
 └── .processed                # Flat manifest log — append-only
+```
 
 2.2 Interface Contracts
 The system must be callable in two modes simultaneously:
@@ -158,6 +165,13 @@ The transaction_registry in config.yaml is the only place transaction types are 
 •	map.yaml source paths use XPath notation for XML (e.g., source: './/OrderRequest/OrderRequestHeader/@orderID')
 •	Fully parallel to X12 handler — same map.yaml structure, different source path syntax
 
+4.5 Driver D — Fixed-Length Handler (fixed_length_handler.py)
+•	Detection: Directory-based routing using `fixed_length_schema_registry` in config.yaml
+•	Schema-Driven Parsing: No hardcoded field positions or lengths. All parsing logic is derived at runtime from the compiled YAML schema (produced from DSL).
+•	Multi-Document Support: Supports files containing multiple invoices/orders. Segments the file by detecting the invoice boundary record defined in the schema (e.g., `group_on_record = true`).
+•	Implied Decimal Support: Handles legacy mainframe formats where decimals are implied (e.g., "12345" with 2 fractional digits becomes 123.45).
+•	Type Conversion: Enforces types defined in the schema (String, Integer, Decimal, ImpliedDecimal) and supports `readEmptyAsNull`.
+
  
 5. Configuration Specification
 5.1 Master config.yaml Structure
@@ -180,6 +194,7 @@ directories:
     - ./inbound/x12
     - ./inbound/csv
     - ./inbound/xml
+    - ./inbound/fixed
   outbound: ./outbound
   failed:  ./failed
   manifest: ./.processed
@@ -190,6 +205,16 @@ transaction_registry:
   gfs_csv: ./rules/gfs_csv_map.yaml
   cxml_850: ./rules/cxml_850_map.yaml
   _default_x12: ./rules/default_x12_map.yaml
+
+# Fixed-Length Schema Registry
+# Routes files by inbound directory to their schema and mapping rules
+fixed_length_schema_registry:
+  aramark_ca_810:
+    source_dsl:      ./schemas/source/Retalix-810-schema.txt
+    compiled_output: ./schemas/compiled/aramark_ca_810_map.yaml
+    inbound_dir:     ./inbound/fixed/aramark_ca
+    transaction_type: '810'
+    rules_map:       ./rules/aramark_ca_810_map.yaml
 
 5.2 Map YAML Structure — Reference Example
 # rules/gfs_810_map.yaml
@@ -305,6 +330,7 @@ Every module with logic gets isolated unit tests. I/O is mocked. Runs in seconds
 •	mapper.py — known input dict + known map.yaml produces exact expected JSON
 •	error_handler.py — correct .error.json written, file moved to ./failed/
 •	Each driver in isolation — mock file I/O, test parse and transform logic
+•	Fixed-Length Handler — tests for positional parsing, boundary detection, and implied decimals
 
 7.3 Tier 2 — Integration Tests (Fixture Files)
 Full pipeline end-to-end against real representative files. Output validated against known-good expected JSON.
@@ -408,8 +434,9 @@ Follow this exact sequence to avoid circular dependencies:
 •	7. drivers/csv_handler.py — needs schema_compiler, mapper, error_handler
 •	8. drivers/x12_handler.py — needs mapper, error_handler
 •	9. drivers/xml_handler.py — needs mapper, error_handler
-•	10. pipeline.py — wires all drivers, manifest, logger together
-•	11. main.py — CLI entry point, calls pipeline.py only
+•	10. drivers/fixed_length_handler.py — needs mapper, error_handler
+•	11. pipeline.py — wires all drivers, manifest, logger together
+•	12. main.py — CLI entry point, calls pipeline.py only
 
 10.2 Non-Negotiable Implementation Rules
 •	No hardcoded transaction type logic anywhere in .py files

@@ -1,5 +1,5 @@
 1. Executive Summary
-PyEDI-Core is a configuration-driven, white-labeled ingestion and transformation engine that normalizes X12 EDI, CSV flat files, and XML (generic + cXML) into a standard JSON intermediate format. The engine is designed for deterministic, rule-based processing where all business logic is injected via YAML configuration — no hardcoded transaction logic exists in the codebase.
+PyEDI-Core is a configuration-driven, white-labeled ingestion and transformation engine that normalizes X12 EDI, CSV flat files, Fixed-Length positional files, and XML (generic + cXML) into a standard JSON intermediate format. The engine is designed for deterministic, rule-based processing where all business logic is injected via YAML configuration — no hardcoded transaction logic exists in the codebase.
 
 Core Philosophy
 Configuration over Convention. No if/else chains for transaction types. Every mapping, schema rule, and transformation is expressed in YAML. The Python engine is a generic executor — the YAML files are the business logic.
@@ -35,7 +35,8 @@ pyedi_core/
 │   ├── base.py               # Abstract TransactionProcessor (ABC)
 │   ├── x12_handler.py        # badx12-based driver (open-ended ST segments)
 │   ├── csv_handler.py        # pandas-based driver
-│   └── xml_handler.py        # Generic + cXML driver
+│   ├── xml_handler.py        # Generic + cXML driver
+│   └── fixed_length_handler.py # Fixed-length positional driver
 ├── schemas/
 │   ├── source/               # Raw .txt DSL files from trading partners
 │   └── compiled/
@@ -158,6 +159,13 @@ The transaction_registry in config.yaml is the only place transaction types are 
 •	map.yaml source paths use XPath notation for XML (e.g., source: './/OrderRequest/OrderRequestHeader/@orderID')
 •	Fully parallel to X12 handler — same map.yaml structure, different source path syntax
 
+4.5 Driver D — Fixed-Length Handler (fixed_length_handler.py)
+•	Detection: matched via inbound_dir in fixed_length_schema_registry
+•	Schema-Driven: All field positions, lengths, and types are read from compiled YAML — no hardcoded positions in code
+•	Record ID Detection: First N characters of each line determine record type (e.g. "OIN_HDR1")
+•	Invoice Grouping: Automatically segments multi-document files using "invoice_boundary" setting in schema
+•	Type Conversion: Handles implied decimals, integer validation, and whitespace stripping based on schema definitions
+
  
 5. Configuration Specification
 5.1 Master config.yaml Structure
@@ -180,9 +188,10 @@ directories:
     - ./inbound/x12
     - ./inbound/csv
     - ./inbound/xml
-  outbound: ./outbound
-  failed:  ./failed
-  manifest: ./.processed
+    - ./inbound/fixed
+  outbound: "./outbound"
+  failed: "./failed"
+  processed: "./processed"
 
 transaction_registry:
   '810': ./rules/gfs_810_map.yaml
@@ -190,6 +199,21 @@ transaction_registry:
   gfs_csv: ./rules/gfs_csv_map.yaml
   cxml_850: ./rules/cxml_850_map.yaml
   _default_x12: ./rules/default_x12_map.yaml
+
+csv_schema_registry:
+  gfs_ca_810:
+    source_dsl: ./schemas/source/gfsGenericOut810FF.txt
+    compiled_output: ./schemas/compiled/gfs_ca_810_map.yaml
+    inbound_dir: ./inbound/csv/gfs_ca
+    transaction_type: '810'
+
+fixed_length_schema_registry:
+  aramark_ca_810:
+    source_dsl: ./schemas/source/Retalix-810-schema.txt
+    compiled_output: ./schemas/compiled/aramark_ca_810_map.yaml
+    inbound_dir: ./inbound/fixed/aramark_ca
+    transaction_type: '810'
+    rules_map: ./rules/aramark_ca_810_map.yaml
 
 5.2 Map YAML Structure — Reference Example
 # rules/gfs_810_map.yaml
@@ -408,8 +432,9 @@ Follow this exact sequence to avoid circular dependencies:
 •	7. drivers/csv_handler.py — needs schema_compiler, mapper, error_handler
 •	8. drivers/x12_handler.py — needs mapper, error_handler
 •	9. drivers/xml_handler.py — needs mapper, error_handler
-•	10. pipeline.py — wires all drivers, manifest, logger together
-•	11. main.py — CLI entry point, calls pipeline.py only
+•	10. drivers/fixed_length_handler.py — needs mapper, error_handler
+•	11. pipeline.py — wires all drivers, manifest, logger together
+•	12. main.py — CLI entry point, calls pipeline.py only
 
 10.2 Non-Negotiable Implementation Rules
 •	No hardcoded transaction type logic anywhere in .py files
@@ -422,7 +447,7 @@ Follow this exact sequence to avoid circular dependencies:
 
 10.3 Definition of Done — Phase 1
 •	All modules in core/ have unit tests passing
-•	All three drivers process their respective fixture files successfully
+•	All four drivers process their respective fixture files successfully
 •	Negative path fixtures route correctly to ./failed/ with populated .error.json
 •	dry-run mode validates and transforms without writing any output files
 •	pytest-cov reports 85%+ coverage on all core/ modules

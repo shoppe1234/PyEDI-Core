@@ -1,1 +1,0 @@
-print('Hello from MiniMax M2.5!')

@@ -26,7 +26,23 @@ class Stage:
 
 class PyEDIError(Exception):
     """Base exception for PyEDI core errors."""
-    pass
+    stage = Stage.DETECTION  # default
+
+class DetectionError(PyEDIError):
+    """File format detection failure (no driver, unknown format)."""
+    stage = Stage.DETECTION
+
+class SchemaLookupError(PyEDIError):
+    """CSV schema registry lookup or compiled map loading failure."""
+    stage = Stage.DETECTION
+
+class MappingError(PyEDIError):
+    """No mapping rules found for file."""
+    stage = Stage.TRANSFORMATION
+
+class TransformationError(PyEDIError):
+    """Data transformation stage failure."""
+    stage = Stage.TRANSFORMATION
 
 
 # Default directories
@@ -103,7 +119,7 @@ def handle_failure(
     destination_file = failed_path / source_file.name
     
     if source_file.exists():
-        
+
         # Handle duplicate filenames in failed directory
         counter = 1
         while destination_file.exists():
@@ -111,35 +127,42 @@ def handle_failure(
             suffix = source_file.suffix
             destination_file = failed_path / f"{stem}_{counter}{suffix}"
             counter += 1
-        
+
         try:
             shutil.move(str(source_file), str(destination_file))
             logger.info(f"File moved to failed directory: {destination_file}")
         except (IOError, OSError) as e:
             logger.error(f"Failed to move file to failed directory: {e}")
-    
-    # Write error JSON sidecar
-    error_file = failed_path / f"{destination_file.stem}.error.json"
-    try:
-        with open(error_file, "w", encoding="utf-8") as f:
-            json.dump(error_details, f, indent=2)
-        logger.info(f"Error details written: {error_file}")
-    except (IOError, OSError) as e:
-        logger.error(f"Failed to write error JSON: {e}")
-    
-    # Update manifest with FAILED status
-    if not skip_manifest and file_path:
+
+        # Write error JSON sidecar (ONLY if source file existed and was moved)
+        error_file = failed_path / f"{destination_file.stem}.error.json"
         try:
-            manifest.mark_processed(
-                file_path=file_path,
-                status="FAILED",
-                manifest_path=manifest_path,
-                skip_hash=skip_manifest
-            )
-        except Exception as e:
-            logger.error(f"Failed to update manifest: {e}")
-    
-    return str(error_file)
+            with open(error_file, "w", encoding="utf-8") as f:
+                json.dump(error_details, f, indent=2)
+            logger.info(f"Error details written: {error_file}")
+        except (IOError, OSError) as e:
+            logger.error(f"Failed to write error JSON: {e}")
+
+        # Update manifest (ONLY if source file existed)
+        if not skip_manifest and file_path:
+            try:
+                manifest.mark_processed(
+                    file_path=file_path,
+                    status="FAILED",
+                    manifest_path=manifest_path,
+                    skip_hash=skip_manifest
+                )
+            except Exception as e:
+                logger.error(f"Failed to update manifest: {e}")
+
+        return str(error_file)
+    else:
+        logger.warning(
+            f"Source file not found, skipping move/sidecar/manifest",
+            file_path=file_path,
+            stage=stage
+        )
+        return ""
 
 
 def validate_stage(stage: str) -> bool:

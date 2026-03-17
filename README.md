@@ -106,9 +106,7 @@ mapping:
 Register in config.yaml:
 ```yaml
 transaction_registry:
-  partner_850:
-    input_format: x12
-    map_file: partner_850_map.yaml
+  partner_850: ./rules/partner_850_map.yaml
 ```
 
 ### 🐛 4:00 PM: Debug Failed Files
@@ -159,30 +157,34 @@ pip install pyedi-core
 
 ### Configuration
 
-Edit `pyedi_core/config/config.yaml`:
+Edit `config/config.yaml`:
 
 ```yaml
 system:
   source_system_id: my_company
   max_workers: 8
+  dry_run: false
+  return_payload: false
 
 observability:
   log_level: INFO
+  output: console
+  format: pretty
 
 directories:
-  inbound: ./inbound
+  inbound:
+    - ./inbound/x12
+    - ./inbound/csv
+    - ./inbound/xml
   outbound: ./outbound
   failed: ./failed
-  archive: ./archive
-  manifest: .processed
+  processed: ./.processed
 
 transaction_registry:
-  gfs_850:
-    input_format: csv
-    map_file: gfs_850_map.yaml
-  gfs_810:
-    input_format: csv
-    map_file: gfs_810_map.yaml
+  '810': ./rules/gfs_810_map.yaml
+  '850': ./rules/gfs_850_map.yaml
+  _default_x12: ./rules/default_x12_map.yaml
+  _rules_dir: ./rules
 ```
 
 ### Run
@@ -218,18 +220,26 @@ pyedi --verbose --file data/input.csv
 
 ```
 pyedi_core/
+├── __init__.py
+├── main.py             # CLI entry point
+├── pipeline.py         # Orchestration
+├── config/
+│   └── __init__.py     # Pydantic config models
 ├── core/               # Core processing modules
-│   ├── logger.py      # Structured logging
-│   ├── manifest.py    # Deduplication
-│   ├── mapper.py      # Data transformation
-│   └── schema_compiler.py
-├── drivers/           # Format-specific handlers
+│   ├── __init__.py
+│   ├── error_handler.py # Dead-letter queue
+│   ├── logger.py       # Structured logging
+│   ├── manifest.py     # Deduplication
+│   ├── mapper.py       # Data transformation
+│   └── schema_compiler.py # DSL → YAML compiler
+├── drivers/            # Format-specific handlers
+│   ├── __init__.py
+│   ├── base.py         # Driver registry & base class
 │   ├── csv_handler.py
 │   ├── x12_handler.py
 │   └── xml_handler.py
-├── pipeline.py        # Orchestration
-├── config/           # Configuration
-└── rules/           # Mapping rules
+config/
+└── config.yaml         # Runtime configuration
 ```
 
 ---
@@ -240,11 +250,14 @@ pyedi_core/
 # Run all tests
 pytest
 
+# Unit tests only (fast)
+pytest -m unit
+
+# Integration tests only
+pytest -m integration
+
 # With coverage
 pytest --cov=pyedi_core --cov-report=term-missing
-
-# Run specific test file
-pytest tests/test_core.py -v
 ```
 
 ---

@@ -11,7 +11,8 @@ import re
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-import xml.etree.ElementTree as ET
+import defusedxml.ElementTree as ET
+from xml.etree.ElementTree import Element
 
 from ..core import error_handler
 from ..core import logger as core_logger
@@ -63,12 +64,12 @@ class XMLHandler(TransactionProcessor):
         
         self.logger.info(f"Reading XML file", file_path=file_path)
         
-        # Read file content
-        with open(file_path, "r", encoding="utf-8") as f:
+        # Read file content as bytes (let ET handle encoding declarations)
+        with open(file_path, "rb") as f:
             content = f.read()
-        
-        # Detect cXML
-        is_cxml = self._detect_cxml(content)
+
+        # Detect cXML (decode first 500 bytes for detection)
+        is_cxml = self._detect_cxml(content[:500].decode("utf-8", errors="replace"))
         
         if is_cxml:
             self.logger.info("Detected cXML format")
@@ -175,7 +176,7 @@ class XMLHandler(TransactionProcessor):
         
         return result
     
-    def _xml_to_dict(self, element: ET.Element, result: Dict[str, Any], prefix: str = "") -> None:
+    def _xml_to_dict(self, element: Element, result: Dict[str, Any], prefix: str = "") -> None:
         """
         Recursively convert XML element to dictionary.
         
@@ -218,7 +219,7 @@ class XMLHandler(TransactionProcessor):
                     else:
                         result[child_key] = child_dict
     
-    def _xml_element_to_dict(self, element: ET.Element, result: Dict[str, Any]) -> None:
+    def _xml_element_to_dict(self, element: Element, result: Dict[str, Any]) -> None:
         """
         Convert XML element to flat dictionary with XPath-like keys.
         
@@ -239,7 +240,7 @@ class XMLHandler(TransactionProcessor):
             for key, value in child_dict.items():
                 result[key] = value
     
-    def _extract_line_items(self, root: ET.Element, lines: List[Dict[str, Any]]) -> None:
+    def _extract_line_items(self, root: Element, lines: List[Dict[str, Any]]) -> None:
         """
         Extract potential line items from XML.
         

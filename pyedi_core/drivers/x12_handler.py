@@ -13,8 +13,10 @@ import re
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-# Python 2/3 compatibility shim for collections.Iterable
-# This must be at the top of the file - do not modify
+# badx12 v0.2.2 imports collections.Iterable (removed in Python 3.10+).
+# The package is abandoned (last release 2018) so we patch at runtime.
+# This shim MUST execute before `from badx12 import Parser` below.
+# See: https://docs.python.org/3/whatsnew/3.10.html#removed
 collections.Iterable = collections.abc.Iterable
 
 from badx12 import Parser
@@ -180,10 +182,12 @@ class X12Handler(TransactionProcessor):
                     
                     # Add Transaction Body Segments in order
                     for body_seg in txn.get('body', []):
-                        seg_name = body_seg.get('fields', [{}])[0].get('content', 'UNKNOWN')
-                        # Skip the segment name itself from fields list
-                        fields = body_seg.get('fields', [])[1:]
-                        sequential_segments.append(format_segment(seg_name, fields))
+                        fields = body_seg.get('fields', [])
+                        if not fields:
+                            continue
+                        seg_name = fields[0].get('content', 'UNKNOWN')
+                        remaining_fields = fields[1:]
+                        sequential_segments.append(format_segment(seg_name, remaining_fields))
                     
                     # Add Transaction Trailer (SE)
                     if 'trailer' in txn:

@@ -1,22 +1,35 @@
+# PyEDI-Core Configuration (merged)
+
 system:
+  source_system_id: 'gfs'
   max_workers: 8
   dry_run: false
+  return_payload: false
 
-# X12 only — badx12 handles ST detection automatically via envelope
-# parsing. This registry is the only place X12 transaction types are
-# enumerated. _default_x12 provides passthrough fallback for any ST
-# segment not explicitly listed.
+observability:
+  log_level: INFO
+  output: console
+  log_file: ./logs/pyedi.log
+  format: pretty
+
+directories:
+  inbound:
+    - ./inbound/x12
+    - ./inbound/csv
+    - ./inbound/xml
+  outbound: ./outbound
+  failed: ./failed
+  processed: ./.processed
+
 transaction_registry:
   '810': ./rules/gfs_810_map.yaml
   '850': ./rules/gfs_850_map.yaml
+  '856': ./rules/gfs_856_map.yaml
+  gfs_csv: ./rules/gfs_csv_map.yaml
+  cxml_850: ./rules/cxml_850_map.yaml
   _default_x12: ./rules/default_x12_map.yaml
+  _rules_dir: ./rules
 
-# ── CSV SCHEMA REGISTRY ──────────────────────────────────────────
-# CSV files contain no self-identifying metadata equivalent to the
-# X12 ST segment. The inbound_dir field is the discriminator: any
-# .csv arriving in a registered directory is matched to its DSL
-# source schema and compiled YAML map. New trading partner schemas
-# are onboarded by adding a single entry here — zero Python changes.
 csv_schema_registry:
   margin_edge_810:
     source_dsl:      ./tpm810SourceFF.txt
@@ -28,9 +41,3 @@ csv_schema_registry:
     compiled_output: ./schemas/compiled/gfs_ca_810_map.yaml
     inbound_dir:     ./inbound/csv/gfs_ca
     transaction_type: '810'
-
-directories:
-  inbound: "./inbound"
-  outbound: "./outbound"
-  failed: "./failed"
-  processed: "./processed"

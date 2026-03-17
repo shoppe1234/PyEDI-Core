@@ -112,23 +112,6 @@ def bind_logger(**kwargs: Any) -> structlog.BoundLogger:
     return logger.bind(**kwargs)
 
 
-def _setup_file_output() -> None:
-    """Set up file output if configured."""
-    if _config.get("output") in ("file", "both"):
-        log_file = Path(_config.get("log_file", "./logs/pyedi.log"))
-        log_file.parent.mkdir(parents=True, exist_ok=True)
-        
-        # Add file handler to root logger
-        import logging
-        handler = logging.FileHandler(log_file)
-        handler.setFormatter(logging.Formatter(
-            "%(message)s" if _config.get("format") == "json" else "%(asctime)s %(message)s"
-        ))
-        
-        root_logger = logging.getLogger()
-        root_logger.addHandler(handler)
-        root_logger.setLevel(_get_log_level())
-
 
 # Initialize with defaults
 configure(_config)

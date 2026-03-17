@@ -8,6 +8,8 @@ import warnings
 from pathlib import Path
 from pyedi_core import Pipeline
 
+pytestmark = pytest.mark.integration
+
 @pytest.fixture(scope="session", autouse=True)
 def clear_outputs():
     outputs_dir = Path("tests/user_supplied/outputs")
@@ -103,17 +105,13 @@ def test_user_supplied_file(test_case):
                 print(f"\nDISCREPANCY REPORT — {test_case['name']}")
                 for d in discrepancies:
                     print(f"  - {d}")
-                                # If there are actual field discrepancies (not just size), fail the test
-                    # unless we want to treat it as non-fatal. The prompt says "Reports 
-                    # discrepancies as warnings, not hard failures (unless fields that must 
-                    # match actually differ)". We use 'strict' flag to control this.
-                    field_diffs = [d for d in discrepancies if not d.startswith("Size diff")]
-                    
-                    is_strict = test_case.get('strict', True)
-                    if field_diffs and is_strict:
-                        pytest.fail(f"Found {len(field_diffs)} field discrepancies compared to expected output.")
-                    else:
-                        warnings.warn(f"Non-fatal discrepancies found for {test_case['name']}:\n" + "\n".join(discrepancies))
+
+                field_diffs = [x for x in discrepancies if not x.startswith("Size diff")]
+                is_strict = test_case.get('strict', True)
+                if field_diffs and is_strict:
+                    pytest.fail(f"Found {len(field_diffs)} field discrepancies compared to expected output.")
+                elif discrepancies:
+                    warnings.warn(f"Non-fatal discrepancies found for {test_case['name']}:\n" + "\n".join(discrepancies))
             
         else:
             if result.status != 'FAILED':

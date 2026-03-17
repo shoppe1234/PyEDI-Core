@@ -17,6 +17,7 @@ import pytest
 FIXTURES_DIR = Path(__file__).parent / "fixtures"
 
 
+@pytest.mark.unit
 class TestLogger:
     """Tests for the logger module."""
     
@@ -59,19 +60,10 @@ class TestLogger:
         assert bound is not None
 
 
+@pytest.mark.unit
 class TestManifest:
     """Tests for the manifest module."""
-    
-    @pytest.fixture
-    def temp_manifest(self):
-        """Create a temporary manifest file."""
-        with tempfile.NamedTemporaryFile(mode='w', delete=False, suffix='.processed') as f:
-            manifest_path = f.name
-        yield manifest_path
-        # Cleanup
-        if os.path.exists(manifest_path):
-            os.unlink(manifest_path)
-    
+
     def test_compute_sha256(self, tmp_path):
         """Test SHA-256 computation."""
         from pyedi_core.core import manifest
@@ -123,6 +115,29 @@ class TestManifest:
         finally:
             os.unlink(test_file)
     
+    def test_read_manifest_missing_file_no_error(self, tmp_path):
+        """C3 regression: reading a non-existent manifest returns (False, None) without raising."""
+        from pyedi_core.core import manifest
+
+        missing_path = str(tmp_path / "does_not_exist.processed")
+        is_dup, status = manifest.is_duplicate("/some/file.csv", manifest_path=missing_path, skip_hash=True)
+        assert is_dup is False
+        assert status is None
+
+    def test_read_manifest_race_condition(self, tmp_path):
+        """C3 regression: FileNotFoundError during open (simulated TOCTOU) is handled gracefully."""
+        from pyedi_core.core import manifest
+        from pyedi_core.core.manifest import _read_manifest
+
+        # Create a manifest so the path looks real, then mock open to raise
+        manifest_file = tmp_path / "race.processed"
+        manifest_file.write_text("abc123|test.csv|2025-01-01T00:00:00|SUCCESS\n")
+
+        with patch("builtins.open", side_effect=FileNotFoundError("deleted between check and open")):
+            result = _read_manifest(str(manifest_file))
+
+        assert result == []
+
     def test_filter_inbound_files(self, temp_manifest):
         """Test filtering inbound files against manifest."""
         from pyedi_core.core import manifest
@@ -152,16 +167,10 @@ class TestManifest:
             os.unlink(file2)
 
 
+@pytest.mark.unit
 class TestErrorHandler:
     """Tests for the error_handler module."""
-    
-    @pytest.fixture
-    def temp_failed_dir(self, tmp_path):
-        """Create a temporary failed directory."""
-        failed_dir = tmp_path / "failed"
-        failed_dir.mkdir()
-        return str(failed_dir)
-    
+
     def test_handle_failure(self, tmp_path, temp_failed_dir):
         """Test error handling creates correct output."""
         from pyedi_core.core import error_handler
@@ -192,6 +201,56 @@ class TestErrorHandler:
         assert error_details['correlation_id'] == 'test-123'
         assert 'Test exception' in error_details['exception']
     
+    def test_handle_failure_missing_source_no_sidecar(self, tmp_path, temp_failed_dir):
+        """C4 regression: missing source file produces no sidecar and no manifest entry."""
+        from pyedi_core.core import error_handler
+
+        manifest_path = str(tmp_path / "test.processed")
+        nonexistent = str(tmp_path / "ghost.csv")
+
+        error_handler.handle_failure(
+            file_path=nonexistent,
+            stage=error_handler.Stage.DETECTION,
+            reason="File vanished",
+            failed_dir=temp_failed_dir,
+            manifest_path=manifest_path,
+            skip_manifest=False
+        )
+
+        # No .error.json sidecar should exist
+        error_files = list(Path(temp_failed_dir).glob("*.error.json"))
+        assert error_files == []
+
+        # Manifest should not exist (was never written)
+        assert not Path(manifest_path).exists()
+
+    def test_handle_failure_existing_file_creates_sidecar(self, tmp_path, temp_failed_dir):
+        """C4 regression: existing source file is moved, sidecar created, manifest updated."""
+        from pyedi_core.core import error_handler
+
+        manifest_path = str(tmp_path / "test.processed")
+
+        # Create a real source file
+        test_file = tmp_path / "real.csv"
+        test_file.write_text("col1,col2\nval1,val2\n")
+
+        error_file = error_handler.handle_failure(
+            file_path=str(test_file),
+            stage=error_handler.Stage.TRANSFORMATION,
+            reason="Bad data",
+            failed_dir=temp_failed_dir,
+            manifest_path=manifest_path,
+            skip_manifest=False
+        )
+
+        # Source file should be moved
+        assert not test_file.exists()
+        assert (Path(temp_failed_dir) / "real.csv").exists()
+
+        # Sidecar should exist
+        assert Path(error_file).exists()
+        assert error_file.endswith(".error.json")
+
     def test_validate_stage(self):
         """Test stage validation."""
         from pyedi_core.core import error_handler
@@ -202,7 +261,25 @@ class TestErrorHandler:
         assert error_handler.validate_stage("WRITE") is True
         assert error_handler.validate_stage("INVALID") is False
 
+    def test_exception_hierarchy(self):
+        """W3 regression: all typed exceptions are subclasses of PyEDIError."""
+        from pyedi_core.core import error_handler
 
+        for cls in (error_handler.DetectionError, error_handler.SchemaLookupError,
+                    error_handler.MappingError, error_handler.TransformationError):
+            assert issubclass(cls, error_handler.PyEDIError), f"{cls.__name__} must subclass PyEDIError"
+
+    def test_exception_stage_attributes(self):
+        """W3 regression: each exception class carries the correct stage."""
+        from pyedi_core.core import error_handler
+
+        assert error_handler.DetectionError.stage == error_handler.Stage.DETECTION
+        assert error_handler.SchemaLookupError.stage == error_handler.Stage.DETECTION
+        assert error_handler.MappingError.stage == error_handler.Stage.TRANSFORMATION
+        assert error_handler.TransformationError.stage == error_handler.Stage.TRANSFORMATION
+
+
+@pytest.mark.unit
 class TestSchemaCompiler:
     """Tests for the schema_compiler module."""
     
@@ -212,9 +289,9 @@ class TestSchemaCompiler:
         
         dsl_text = """
         def record Header {
-            invoice_number: String
-            invoice_date: Date
-            amount: Decimal = 0.0
+            invoice_number String
+            invoice_date Date
+            amount Decimal
         }
         """
         
@@ -227,7 +304,7 @@ class TestSchemaCompiler:
     def test_compile_to_yaml(self):
         """Test YAML compilation."""
         from pyedi_core.core import schema_compiler
-        
+
         record_defs = [
             {
                 "name": "Header",
@@ -238,14 +315,87 @@ class TestSchemaCompiler:
                 ]
             }
         ]
-        
+
         result = schema_compiler._compile_to_yaml(record_defs, "test_810.txt")
-        
+
         assert 'transaction_type' in result
         assert 'mapping' in result
         assert 'header' in result['mapping']
 
+    def test_compile_dsl_round_trip(self, tmp_path):
+        """Round-trip: compile real DSL source, verify output structure and files."""
+        from pyedi_core.core import schema_compiler
 
+        source = "schemas/source/gfsGenericOut810FF.txt"
+        compiled_dir = str(tmp_path / "compiled")
+
+        result = schema_compiler.compile_dsl(
+            source_file=source,
+            compiled_dir=compiled_dir
+        )
+
+        assert "transaction_type" in result
+        assert "schema" in result
+        assert "mapping" in result
+
+        # Check deduplication worked
+        col_names = [c["name"] for c in result["schema"]["columns"]]
+        assert len(col_names) == len(set(col_names)), "Columns should be unique"
+        assert len(col_names) == 42
+
+        # Mapping should have content
+        assert result["mapping"]["header"] or result["mapping"]["lines"]
+
+        # Verify files were written
+        compiled_files = list((tmp_path / "compiled").glob("*.yaml"))
+        meta_files = list((tmp_path / "compiled").glob("*.meta.json"))
+        assert len(compiled_files) == 1
+        assert len(meta_files) == 1
+
+    def test_compile_dsl_idempotent(self, tmp_path):
+        """Compile same DSL twice; second call should return cached result."""
+        from pyedi_core.core import schema_compiler
+
+        source = "schemas/source/gfsGenericOut810FF.txt"
+        compiled_dir = str(tmp_path / "compiled")
+
+        result1 = schema_compiler.compile_dsl(source, compiled_dir=compiled_dir)
+
+        # Get the meta.json timestamp
+        meta_files = list((tmp_path / "compiled").glob("*.meta.json"))
+        with open(meta_files[0]) as f:
+            meta1 = json.load(f)
+
+        result2 = schema_compiler.compile_dsl(source, compiled_dir=compiled_dir)
+
+        # Results should be identical
+        assert result1["transaction_type"] == result2["transaction_type"]
+        assert len(result1["schema"]["columns"]) == len(result2["schema"]["columns"])
+
+        # Meta should not have changed (hash matched, no recompile)
+        with open(meta_files[0]) as f:
+            meta2 = json.load(f)
+        assert meta1["compiled_at"] == meta2["compiled_at"]
+
+    def test_compile_dsl_missing_source_raises(self):
+        """Compiling a nonexistent source file raises FileNotFoundError."""
+        from pyedi_core.core import schema_compiler
+
+        with pytest.raises(FileNotFoundError):
+            schema_compiler.compile_dsl("schemas/source/does_not_exist.txt")
+
+    def test_compile_dsl_invalid_content_raises(self, tmp_path):
+        """DSL file with no valid record definitions raises ValueError."""
+        from pyedi_core.core import schema_compiler
+
+        bad_source = tmp_path / "bad.txt"
+        bad_source.write_text("this is not a valid DSL file")
+
+        with pytest.raises(ValueError, match="No valid record definitions"):
+            schema_compiler.compile_dsl(str(bad_source), compiled_dir=str(tmp_path / "out"))
+
+
+@pytest.mark.unit
 class TestMapper:
     """Tests for the mapper module."""
     
@@ -369,6 +519,7 @@ class TestMapper:
         assert 'upper' in transforms
 
 
+@pytest.mark.unit
 class TestDrivers:
     """Tests for driver modules."""
     
@@ -406,6 +557,7 @@ class TestDrivers:
         assert 'cxml' in drivers
 
 
+@pytest.mark.unit
 class TestPipeline:
     """Tests for Pipeline class."""
     

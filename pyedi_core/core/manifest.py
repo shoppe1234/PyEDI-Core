@@ -54,10 +54,7 @@ def _read_manifest(manifest_path: str = MANIFEST_FILE) -> List[Tuple[str, str, s
     """
     entries = []
     path = Path(manifest_path)
-    
-    if not path.exists():
-        return entries
-    
+
     with _lock:
         try:
             with open(path, "r", encoding="utf-8") as f:
@@ -66,11 +63,13 @@ def _read_manifest(manifest_path: str = MANIFEST_FILE) -> List[Tuple[str, str, s
                     if not line:
                         continue
                     parts = line.split("|")
-                    if len(parts) == 4:
+                    if len(parts) >= 4:
                         entries.append((parts[0], parts[1], parts[2], parts[3]))
+        except FileNotFoundError:
+            pass  # Manifest doesn't exist yet — expected on first run
         except (IOError, OSError) as e:
             logger.warning(f"Failed to read manifest: {e}")
-    
+
     return entries
 
 
@@ -268,7 +267,9 @@ def clear_manifest(manifest_path: str = MANIFEST_FILE) -> None:
         manifest_path: Path to the manifest file
     """
     path = Path(manifest_path)
-    if path.exists():
-        with _lock:
+    with _lock:
+        try:
             path.unlink()
-        logger.info(f"Manifest cleared: {manifest_path}")
+        except FileNotFoundError:
+            pass
+    logger.info(f"Manifest cleared: {manifest_path}")

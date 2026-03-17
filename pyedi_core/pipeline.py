@@ -108,7 +108,7 @@ class Pipeline:
                 return entry
         
         # No match found - raise error with details
-        raise ValueError(
+        raise error_handler.SchemaLookupError(
             f"No csv_schema_registry entry found for inbound directory: {inbound_dir}"
         )
     
@@ -182,7 +182,8 @@ class Pipeline:
         self,
         file_path: str,
         return_payload: Optional[bool] = None,
-        dry_run: Optional[bool] = None
+        dry_run: Optional[bool] = None,
+        skip_dedup: bool = False
     ) -> PipelineResult:
         """Process a single file."""
         start_time = time.time()
@@ -205,26 +206,27 @@ class Pipeline:
         )
         logger.info(f"Processing file", file_path=file_path)
         
-        # Check for duplicates (skip in dry-run mode)
+        # Check for duplicates (skip in dry-run mode or when batch already filtered)
         skip_hash = do_dry_run
-        is_dup, existing_status = manifest.is_duplicate(
-            file_path,
-            manifest_path=self._manifest_path,
-            skip_hash=skip_hash
-        )
-        
-        if is_dup:
-            logger.info(f"File already processed", status=existing_status)
-            return PipelineResult(
-                status="SKIPPED",
-                correlation_id=correlation_id,
-                source_file=filename,
-                transaction_type="",
-                output_path=None,
-                payload=None,
-                errors=[f"File already processed with status: {existing_status}"],
-                processing_time_ms=int((time.time() - start_time) * 1000)
+        if not skip_dedup:
+            is_dup, existing_status = manifest.is_duplicate(
+                file_path,
+                manifest_path=self._manifest_path,
+                skip_hash=skip_hash
             )
+
+            if is_dup:
+                logger.info(f"File already processed", status=existing_status)
+                return PipelineResult(
+                    status="SKIPPED",
+                    correlation_id=correlation_id,
+                    source_file=filename,
+                    transaction_type="",
+                    output_path=None,
+                    payload=None,
+                    errors=[f"File already processed with status: {existing_status}"],
+                    processing_time_ms=int((time.time() - start_time) * 1000)
+                )
         
         errors = []
         
@@ -232,7 +234,7 @@ class Pipeline:
             # Detect format
             driver = self._detect_driver(file_path)
             if not driver:
-                raise ValueError(f"No driver available for file: {file_path}")
+                raise error_handler.DetectionError(f"No driver available for file: {file_path}")
             
             driver.set_correlation_id(correlation_id)
             
@@ -265,7 +267,7 @@ class Pipeline:
                 try:
                     map_yaml = mapper.load_map(compiled_yaml_path)
                 except Exception as e:
-                    raise ValueError(f"Failed to load compiled map: {e}")
+                    raise error_handler.SchemaLookupError(f"Failed to load compiled map: {e}")
                 
                 transaction_type = csv_entry.transaction_type
                 
@@ -279,7 +281,7 @@ class Pipeline:
                     transaction_type = map_yaml.get("transaction_type", "unknown")
             
             if not map_yaml:
-                raise ValueError(f"No mapping rules found for file: {file_path}")
+                raise error_handler.MappingError(f"No mapping rules found for file: {file_path}")
             
             # Execute pipeline stages
             logger = logger.bind(stage="DETECTION", transaction_type=transaction_type)
@@ -330,98 +332,31 @@ class Pipeline:
                 processing_time_ms=processing_time
             )
             
-        except error_handler.PyEDIError as e:
-            # Handle known PyEDI errors
+        except Exception as e:
             errors.append(str(e))
             processing_time = int((time.time() - start_time) * 1000)
-            
-            logger.error(f"Processing failed", error=str(e), processing_time_ms=processing_time)
-            
-            # Handle failure (unless dry-run)
-            if not do_dry_run:
-                error_handler.handle_failure(
-                    file_path=file_path,
-                    stage=error_handler.Stage.DETECTION,
-                    reason=str(e),
-                    exception=e,
-                    correlation_id=correlation_id,
-                    failed_dir=self._failed_dir,
-                    manifest_path=self._manifest_path,
-                    skip_manifest=do_dry_run
-                )
-            
-            return PipelineResult(
-                status="FAILED",
-                correlation_id=correlation_id,
-                source_file=filename,
-                transaction_type="",
-                output_path=None,
-                payload=None,
-                errors=errors,
+
+            stage = getattr(e, 'stage', error_handler.Stage.TRANSFORMATION)
+
+            logger.error(
+                f"Processing failed",
+                error=str(e),
+                stage=stage,
                 processing_time_ms=processing_time
             )
-            
-        except ValueError as e:
-            # Handle ValueError (includes csv_schema_registry lookup failures)
-            errors.append(str(e))
-            processing_time = int((time.time() - start_time) * 1000)
-            
-            # Determine the stage - CSV registry errors are DETECTION stage
-            stage = error_handler.Stage.DETECTION
-            if "csv_schema_registry" in str(e):
-                logger.error(
-                    f"CSV schema lookup failed",
-                    error=str(e),
-                    correlation_id=correlation_id,
-                    processing_time_ms=processing_time
-                )
-            else:
-                logger.error(f"Processing failed", error=str(e), processing_time_ms=processing_time)
-                stage = error_handler.Stage.TRANSFORMATION
-            
-            # Handle failure (unless dry-run)
+
             if not do_dry_run:
                 error_handler.handle_failure(
                     file_path=file_path,
                     stage=stage,
                     reason=str(e),
-                    exception=None,
-                    correlation_id=correlation_id,
-                    failed_dir=self._failed_dir,
-                    manifest_path=self._manifest_path,
-                    skip_manifest=do_dry_run
-                )
-            
-            return PipelineResult(
-                status="FAILED",
-                correlation_id=correlation_id,
-                source_file=filename,
-                transaction_type="",
-                output_path=None,
-                payload=None,
-                errors=errors,
-                processing_time_ms=processing_time
-            )
-            
-        except Exception as e:
-            errors.append(str(e))
-            processing_time = int((time.time() - start_time) * 1000)
-            
-            logger.error(f"Processing failed", error=str(e), processing_time_ms=processing_time)
-            
-            # Handle failure (unless dry-run)
-            if not do_dry_run:
-                error_handler.handle_failure(
-                    file_path=file_path,
-                    stage=error_handler.Stage.TRANSFORMATION,
-                    reason=str(e),
                     exception=e,
                     correlation_id=correlation_id,
                     failed_dir=self._failed_dir,
                     manifest_path=self._manifest_path,
                     skip_manifest=do_dry_run
                 )
-            
+
             return PipelineResult(
                 status="FAILED",
                 correlation_id=correlation_id,
@@ -470,10 +405,10 @@ class Pipeline:
         with ThreadPoolExecutor(max_workers=max_workers) as executor:
             future_to_file = {
                 executor.submit(
-                    self._process_single,
-                    f,
-                    return_payload,
-                    dry_run
+                    self._process_single, f,
+                    return_payload=return_payload,
+                    dry_run=dry_run,
+                    skip_dedup=True
                 ): f
                 for f in new_files
             }

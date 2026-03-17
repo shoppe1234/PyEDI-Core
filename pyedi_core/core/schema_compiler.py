@@ -91,8 +91,6 @@ def _parse_dsl_record(record_text: str) -> Dict[str, Any]:
     for match in field_pattern.finditer(record_text):
         field_name = match.group(1)
         field_type = match.group(2)
-        default_value = None
-        
         # Map DSL types to YAML types
         type_mapping = {
             "String": "string",
@@ -113,17 +111,6 @@ def _parse_dsl_record(record_text: str) -> Dict[str, Any]:
             "type": type_mapping.get(field_type, "string"),
             "required": True
         }
-        
-        # Handle default values
-        if default_value:
-            if default_value.startswith(("'", '"')):
-                field_def["default"] = default_value.strip("'\"")
-            else:
-                try:
-                    field_def["default"] = float(default_value) if "." in default_value else int(default_value)
-                except ValueError:
-                    field_def["default"] = default_value
-            field_def["required"] = False
         
         result["fields"].append(field_def)
     
@@ -243,6 +230,15 @@ def _compile_to_yaml(record_defs: List[Dict], source_filename: str, delimiter: s
                             "required": field.get("required", True)
                         })
     
+    # Deduplicate columns by name (keep first occurrence)
+    seen = set()
+    unique_columns = []
+    for col in yaml_map["schema"]["columns"]:
+        if col['name'] not in seen:
+            seen.add(col['name'])
+            unique_columns.append(col)
+    yaml_map["schema"]["columns"] = unique_columns
+
     return yaml_map
 
 

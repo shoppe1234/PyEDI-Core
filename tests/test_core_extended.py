@@ -10,6 +10,7 @@ from pathlib import Path
 import pytest
 
 
+@pytest.mark.unit
 class TestLoggerExtended:
     """Extended tests for logger module."""
     
@@ -41,6 +42,7 @@ class TestLoggerExtended:
         logger.error("error test")
 
 
+@pytest.mark.unit
 class TestManifestExtended:
     """Extended tests for manifest module."""
     
@@ -74,6 +76,7 @@ class TestManifestExtended:
         assert not manifest_file.exists()
 
 
+@pytest.mark.unit
 class TestErrorHandlerExtended:
     """Extended tests for error_handler module."""
     
@@ -143,6 +146,7 @@ class TestErrorHandlerExtended:
         assert not error_file.exists()
 
 
+@pytest.mark.unit
 class TestSchemaCompilerExtended:
     """Extended tests for schema_compiler module."""
     
@@ -183,6 +187,7 @@ class TestSchemaCompilerExtended:
         assert hash_val == 'abc123'
 
 
+@pytest.mark.unit
 class TestMapperExtended:
     """Extended tests for mapper module."""
     
@@ -275,6 +280,7 @@ mapping:
         assert result == "2025-01-15"
 
 
+@pytest.mark.unit
 class TestDriversExtended:
     """Extended tests for driver modules."""
     
@@ -336,6 +342,7 @@ class TestDriversExtended:
         assert csv_handler.detect_format("test.txt") == "unknown"
 
 
+@pytest.mark.unit
 class TestPipelineExtended:
     """Extended tests for Pipeline class."""
     

@@ -181,21 +181,11 @@ class CSVHandler(TransactionProcessor):
             # Handle both flat (header-only) and detailed (with line items) formats
             data = df.to_dict(orient="records")
             
-            # If only one record, it's a header; wrap in lines if needed
-            if len(data) == 1:
-                # Single record - treat as header
-                result = {
-                    "header": data[0],
-                    "lines": [],
-                    "summary": {}
-                }
-            else:
-                # Multiple records - first is header, rest are lines
-                result = {
-                    "header": data[0],
-                    "lines": data[1:] if len(data) > 1 else [],
-                    "summary": data[-1] if len(data) > 1 else {}
-                }
+            result = {
+                "header": {},
+                "lines": data,
+                "summary": {}
+            }
             
             self.logger.info(
                 f"CSV parsed successfully",

@@ -31,6 +31,8 @@ class ObservabilityConfig(BaseModel):
     """Observability/logging configuration."""
     log_level: str = Field("INFO", description="Log level")
     output: str = Field("console", description="Log output (console or file)")
+    log_file: Optional[str] = Field(None, description="Log file path")
+    format: str = Field("pretty", description="Log format (pretty or json)")
 
 
 class DirectoriesConfig(BaseModel):

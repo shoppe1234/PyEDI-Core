@@ -101,8 +101,9 @@ def run_tests(
         print("No test cases found in metadata.")
         return 0
 
-    # Lazy import — only needed for x12 direct-read bypass
+    # Lazy imports — only needed for direct-read bypass
     from .drivers.x12_handler import X12Handler
+    from .drivers.xml_handler import XMLHandler
 
     pipeline = Pipeline(config_path=config_path)
     base_dir = metadata_file.parent
@@ -151,8 +152,11 @@ def run_tests(
                 if case.get("transaction_type") == "x12":
                     driver = X12Handler()
                     actual_payload = driver.read(str(input_path))
+                elif case.get("transaction_type") == "cxml":
+                    driver = XMLHandler()
+                    actual_payload = driver.read(str(input_path))
                 else:
-                    results_detail.append(f"  FAIL  {name} — no target_inbound_dir and not x12")
+                    results_detail.append(f"  FAIL  {name} — no target_inbound_dir and not x12/cxml")
                     failed += 1
                     continue
 

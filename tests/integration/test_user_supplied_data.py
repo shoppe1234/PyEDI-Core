@@ -72,8 +72,13 @@ def test_user_supplied_file(test_case):
                 driver = X12Handler()
                 actual_payload = driver.read(str(input_path))
                 status = 'SUCCESS'
+            elif test_case.get('transaction_type') == 'cxml':
+                from pyedi_core.drivers import XMLHandler
+                driver = XMLHandler()
+                actual_payload = driver.read(str(input_path))
+                status = 'SUCCESS'
             else:
-                pytest.fail("Test case lacks target_inbound_dir and is not a direct x12 comparison.")
+                pytest.fail("Test case lacks target_inbound_dir and is not a direct x12/cxml comparison.")
         
         # Always dump the payload to output_path
         with open(output_path, 'w') as f:

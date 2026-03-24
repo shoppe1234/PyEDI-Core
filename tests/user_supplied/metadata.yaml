@@ -21,6 +21,16 @@ test_cases:
     target_inbound_dir: "./inbound/csv/margin_edge"
     description: "Verify processing of Margin Edge TXT using tpm810SourceFF schema."
 
+  - name: "cXML 850 Purchase Order"
+    input_file: "inputs/cxml_850_sample.cxml"
+    output_file: "outputs/cxml_850_sample.json"
+    expected_output: "expected_outputs/cxml_850_sample.json"
+    should_succeed: true
+    dry_run: true
+    skip_fields: ["_source_file"]
+    transaction_type: "cxml"
+    description: "Verify cXML 850 parsing and field extraction"
+
   - name: "x12 Data Comparison 200220261215033"
     input_file: "inputs/200220261215033.dat"
     output_file: "outputs/200220261215033.json"

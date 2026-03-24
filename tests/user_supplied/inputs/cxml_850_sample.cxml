@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE cXML SYSTEM "http://xml.cxml.org/schemas/cXML/1.2.014/cXML.dtd">
+<cXML payloadID="2026011512345@example.com" timestamp="2026-01-15T10:30:00-05:00">
+  <Header>
+    <From>
+      <Credential domain="DUNS">
+        <Identity>123456789</Identity>
+      </Credential>
+    </From>
+    <To>
+      <Credential domain="DUNS">
+        <Identity>987654321</Identity>
+      </Credential>
+    </To>
+    <Sender>
+      <Credential domain="NetworkID">
+        <Identity>SenderSystem</Identity>
+        <SharedSecret>secret123</SharedSecret>
+      </Credential>
+      <UserAgent>TestAgent 1.0</UserAgent>
+    </Sender>
+  </Header>
+  <Request>
+    <OrderRequest>
+      <OrderRequestHeader orderID="PO-001" orderDate="2026-01-15" orderTotal="1250.00" type="new">
+        <Total>
+          <Money currency="USD">1250.00</Money>
+        </Total>
+        <ShipTo>
+          <Address>
+            <Name xml:lang="en">Warehouse A</Name>
+            <PostalAddress>
+              <Street>100 Main St</Street>
+              <City>Springfield</City>
+              <State>IL</State>
+              <PostalCode>62701</PostalCode>
+              <Country isoCountryCode="US">United States</Country>
+            </PostalAddress>
+          </Address>
+        </ShipTo>
+        <BillTo>
+          <Address>
+            <Name xml:lang="en">Accounts Payable</Name>
+            <PostalAddress>
+              <Street>200 Finance Ave</Street>
+              <City>Springfield</City>
+              <State>IL</State>
+              <PostalCode>62702</PostalCode>
+              <Country isoCountryCode="US">United States</Country>
+            </PostalAddress>
+          </Address>
+        </BillTo>
+      </OrderRequestHeader>
+      <OrderRequestDetail>
+        <OrderRequestLine lineNumber="1" quantity="10">
+          <ItemID>
+            <SupplierPartID>WIDGET-A100</SupplierPartID>
+          </ItemID>
+          <Description xml:lang="en">Standard Widget A</Description>
+          <UnitPrice>
+            <Money currency="USD">50.00</Money>
+          </UnitPrice>
+        </OrderRequestLine>
+        <OrderRequestLine lineNumber="2" quantity="5">
+          <ItemID>
+            <SupplierPartID>GADGET-B200</SupplierPartID>
+          </ItemID>
+          <Description xml:lang="en">Premium Gadget B</Description>
+          <UnitPrice>
+            <Money currency="USD">150.00</Money>
+          </UnitPrice>
+        </OrderRequestLine>
+      </OrderRequestDetail>
+    </OrderRequest>
+  </Request>
+</cXML>

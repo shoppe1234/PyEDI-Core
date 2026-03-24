@@ -1,9 +1,0 @@
-transaction_type: 810_INVOICE
-input_format: CSV
-schema:
-  delimiter: ','
-  columns: []
-mapping:
-  header: {}
-  lines: []
-  summary: {}

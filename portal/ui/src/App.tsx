@@ -5,14 +5,16 @@ import ValidatePage from './pages/Validate'
 import PipelinePage from './pages/Pipeline'
 import TestsPage from './pages/Tests'
 import ConfigPage from './pages/Config'
+import ComparePage from './pages/Compare'
 
-type Page = 'dashboard' | 'validate' | 'pipeline' | 'tests' | 'config'
+type Page = 'dashboard' | 'validate' | 'pipeline' | 'tests' | 'compare' | 'config'
 
 const NAV: { key: Page; label: string }[] = [
   { key: 'dashboard', label: 'Dashboard' },
   { key: 'validate', label: 'Validate' },
   { key: 'pipeline', label: 'Pipeline' },
   { key: 'tests', label: 'Tests' },
+  { key: 'compare', label: 'Compare' },
   { key: 'config', label: 'Config' },
 ]
 
@@ -53,6 +55,7 @@ function App() {
         {page === 'validate' && <ValidatePage />}
         {page === 'pipeline' && <PipelinePage />}
         {page === 'tests' && <TestsPage />}
+        {page === 'compare' && <ComparePage />}
         {page === 'config' && <ConfigPage />}
       </main>
     </div>

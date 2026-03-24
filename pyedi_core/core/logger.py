@@ -26,7 +26,6 @@ _logger: Optional[structlog.BoundLogger] = None
 _config: dict = {
     "log_level": "INFO",
     "output": "console",
-    "log_file": "./logs/pyedi.log",
     "format": "pretty",
 }
 
@@ -36,7 +35,7 @@ def configure(config: dict) -> None:
     Configure the logger from a config dictionary.
     
     Args:
-        config: Dictionary with keys: log_level, output, log_file, format
+        config: Dictionary with keys: log_level, output, format
     """
     global _logger, _config
     _config.update(config)
@@ -66,11 +65,6 @@ def _get_formatter():
         return structlog.processors.JSONRenderer()
     else:
         return structlog.dev.ConsoleRenderer()
-
-
-def _get_log_level() -> str:
-    """Get the configured log level."""
-    return _config.get("log_level", "INFO")
 
 
 def get_logger() -> structlog.BoundLogger:

@@ -109,6 +109,7 @@ def _parse_dsl_record(record_text: str) -> Dict[str, Any]:
         field_def = {
             "name": field_name,
             "type": type_mapping.get(field_type, "string"),
+            "dsl_type": field_type,
             "required": True
         }
         

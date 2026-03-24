@@ -328,7 +328,17 @@ portal/                  # Web portal (FastAPI + React)
 ├── ui/                  # React + Vite + Tailwind frontend
 │   └── src/pages/       # Dashboard, Validate, Pipeline, Tests, Compare, Config
 ├── tests/
-│   └── test_compare_api.py  # Compare API integration tests
+│   ├── test_compare_api.py  # Compare API integration tests
+│   └── e2e/                 # Playwright E2E browser tests (29 tests)
+│       ├── conftest.py      # Server lifecycle, test data fixtures
+│       ├── pages/           # Page objects (base, dashboard, validate, etc.)
+│       ├── test_navigation.py
+│       ├── test_dashboard.py
+│       ├── test_validate.py
+│       ├── test_pipeline.py
+│       ├── test_tests.py
+│       ├── test_config.py
+│       └── test_compare.py  # 14 tests — full compare workflow
 ├── dev.sh               # Dev startup script (API + Vite)
 └── pyproject.toml
 config/
@@ -363,11 +373,12 @@ tests/
 
 ## Testing
 
-**192 tests** (110+ unit, 80+ integration), 0 failures.
+**221 tests** (110+ unit, 80+ integration, 29 E2E browser), 0 failures.
 
 ```bash
-# Run all tests
-pytest
+# Run all unit + integration tests
+pytest tests/ -v --tb=short              # 187 engine tests
+pytest portal/tests/test_compare_api.py  # 5 portal API tests
 
 # Unit tests only (fast, no I/O)
 pytest -m unit
@@ -378,6 +389,23 @@ pytest -m integration
 # With coverage
 pytest --cov=pyedi_core --cov-report=term-missing
 ```
+
+### E2E Browser Tests (Playwright)
+
+29 Playwright tests run a real browser against the full portal stack (FastAPI + React):
+
+```bash
+# Headed mode (visible browser, 200ms slow-mo)
+pytest portal/tests/e2e/ --headed --slowmo=200 -v
+
+# Headless (CI mode)
+pytest portal/tests/e2e/ -v
+
+# Single test file
+pytest portal/tests/e2e/test_compare.py --headed --slowmo=200 -v
+```
+
+Tests auto-start uvicorn on port 8321 and use synthetic X12 JSON data for compare workflows. Page object pattern in `portal/tests/e2e/pages/`.
 
 ### Test Harness
 

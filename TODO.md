@@ -12,6 +12,7 @@
 - [x] **Build PyEDI Portal (React frontend)** — `portal/ui/` with Vite + React + TypeScript + Tailwind CSS. Dashboard, Validate, Pipeline, Tests, and Config pages. Static build served by FastAPI.
 - [x] **Compare engine — Phase D (core)** — Ported `json810Compare/comparator.py` into `pyedi_core/comparator/` module. Profile-driven comparison with models, rules (YAML), matcher, engine, SQLite store, and `pyedi compare` CLI subcommand. 6 transaction profiles (810, 850, 856, 820, CSV, cXML). 22 comparator tests.
 - [x] **Compare engine — Phase E (portal)** — `/api/compare` endpoints (9 routes: profiles, run, runs, pairs, diffs, export, rules read/write). React `/compare` page with profile dropdown, run history, pair list, diff viewer, rules editor. 5 API integration tests.
+- [x] **Playwright E2E test suite** — 29 headed browser tests across all 6 portal pages using pytest-playwright + page object pattern. Covers navigation, health indicator, DSL validation, test harness run, compare full workflow (profile select, run comparison, view pairs/diffs, rules editor round-trip, export CSV). Auto-starts uvicorn on port 8321 per session.
 
 ## Open
 

@@ -1,31 +1,35 @@
 # PyEDI-Core Test Results
 
 **Date:** 2026-03-24
-**Run:** Full suite after Compare engine build (Phase D-E complete)
-**Result:** **192 / 192 PASSED**, 1 warning
+**Run:** Full suite after Compare engine + Playwright E2E build
+**Result:** **221 / 221 PASSED**, 1 warning
 
 ---
 
 ## Test Suite Summary
 
-| Category | Count | Marker |
-|----------|-------|--------|
+| Category | Count | Command |
+|----------|-------|---------|
 | Unit tests | ~110 | `pytest -m unit` |
 | Integration tests | ~82 | `pytest -m integration` |
-| **Total** | **192** | `pytest tests/ + pytest portal/tests/` |
+| Portal API tests | 5 | `pytest portal/tests/test_compare_api.py` |
+| E2E browser tests | 29 | `pytest portal/tests/e2e/ --headed` |
+| **Total** | **221** | |
 
 ## Test Execution
 
 **Command:**
 ```bash
-pytest tests/ -v --tb=short          # 187 passed
-pytest portal/tests/ -v --tb=short   #   5 passed
+pytest tests/ -v --tb=short                       # 187 passed
+pytest portal/tests/test_compare_api.py -v        #   5 passed
+pytest portal/tests/e2e/ --headed --slowmo=200 -v #  29 passed
 ```
 
 **Output:**
 ```
-187 passed, 1 warning in 7.18s   (engine tests)
-  5 passed in 2.11s              (portal compare API tests)
+187 passed, 1 warning in 6.96s    (engine tests)
+  5 passed in 2.11s               (portal compare API tests)
+ 29 passed in 110.78s             (E2E browser tests, headed mode)
 ```
 
 The single warning is a non-fatal discrepancy in the x12 integration test (unexpected metadata keys `_transaction_type`, `_is_unmapped`, `_map_file` in actual output).
@@ -44,6 +48,13 @@ The single warning is a non-fatal discrepancy in the x12 integration test (unexp
 | `test_api.py` | 7 | integration | portal API: health, validate, pipeline, test, manifest, config |
 | `integration/test_user_supplied_data.py` | 9 | integration | YAML-driven regression tests with real files |
 | `portal/tests/test_compare_api.py` | 5 | integration | compare API: profiles, run+query, export, rules read/write |
+| `portal/tests/e2e/test_navigation.py` | 4 | e2e | sidebar nav, health indicator, active highlighting |
+| `portal/tests/e2e/test_dashboard.py` | 2 | e2e | stat cards, page rendering |
+| `portal/tests/e2e/test_validate.py` | 4 | e2e | DSL validation by path, schema columns, disabled state |
+| `portal/tests/e2e/test_pipeline.py` | 1 | e2e | page loads |
+| `portal/tests/e2e/test_tests.py` | 2 | e2e | case listing, run harness |
+| `portal/tests/e2e/test_config.py` | 2 | e2e | JSON display, expected keys |
+| `portal/tests/e2e/test_compare.py` | 14 | e2e | full compare workflow: profiles, run, pairs, diffs, rules, export |
 
 ## User-Supplied Test Cases
 

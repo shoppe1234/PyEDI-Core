@@ -2,7 +2,7 @@
 
 **Date:** 2026-03-17
 **Scope:** Full codebase review — Python scripts, workflow, configuration, documentation, tests, YAML rules
-**Status:** All 9 criticals resolved (Tiers 1-4, 2026-03-17 through 2026-03-24). Two additional compiler bugs (type loss in dedup, fieldIdentifier collision) discovered and fixed on 2026-03-24 as part of the Portal build. Compare engine (Phase D-E) completed 2026-03-24: `pyedi_core/comparator/` module, `pyedi compare` CLI, `/api/compare` endpoints, React `/compare` page. 192 total tests passing.
+**Status:** All 9 criticals resolved (Tiers 1-4, 2026-03-17 through 2026-03-24). Two additional compiler bugs (type loss in dedup, fieldIdentifier collision) discovered and fixed on 2026-03-24 as part of the Portal build. Compare engine (Phase D-E) completed 2026-03-24: `pyedi_core/comparator/` module, `pyedi compare` CLI, `/api/compare` endpoints, React `/compare` page. 221 total tests passing (187 engine + 5 API + 29 Playwright E2E browser tests).
 
 ---
 

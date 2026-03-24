@@ -932,6 +932,137 @@ class TestPipelineBatchProcessing:
 
 
 @pytest.mark.integration
+class TestPipelineConcurrency:
+    """Stress tests for concurrent batch processing via ThreadPoolExecutor."""
+
+    CSV_FIXTURE = Path("tests/user_supplied/inputs/UnivT701_small.csv")
+    INBOUND_DIR = Path("./inbound/csv/gfs_ca")
+
+    def _setup_csv_files(self, count: int) -> list[Path]:
+        """Copy the CSV fixture N times into the gfs_ca inbound dir."""
+        import shutil
+        self.INBOUND_DIR.mkdir(parents=True, exist_ok=True)
+        paths: list[Path] = []
+        for i in range(count):
+            dest = self.INBOUND_DIR / f"concurrent_test_{i}.csv"
+            shutil.copy(self.CSV_FIXTURE, dest)
+            paths.append(dest)
+        return paths
+
+    def _cleanup_files(self, paths: list[Path]) -> None:
+        """Remove test files and any pipeline artifacts."""
+        import shutil
+        for p in paths:
+            p.unlink(missing_ok=True)
+        # Clean outbound artifacts
+        outbound = Path("./outbound")
+        if outbound.exists():
+            for f in outbound.glob("concurrent_test_*"):
+                f.unlink(missing_ok=True)
+
+    def test_thread_isolation(self) -> None:
+        """5 CSV files processed concurrently each get unique results with no cross-contamination."""
+        from pyedi_core.pipeline import Pipeline
+
+        paths = self._setup_csv_files(5)
+        try:
+            pipeline = Pipeline(config_path="./config/config.yaml")
+            results = pipeline.run(
+                files=[str(p) for p in paths],
+                return_payload=True,
+                dry_run=True,
+            )
+
+            assert isinstance(results, list)
+            assert len(results) == 5
+
+            correlation_ids = [r.correlation_id for r in results]
+            assert len(set(correlation_ids)) == 5, "Each result must have a unique correlation_id"
+
+            for r in results:
+                assert r.status == "SUCCESS", f"{r.source_file} failed: {r.errors}"
+                assert r.payload is not None
+                assert "header" in r.payload or "lines" in r.payload
+        finally:
+            self._cleanup_files(paths)
+
+    def test_manifest_consistency(self, tmp_path: Path) -> None:
+        """Concurrent processing writes exactly one manifest entry per file."""
+        from pyedi_core.pipeline import Pipeline
+
+        paths = self._setup_csv_files(5)
+        manifest_path = str(tmp_path / ".processed")
+        try:
+            pipeline = Pipeline(config_path="./config/config.yaml")
+            pipeline._manifest_path = manifest_path
+            results = pipeline.run(
+                files=[str(p) for p in paths],
+                dry_run=False,
+            )
+
+            assert isinstance(results, list)
+            assert len(results) == 5
+
+            # Read and validate manifest
+            manifest_file = Path(manifest_path)
+            assert manifest_file.exists(), "Manifest file should exist after processing"
+            lines = [
+                line.strip()
+                for line in manifest_file.read_text().splitlines()
+                if line.strip()
+            ]
+            assert len(lines) == 5, f"Expected 5 manifest entries, got {len(lines)}"
+
+            filenames: set[str] = set()
+            for line in lines:
+                parts = line.split("|")
+                assert len(parts) >= 4, f"Malformed manifest line: {line}"
+                filenames.add(parts[1])
+                assert parts[3] in ("SUCCESS", "FAILED"), f"Invalid status: {parts[3]}"
+
+            assert len(filenames) == 5, "Each file should have its own manifest entry"
+        finally:
+            self._cleanup_files(paths)
+
+    def test_exception_isolation(self) -> None:
+        """Failures in some files don't prevent successful processing of others."""
+        from pyedi_core.pipeline import Pipeline
+
+        valid_paths = self._setup_csv_files(3)
+        invalid_paths: list[Path] = []
+        try:
+            # Create 2 invalid files with unrecognised extensions
+            for i in range(2):
+                p = self.INBOUND_DIR / f"concurrent_bad_{i}.xyz"
+                p.write_text(f"invalid content {i}")
+                invalid_paths.append(p)
+
+            all_files = [str(p) for p in valid_paths + invalid_paths]
+
+            pipeline = Pipeline(config_path="./config/config.yaml")
+            results = pipeline.run(files=all_files, return_payload=True, dry_run=True)
+
+            assert isinstance(results, list)
+            assert len(results) == 5
+
+            statuses = {r.status for r in results}
+            success_count = sum(1 for r in results if r.status == "SUCCESS")
+            failed_count = sum(1 for r in results if r.status == "FAILED")
+
+            assert success_count == 3, f"Expected 3 SUCCESS, got {success_count}"
+            assert failed_count == 2, f"Expected 2 FAILED, got {failed_count}"
+
+            # Verify successful results have payloads
+            for r in results:
+                if r.status == "SUCCESS":
+                    assert r.payload is not None
+        finally:
+            self._cleanup_files(valid_paths)
+            for p in invalid_paths:
+                p.unlink(missing_ok=True)
+
+
+@pytest.mark.integration
 class TestX12RealParsing:
     """Integration tests that parse real X12 EDI content through the actual badx12 parser."""
 

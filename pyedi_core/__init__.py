@@ -23,6 +23,7 @@ Usage:
 """
 
 from .pipeline import Pipeline, PipelineResult, create_pipeline
+from .validator import validate
 from .core import logger, manifest, error_handler, schema_compiler, mapper
 from .drivers import (
     TransactionProcessor,
@@ -40,6 +41,8 @@ __all__ = [
     "Pipeline",
     "PipelineResult",
     "create_pipeline",
+    # Validator
+    "validate",
     # Core
     "logger",
     "manifest",

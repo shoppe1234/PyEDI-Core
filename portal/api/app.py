@@ -24,6 +24,10 @@ def create_app() -> FastAPI:
     def health() -> dict:
         return {"status": "ok"}
 
+    from .routes.validate import router as validate_router
+
+    application.include_router(validate_router)
+
     return application
 
 

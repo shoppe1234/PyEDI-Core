@@ -1,7 +1,10 @@
 """FastAPI application factory for PyEDI Portal."""
 
+from pathlib import Path
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 
 
 def create_app() -> FastAPI:
@@ -35,6 +38,11 @@ def create_app() -> FastAPI:
     application.include_router(test_router)
     application.include_router(manifest_router)
     application.include_router(config_router)
+
+    # Serve static build if it exists (production mode)
+    static_dir = Path(__file__).parent.parent / "ui" / "dist"
+    if static_dir.exists():
+        application.mount("/", StaticFiles(directory=str(static_dir), html=True), name="static")
 
     return application
 

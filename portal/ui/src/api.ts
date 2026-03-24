@@ -54,4 +54,35 @@ export const api = {
 
   config: () => request<any>('/config'),
   configRegistry: () => request<any>('/config/registry'),
+
+  // Compare
+  compareProfiles: () => request<any[]>('/compare/profiles'),
+  compareRun: (profile: string, sourceDir: string, targetDir: string, matchJsonPath?: string) =>
+    request<any>('/compare/run', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ profile, source_dir: sourceDir, target_dir: targetDir, match_json_path: matchJsonPath }),
+    }),
+  compareRuns: (profile?: string, limit = 20) => {
+    const params = new URLSearchParams();
+    if (profile) params.set('profile', profile);
+    params.set('limit', String(limit));
+    return request<any[]>(`/compare/runs?${params}`);
+  },
+  compareRunDetail: (runId: number) => request<any>(`/compare/runs/${runId}`),
+  comparePairs: (runId: number, status?: string) => {
+    const params = new URLSearchParams();
+    if (status) params.set('status', status);
+    return request<any[]>(`/compare/runs/${runId}/pairs?${params}`);
+  },
+  compareDiffs: (runId: number, pairId: number) =>
+    request<any[]>(`/compare/runs/${runId}/pairs/${pairId}/diffs`),
+  compareExportUrl: (runId: number) => `${BASE}/compare/runs/${runId}/export`,
+  compareRules: (profileName: string) => request<any>(`/compare/profiles/${profileName}/rules`),
+  compareUpdateRules: (profileName: string, rules: any) =>
+    request<any>(`/compare/profiles/${profileName}/rules`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(rules),
+    }),
 };

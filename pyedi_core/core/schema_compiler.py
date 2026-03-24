@@ -230,14 +230,19 @@ def _compile_to_yaml(record_defs: List[Dict], source_filename: str, delimiter: s
                             "required": field.get("required", True)
                         })
     
-    # Deduplicate columns by name (keep first occurrence)
-    seen = set()
-    unique_columns = []
+    # Deduplicate columns by name, preferring the most specific type
+    type_specificity = {"float": 5, "integer": 4, "date": 3, "boolean": 2, "string": 1}
+    seen: Dict[str, Dict[str, Any]] = {}
     for col in yaml_map["schema"]["columns"]:
-        if col['name'] not in seen:
-            seen.add(col['name'])
-            unique_columns.append(col)
-    yaml_map["schema"]["columns"] = unique_columns
+        name = col["name"]
+        if name not in seen:
+            seen[name] = col
+        else:
+            existing_rank = type_specificity.get(seen[name]["type"], 0)
+            new_rank = type_specificity.get(col["type"], 0)
+            if new_rank > existing_rank:
+                seen[name] = col
+    yaml_map["schema"]["columns"] = list(seen.values())
 
     return yaml_map
 

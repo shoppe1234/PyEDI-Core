@@ -128,3 +128,70 @@ class ManifestStatsResponse(BaseModel):
 
 class ConfigResponse(BaseModel):
     config: Dict[str, Any] = {}
+
+
+# ---------------------------------------------------------------------------
+# Compare
+# ---------------------------------------------------------------------------
+
+class CompareMatchKeyModel(BaseModel):
+    segment: Optional[str] = None
+    field: Optional[str] = None
+    json_path: Optional[str] = None
+
+
+class CompareProfileResponse(BaseModel):
+    name: str
+    description: str
+    match_key: CompareMatchKeyModel
+    segment_qualifiers: Dict[str, Optional[str]] = {}
+    rules_file: str
+
+
+class CompareRunRequest(BaseModel):
+    profile: str
+    source_dir: str
+    target_dir: str
+    match_json_path: Optional[str] = None
+
+
+class CompareRunResponse(BaseModel):
+    run_id: int
+    profile: str
+    total_pairs: int
+    matched: int
+    mismatched: int
+    unmatched: int
+    started_at: str
+    finished_at: str
+
+
+class ComparePairResponse(BaseModel):
+    id: int
+    run_id: int
+    source_file: str
+    source_tx_index: int
+    target_file: Optional[str] = None
+    target_tx_index: int = 0
+    match_value: str
+    status: str
+    diff_count: int = 0
+
+
+class CompareFieldDiffResponse(BaseModel):
+    segment: str
+    field: str
+    severity: str
+    source_value: Optional[str] = None
+    target_value: Optional[str] = None
+    description: str
+
+
+class CompareRulesResponse(BaseModel):
+    classification: List[Dict[str, Any]] = []
+    ignore: List[Dict[str, Any]] = []
+
+
+class CompareRulesUpdateRequest(BaseModel):
+    classification: List[Dict[str, Any]] = []
+    ignore: List[Dict[str, Any]] = []

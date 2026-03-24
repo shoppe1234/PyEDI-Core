@@ -167,24 +167,24 @@
 
 ## Recommendations — Prioritized Action Plan
 
-### Tier 1: Fix Before Building Test Harness
-1. Add `badx12` to `pyproject.toml` dependencies (C1)
-2. Consolidate the two `config.yaml` files into one (C2)
-3. Fix CSV handler header/summary heuristic (C6)
-4. Fix manifest TOCTOU race (C3) and pipeline check-then-mark race (C5)
-5. Fix error handler path bug (C4)
-6. Add XXE protection to XML handler (W30) — use `defusedxml`
-7. Fix X12 `IndexError` on empty fields list (C9)
+### Tier 1: Fix Before Building Test Harness — COMPLETE (2026-03-17)
+1. ~~Add `badx12` to `pyproject.toml` dependencies (C1)~~ — done
+2. ~~Consolidate the two `config.yaml` files into one (C2)~~ — done
+3. ~~Fix CSV handler header/summary heuristic (C6)~~ — done
+4. ~~Fix manifest TOCTOU race (C3) and pipeline check-then-mark race (C5)~~ — done
+5. ~~Fix error handler path bug (C4)~~ — done
+6. ~~Add XXE protection to XML handler (W30) — use `defusedxml`~~ — done
+7. ~~Fix X12 `IndexError` on empty fields list (C9)~~ — done
 
-### Tier 2: Strengthen Before Release
-8. Break up `_process_single` into smaller methods (W4)
-9. Use distinct exception types instead of string-matching `ValueError` (W3)
-10. Fix dead code: `_setup_file_output`, `default_value` block (W8, W20)
-11. Add `conftest.py` with singleton reset fixtures (W56)
-12. Apply pytest markers to all tests (W54)
-13. Fix integration test indentation bug (W55)
-14. Deduplicate compiled schemas — fix triple-column bug (W45, W46)
-15. Remove/complete empty `gfsGenericOut810FF.yaml` (W47)
+### Tier 2: Strengthen Before Release — COMPLETE (2026-03-24)
+8. ~~Break up `_process_single` into smaller methods (W4)~~ — done (2026-03-17)
+9. ~~Use distinct exception types instead of string-matching `ValueError` (W3)~~ — done (2026-03-17)
+10. ~~Fix dead code: `_setup_file_output`, `default_value` block (W8, W20)~~ — done; `_setup_file_output` removed in prior fix, orphaned `_get_log_level()` removed 2026-03-24; W20 already resolved
+11. ~~Add `conftest.py` with singleton reset fixtures (W56)~~ — done (2026-03-17)
+12. ~~Apply pytest markers to all tests (W54)~~ — done; 86 unit + 57 integration markers applied
+13. ~~Fix integration test indentation bug (W55)~~ — done (2026-03-17)
+14. ~~Deduplicate compiled schemas — fix triple-column bug (W45, W46)~~ — investigated 2026-03-24: W45 is not a bug (DSL defines 3 record types sharing 42 columns); W46 `test_map.yaml` does not exist in codebase
+15. ~~Remove/complete empty `gfsGenericOut810FF.yaml` (W47)~~ — done; deleted stale empty artifact + meta.json
 
 ### Tier 3: Cleanup & Documentation
 16. Clean up stale files: `TEST_RESULTS copy.md`, `AGENTIC_IDE_TEST_PROMPT-OG.md`, `schema_compiler.py.bak`

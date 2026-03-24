@@ -183,8 +183,23 @@ directories:
 transaction_registry:
   '810': ./rules/gfs_810_map.yaml
   '850': ./rules/gfs_850_map.yaml
+  '856': ./rules/gfs_856_map.yaml
+  gfs_csv: ./rules/gfs_csv_map.yaml
+  cxml_850: ./rules/cxml_850_map.yaml
   _default_x12: ./rules/default_x12_map.yaml
   _rules_dir: ./rules
+
+csv_schema_registry:
+  margin_edge_810:
+    source_dsl: ./tpm810SourceFF.txt
+    compiled_output: ./schemas/compiled/margin_edge_810_map.yaml
+    inbound_dir: ./inbound/csv/margin_edge
+    transaction_type: '810'
+  gfs_ca_810:
+    source_dsl: ./schemas/source/gfsGenericOut810FF.txt
+    compiled_output: ./schemas/compiled/gfs_ca_810_map.yaml
+    inbound_dir: ./inbound/csv/gfs_ca
+    transaction_type: '810'
 ```
 
 ### Run
@@ -221,44 +236,77 @@ pyedi --verbose --file data/input.csv
 ```
 pyedi_core/
 ├── __init__.py
-├── main.py             # CLI entry point
-├── pipeline.py         # Orchestration
+├── main.py              # CLI entry point (pyedi)
+├── pipeline.py          # Orchestration engine
+├── test_harness.py      # Test harness (pyedi test)
 ├── config/
-│   └── __init__.py     # Pydantic config models
-├── core/               # Core processing modules
+│   └── __init__.py      # Pydantic config models
+├── core/                # Core processing modules
 │   ├── __init__.py
-│   ├── error_handler.py # Dead-letter queue
-│   ├── logger.py       # Structured logging
-│   ├── manifest.py     # Deduplication
-│   ├── mapper.py       # Data transformation
+│   ├── error_handler.py # Dead-letter queue + typed exceptions
+│   ├── logger.py        # Structured logging (structlog)
+│   ├── manifest.py      # SHA-256 deduplication
+│   ├── mapper.py        # Data transformation engine
 │   └── schema_compiler.py # DSL → YAML compiler
-├── drivers/            # Format-specific handlers
+├── drivers/             # Format-specific handlers
 │   ├── __init__.py
-│   ├── base.py         # Driver registry & base class
+│   ├── base.py          # Driver registry & abstract base
 │   ├── csv_handler.py
 │   ├── x12_handler.py
 │   └── xml_handler.py
+├── rules/               # YAML mapping rules
 config/
-└── config.yaml         # Runtime configuration
+│   └── config.yaml      # Runtime configuration
+schemas/
+├── source/              # DSL source files
+└── compiled/            # Compiled YAML maps + meta.json
+tests/
+├── conftest.py          # Shared fixtures, singleton resets
+├── test_core.py         # Unit: logger, manifest, error_handler, schema, mapper
+├── test_core_extended.py # Unit: extended coverage
+├── test_drivers.py      # Integration: CSV, X12, XML, pipeline
+├── test_harness.py      # Unit + integration: test harness
+├── test_main.py         # Unit: CLI entry point
+└── integration/
+    └── test_user_supplied_data.py  # YAML-driven regression tests
 ```
 
 ---
 
 ## Testing
 
+**143 tests** (86 unit, 57 integration), 0 failures.
+
 ```bash
 # Run all tests
 pytest
 
-# Unit tests only (fast)
+# Unit tests only (fast, no I/O)
 pytest -m unit
 
-# Integration tests only
+# Integration tests only (real files, pipeline)
 pytest -m integration
 
 # With coverage
 pytest --cov=pyedi_core --cov-report=term-missing
 ```
+
+### Test Harness
+
+The built-in test harness (`pyedi test`) runs YAML-driven regression tests against user-supplied data:
+
+```bash
+# Run test cases from metadata.yaml
+pyedi test --metadata tests/user_supplied/metadata.yaml
+
+# Regenerate expected outputs after schema changes
+pyedi test --generate-expected
+
+# Verify project structure and test setup
+pyedi test --verify
+```
+
+Test cases are defined in `tests/user_supplied/metadata.yaml` with per-case controls for dry-run, skip-fields, strict mode, and expected error stages.
 
 ---
 

@@ -1,48 +1,57 @@
-# PyEDI-Core Phase 5 Test Results
+# PyEDI-Core Test Results
 
-**Date:** 2026-02-22  
-**Run:** Re-run after `x12_handler.py` `document` wrapper fix  
-**Result:** ✅ **2 / 2 PASSED**
+**Date:** 2026-03-24
+**Run:** Full suite after Tier 2 completion
+**Result:** **143 / 143 PASSED** (86 unit, 57 integration)
 
 ---
 
-## Pre-Test Checks
+## Test Suite Summary
 
-| Check | Status |
-|---|---|
-| `tests/user_supplied/` directory exists | ✅ Pass |
-| `metadata.yaml` format valid | ✅ Pass |
-| Input file `200220261215033.dat` present | ✅ Pass |
-| Expected output `200220261215033.json` present | ✅ Pass |
+| Category | Count | Marker |
+|----------|-------|--------|
+| Unit tests | 86 | `pytest -m unit` |
+| Integration tests | 57 | `pytest -m integration` |
+| **Total** | **143** | `pytest` |
 
 ## Test Execution
 
 **Command:**
 ```bash
-pytest tests/integration/test_user_supplied_data.py -v --tb=long
+pytest tests/ -v --tb=short
 ```
 
 **Output:**
 ```
-========== test session starts ===========
-platform win32 -- Python 3.14.2, pytest-9.0.2, pluggy-1.6.0
-collected 2 items
-
-tests/integration/test_user_supplied_data.py::test_user_supplied_file[test_case0] PASSED
-tests/integration/test_user_supplied_data.py::test_user_supplied_file[test_case1] PASSED
-
-=========== 2 passed in 3.59s ============
+143 passed, 1 warning in 1.23s
 ```
 
-## Test Cases
+The single warning is a non-fatal discrepancy in the x12 integration test (unexpected metadata keys `_transaction_type`, `_is_unmapped`, `_map_file` in actual output).
+
+## Test Files
+
+| File | Tests | Marker | Scope |
+|------|-------|--------|-------|
+| `test_core.py` | 36 | unit | logger, manifest, error_handler, schema_compiler, mapper, pipeline |
+| `test_core_extended.py` | 24 | unit | extended coverage of all core modules |
+| `test_drivers.py` | 56 | integration | CSV, X12, XML handlers; pipeline integration; failure paths |
+| `test_harness.py` | 13 | unit + integration | compare_outputs, run_tests, verify, generate_expected, CLI wiring |
+| `test_main.py` | 11 | unit | main() CLI entry point, _print_result |
+| `integration/test_user_supplied_data.py` | 3 | integration | YAML-driven regression tests with real files |
+
+## User-Supplied Test Cases
 
 | # | Name | Input File | Expected Output | Status |
-|---|---|---|---|---|
-| 1 | UnivT701 Demo Invoice CSV | `inputs/UnivT701_small.csv` | `expected_outputs/UnivT701_small.json` | ✅ PASS |
-| 2 | MarginEdge 810 Text File | `inputs/NA_810_MARGINEDGE_20260129.txt` | `expected_outputs/NA_810_MARGINEDGE_20260129.json` | ✅ PASS |
+|---|------|------------|-----------------|--------|
+| 1 | UnivT701 Demo Invoice CSV | `inputs/UnivT701_small.csv` | `expected_outputs/UnivT701_small.json` | PASS |
+| 2 | MarginEdge 810 Text File | `inputs/NA_810_MARGINEDGE_20260129.txt` | `expected_outputs/NA_810_MARGINEDGE_20260129.json` | PASS |
+| 3 | x12 Data Comparison | `inputs/200220261215033.dat` | `expected_outputs/200220261215033.json` | PASS (with non-fatal discrepancies) |
 
-## Discrepancies
-None — all actual outputs matched expected outputs within defined tolerances.
+## Review Fixes Validated
 
-## Summary
-Phase 5 user-supplied data integration tests are fully passing. The fix applied to `x12_handler.py` correctly wraps the unmapped transaction payload in the `document` → `config` + `segments` structure expected by the test harness.
+All Tier 1 (9 criticals) and Tier 2 fixes have regression tests:
+
+- **C3:** Manifest TOCTOU race — `test_read_manifest_missing_file_no_error`, `test_read_manifest_race_condition`
+- **C4:** Error handler missing source — `test_handle_failure_missing_source_no_sidecar`, `test_handle_failure_existing_file_creates_sidecar`
+- **W3:** Typed exception hierarchy — `test_exception_hierarchy`, `test_exception_stage_attributes`
+- **W55/W56:** Integration test fix + conftest fixtures — autouse singleton resets active

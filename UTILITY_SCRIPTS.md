@@ -69,7 +69,7 @@
 
 **What it does:** Checks that all required Python packages are importable (`badx12`, `pandas`, `pyyaml`, `pydantic`, `structlog`, `fastapi`, `uvicorn`) and prints their versions. Exits with code 1 if any are missing.
 
-**Why keep:** Useful for onboarding and CI smoke tests, especially since `badx12` is not yet in `pyproject.toml`.
+**Why keep:** Useful for onboarding and CI smoke tests. Note: `badx12` is now in `pyproject.toml` (fixed as C1).
 
 **Issues:**
 - Package list is manually maintained — can drift from `pyproject.toml`

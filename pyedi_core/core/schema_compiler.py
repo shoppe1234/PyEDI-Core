@@ -250,6 +250,69 @@ def _compile_to_yaml(record_defs: List[Dict], source_filename: str, delimiter: s
     return yaml_map
 
 
+def parse_dsl_file(source_file: str) -> Tuple[List[Dict[str, Any]], str]:
+    """
+    Parse a DSL file into record definitions and delimiter.
+
+    Args:
+        source_file: Path to the source .txt DSL file
+
+    Returns:
+        Tuple of (record_defs, delimiter)
+
+    Raises:
+        FileNotFoundError: If source file doesn't exist
+        ValueError: If no valid record definitions found
+    """
+    source_path = Path(source_file)
+    if not source_path.exists():
+        raise FileNotFoundError(f"Source DSL file not found: {source_file}")
+
+    with open(source_path, "r", encoding="utf-8") as f:
+        dsl_content = f.read()
+
+    # Extract delimiter if defined
+    delimiter = ","
+    delim_match = re.search(r'delimiter\s*=\s*[\'"]([^\'"]+)[\'"]', dsl_content)
+    if delim_match:
+        delimiter = delim_match.group(1)
+
+    # Parse record definitions using brace counting
+    record_matches: List[str] = []
+    start_pattern = re.compile(r'def\s+record\s+\w+\s*\{')
+
+    search_pos = 0
+    while True:
+        match = start_pattern.search(dsl_content, search_pos)
+        if not match:
+            break
+
+        start_idx = match.start()
+        brace_count = 0
+        end_idx = -1
+
+        for i in range(match.end() - 1, len(dsl_content)):
+            if dsl_content[i] == '{':
+                brace_count += 1
+            elif dsl_content[i] == '}':
+                brace_count -= 1
+                if brace_count == 0:
+                    end_idx = i + 1
+                    break
+
+        if end_idx != -1:
+            record_matches.append(dsl_content[start_idx:end_idx])
+            search_pos = end_idx
+        else:
+            break
+
+    if not record_matches:
+        raise ValueError(f"No valid record definitions found in {source_file}")
+
+    record_defs = [_parse_dsl_record(m) for m in record_matches]
+    return record_defs, delimiter
+
+
 def compile_dsl(
     source_file: str,
     compiled_dir: str = DEFAULT_SCHEMA_COMPILED_DIR,
@@ -341,50 +404,9 @@ def compile_dsl(
     
     # Compile the DSL file
     logger.info(f"Compiling DSL schema", source_file=source_filename)
-    
-    with open(source_path, "r", encoding="utf-8") as f:
-        dsl_content = f.read()
 
-    # Extract delimiter if defined
-    delimiter = ","
-    delim_match = re.search(r'delimiter\s*=\s*[\'"]([^\'"]+)[\'"]', dsl_content)
-    if delim_match:
-        delimiter = delim_match.group(1)
-    
-    # Parse record definitions using brace counting
-    record_matches = []
-    start_pattern = re.compile(r'def\s+record\s+\w+\s*\{')
-    
-    search_pos = 0
-    while True:
-        match = start_pattern.search(dsl_content, search_pos)
-        if not match:
-            break
-            
-        start_idx = match.start()
-        brace_count = 0
-        end_idx = -1
-        
-        for i in range(match.end() - 1, len(dsl_content)):
-            if dsl_content[i] == '{':
-                brace_count += 1
-            elif dsl_content[i] == '}':
-                brace_count -= 1
-                if brace_count == 0:
-                    end_idx = i + 1
-                    break
-                    
-        if end_idx != -1:
-            record_matches.append(dsl_content[start_idx:end_idx])
-            search_pos = end_idx
-        else:
-            break
-    
-    if not record_matches:
-        raise ValueError(f"No valid record definitions found in {source_file}")
-    
-    record_defs = [_parse_dsl_record(match) for match in record_matches]
-    
+    record_defs, delimiter = parse_dsl_file(source_file)
+
     # Compile to YAML format
     yaml_map = _compile_to_yaml(record_defs, source_filename, delimiter)
     

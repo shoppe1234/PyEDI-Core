@@ -11,7 +11,7 @@ echo "  UI:   http://localhost:5173"
 echo ""
 
 # Start API in background
-uvicorn portal.api.app:app --reload --port 8000 &
+PYTHONPATH=. uvicorn portal.api.app:app --reload --port 8000 &
 API_PID=$!
 
 # Start Vite dev server

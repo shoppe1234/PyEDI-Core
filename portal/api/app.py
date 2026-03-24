@@ -25,8 +25,10 @@ def create_app() -> FastAPI:
         return {"status": "ok"}
 
     from .routes.validate import router as validate_router
+    from .routes.pipeline import router as pipeline_router
 
     application.include_router(validate_router)
+    application.include_router(pipeline_router)
 
     return application
 

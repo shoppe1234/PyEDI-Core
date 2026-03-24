@@ -41,3 +41,25 @@ test_cases:
     skip_fields: ["id", "timestamp", "correlation_id", "_source_file"]
     transaction_type: "x12"
     description: "User supplied data comparison test"
+
+  - name: "Malformed X12 - mapping failure"
+    input_file: "inputs/malformed_x12.dat"
+    output_file: "outputs/malformed_x12.json"
+    expected_output: "expected_outputs/malformed_x12.json"
+    should_succeed: false
+    expected_error_stage: "TRANSFORMATION"
+    dry_run: false
+    skip_fields: []
+    target_inbound_dir: "./inbound/x12"
+    description: "Verify graceful failure on malformed X12 input"
+
+  - name: "Unmapped CSV - schema lookup failure"
+    input_file: "inputs/unmapped_csv.csv"
+    output_file: "outputs/unmapped_csv.json"
+    expected_output: "expected_outputs/unmapped_csv.json"
+    should_succeed: false
+    expected_error_stage: "DETECTION"
+    dry_run: false
+    skip_fields: []
+    target_inbound_dir: "./inbound/csv/nonexistent_schema"
+    description: "Verify graceful failure when no schema matches CSV"

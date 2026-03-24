@@ -136,6 +136,13 @@ def test_user_supplied_file(test_case):
     finally:
         if copied_path and copied_path.exists():
             os.remove(copied_path)
+        # Clean up failure artifacts in ./failed/
+        if not test_case.get('should_succeed', True):
+            failed_dir = Path('./failed')
+            if failed_dir.exists():
+                stem = input_path.stem
+                for artifact in failed_dir.glob(f"{stem}*"):
+                    artifact.unlink(missing_ok=True)
 
 def compare_outputs(actual, expected, skip_fields, context, discrepancies, path=""):
     """Deep compare two dictionaries and collect discrepancies."""

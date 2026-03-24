@@ -242,6 +242,13 @@ def run_tests(
         finally:
             if copied_path and copied_path.exists():
                 os.remove(copied_path)
+            # Clean up failure artifacts in ./failed/
+            if not case.get("should_succeed", True):
+                failed_dir = Path("./failed")
+                if failed_dir.exists():
+                    stem = Path(case["input_file"]).stem
+                    for artifact in failed_dir.glob(f"{stem}*"):
+                        artifact.unlink(missing_ok=True)
 
     # --- summary ---
     total = passed + failed

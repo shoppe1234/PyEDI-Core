@@ -32,12 +32,14 @@ def create_app() -> FastAPI:
     from .routes.test import router as test_router
     from .routes.manifest import router as manifest_router
     from .routes.config import router as config_router
+    from .routes.compare import router as compare_router
 
     application.include_router(validate_router)
     application.include_router(pipeline_router)
     application.include_router(test_router)
     application.include_router(manifest_router)
     application.include_router(config_router)
+    application.include_router(compare_router)
 
     # Serve static build if it exists (production mode)
     static_dir = Path(__file__).parent.parent / "ui" / "dist"

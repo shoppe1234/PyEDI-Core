@@ -6,6 +6,7 @@ Command-line interface for processing EDI, CSV, and XML files.
 Subcommands:
     (default)  Process files through the pipeline
     test       Run test harness, generate expected outputs, or verify environment
+    compare    Compare source/target JSON outputs using transaction profiles
 """
 
 import argparse
@@ -91,6 +92,40 @@ def main(args: Optional[List[str]] = None) -> int:
         help="Compiled YAML output directory (default: ./schemas/compiled)",
     )
 
+    # --- "compare" subcommand ---
+    compare_parser = subparsers.add_parser("compare", help="Compare source/target JSON outputs")
+    compare_parser.add_argument(
+        "--profile", help="Profile name from config.yaml compare.profiles",
+    )
+    compare_parser.add_argument(
+        "--source-dir", help="Source JSON directory",
+    )
+    compare_parser.add_argument(
+        "--target-dir", help="Target JSON directory",
+    )
+    compare_parser.add_argument(
+        "--match-json-path", help="Override match key for flat JSON",
+    )
+    compare_parser.add_argument(
+        "--rules", help="Override rules YAML path",
+    )
+    compare_parser.add_argument(
+        "--export-csv", action="store_true", help="Write CSV report",
+    )
+    compare_parser.add_argument(
+        "--verbose", "-v", action="store_true", help="Show per-field diffs",
+    )
+    compare_parser.add_argument(
+        "--config", "-c", default="./config/config.yaml",
+        help="Config file path (default: ./config/config.yaml)",
+    )
+    compare_parser.add_argument(
+        "--list-profiles", action="store_true", help="List profiles and exit",
+    )
+    compare_parser.add_argument(
+        "--db", help="SQLite database path (overrides config)",
+    )
+
     # Add run args to the top-level parser too (backward compat)
     _add_run_args(parser)
 
@@ -101,6 +136,9 @@ def main(args: Optional[List[str]] = None) -> int:
 
     if parsed.command == "validate":
         return _handle_validate(parsed)
+
+    if parsed.command == "compare":
+        return _handle_compare(parsed)
 
     # Default: run pipeline (whether via `pyedi run ...` or `pyedi --file ...`)
     return _handle_run(parsed)
@@ -384,6 +422,95 @@ def _print_validate_json(result: "object") -> None:
 
     data = dataclasses.asdict(result)
     print(json_mod.dumps(data, indent=2, default=str))
+
+
+# ---------------------------------------------------------------------------
+# Compare handler
+# ---------------------------------------------------------------------------
+
+def _handle_compare(parsed: argparse.Namespace) -> int:
+    """Dispatch compare subcommand."""
+    from .comparator import compare, export_csv, list_profiles, load_profile
+
+    config_path = parsed.config
+
+    if parsed.list_profiles:
+        try:
+            profiles = list_profiles(config_path)
+        except (FileNotFoundError, KeyError) as exc:
+            print(f"Error loading profiles: {exc}", file=sys.stderr)
+            return 1
+        print(f"\n=== Compare Profiles ({len(profiles)}) ===")
+        for p in profiles:
+            mk = p.match_key
+            key_str = f"{mk.segment}:{mk.field}" if mk.segment else f"json_path:{mk.json_path}"
+            print(f"  {p.name:<25} {key_str:<20} {p.description}")
+        return 0
+
+    if not parsed.profile:
+        print("Error: --profile is required (use --list-profiles to see options)", file=sys.stderr)
+        return 1
+
+    if not parsed.source_dir or not parsed.target_dir:
+        print("Error: --source-dir and --target-dir are required", file=sys.stderr)
+        return 1
+
+    try:
+        profile = load_profile(config_path, parsed.profile)
+    except (FileNotFoundError, ValueError) as exc:
+        print(f"Error loading profile: {exc}", file=sys.stderr)
+        return 1
+
+    # Apply overrides
+    if parsed.match_json_path:
+        from .comparator.models import MatchKeyConfig
+        profile.match_key = MatchKeyConfig(json_path=parsed.match_json_path)
+    if parsed.rules:
+        profile.rules_file = parsed.rules
+
+    # Resolve DB path
+    import yaml
+    with open(config_path, "r", encoding="utf-8") as f:
+        config = yaml.safe_load(f)
+    db_path = parsed.db or config.get("compare", {}).get("sqlite_db", "data/compare.db")
+
+    try:
+        summary = compare(profile, parsed.source_dir, parsed.target_dir, db_path)
+    except (FileNotFoundError, OSError) as exc:
+        print(f"Error running comparison: {exc}", file=sys.stderr)
+        return 1
+
+    _print_compare_summary(summary, parsed.verbose, db_path)
+
+    if parsed.export_csv:
+        csv_dir = config.get("compare", {}).get("csv_dir", "reports/compare")
+        csv_path = export_csv(db_path, summary.run_id, csv_dir)
+        print(f"\nCSV exported: {csv_path}")
+
+    return 0
+
+
+def _print_compare_summary(summary: "object", verbose: bool, db_path: str) -> None:
+    """Human-readable console output for comparison results."""
+    from .comparator.models import RunSummary
+    from .comparator.store import get_diffs, get_pairs
+
+    assert isinstance(summary, RunSummary)
+
+    print(f"\n=== Compare Run #{summary.run_id} ===")
+    print(f"Profile:    {summary.profile}")
+    print(f"Total:      {summary.total_pairs} pairs")
+    print(f"  Matched:    {summary.matched}")
+    print(f"  Mismatched: {summary.mismatched}")
+    print(f"  Unmatched:  {summary.unmatched}")
+
+    if verbose and summary.mismatched > 0:
+        pairs = get_pairs(db_path, summary.run_id, status="MISMATCH")
+        for pair in pairs:
+            print(f"\n  --- {pair['match_value']} ({pair['source_file']} vs {pair.get('target_file', 'N/A')}) ---")
+            diffs = get_diffs(db_path, pair["id"])
+            for d in diffs:
+                print(f"    [{d.severity}] {d.segment}/{d.field}: {d.description}")
 
 
 def _print_result(result: PipelineResult) -> None:

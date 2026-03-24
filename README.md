@@ -218,6 +218,39 @@ pyedi --dry-run --file data/input.csv
 pyedi --verbose --file data/input.csv
 ```
 
+### Validate DSL Schemas
+
+The `validate` subcommand compiles a DSL schema, inspects the output, and optionally traces mappings against a sample file:
+
+```bash
+# Compile and inspect a DSL file
+pyedi validate --dsl tpm810SourceFF.txt
+
+# Validate with a sample data file (shows mapping coverage + field traces)
+pyedi validate --dsl tpm810SourceFF.txt --sample data/sample.txt
+
+# Machine-readable JSON output
+pyedi validate --dsl tpm810SourceFF.txt --json
+
+# Verbose mode (all columns + all field traces)
+pyedi validate --dsl tpm810SourceFF.txt --sample data/sample.txt --verbose
+```
+
+### Web Portal
+
+PyEDI Portal provides a FastAPI backend + React frontend for browser-based access to all CLI features:
+
+```bash
+# Development mode (API on :8000, Vite on :5173)
+bash portal/dev.sh
+
+# Production mode (serves static build from FastAPI)
+cd portal/ui && npm run build
+PYTHONPATH=. uvicorn portal.api.app:app --port 8000
+```
+
+Portal pages: Dashboard, Schema Validation, Pipeline Results, Test Harness, Configuration.
+
 ---
 
 ## Supported Formats
@@ -236,9 +269,10 @@ pyedi --verbose --file data/input.csv
 ```
 pyedi_core/
 ├── __init__.py
-├── main.py              # CLI entry point (pyedi)
+├── main.py              # CLI entry point (pyedi run/test/validate)
 ├── pipeline.py          # Orchestration engine
 ├── test_harness.py      # Test harness (pyedi test)
+├── validator.py         # DSL validation, trace, coverage (pyedi validate)
 ├── config/
 │   └── __init__.py      # Pydantic config models
 ├── core/                # Core processing modules
@@ -247,7 +281,7 @@ pyedi_core/
 │   ├── logger.py        # Structured logging (structlog)
 │   ├── manifest.py      # SHA-256 deduplication
 │   ├── mapper.py        # Data transformation engine
-│   └── schema_compiler.py # DSL → YAML compiler
+│   └── schema_compiler.py # DSL → YAML compiler (parse_dsl_file, compile_dsl)
 ├── drivers/             # Format-specific handlers
 │   ├── __init__.py
 │   ├── base.py          # Driver registry & abstract base
@@ -255,6 +289,15 @@ pyedi_core/
 │   ├── x12_handler.py
 │   └── xml_handler.py
 ├── rules/               # YAML mapping rules
+portal/                  # Web portal (FastAPI + React)
+├── api/
+│   ├── app.py           # FastAPI app factory + static serving
+│   ├── models.py        # Pydantic request/response models
+│   └── routes/          # validate, pipeline, test, manifest, config
+├── ui/                  # React + Vite + Tailwind frontend
+│   └── src/pages/       # Dashboard, Validate, Pipeline, Tests, Config
+├── dev.sh               # Dev startup script (API + Vite)
+└── pyproject.toml
 config/
 │   └── config.yaml      # Runtime configuration
 schemas/
@@ -267,6 +310,8 @@ tests/
 ├── test_drivers.py      # Integration: CSV, X12, XML, pipeline
 ├── test_harness.py      # Unit + integration: test harness
 ├── test_main.py         # Unit: CLI entry point
+├── test_validator.py    # Unit + integration: validator module
+├── test_api.py          # Integration: portal API endpoints
 └── integration/
     └── test_user_supplied_data.py  # YAML-driven regression tests
 ```
@@ -275,7 +320,7 @@ tests/
 
 ## Testing
 
-**143 tests** (86 unit, 57 integration), 0 failures.
+**165 tests** (95 unit, 70 integration), 0 failures.
 
 ```bash
 # Run all tests

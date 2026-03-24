@@ -1,8 +1,8 @@
 # PyEDI-Core Test Results
 
 **Date:** 2026-03-24
-**Run:** Full suite after Tier 2 completion
-**Result:** **143 / 143 PASSED** (86 unit, 57 integration)
+**Run:** Full suite after Portal build (Phase A-C complete)
+**Result:** **165 / 165 PASSED**, 1 warning
 
 ---
 
@@ -10,9 +10,9 @@
 
 | Category | Count | Marker |
 |----------|-------|--------|
-| Unit tests | 86 | `pytest -m unit` |
-| Integration tests | 57 | `pytest -m integration` |
-| **Total** | **143** | `pytest` |
+| Unit tests | ~95 | `pytest -m unit` |
+| Integration tests | ~70 | `pytest -m integration` |
+| **Total** | **165** | `pytest` |
 
 ## Test Execution
 
@@ -23,7 +23,7 @@ pytest tests/ -v --tb=short
 
 **Output:**
 ```
-143 passed, 1 warning in 1.23s
+165 passed, 1 warning in 2.42s
 ```
 
 The single warning is a non-fatal discrepancy in the x12 integration test (unexpected metadata keys `_transaction_type`, `_is_unmapped`, `_map_file` in actual output).
@@ -37,7 +37,9 @@ The single warning is a non-fatal discrepancy in the x12 integration test (unexp
 | `test_drivers.py` | 56 | integration | CSV, X12, XML handlers; pipeline integration; failure paths |
 | `test_harness.py` | 13 | unit + integration | compare_outputs, run_tests, verify, generate_expected, CLI wiring |
 | `test_main.py` | 11 | unit | main() CLI entry point, _print_result |
-| `integration/test_user_supplied_data.py` | 3 | integration | YAML-driven regression tests with real files |
+| `test_validator.py` | 9 | unit + integration | validator module: compile, type preservation, coverage, traces |
+| `test_api.py` | 7 | integration | portal API: health, validate, pipeline, test, manifest, config |
+| `integration/test_user_supplied_data.py` | 9 | integration | YAML-driven regression tests with real files |
 
 ## User-Supplied Test Cases
 
@@ -47,7 +49,13 @@ The single warning is a non-fatal discrepancy in the x12 integration test (unexp
 | 2 | MarginEdge 810 Text File | `inputs/NA_810_MARGINEDGE_20260129.txt` | `expected_outputs/NA_810_MARGINEDGE_20260129.json` | PASS |
 | 3 | x12 Data Comparison | `inputs/200220261215033.dat` | `expected_outputs/200220261215033.json` | PASS (with non-fatal discrepancies) |
 
-## Review Fixes Validated
+## Compiler Bug Fixes Validated (2026-03-24)
+
+- **Type loss fix** — `_compile_to_yaml()` dedup now keeps most-specific type. GFS DSL `CaseSize`/`CasePrice` compile as `float` (was `string`).
+- **fieldIdentifier collision fix** — GFS DSL records with shared `fieldIdentifier="0"` now produce distinct keys (`0`, `Details`, `Summary`).
+- Both fixes covered by `test_validator.py::TestTypePreservation` and `test_validator.py::TestFieldIdentifierCollision`.
+
+## Review Fixes Validated (2026-03-17)
 
 All Tier 1 (9 criticals) and Tier 2 fixes have regression tests:
 

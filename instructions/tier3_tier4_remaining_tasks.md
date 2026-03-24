@@ -23,7 +23,7 @@
 3. Verify `pyedi test --verify` still works as replacement
 4. Run full test suite
 
-**Status:** [ ] Pending
+**Status:** [x] Complete
 
 ---
 
@@ -43,7 +43,7 @@
 2. Delete all 3 files
 3. Run full test suite
 
-**Status:** [ ] Pending
+**Status:** [x] Complete
 
 ---
 
@@ -59,7 +59,7 @@
 4. Delete the `rules/` directory if now empty
 5. Run full test suite (especially x12 integration tests)
 
-**Status:** [ ] Pending
+**Status:** [x] Complete
 
 ---
 
@@ -101,7 +101,7 @@
 - `schemas/compiled/gfs_ca_810_map.yaml`
 - `tests/user_supplied/metadata.yaml`
 
-**Status:** [ ] Pending
+**Status:** [x] Skipped — user decision (added to TODO for future consideration)
 
 ---
 
@@ -126,7 +126,7 @@
 
 **Key concern:** The integration test `else` branch (line 71) only handles `transaction_type == 'x12'`. cXML tests need `target_inbound_dir` to go through the pipeline path, or the test code needs extending.
 
-**Status:** [ ] Pending
+**Status:** [x] Complete
 
 ---
 
@@ -147,7 +147,7 @@
 4. Run full test suite — expect 145+ passed
 5. Clean up: ensure failure tests don't leave artifacts in `./failed/` (add cleanup in test's `finally` block or conftest)
 
-**Status:** [ ] Pending
+**Status:** [x] Complete
 
 ---
 
@@ -164,4 +164,4 @@
    - **Test 3 — Exception isolation:** Mix valid and invalid files. Verify failures in some threads don't affect others.
 4. Run full test suite — expect 148+ passed
 
-**Status:** [ ] Pending
+**Status:** [x] Complete

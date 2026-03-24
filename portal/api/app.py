@@ -27,10 +27,14 @@ def create_app() -> FastAPI:
     from .routes.validate import router as validate_router
     from .routes.pipeline import router as pipeline_router
     from .routes.test import router as test_router
+    from .routes.manifest import router as manifest_router
+    from .routes.config import router as config_router
 
     application.include_router(validate_router)
     application.include_router(pipeline_router)
     application.include_router(test_router)
+    application.include_router(manifest_router)
+    application.include_router(config_router)
 
     return application
 

@@ -70,6 +70,27 @@ def main(args: Optional[List[str]] = None) -> int:
         help="Show detailed discrepancy output",
     )
 
+    # --- "validate" subcommand ---
+    validate_parser = subparsers.add_parser("validate", help="Validate a DSL schema")
+    validate_parser.add_argument(
+        "--dsl", required=True, help="Path to DSL .txt file"
+    )
+    validate_parser.add_argument(
+        "--sample", default=None, help="Path to sample data file"
+    )
+    validate_parser.add_argument(
+        "--json", action="store_true", dest="json_output",
+        help="Output JSON instead of human-readable report",
+    )
+    validate_parser.add_argument(
+        "--verbose", "-v", action="store_true",
+        help="Show all field traces",
+    )
+    validate_parser.add_argument(
+        "--output-dir", default="./schemas/compiled",
+        help="Compiled YAML output directory (default: ./schemas/compiled)",
+    )
+
     # Add run args to the top-level parser too (backward compat)
     _add_run_args(parser)
 
@@ -77,6 +98,9 @@ def main(args: Optional[List[str]] = None) -> int:
 
     if parsed.command == "test":
         return _handle_test(parsed)
+
+    if parsed.command == "validate":
+        return _handle_validate(parsed)
 
     # Default: run pipeline (whether via `pyedi run ...` or `pyedi --file ...`)
     return _handle_run(parsed)
@@ -242,6 +266,124 @@ def _watch_tests(parsed: argparse.Namespace) -> int:
     except KeyboardInterrupt:
         print("\nWatch mode stopped.")
         return 0
+
+
+# ---------------------------------------------------------------------------
+# Validate handler
+# ---------------------------------------------------------------------------
+
+def _handle_validate(parsed: argparse.Namespace) -> int:
+    """Dispatch validate subcommand."""
+    from .validator import validate
+
+    try:
+        result = validate(
+            dsl_path=parsed.dsl,
+            sample_path=parsed.sample,
+            compiled_dir=parsed.output_dir,
+        )
+    except (FileNotFoundError, ValueError) as exc:
+        print(f"Error: {exc}", file=sys.stderr)
+        return 1
+
+    if parsed.json_output:
+        _print_validate_json(result)
+    else:
+        _print_validate_report(result, verbose=parsed.verbose)
+    return 0
+
+
+def _print_validate_report(result: "object", verbose: bool = False) -> None:
+    """Human-readable console output for validation results."""
+    from .validator import ValidationResult
+
+    assert isinstance(result, ValidationResult)
+
+    yaml_data = result.compiled_yaml
+    print(f"\n=== DSL Compilation Report ===")
+    print(f"Source:           {result.dsl_path}")
+    print(f"Compiled To:      {result.compiled_yaml_path}")
+    print(f"Transaction Type: {yaml_data.get('transaction_type', 'N/A')}")
+    print(f"Delimiter:        \"{yaml_data.get('schema', {}).get('delimiter', ',')}\"")
+    print(f"Records Found:    {len(result.records)} ({', '.join(result.records.keys())})")
+
+    print(f"\n=== Schema Columns ({len(result.columns)} fields) ===")
+    print(f"  {'Name':<30} {'Type':<10} {'DSL Type':<12} {'OK?'}")
+    limit = len(result.columns) if verbose else min(20, len(result.columns))
+    for col in result.columns[:limit]:
+        ok = "YES" if col.type_preserved else "NO"
+        dsl = col.dsl_type or "—"
+        print(f"  {col.name:<30} {col.compiled_type:<10} {dsl:<12} {ok}")
+    if not verbose and len(result.columns) > 20:
+        print(f"  ... and {len(result.columns) - 20} more (use --verbose to see all)")
+
+    print(f"\n=== Type Preservation ===")
+    if not result.type_warnings:
+        print(f"  All types preserved correctly.")
+    else:
+        shown = result.type_warnings if verbose else result.type_warnings[:5]
+        for tw in shown:
+            print(f"  WARNING: {tw.field_name} ({tw.record_name}): "
+                  f"DSL={tw.dsl_type} -> compiled={tw.compiled_type}")
+        if not verbose and len(result.type_warnings) > 5:
+            print(f"  ... {len(result.type_warnings) - 5} more warnings (use --verbose)")
+
+    if result.compilation_warnings:
+        print(f"\n=== Compilation Warnings ===")
+        for w in result.compilation_warnings:
+            print(f"  {w}")
+
+    print(f"\n=== Record Definitions ===")
+    for rname, fields in result.records.items():
+        preview = ", ".join(fields[:5])
+        suffix = f", ..." if len(fields) > 5 else ""
+        print(f"  {rname} -> {len(fields)} fields [{preview}{suffix}]")
+
+    if result.sample_row_count is not None:
+        print(f"\n=== Sample File ({result.sample_row_count} rows parsed) ===")
+
+        if result.coverage:
+            c = result.coverage
+            print(f"\n=== Mapping Coverage ===")
+            print(f"  Source fields: {c.source_fields_total} total, "
+                  f"{c.source_fields_mapped} mapped, "
+                  f"{len(c.source_fields_unmapped)} unmapped")
+            print(f"  Target fields: {c.target_fields_total} total, "
+                  f"{c.target_fields_populated} populated, "
+                  f"{len(c.target_fields_empty)} empty")
+            print(f"  Coverage: {c.coverage_pct:.1f}%")
+            if c.source_fields_unmapped:
+                print(f"\n  Unmapped: {c.source_fields_unmapped[:10]}")
+            if c.target_fields_empty:
+                print(f"  Empty:    {c.target_fields_empty[:10]}")
+
+        if result.field_traces:
+            max_traces = len(result.field_traces) if verbose else min(3, len(result.field_traces))
+            print(f"\n=== Field Trace (first {max_traces} rows) ===")
+            for row_idx in range(max_traces):
+                print(f"  Row {row_idx + 1}:")
+                traces = result.field_traces[row_idx]
+                shown = traces if verbose else traces[:10]
+                for ft in shown:
+                    marker = "=" if ft.mapped else "∅"
+                    val = repr(ft.value) if ft.mapped else "—"
+                    print(f"    {ft.target_field:<30} <- {ft.source_path:<30} {marker} {val}")
+                if not verbose and len(traces) > 10:
+                    print(f"    ... and {len(traces) - 10} more fields")
+
+    if result.sample_errors:
+        print(f"\n=== Sample Errors ===")
+        for e in result.sample_errors:
+            print(f"  {e}")
+
+
+def _print_validate_json(result: "object") -> None:
+    """JSON output for validation results."""
+    import dataclasses
+    import json as json_mod
+
+    data = dataclasses.asdict(result)
+    print(json_mod.dumps(data, indent=2, default=str))
 
 
 def _print_result(result: PipelineResult) -> None:

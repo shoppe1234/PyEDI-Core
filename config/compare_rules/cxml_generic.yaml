@@ -1,0 +1,23 @@
+# cXML outputs are flat JSON — no segment structure.
+# Rules use segment="*" with field as the JSON key name.
+classification:
+  - segment: "*"
+    field: "*"
+    severity: "hard"
+
+ignore:
+  - segment: "*"
+    field: "_metadata"
+    reason: "Internal metadata, not business data"
+
+  - segment: "*"
+    field: "id"
+    reason: "Generated UUID, not comparable"
+
+  - segment: "*"
+    field: "timestamp"
+    reason: "Processing timestamp, not comparable"
+
+  - segment: "*"
+    field: "correlation_id"
+    reason: "Trace ID, not comparable"

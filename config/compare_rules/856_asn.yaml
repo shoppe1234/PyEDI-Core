@@ -1,0 +1,26 @@
+classification:
+  - segment: "N1"
+    field: "N102"
+    severity: "hard"
+    ignore_case: true
+
+  - segment: "HL"
+    field: "HL03"
+    severity: "hard"
+
+  - segment: "LIN"
+    field: "LIN03"
+    severity: "hard"
+
+  - segment: "*"
+    field: "*"
+    severity: "hard"
+
+ignore:
+  - segment: "SE"
+    field: "SE01"
+    reason: "Segment count varies"
+
+  - segment: "ISA"
+    field: "*"
+    reason: "Envelope-level"

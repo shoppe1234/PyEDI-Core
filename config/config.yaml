@@ -30,6 +30,80 @@ transaction_registry:
   _default_x12: ./rules/default_x12_map.yaml
   _rules_dir: ./rules
 
+compare:
+  sqlite_db: "data/compare.db"
+  csv_dir: "reports/compare"
+
+  profiles:
+    810_invoice:
+      description: "EDI 810 Invoice comparison"
+      match_key:
+        segment: "BIG"
+        field: "BIG02"
+      segment_qualifiers:
+        N1: "N101"
+        REF: "REF01"
+        DTM: "DTM01"
+        PER: "PER01"
+        IT1: "IT101"
+        N3: null
+        N4: null
+      rules_file: "config/compare_rules/810_invoice.yaml"
+
+    850_purchase_order:
+      description: "EDI 850 Purchase Order comparison"
+      match_key:
+        segment: "BEG"
+        field: "BEG03"
+      segment_qualifiers:
+        N1: "N101"
+        REF: "REF01"
+        DTM: "DTM01"
+        PER: "PER01"
+        PO1: "PO101"
+        N3: null
+        N4: null
+      rules_file: "config/compare_rules/850_po.yaml"
+
+    856_asn:
+      description: "EDI 856 Advance Ship Notice comparison"
+      match_key:
+        segment: "BSN"
+        field: "BSN02"
+      segment_qualifiers:
+        N1: "N101"
+        REF: "REF01"
+        DTM: "DTM01"
+        HL: "HL01"
+        LIN: "LIN01"
+      rules_file: "config/compare_rules/856_asn.yaml"
+
+    820_payment:
+      description: "EDI 820 Payment Order comparison"
+      match_key:
+        segment: "BPR"
+        field: "BPR16"
+      segment_qualifiers:
+        N1: "N101"
+        REF: "REF01"
+        DTM: "DTM01"
+        ENT: "ENT01"
+      rules_file: "config/compare_rules/820_payment.yaml"
+
+    csv_generic:
+      description: "CSV output comparison (user-defined match key)"
+      match_key:
+        json_path: "header.invoice_number"
+      segment_qualifiers: {}
+      rules_file: "config/compare_rules/csv_generic.yaml"
+
+    cxml_generic:
+      description: "cXML output comparison (user-defined match key)"
+      match_key:
+        json_path: "header.order_id"
+      segment_qualifiers: {}
+      rules_file: "config/compare_rules/cxml_generic.yaml"
+
 csv_schema_registry:
   margin_edge_810:
     source_dsl:      ./tpm810SourceFF.txt

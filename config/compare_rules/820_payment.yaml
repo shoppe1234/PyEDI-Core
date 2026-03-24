@@ -1,0 +1,27 @@
+classification:
+  - segment: "N1"
+    field: "N102"
+    severity: "hard"
+    ignore_case: true
+
+  - segment: "BPR"
+    field: "BPR02"
+    severity: "hard"
+    numeric: true
+
+  - segment: "ENT"
+    field: "ENT02"
+    severity: "hard"
+
+  - segment: "*"
+    field: "*"
+    severity: "hard"
+
+ignore:
+  - segment: "SE"
+    field: "SE01"
+    reason: "Segment count varies"
+
+  - segment: "ISA"
+    field: "*"
+    reason: "Envelope-level"

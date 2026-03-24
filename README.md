@@ -249,7 +249,31 @@ cd portal/ui && npm run build
 PYTHONPATH=. uvicorn portal.api.app:app --port 8000
 ```
 
-Portal pages: Dashboard, Schema Validation, Pipeline Results, Test Harness, Configuration.
+Portal pages: Dashboard, Schema Validation, Pipeline Results, Test Harness, Compare, Configuration.
+
+### Compare Source vs Target Outputs
+
+The `compare` subcommand pairs source and target JSON outputs by a configurable match key, then compares them field-by-field with per-profile rules:
+
+```bash
+# List available profiles
+pyedi compare --list-profiles
+
+# Compare 810 invoices between two directories
+pyedi compare --profile 810_invoice --source-dir /path/to/source --target-dir /path/to/target
+
+# Verbose mode (show per-field diffs)
+pyedi compare --profile 810_invoice --source-dir src/ --target-dir tgt/ --verbose
+
+# Export results to CSV
+pyedi compare --profile 810_invoice --source-dir src/ --target-dir tgt/ --export-csv
+```
+
+Profiles are defined in `config/config.yaml` under `compare.profiles`. Each profile specifies a match key (e.g., `BIG:BIG02` for 810 invoices), segment qualifiers, and a rules YAML file. Adding a new transaction type is a config change — no code changes required.
+
+Built-in profiles: `810_invoice`, `850_purchase_order`, `856_asn`, `820_payment`, `csv_generic`, `cxml_generic`.
+
+Results are stored in SQLite (`data/compare.db`) and queryable from both CLI and portal.
 
 ---
 
@@ -269,10 +293,17 @@ Portal pages: Dashboard, Schema Validation, Pipeline Results, Test Harness, Conf
 ```
 pyedi_core/
 ├── __init__.py
-├── main.py              # CLI entry point (pyedi run/test/validate)
+├── main.py              # CLI entry point (pyedi run/test/validate/compare)
 ├── pipeline.py          # Orchestration engine
 ├── test_harness.py      # Test harness (pyedi test)
 ├── validator.py         # DSL validation, trace, coverage (pyedi validate)
+├── comparator/          # Compare engine (pyedi compare)
+│   ├── __init__.py      # Public API: compare(), export_csv(), load/list_profiles()
+│   ├── models.py        # Dataclasses: MatchPair, FieldDiff, CompareResult, RunSummary
+│   ├── rules.py         # YAML rule loading + wildcard resolution
+│   ├── matcher.py       # File pairing + transaction extraction
+│   ├── engine.py        # Segment matching + field comparison
+│   └── store.py         # SQLite CRUD for runs/pairs/diffs
 ├── config/
 │   └── __init__.py      # Pydantic config models
 ├── core/                # Core processing modules
@@ -293,13 +324,24 @@ portal/                  # Web portal (FastAPI + React)
 ├── api/
 │   ├── app.py           # FastAPI app factory + static serving
 │   ├── models.py        # Pydantic request/response models
-│   └── routes/          # validate, pipeline, test, manifest, config
+│   └── routes/          # validate, pipeline, test, manifest, config, compare
 ├── ui/                  # React + Vite + Tailwind frontend
-│   └── src/pages/       # Dashboard, Validate, Pipeline, Tests, Config
+│   └── src/pages/       # Dashboard, Validate, Pipeline, Tests, Compare, Config
+├── tests/
+│   └── test_compare_api.py  # Compare API integration tests
 ├── dev.sh               # Dev startup script (API + Vite)
 └── pyproject.toml
 config/
-│   └── config.yaml      # Runtime configuration
+├── config.yaml          # Runtime configuration (incl. compare profiles)
+└── compare_rules/       # Per-profile comparison rules YAMLs
+    ├── 810_invoice.yaml
+    ├── 850_po.yaml
+    ├── 856_asn.yaml
+    ├── 820_payment.yaml
+    ├── csv_generic.yaml
+    └── cxml_generic.yaml
+data/
+└── compare.db           # SQLite database (compare run history)
 schemas/
 ├── source/              # DSL source files
 └── compiled/            # Compiled YAML maps + meta.json
@@ -311,6 +353,7 @@ tests/
 ├── test_harness.py      # Unit + integration: test harness
 ├── test_main.py         # Unit: CLI entry point
 ├── test_validator.py    # Unit + integration: validator module
+├── test_comparator.py   # Unit + integration: compare engine (22 tests)
 ├── test_api.py          # Integration: portal API endpoints
 └── integration/
     └── test_user_supplied_data.py  # YAML-driven regression tests
@@ -320,7 +363,7 @@ tests/
 
 ## Testing
 
-**165 tests** (95 unit, 70 integration), 0 failures.
+**192 tests** (110+ unit, 80+ integration), 0 failures.
 
 ```bash
 # Run all tests

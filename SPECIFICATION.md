@@ -375,12 +375,12 @@ Phase 5	Scale Hardening	Locust load tests at 5,000 files, benchmark regressions 
 Post-v1.0 features prioritized by operational value:
 
 Feature	Priority	Description
-JSON Comparison Engine	HIGH — v1.1	Built-in diff tool using the envelope correlation_id to match and compare two normalized JSON outputs field-by-field
+JSON Comparison Engine	DONE — v1.1	Built-in diff tool ported from json810Compare. Profile-driven comparison engine in `pyedi_core/comparator/`, `pyedi compare` CLI, portal `/compare` page. SQLite storage. 6 profiles (810, 850, 856, 820, CSV, cXML)
 Output Schema Versioning	HIGH — v1.1	Define and enforce a canonical JSON schema contract. Version the envelope schema_version field. Downstream consumers declare version dependency.
 Private PyPI Publishing	MEDIUM — v1.2	Publish pyedi_core as an installable package to a private registry for distribution across projects
 MCP Server Wrapper	MEDIUM — v1.2	Expose pipeline as a Model Context Protocol server for native integration with MCP-compatible LLM clients
 Webhook / Event Triggers	MEDIUM — v2.0	Optional event-driven trigger layer (S3 events, message queue) as an alternative to on-demand CLI/API invocation
-Web Operator Dashboard	LOW — v2.0	Simple UI for non-technical operators to view manifest, triage failures, and trigger dry-runs without CLI access
+Web Operator Dashboard	DONE — v1.0	PyEDI Portal: FastAPI backend + React frontend. Dashboard, Validate, Pipeline, Tests, Compare, Config pages. `bash portal/dev.sh` for dev mode
 Additional XML Dialects	LOW — v2.0	Extend xml_handler.py to support UBL, EDIFACT, or other dialects via additional driver sub-classes
 Streaming Large Files	LOW — v2.0	Chunked processing for CSV files exceeding memory limits (>1M rows)
 

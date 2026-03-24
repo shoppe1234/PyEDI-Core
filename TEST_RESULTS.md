@@ -1,8 +1,8 @@
 # PyEDI-Core Test Results
 
 **Date:** 2026-03-24
-**Run:** Full suite after Portal build (Phase A-C complete)
-**Result:** **165 / 165 PASSED**, 1 warning
+**Run:** Full suite after Compare engine build (Phase D-E complete)
+**Result:** **192 / 192 PASSED**, 1 warning
 
 ---
 
@@ -10,20 +10,22 @@
 
 | Category | Count | Marker |
 |----------|-------|--------|
-| Unit tests | ~95 | `pytest -m unit` |
-| Integration tests | ~70 | `pytest -m integration` |
-| **Total** | **165** | `pytest` |
+| Unit tests | ~110 | `pytest -m unit` |
+| Integration tests | ~82 | `pytest -m integration` |
+| **Total** | **192** | `pytest tests/ + pytest portal/tests/` |
 
 ## Test Execution
 
 **Command:**
 ```bash
-pytest tests/ -v --tb=short
+pytest tests/ -v --tb=short          # 187 passed
+pytest portal/tests/ -v --tb=short   #   5 passed
 ```
 
 **Output:**
 ```
-165 passed, 1 warning in 2.42s
+187 passed, 1 warning in 7.18s   (engine tests)
+  5 passed in 2.11s              (portal compare API tests)
 ```
 
 The single warning is a non-fatal discrepancy in the x12 integration test (unexpected metadata keys `_transaction_type`, `_is_unmapped`, `_map_file` in actual output).
@@ -38,8 +40,10 @@ The single warning is a non-fatal discrepancy in the x12 integration test (unexp
 | `test_harness.py` | 13 | unit + integration | compare_outputs, run_tests, verify, generate_expected, CLI wiring |
 | `test_main.py` | 11 | unit | main() CLI entry point, _print_result |
 | `test_validator.py` | 9 | unit + integration | validator module: compile, type preservation, coverage, traces |
+| `test_comparator.py` | 22 | unit + integration | compare engine: models, rules, matcher, engine, store, full pipeline |
 | `test_api.py` | 7 | integration | portal API: health, validate, pipeline, test, manifest, config |
 | `integration/test_user_supplied_data.py` | 9 | integration | YAML-driven regression tests with real files |
+| `portal/tests/test_compare_api.py` | 5 | integration | compare API: profiles, run+query, export, rules read/write |
 
 ## User-Supplied Test Cases
 

@@ -10,14 +10,18 @@
 - [x] **Add validator tests** — 9 unit + integration tests in `tests/test_validator.py`.
 - [x] **Build PyEDI Portal (FastAPI backend)** — `portal/api/` with health, validate, pipeline, test, manifest, and config endpoints. 7 API integration tests.
 - [x] **Build PyEDI Portal (React frontend)** — `portal/ui/` with Vite + React + TypeScript + Tailwind CSS. Dashboard, Validate, Pipeline, Tests, and Config pages. Static build served by FastAPI.
+- [x] **Compare engine — Phase D (core)** — Ported `json810Compare/comparator.py` into `pyedi_core/comparator/` module. Profile-driven comparison with models, rules (YAML), matcher, engine, SQLite store, and `pyedi compare` CLI subcommand. 6 transaction profiles (810, 850, 856, 820, CSV, cXML). 22 comparator tests.
+- [x] **Compare engine — Phase E (portal)** — `/api/compare` endpoints (9 routes: profiles, run, runs, pairs, diffs, export, rules read/write). React `/compare` page with profile dropdown, run history, pair list, diff viewer, rules editor. 5 API integration tests.
 
 ## Open
 
 ### Medium Priority
 
-- [ ] **Add `react-router-dom` routing** — Replace manual page state in `App.tsx` with proper URL-based routing (`/validate`, `/pipeline`, `/test`, `/config`). Enables browser back/forward and deep linking.
+- [ ] **Add `react-router-dom` routing** — Replace manual page state in `App.tsx` with proper URL-based routing (`/validate`, `/pipeline`, `/test`, `/config`, `/compare`). Enables browser back/forward and deep linking.
 - [ ] **Portal: file upload on Pipeline page** — Wire the `POST /api/pipeline/upload` endpoint to a drag-and-drop upload component on the Pipeline page.
 - [ ] **Portal: Manifest page** — Add a dedicated `/manifest` page with search, status filter, and pagination (API endpoints already exist).
+- [ ] **Compare: real-data end-to-end test** — Run `pyedi compare --profile 810_invoice` against actual NA/CA JSON output directories and verify results.
+- [ ] **Compare: error discovery** — Port `errorConfig.py` auto-detect pattern from json810Compare to suggest new rules when unknown field mismatches appear.
 
 ### Low Priority
 

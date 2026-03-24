@@ -159,13 +159,16 @@ def _compile_to_yaml(record_defs: List[Dict], source_filename: str, delimiter: s
         record_type = record_def.get("type", "detail")
         
         if "fieldIdentifier" in record_def:
-            yaml_map["schema"]["records"][record_def["fieldIdentifier"]] = []
-            
+            record_key = record_def["fieldIdentifier"]
+            if record_key in yaml_map["schema"]["records"]:
+                record_key = record_def.get("name", record_key)
+            yaml_map["schema"]["records"][record_key] = []
+
         for field in record_def.get("fields", []):
             field_name = field["name"]
-            
+
             if "fieldIdentifier" in record_def:
-                yaml_map["schema"]["records"][record_def["fieldIdentifier"]].append(field_name)
+                yaml_map["schema"]["records"][record_key].append(field_name)
             
             # Determine source_path based on record type
             source_path = field_name

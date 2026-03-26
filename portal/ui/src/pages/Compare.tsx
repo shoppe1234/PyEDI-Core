@@ -60,6 +60,12 @@ export default function ComparePage() {
   const [runDiff, setRunDiff] = useState<any>(null)
   const [diffLoading, setDiffLoading] = useState(false)
 
+  // Discoveries
+  const [discoveries, setDiscoveries] = useState<any[]>([])
+  const [discoveryFilter, setDiscoveryFilter] = useState<string>('all')
+  const [discoveryLoading, setDiscoveryLoading] = useState(false)
+  const [applyingId, setApplyingId] = useState<number | null>(null)
+
   // Load profiles on mount
   useEffect(() => {
     api.compareProfiles().then(setProfiles).catch(e => setError(e.message))
@@ -195,6 +201,38 @@ export default function ComparePage() {
       setDiffLoading(false)
     }
   }
+
+  const loadDiscoveries = async () => {
+    if (!selectedProfile) return
+    setDiscoveryLoading(true)
+    try {
+      const applied = discoveryFilter === 'all' ? undefined : discoveryFilter === 'applied'
+      setDiscoveries(await api.compareDiscoveries(selectedProfile, applied))
+    } catch (e: any) {
+      setError(e.message)
+    } finally {
+      setDiscoveryLoading(false)
+    }
+  }
+
+  const applyDiscovery = async (id: number) => {
+    setApplyingId(id)
+    setError('')
+    try {
+      await api.compareApplyDiscovery(id)
+      loadDiscoveries()
+    } catch (e: any) {
+      setError(e.message)
+    } finally {
+      setApplyingId(null)
+    }
+  }
+
+  useEffect(() => {
+    if (view === 'discoveries' && selectedProfile) {
+      loadDiscoveries()
+    }
+  }, [view, selectedProfile, discoveryFilter])
 
   return (
     <div>
@@ -659,7 +697,89 @@ export default function ComparePage() {
 
       {view === 'discoveries' && (
         <div className="bg-white rounded-lg shadow p-4">
-          <p className="text-sm text-gray-400">Discoveries panel — coming in Phase C.</p>
+          <h2 className="font-semibold text-sm text-gray-500 uppercase mb-3">Error Discoveries</h2>
+
+          {/* Profile selector */}
+          <div className="mb-3">
+            <label className="block text-xs text-gray-500 mb-1">Profile</label>
+            <select
+              className="border rounded px-3 py-1.5 text-sm"
+              value={selectedProfile}
+              onChange={e => setSelectedProfile(e.target.value)}
+            >
+              <option value="">Select profile...</option>
+              {profiles.map(p => (
+                <option key={p.name} value={p.name}>{p.name}</option>
+              ))}
+            </select>
+          </div>
+
+          {!selectedProfile ? (
+            <p className="text-sm text-gray-400">Select a profile to view discoveries.</p>
+          ) : (
+            <>
+              {/* Filter buttons */}
+              <div className="flex gap-1 mb-3">
+                {['all', 'pending', 'applied'].map(f => (
+                  <button
+                    key={f}
+                    onClick={() => setDiscoveryFilter(f)}
+                    className={`px-2 py-0.5 rounded text-xs capitalize ${discoveryFilter === f ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
+                  >
+                    {f}
+                  </button>
+                ))}
+              </div>
+
+              {discoveryLoading ? (
+                <p className="text-sm text-gray-400">Loading...</p>
+              ) : discoveries.length === 0 ? (
+                <p className="text-sm text-gray-400">No discoveries found.</p>
+              ) : (
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="text-left text-xs text-gray-500 border-b">
+                      <th className="py-1 pr-2">Segment</th>
+                      <th className="py-1 pr-2">Field</th>
+                      <th className="py-1 pr-2">Source Value</th>
+                      <th className="py-1 pr-2">Target Value</th>
+                      <th className="py-1 pr-2">Severity</th>
+                      <th className="py-1 pr-2">Status</th>
+                      <th className="py-1 pr-2">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {discoveries.map(d => (
+                      <tr key={d.id} className="border-b border-gray-50">
+                        <td className="py-1 pr-2 font-mono text-xs">{d.segment}</td>
+                        <td className="py-1 pr-2 font-mono text-xs">{d.field}</td>
+                        <td className="py-1 pr-2 text-xs">{d.source_value ?? '—'}</td>
+                        <td className="py-1 pr-2 text-xs">{d.target_value ?? '—'}</td>
+                        <td className="py-1 pr-2"><StatusBadge status={d.suggested_severity} /></td>
+                        <td className="py-1 pr-2">
+                          {d.applied
+                            ? <span className="px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">Applied</span>
+                            : <span className="px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-600">Pending</span>
+                          }
+                        </td>
+                        <td className="py-1 pr-2">
+                          {!d.applied && (
+                            <button
+                              onClick={() => applyDiscovery(d.id)}
+                              disabled={applyingId === d.id}
+                              className="bg-green-600 text-white px-2 py-0.5 rounded text-xs hover:bg-green-700 disabled:opacity-50"
+                            >
+                              {applyingId === d.id ? '...' : 'Apply'}
+                            </button>
+                          )}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
+            </>
+          )}
         </div>
       )}
     </div>

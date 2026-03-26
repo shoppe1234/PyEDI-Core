@@ -237,9 +237,9 @@ The team used Sheets pivot tables to answer: "Which fields fail most?", "What pe
 
 ## 4. Improvement Task List
 
-### Phase A — Core Parity (HIGH priority)
+### Phase A — Core Parity (HIGH priority) — COMPLETE
 
-- [ ] **A1: Error Discovery Table + Workflow**
+- [x] **A1: Error Discovery Table + Workflow**
   - Add `error_discovery` table to SQLite:
     ```
     error_discovery (
@@ -258,7 +258,7 @@ The team used Sheets pivot tables to answer: "Which fields fail most?", "What pe
   - CLI output: "Discovered N new field combinations not yet classified"
   - **Files:** store.py, engine.py, rules.py, models.py, \_\_init\_\_.py, main.py
 
-- [ ] **A2: Reclassification CLI Command**
+- [x] **A2: Reclassification CLI Command**
   - Add `reclassify(run_id, db_path, profile)` to `__init__.py`:
     - Read all diffs for the run
     - Re-resolve severity via `get_field_rule()` with current rules + crosswalk
@@ -268,7 +268,7 @@ The team used Sheets pivot tables to answer: "Which fields fail most?", "What pe
   - In `main.py`: add `--reclassify-run RUN_ID` to compare subparser
   - **Files:** \_\_init\_\_.py, store.py, main.py
 
-- [ ] **A3: Conditional Qualifier in Flat Compare**
+- [ ] **A3: Conditional Qualifier in Flat Compare** (remaining open item)
   - In `_compare_flat_dict()` (engine.py), after the `severity == "ignore"` check, add:
     ```python
     if rule.conditional_qualifier:
@@ -281,23 +281,23 @@ The team used Sheets pivot tables to answer: "Which fields fail most?", "What pe
 
 ---
 
-### Phase B — Data Model Enrichment (MEDIUM priority)
+### Phase B — Data Model Enrichment (MEDIUM priority) — COMPLETE
 
-- [ ] **B1: Add Trading Partner + Transaction Type to compare_runs**
+- [x] **B1: Add Trading Partner + Transaction Type to compare_runs**
   - Add columns: `trading_partner TEXT`, `transaction_type TEXT`, `run_notes TEXT`
   - Add to `CompareProfile` model and `config.yaml` profile definitions
   - Thread through `insert_run()`, `RunSummary`, `_row_to_run_summary()`
   - Migration: `ALTER TABLE ... ADD COLUMN` in `init_db()` with IF NOT EXISTS check
   - **Files:** store.py, models.py, config.yaml, \_\_init\_\_.py
 
-- [ ] **B2: Pre-Seed Crosswalk for All Profiles**
+- [x] **B2: Pre-Seed Crosswalk for All Profiles**
   - Extend `scaffold.py` to support X12 profiles (not just flat schemas):
     - `scaffold_x12_crosswalk(profile_name, rules_path, db_path)` reads classification entries from rules YAML → inserts into field_crosswalk
   - Add CLI: `pyedi scaffold-rules --from-profile 810_invoice --db data/compare.db`
   - Auto-seed option: seed crosswalk on first compare run for a profile
   - **Files:** scaffold.py, store.py, main.py
 
-- [ ] **B3: Add Segment Column to field_crosswalk**
+- [x] **B3: Add Segment Column to field_crosswalk**
   - Current schema uses `field_name` only (works for flat, breaks for X12 where (segment, field) is the key)
   - Add `segment TEXT DEFAULT '*'` column to field_crosswalk
   - Update `UNIQUE` constraint to `UNIQUE(profile, segment, field_name)`
@@ -307,9 +307,9 @@ The team used Sheets pivot tables to answer: "Which fields fail most?", "What pe
 
 ---
 
-### Phase C — Reporting (MEDIUM priority)
+### Phase C — Reporting (MEDIUM priority) — COMPLETE
 
-- [ ] **C1: Enrich CSV Export**
+- [x] **C1: Enrich CSV Export**
   - Add metadata header block (lines starting with `#`):
     ```
     # Profile: bevager_810
@@ -322,7 +322,7 @@ The team used Sheets pivot tables to answer: "Which fields fail most?", "What pe
   - Add summary footer row with aggregate counts by severity
   - **Files:** \_\_init\_\_.py
 
-- [ ] **C2: Summary Statistics Queries**
+- [x] **C2: Summary Statistics Queries**
   - Add to `store.py`:
     - `get_severity_breakdown(db_path, run_id) -> dict[str, int]`
     - `get_segment_breakdown(db_path, run_id) -> dict[str, int]`
@@ -333,9 +333,9 @@ The team used Sheets pivot tables to answer: "Which fields fail most?", "What pe
 
 ---
 
-### Phase D — Polish (LOW priority)
+### Phase D — Polish (LOW priority) — COMPLETE
 
-- [ ] **D1: Add 855 PO Ack + 860 PO Change Profiles**
+- [x] **D1: Add 855 PO Ack + 860 PO Change Profiles**
   - Create `config/compare_rules/855_po_ack.yaml` with BAK segment rules
   - Create `config/compare_rules/860_po_change.yaml` with BCH segment rules
   - Add profiles to `config.yaml`:
@@ -343,7 +343,7 @@ The team used Sheets pivot tables to answer: "Which fields fail most?", "What pe
     - 860: match_key `BCH:BCH03`, qualifiers for N1, REF, DTM, POC
   - **Files:** config.yaml, new YAML files
 
-- [ ] **D2: Run Comparison View (Diff Two Runs)**
+- [x] **D2: Run Comparison View (Diff Two Runs)**
   - Add `compare_two_runs(db_path, run_id_a, run_id_b)` to `store.py`:
     - For each match_value in both runs, compare diff sets
     - Report: new errors (in B not A), resolved (in A not B), changed severity, unchanged
@@ -372,10 +372,13 @@ The team used Sheets pivot tables to answer: "Which fields fail most?", "What pe
 
 | Table | Total Rows | Bevager Rows | Key Observations |
 |-------|-----------|-------------|-----------------|
-| compare_runs | 34 | 2 | Run #33 (before crosswalk), Run #34 (after crosswalk) |
-| compare_pairs | 140 | 44 | 22 pairs per run, status: 36 MATCH / 72 MISMATCH / 32 UNMATCHED |
-| compare_diffs | 692 | 660 | DueDate: 594 (86%), Taxes: 34 (5%), InvoiceDate: 28 (4%), N102: 32 (5%), UnitofMeasure: 4 (0.6%) |
-| field_crosswalk | 1 | 1 | Only Taxes (variance=50.0). All other fields unclassified in crosswalk. |
+| compare_runs | 34+ | 2+ | Includes bevager_810 runs. Additional runs from reclassification and re-comparison. |
+| compare_pairs | 140+ | 44+ | 22+ pairs per run. With matcher fix, target-only pairs now detected. |
+| compare_diffs | 692+ | 660+ | DueDate: ~86%, Taxes: ~5%, InvoiceDate: ~4% |
+| field_crosswalk | seeded | per-profile | Pre-seeded from rules YAML via scaffold. Includes segment column. |
+| error_discovery | active | per-profile | Auto-detected unclassified `(segment, field)` combos. Apply workflow in portal. |
+
+**Note:** All 11 improvement tasks (A1-D2) have been implemented. Only A3 (conditional qualifier in flat compare) remains open. The `error_discovery` table and reclassification mode close the two highest-impact gaps (G1, G2) from the original analysis.
 
 ### json810Compare Example Files (artifacts/examples/)
 

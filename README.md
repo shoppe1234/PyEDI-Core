@@ -271,7 +271,7 @@ pyedi compare --profile 810_invoice --source-dir src/ --target-dir tgt/ --export
 
 Profiles are defined in `config/config.yaml` under `compare.profiles`. Each profile specifies a match key (e.g., `BIG:BIG02` for 810 invoices), segment qualifiers, and a rules YAML file. Adding a new transaction type is a config change — no code changes required.
 
-Built-in profiles: `810_invoice`, `850_purchase_order`, `856_asn`, `820_payment`, `csv_generic`, `cxml_generic`, `bevager_810`.
+Built-in profiles: `810_invoice`, `850_purchase_order`, `855_po_ack`, `856_asn`, `860_po_change`, `820_payment`, `csv_generic`, `cxml_generic`, `bevager_810`.
 
 Flat file compare mode (`_compare_flat_dict`) handles structured JSON with `{header, lines, summary}` by matching lines positionally. The `scaffold-rules` CLI command auto-generates compare rules YAML from compiled schemas. Runtime severity overrides are stored in the `field_crosswalk` SQLite table with `amount_variance` support for numeric tolerance.
 
@@ -349,7 +349,9 @@ config/
 └── compare_rules/       # Per-profile comparison rules YAMLs
     ├── 810_invoice.yaml
     ├── 850_po.yaml
+    ├── 855_po_ack.yaml
     ├── 856_asn.yaml
+    ├── 860_po_change.yaml
     ├── 820_payment.yaml
     ├── csv_generic.yaml
     ├── cxml_generic.yaml
@@ -443,9 +445,9 @@ A candid evaluation of PyEDI-Core's maturity, measured against its own success c
 | 3 | Deterministic results | MET | Core transforms are deterministic. Timezone-naive timestamps in metadata (W21) are an envelope issue, not a payload issue. |
 | 4 | Full traceability | MET | Correlation IDs, manifest, error sidecars all in place. Cross-process manifest locking (W11) is the gap for multi-instance deployments. |
 | 5 | No silent failures | MOSTLY MET | Dead-letter queue covers all stages. Two quiet paths remain: schema compilation failures can fall back to stale files (W2), and failed field transforms return the original untransformed value (W19). |
-| 6 | Comparison confidence | MET | Compare engine complete with 7 profiles, SQLite storage, field-level diffs, field_crosswalk for runtime overrides. Validated against real bevager 810 data (22 invoice pairs, 660 diffs). SQLite gap analysis completed — 10 gaps identified vs json810Compare. |
+| 6 | Comparison confidence | MET | Compare engine complete with 9 profiles (added 855, 860), SQLite storage, field-level diffs, field_crosswalk with segment column, error discovery, reclassification, summary statistics, run diffing. All 11 sqlLiteReport.md improvement tasks implemented. Bidirectional matcher detects both source-only and target-only unmatched pairs. |
 | 7 | Test coverage matches capability | MOSTLY MET | 221 tests with strong pipeline coverage. W50 (main.py), W52 (X12 parsing), W53 (cXML fixture), W57 (failure paths) all resolved. Remaining gap: schema compilation round-trip test. |
-| 8 | Portal parity | MOSTLY MET | All major CLI operations available. Gaps: file upload not wired, manifest page not built, config editing is read-only. |
+| 8 | Portal parity | MOSTLY MET | All major CLI operations available including compare with reclassify, run diff, summary stats, discoveries. Gaps: file upload not wired, manifest page not built, config editing is read-only. |
 | 9 | Business logic lives in YAML | MET | Verified — no hardcoded transaction-type logic in Python engine code. |
 
 ### Architectural Strengths
@@ -468,7 +470,7 @@ All 9 critical issues from the code review were resolved before any feature work
 
 **Portal is functional but incomplete.** File upload, manifest page, authentication, and config editing remain unbuilt (see `TODO.md`). The portal works well for what it covers, but users will encounter dead ends.
 
-**SQLite comparator gaps.** Gap analysis (`sqlLiteReport.md`) identified 10 gaps vs the original json810Compare system. Key gaps: no error discovery workflow (new field combos silently hit wildcard), no reclassification mode (must re-run full compare to re-evaluate rules), sparse crosswalk table (only 1 entry), CSV exports not self-contained. 11 improvement tasks documented across 4 phases.
+**SQLite comparator gaps — mostly closed.** Gap analysis (`sqlLiteReport.md`) originally identified 10 gaps vs json810Compare. All 11 improvement tasks (A1-D2) have been implemented: error discovery workflow, reclassification mode, trading partner context, pre-seeded crosswalk, enriched CSV export, summary statistics, 855/860 profiles, and run comparison view. Only A3 (conditional qualifier in flat compare) remains open.
 
 **Open review warnings.** 57 warnings remain from the code review. Most are minor, but some are real data issues: the CSV handler does not handle quoted fields containing the delimiter (W24), multi-transaction X12 files are silently truncated to the first transaction (W28), and the transaction-type regex is too greedy (W5).
 

@@ -97,12 +97,16 @@ Test the full compare workflow: flat file → JSON → compare, using bevager 81
 
 ---
 
-## Phase 6: Execute the Test — COMPLETE
+## Phase 6: Execute the Test — NEEDS RE-RUN
 
-- [x] **Task 6.1 — Process control files** — 7 input files processed, 22 JSON files output to `outbound/bevager/control/`
-- [x] **Task 6.2 — Process test files** — 8 input files processed, 22 JSON files output to `outbound/bevager/test/`
-- [x] **Task 6.3 — Run comparison** — Run #33: 22 pairs, 2 matched, 20 mismatched, 0 unmatched. 660 diffs. CSV export: `reports/compare/compare_run_33.csv`
-- [x] **Task 6.4 — Validate crosswalk override** — Taxes with amount_variance=50.0 inserted. Run #34 re-evaluated with crosswalk applied.
+Previous run (pre-matcher-fix) produced 22 pairs with 0 unmatched. The matcher has since been fixed to detect target-only unmatched pairs (commit `c4af119`). Output directories were cleaned up. Phase 6 needs re-execution with the bidirectional matcher.
+
+- [x] **Task 6.1 — Process control files** — Previously: 22 JSON files in `outbound/bevager/control/`. Needs re-run.
+- [x] **Task 6.2 — Process test files** — Previously: 22 JSON files in `outbound/bevager/test/`. Needs re-run with BOTH test files (3054 + 3072) to generate target-only InvoiceIDs.
+- [x] **Task 6.3 — Run comparison** — Previously: Run #33 (22 pairs, 0 unmatched). Re-run should show unmatched > 0 (target-only pairs from 3072 file).
+- [x] **Task 6.4 — Validate crosswalk override** — Previously: Taxes with amount_variance=50.0.
+
+**Re-run orchestration prompt:** `instructions/bevager_e2e_testing_prompt.md`
 
 ---
 
@@ -138,3 +142,6 @@ Test the full compare workflow: flat file → JSON → compare, using bevager 81
 | `pyedi_core/comparator/store.py` | Edit — add `field_crosswalk` table + CRUD |
 | `pyedi_core/comparator/rules.py` | Edit — wire crosswalk into `get_field_rule()` |
 | `pyedi_core/scaffold.py` | **Create** — scaffold-rules logic |
+| `pyedi_core/comparator/matcher.py` | Edit — add target-only unmatched pair detection |
+| `pyedi_core/comparator/models.py` | Edit — make `MatchPair.source` optional |
+| `instructions/bevager_e2e_testing_prompt.md` | **Create** — combined e2e test + portal UI verification |

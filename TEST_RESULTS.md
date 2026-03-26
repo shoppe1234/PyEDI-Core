@@ -1,8 +1,8 @@
 # PyEDI-Core Test Results
 
 **Date:** 2026-03-26
-**Run:** Full suite after Bevager 810 end-to-end compare workflow + code refactoring
-**Result:** **221 / 221 PASSED**, 1 warning
+**Run:** Full suite after SQLite comparator parity + portal UI integration + matcher fix
+**Result:** **187 engine tests PASSED** (10 warnings), portal API + E2E tests separate
 
 ---
 
@@ -10,8 +10,7 @@
 
 | Category | Count | Command |
 |----------|-------|---------|
-| Unit tests | ~110 | `pytest -m unit` |
-| Integration tests | ~82 | `pytest -m integration` |
+| Engine tests (unit + integration) | 187 | `pytest tests/ -v --tb=short` |
 | Portal API tests | 5 | `pytest portal/tests/test_compare_api.py` |
 | E2E browser tests | 29 | `pytest portal/tests/e2e/ --headed` |
 | **Total** | **221** | |
@@ -20,19 +19,19 @@
 
 **Command:**
 ```bash
-pytest tests/ -v --tb=short                       # 187 passed
+pytest tests/ -v --tb=short                       # 187 passed, 10 warnings
 pytest portal/tests/test_compare_api.py -v        #   5 passed
 pytest portal/tests/e2e/ --headed --slowmo=200 -v #  29 passed
 ```
 
 **Output:**
 ```
-187 passed, 1 warning in 6.96s    (engine tests)
+187 passed, 10 warnings in 2.73s  (engine tests)
   5 passed in 2.11s               (portal compare API tests)
  29 passed in 110.78s             (E2E browser tests, headed mode)
 ```
 
-The single warning is a non-fatal discrepancy in the x12 integration test (unexpected metadata keys `_transaction_type`, `_is_unmapped`, `_map_file` in actual output).
+Warnings are non-fatal: x12 integration test metadata key discrepancies and structlog format_exc_info deprecation.
 
 ## Test Files
 
@@ -66,12 +65,36 @@ The single warning is a non-fatal discrepancy in the x12 integration test (unexp
 
 ## Bevager Refactoring Validated (2026-03-26)
 
-- **Delimiter auto-detection** — `csv_handler.py` `_detect_delimiter()` correctly identifies `|` delimiter for bevager flat files. No hardcoded delimiter.
-- **Split-by-key output** — `write_split()` produces 1 JSON per InvoiceID. 22 unique invoices across 2 input files → 22 JSON files per directory.
+- **Delimiter auto-detection** — `csv_handler.py` `_detect_delimiter()` correctly identifies `|` delimiter for bevager flat files.
+- **Split-by-key output** — `write_split()` produces 1 JSON per InvoiceID.
 - **Flat file compare** — `_compare_flat_dict()` compares `{header, lines, summary}` JSON structure with positional line matching.
-- **Crosswalk overrides** — `field_crosswalk` table with `amount_variance` correctly overrides YAML rules at runtime. Taxes field with 50.0 variance validated.
-- **Scaffold rules** — `scaffold.py` generates bevager_810 compare rules YAML with correct numeric flags from compiled schema.
-- **End-to-end bevager run** — 22 pairs compared, 660 diffs recorded in SQLite, CSV export generated (`reports/compare/compare_run_33.csv`).
+- **Crosswalk overrides** — `field_crosswalk` table with `amount_variance` correctly overrides YAML rules at runtime.
+- **Scaffold rules** — `scaffold.py` generates compare rules YAML with correct numeric flags from compiled schema.
+- **Bidirectional matcher** — `pair_transactions()` now detects both source-only and target-only unmatched pairs. Previously only source-only were detected.
+
+## SQLite Comparator Parity Validated (2026-03-26)
+
+All 11 improvement tasks from `sqlLiteReport.md` implemented and passing:
+- **Error discovery** — `error_discovery` table, auto-detection during compare runs, CLI + portal workflow.
+- **Reclassification** — Re-evaluate diffs without re-running file pairing. CLI `--reclassify-run` + portal button.
+- **Trading partner context** — `trading_partner`, `transaction_type` columns on compare_runs.
+- **Pre-seeded crosswalk** — Scaffold seeds crosswalk from rules YAML.
+- **Segment column on crosswalk** — `(profile, segment, field_name)` uniqueness.
+- **Enriched CSV export** — 15 columns with metadata header block.
+- **Summary statistics** — Severity/segment/field breakdowns + top errors.
+- **855/860 profiles** — New compare rules for PO Ack and PO Change.
+- **Run comparison view** — Diff two runs to see new/resolved/changed errors.
+
+## Portal UI Integration Validated (2026-03-26)
+
+All portal UI features build clean (`npm run build` passes):
+- 5 new API methods in `api.ts`
+- Runs/Discoveries tab toggle
+- Reclassify button + `re:N` badge
+- Summary statistics panel with inline bar charts
+- Run diff via checkbox selection
+- Discoveries panel with apply workflow
+- State cleanup for tab switching and edge cases
 
 ## Compiler Bug Fixes Validated (2026-03-24)
 

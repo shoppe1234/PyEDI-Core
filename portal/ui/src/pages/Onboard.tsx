@@ -7,6 +7,7 @@ interface ColumnInfo {
   dsl_type: string
   type_preserved?: boolean
   record_name?: string
+  width?: number
 }
 
 interface RuleRow {
@@ -265,7 +266,21 @@ function StepCompile({
         <>
           {/* Summary */}
           <Card>
-            <CardHeader title="Compilation Result" badge={`${result.columns?.length || 0} columns`} badgeColor="emerald" />
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-sm font-semibold text-gray-800 uppercase tracking-wide">Compilation Result</h2>
+              <div className="flex items-center gap-2">
+                <span className={`px-2 py-0.5 text-xs font-medium rounded-full ${
+                  result.columns?.some((c: any) => c.width)
+                    ? 'bg-violet-100 text-violet-700'
+                    : 'bg-blue-100 text-blue-700'
+                }`}>
+                  {result.columns?.some((c: any) => c.width) ? 'Fixed-Width' : 'Delimited'}
+                </span>
+                <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700">
+                  {result.columns?.length || 0} columns
+                </span>
+              </div>
+            </div>
             <dl className="grid grid-cols-2 gap-x-6 gap-y-2 text-sm">
               <dt className="text-gray-500">Transaction Type</dt>
               <dd className="font-medium font-mono text-indigo-700">{result.transaction_type}</dd>
@@ -304,6 +319,7 @@ function StepCompile({
                     <Th>Field Name</Th>
                     <Th>DSL Type</Th>
                     <Th>Compiled Type</Th>
+                    <Th align="center">Width</Th>
                     <Th align="center">Preserved</Th>
                   </tr>
                 </thead>
@@ -313,6 +329,9 @@ function StepCompile({
                       <td className="px-3 py-1.5 font-mono text-xs font-medium text-gray-800">{c.name}</td>
                       <td className="px-3 py-1.5 text-gray-500">{c.dsl_type || '\u2014'}</td>
                       <td className="px-3 py-1.5 text-gray-500">{c.compiled_type}</td>
+                      <td className="px-3 py-1.5 text-center font-mono text-xs text-gray-500">
+                        {c.width || '\u2014'}
+                      </td>
                       <td className="px-3 py-1.5 text-center">
                         {c.type_preserved
                           ? <span className="text-emerald-500 font-bold">&#10003;</span>

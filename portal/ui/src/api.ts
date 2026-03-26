@@ -98,6 +98,41 @@ export const api = {
   compareRunSummary: (runId: number) =>
     request<any>(`/compare/runs/${runId}/summary`),
 
+  // Onboard wizard
+  onboardRegister: (data: {
+    profile_name: string;
+    trading_partner: string;
+    transaction_type: string;
+    description: string;
+    source_dsl: string;
+    compiled_output: string;
+    inbound_dir: string;
+    match_key: Record<string, string>;
+    segment_qualifiers: Record<string, string | null>;
+  }) =>
+    request<{
+      profile_name: string;
+      rules_file: string;
+      config_updated: boolean;
+      rules_created: boolean;
+    }>('/onboard/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    }),
+
+  onboardRulesTemplate: (compiledYaml: string) =>
+    request<{
+      classification: Array<{
+        segment: string;
+        field: string;
+        severity: string;
+        ignore_case: boolean;
+        numeric: boolean;
+      }>;
+      ignore: any[];
+    }>(`/onboard/rules-template?compiled_yaml=${encodeURIComponent(compiledYaml)}`),
+
   // Discoveries: list unclassified field combos
   compareDiscoveries: (profile: string, applied?: boolean) => {
     const params = new URLSearchParams({ profile });

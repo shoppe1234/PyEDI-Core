@@ -49,6 +49,9 @@ export default function ComparePage() {
   // Tab view
   const [view, setView] = useState<'runs' | 'discoveries'>('runs')
 
+  // Reclassify
+  const [reclassifying, setReclassifying] = useState(false)
+
   // Load profiles on mount
   useEffect(() => {
     api.compareProfiles().then(setProfiles).catch(e => setError(e.message))
@@ -142,6 +145,20 @@ export default function ComparePage() {
     }
   }
 
+  const reclassifyRun = async () => {
+    if (!selectedRun) return
+    setReclassifying(true)
+    setError('')
+    try {
+      await api.compareReclassify(selectedRun.run_id)
+      loadRuns()
+    } catch (e: any) {
+      setError(e.message)
+    } finally {
+      setReclassifying(false)
+    }
+  }
+
   return (
     <div>
       <h1 className="text-2xl font-bold mb-4">Compare</h1>
@@ -227,6 +244,15 @@ export default function ComparePage() {
               Export CSV
             </a>
           )}
+          {selectedRun && (
+            <button
+              onClick={reclassifyRun}
+              disabled={reclassifying}
+              className="border border-gray-300 px-4 py-1.5 rounded text-sm hover:bg-gray-50 disabled:opacity-50"
+            >
+              {reclassifying ? 'Reclassifying...' : 'Reclassify'}
+            </button>
+          )}
         </div>
       </div>
 
@@ -277,7 +303,14 @@ export default function ComparePage() {
                   onClick={() => selectRun(r)}
                   className={`cursor-pointer hover:bg-blue-50 ${selectedRun?.run_id === r.run_id ? 'bg-blue-50' : ''}`}
                 >
-                  <td className="py-1 pr-2 font-mono">{r.run_id}</td>
+                  <td className="py-1 pr-2 font-mono">
+                    {r.run_id}
+                    {r.reclassified_from && (
+                      <span className="ml-1 px-1.5 py-0.5 bg-purple-100 text-purple-700 rounded text-xs">
+                        re:{r.reclassified_from}
+                      </span>
+                    )}
+                  </td>
                   <td className="py-1 pr-2">{r.started_at?.slice(0, 19)}</td>
                   <td className="py-1 pr-2">{r.profile}</td>
                   <td className="py-1 pr-2">{r.total_pairs}</td>

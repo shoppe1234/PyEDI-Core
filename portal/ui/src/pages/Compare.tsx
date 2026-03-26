@@ -55,6 +55,11 @@ export default function ComparePage() {
   // Summary
   const [summary, setSummary] = useState<any>(null)
 
+  // Run diff
+  const [checkedRuns, setCheckedRuns] = useState<Set<number>>(new Set())
+  const [runDiff, setRunDiff] = useState<any>(null)
+  const [diffLoading, setDiffLoading] = useState(false)
+
   // Load profiles on mount
   useEffect(() => {
     api.compareProfiles().then(setProfiles).catch(e => setError(e.message))
@@ -161,6 +166,33 @@ export default function ComparePage() {
       setError(e.message)
     } finally {
       setReclassifying(false)
+    }
+  }
+
+  const toggleRunCheck = (runId: number) => {
+    setCheckedRuns(prev => {
+      const next = new Set(prev)
+      if (next.has(runId)) {
+        next.delete(runId)
+      } else if (next.size < 2) {
+        next.add(runId)
+      }
+      return next
+    })
+    setRunDiff(null)
+  }
+
+  const diffSelectedRuns = async () => {
+    const ids = Array.from(checkedRuns).sort((a, b) => a - b)
+    if (ids.length !== 2) return
+    setDiffLoading(true)
+    setError('')
+    try {
+      setRunDiff(await api.compareRunDiff(ids[0], ids[1]))
+    } catch (e: any) {
+      setError(e.message)
+    } finally {
+      setDiffLoading(false)
     }
   }
 
@@ -286,12 +318,22 @@ export default function ComparePage() {
       {/* Run History */}
       <div className="bg-white rounded-lg shadow p-4 mb-4">
         <h2 className="font-semibold text-sm text-gray-500 uppercase mb-2">Run History</h2>
+        {checkedRuns.size === 2 && (
+          <button
+            onClick={diffSelectedRuns}
+            disabled={diffLoading}
+            className="bg-blue-600 text-white px-4 py-1.5 rounded text-sm hover:bg-blue-700 disabled:opacity-50 mb-2"
+          >
+            {diffLoading ? 'Comparing...' : 'Diff Selected'}
+          </button>
+        )}
         {runs.length === 0 ? (
           <p className="text-sm text-gray-400">No comparison runs yet.</p>
         ) : (
           <table className="w-full text-sm">
             <thead>
               <tr className="text-left text-xs text-gray-500 border-b">
+                <th className="py-1 pr-2 w-8"></th>
                 <th className="py-1 pr-2">Run #</th>
                 <th className="py-1 pr-2">Date</th>
                 <th className="py-1 pr-2">Profile</th>
@@ -308,6 +350,15 @@ export default function ComparePage() {
                   onClick={() => selectRun(r)}
                   className={`cursor-pointer hover:bg-blue-50 ${selectedRun?.run_id === r.run_id ? 'bg-blue-50' : ''}`}
                 >
+                  <td className="py-1 pr-2" onClick={e => e.stopPropagation()}>
+                    <input
+                      type="checkbox"
+                      checked={checkedRuns.has(r.run_id)}
+                      onChange={() => toggleRunCheck(r.run_id)}
+                      disabled={!checkedRuns.has(r.run_id) && checkedRuns.size >= 2}
+                      className="rounded"
+                    />
+                  </td>
                   <td className="py-1 pr-2 font-mono">
                     {r.run_id}
                     {r.reclassified_from && (
@@ -328,6 +379,98 @@ export default function ComparePage() {
           </table>
         )}
       </div>
+
+      {/* Run Diff Results */}
+      {runDiff && (
+        <div className="bg-white rounded-lg shadow p-4 mb-4">
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="font-semibold text-sm text-gray-500 uppercase">
+              Run Diff: {Array.from(checkedRuns).sort((a,b)=>a-b).join(' vs ')}
+            </h2>
+            <button onClick={() => setRunDiff(null)} className="text-gray-400 hover:text-gray-600 text-sm">&times; Close</button>
+          </div>
+          <div className="grid grid-cols-4 gap-3 mb-4">
+            <div className="bg-red-50 rounded p-3 text-center">
+              <div className="text-2xl font-bold text-red-600">{runDiff.new_errors?.length || 0}</div>
+              <div className="text-xs text-gray-500">New Errors</div>
+            </div>
+            <div className="bg-green-50 rounded p-3 text-center">
+              <div className="text-2xl font-bold text-green-600">{runDiff.resolved_errors?.length || 0}</div>
+              <div className="text-xs text-gray-500">Resolved</div>
+            </div>
+            <div className="bg-yellow-50 rounded p-3 text-center">
+              <div className="text-2xl font-bold text-yellow-600">{runDiff.changed_errors?.length || 0}</div>
+              <div className="text-xs text-gray-500">Changed</div>
+            </div>
+            <div className="bg-gray-50 rounded p-3 text-center">
+              <div className="text-2xl font-bold text-gray-600">{runDiff.unchanged_count || 0}</div>
+              <div className="text-xs text-gray-500">Unchanged</div>
+            </div>
+          </div>
+
+          {runDiff.new_errors?.length > 0 && (
+            <div className="mb-3">
+              <h3 className="text-xs text-gray-500 uppercase mb-1">New Errors</h3>
+              <table className="w-full text-sm">
+                <thead><tr className="text-left text-xs text-gray-500 border-b">
+                  <th className="py-1 pr-2">Segment</th><th className="py-1 pr-2">Field</th><th className="py-1 pr-2">Severity</th>
+                </tr></thead>
+                <tbody>
+                  {runDiff.new_errors.map((e: any, i: number) => (
+                    <tr key={i} className="border-b border-gray-50">
+                      <td className="py-1 pr-2 font-mono text-xs">{e.segment}</td>
+                      <td className="py-1 pr-2 font-mono text-xs">{e.field}</td>
+                      <td className="py-1 pr-2"><StatusBadge status={e.severity} /></td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+
+          {runDiff.resolved_errors?.length > 0 && (
+            <div className="mb-3">
+              <h3 className="text-xs text-gray-500 uppercase mb-1">Resolved Errors</h3>
+              <table className="w-full text-sm">
+                <thead><tr className="text-left text-xs text-gray-500 border-b">
+                  <th className="py-1 pr-2">Segment</th><th className="py-1 pr-2">Field</th><th className="py-1 pr-2">Severity</th>
+                </tr></thead>
+                <tbody>
+                  {runDiff.resolved_errors.map((e: any, i: number) => (
+                    <tr key={i} className="border-b border-gray-50">
+                      <td className="py-1 pr-2 font-mono text-xs">{e.segment}</td>
+                      <td className="py-1 pr-2 font-mono text-xs">{e.field}</td>
+                      <td className="py-1 pr-2"><StatusBadge status={e.severity} /></td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+
+          {runDiff.changed_errors?.length > 0 && (
+            <div className="mb-3">
+              <h3 className="text-xs text-gray-500 uppercase mb-1">Changed Errors</h3>
+              <table className="w-full text-sm">
+                <thead><tr className="text-left text-xs text-gray-500 border-b">
+                  <th className="py-1 pr-2">Segment</th><th className="py-1 pr-2">Field</th>
+                  <th className="py-1 pr-2">Old</th><th className="py-1 pr-2">New</th>
+                </tr></thead>
+                <tbody>
+                  {runDiff.changed_errors.map((e: any, i: number) => (
+                    <tr key={i} className="border-b border-gray-50">
+                      <td className="py-1 pr-2 font-mono text-xs">{e.segment}</td>
+                      <td className="py-1 pr-2 font-mono text-xs">{e.field}</td>
+                      <td className="py-1 pr-2"><StatusBadge status={e.old_severity || e.severity_a} /></td>
+                      <td className="py-1 pr-2"><StatusBadge status={e.new_severity || e.severity_b} /></td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Run Detail — Pairs */}
       {selectedRun && (

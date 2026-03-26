@@ -289,6 +289,13 @@ def _compare_flat_dict(
         if rule.severity == "ignore":
             continue
 
+        # Conditional qualifier logic (parity with compare_segment_fields)
+        if rule.conditional_qualifier:
+            if key not in src_dict and src_dict.get(rule.conditional_qualifier):
+                continue
+            if key not in tgt_dict and tgt_dict.get(rule.conditional_qualifier):
+                continue
+
         if key not in src_dict:
             desc = f"Missing key in Source: {key} (Target has: '{tgt_val}')"
         elif key not in tgt_dict:

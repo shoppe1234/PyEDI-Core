@@ -9,7 +9,8 @@ from ..models import ManifestEntry, ManifestStatsResponse
 
 router = APIRouter(prefix="/api/manifest", tags=["manifest"])
 
-MANIFEST_PATH = ".processed"
+_PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent.parent
+MANIFEST_PATH = str(_PROJECT_ROOT / ".processed")
 
 
 def _parse_manifest() -> List[ManifestEntry]:

@@ -1,5 +1,6 @@
 """Compare API routes — run comparisons, query results, manage rules."""
 
+from pathlib import Path
 from typing import List, Optional
 
 import yaml
@@ -40,14 +41,16 @@ from ..models import (
 
 router = APIRouter(prefix="/api/compare", tags=["compare"])
 
-_CONFIG_PATH = "./config/config.yaml"
+_PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent.parent
+_CONFIG_PATH = str(_PROJECT_ROOT / "config" / "config.yaml")
 
 
 def _get_db_path() -> str:
     """Resolve the SQLite DB path from config."""
     with open(_CONFIG_PATH, "r", encoding="utf-8") as f:
         config = yaml.safe_load(f)
-    return config.get("compare", {}).get("sqlite_db", "data/compare.db")
+    db_rel = config.get("compare", {}).get("sqlite_db", "data/compare.db")
+    return str(_PROJECT_ROOT / db_rel)
 
 
 def _run_summary_to_response(s: RunSummary) -> CompareRunResponse:
@@ -204,6 +207,7 @@ def export_run(run_id: int) -> FileResponse:
     with open(_CONFIG_PATH, "r", encoding="utf-8") as f:
         config = yaml.safe_load(f)
     csv_dir = config.get("compare", {}).get("csv_dir", "reports/compare")
+    csv_dir = str(_PROJECT_ROOT / csv_dir)
 
     csv_path = export_csv(db_path, run_id, csv_dir)
     return FileResponse(csv_path, media_type="text/csv", filename=f"compare_run_{run_id}.csv")

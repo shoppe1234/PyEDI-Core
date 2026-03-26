@@ -43,6 +43,11 @@ export default function ComparePage() {
   const [rulesJson, setRulesJson] = useState('')
   const [rulesSaving, setRulesSaving] = useState(false)
 
+  // Column filters (wildcard support: * matches any)
+  const [sourceFileFilter, setSourceFileFilter] = useState('')
+  const [targetFileFilter, setTargetFileFilter] = useState('')
+  const [matchValueFilter, setMatchValueFilter] = useState('')
+
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
@@ -65,6 +70,25 @@ export default function ComparePage() {
   const [discoveryFilter, setDiscoveryFilter] = useState<string>('all')
   const [discoveryLoading, setDiscoveryLoading] = useState(false)
   const [applyingId, setApplyingId] = useState<number | null>(null)
+
+  // Wildcard filter: * matches any sequence of characters
+  const wildcardMatch = (value: string, pattern: string): boolean => {
+    if (!pattern) return true
+    const regex = new RegExp(
+      '^' + pattern.replace(/[.+^${}()|[\]\\]/g, '\\$&').replace(/\*/g, '.*') + '$',
+      'i'
+    )
+    return regex.test(value)
+  }
+
+  const filteredPairs = pairs.filter(p => {
+    const srcName = p.source_file?.split(/[/\\]/).pop() || ''
+    const tgtName = p.target_file?.split(/[/\\]/).pop() || ''
+    const matchVal = p.match_value || ''
+    return wildcardMatch(srcName, sourceFileFilter)
+      && wildcardMatch(tgtName, targetFileFilter)
+      && wildcardMatch(matchVal, matchValueFilter)
+  })
 
   // Load profiles on mount
   useEffect(() => {
@@ -102,6 +126,9 @@ export default function ComparePage() {
     setSelectedPair(null)
     setDiffs([])
     setStatusFilter('')
+    setSourceFileFilter('')
+    setTargetFileFilter('')
+    setMatchValueFilter('')
     setSummary(null)
     setLoading(true)
     try {
@@ -545,9 +572,40 @@ export default function ComparePage() {
                   <th className="py-1 pr-2">Status</th>
                   <th className="py-1 pr-2">Diffs</th>
                 </tr>
+                <tr className="border-b">
+                  <th className="py-1 pr-2">
+                    <input
+                      type="text"
+                      value={sourceFileFilter}
+                      onChange={e => setSourceFileFilter(e.target.value)}
+                      placeholder="Filter (* = wildcard)"
+                      className="w-full px-1.5 py-0.5 text-xs font-normal border rounded bg-gray-50 focus:bg-white focus:outline-none focus:ring-1 focus:ring-blue-400"
+                    />
+                  </th>
+                  <th className="py-1 pr-2">
+                    <input
+                      type="text"
+                      value={targetFileFilter}
+                      onChange={e => setTargetFileFilter(e.target.value)}
+                      placeholder="Filter (* = wildcard)"
+                      className="w-full px-1.5 py-0.5 text-xs font-normal border rounded bg-gray-50 focus:bg-white focus:outline-none focus:ring-1 focus:ring-blue-400"
+                    />
+                  </th>
+                  <th className="py-1 pr-2">
+                    <input
+                      type="text"
+                      value={matchValueFilter}
+                      onChange={e => setMatchValueFilter(e.target.value)}
+                      placeholder="Filter (* = wildcard)"
+                      className="w-full px-1.5 py-0.5 text-xs font-normal border rounded bg-gray-50 focus:bg-white focus:outline-none focus:ring-1 focus:ring-blue-400"
+                    />
+                  </th>
+                  <th className="py-1 pr-2"></th>
+                  <th className="py-1 pr-2"></th>
+                </tr>
               </thead>
               <tbody>
-                {pairs.map(p => (
+                {filteredPairs.map(p => (
                   <tr
                     key={p.id}
                     onClick={() => p.status !== 'MATCH' && selectPair(p)}

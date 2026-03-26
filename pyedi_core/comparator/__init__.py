@@ -206,21 +206,32 @@ def reclassify(run_id: int, db_path: str, config_path: str) -> RunSummary:
                 description=d["description"],
             ))
 
-        if new_diffs:
-            insert_diffs(db_path, new_pair_id, new_diffs)
-            mismatched += 1
-        else:
-            # Check if this was an unmatched pair (no target)
-            if pair_diffs and any(d.get("target_file") is None for d in pair_diffs):
-                unmatched += 1
-            else:
-                matched += 1
-
-        # Update pair diff_count and status
+        # Check if this pair is unmatched (missing source or target)
         from pyedi_core.comparator.store import _connect
         conn = _connect(db_path)
         try:
-            status = "MISMATCH" if new_diffs else "MATCH"
+            pair_row = conn.execute(
+                "SELECT source_file, target_file FROM compare_pairs WHERE id = ?",
+                (new_pair_id,),
+            ).fetchone()
+            is_unmatched = pair_row and (pair_row[0] is None or pair_row[1] is None)
+        finally:
+            conn.close()
+
+        if is_unmatched:
+            unmatched += 1
+            status = "UNMATCHED"
+        elif new_diffs:
+            insert_diffs(db_path, new_pair_id, new_diffs)
+            mismatched += 1
+            status = "MISMATCH"
+        else:
+            matched += 1
+            status = "MATCH"
+
+        # Update pair diff_count and status
+        conn = _connect(db_path)
+        try:
             conn.execute(
                 "UPDATE compare_pairs SET diff_count = ?, status = ? WHERE id = ?",
                 (len(new_diffs), status, new_pair_id),

@@ -8,7 +8,8 @@ from fastapi import APIRouter, HTTPException
 
 router = APIRouter(prefix="/api/config", tags=["config"])
 
-CONFIG_PATH = "config/config.yaml"
+_PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent.parent
+CONFIG_PATH = str(_PROJECT_ROOT / "config" / "config.yaml")
 
 
 @router.get("")

@@ -1,0 +1,56 @@
+classification:
+- segment: BCH
+  field: BCH03
+  severity: hard
+  ignore_case: false
+  numeric: false
+  conditional_qualifier: null
+- segment: BCH
+  field: BCH01
+  severity: hard
+  ignore_case: false
+  numeric: false
+  conditional_qualifier: null
+- segment: N1
+  field: N102
+  severity: hard
+  ignore_case: true
+  numeric: false
+  conditional_qualifier: null
+- segment: REF
+  field: REF02
+  severity: hard
+  ignore_case: false
+  numeric: false
+  conditional_qualifier: null
+- segment: DTM
+  field: DTM02
+  severity: hard
+  ignore_case: false
+  numeric: false
+  conditional_qualifier: null
+- segment: POC
+  field: POC02
+  severity: hard
+  ignore_case: false
+  numeric: true
+  conditional_qualifier: null
+- segment: POC
+  field: POC04
+  severity: hard
+  ignore_case: false
+  numeric: true
+  conditional_qualifier: null
+- segment: '*'
+  field: '*'
+  severity: hard
+  ignore_case: false
+  numeric: false
+  conditional_qualifier: null
+ignore:
+- segment: SE
+  field: SE01
+  reason: Segment count varies by implementation
+- segment: ISA
+  field: '*'
+  reason: Envelope-level fields are not business data

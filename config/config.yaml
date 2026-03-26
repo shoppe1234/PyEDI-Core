@@ -125,6 +125,34 @@ compare:
       segment_qualifiers: {}
       rules_file: "config/compare_rules/bevager_810.yaml"
 
+    855_po_ack:
+      description: "EDI 855 Purchase Order Acknowledgment"
+      trading_partner: ""
+      transaction_type: "855"
+      match_key:
+        segment: "BAK"
+        field: "BAK03"
+      segment_qualifiers:
+        N1: "N101"
+        REF: "REF01"
+        DTM: "DTM01"
+        PO1: null
+      rules_file: "config/compare_rules/855_po_ack.yaml"
+
+    860_po_change:
+      description: "EDI 860 Purchase Order Change"
+      trading_partner: ""
+      transaction_type: "860"
+      match_key:
+        segment: "BCH"
+        field: "BCH03"
+      segment_qualifiers:
+        N1: "N101"
+        REF: "REF01"
+        DTM: "DTM01"
+        POC: null
+      rules_file: "config/compare_rules/860_po_change.yaml"
+
 csv_schema_registry:
   margin_edge_810:
     source_dsl:      ./tpm810SourceFF.txt

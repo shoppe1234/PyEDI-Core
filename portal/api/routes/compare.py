@@ -8,7 +8,7 @@ from fastapi.responses import FileResponse
 
 from pyedi_core.comparator import compare as core_compare
 from pyedi_core.comparator import export_csv, list_profiles, load_profile, reclassify
-from pyedi_core.comparator.models import MatchKeyConfig
+from pyedi_core.comparator.models import MatchKeyConfig, RunSummary
 from pyedi_core.comparator.rules import load_rules
 from pyedi_core.comparator.store import (
     apply_discovery as store_apply_discovery,
@@ -44,6 +44,23 @@ def _get_db_path() -> str:
     return config.get("compare", {}).get("sqlite_db", "data/compare.db")
 
 
+def _run_summary_to_response(s: RunSummary) -> CompareRunResponse:
+    """Convert a RunSummary to CompareRunResponse."""
+    return CompareRunResponse(
+        run_id=s.run_id,
+        profile=s.profile,
+        total_pairs=s.total_pairs,
+        matched=s.matched,
+        mismatched=s.mismatched,
+        unmatched=s.unmatched,
+        started_at=s.started_at,
+        finished_at=s.finished_at,
+        reclassified_from=s.reclassified_from,
+        trading_partner=s.trading_partner,
+        transaction_type=s.transaction_type,
+    )
+
+
 @router.get("/profiles", response_model=List[CompareProfileResponse])
 def get_profiles() -> List[CompareProfileResponse]:
     """List all available compare profiles."""
@@ -62,6 +79,8 @@ def get_profiles() -> List[CompareProfileResponse]:
             ),
             segment_qualifiers=p.segment_qualifiers,
             rules_file=p.rules_file,
+            trading_partner=p.trading_partner,
+            transaction_type=p.transaction_type,
         )
         for p in profiles
     ]
@@ -84,17 +103,7 @@ def run_comparison(req: CompareRunRequest) -> CompareRunResponse:
     except (FileNotFoundError, OSError) as exc:
         raise HTTPException(status_code=400, detail=str(exc))
 
-    return CompareRunResponse(
-        run_id=summary.run_id,
-        profile=summary.profile,
-        total_pairs=summary.total_pairs,
-        matched=summary.matched,
-        mismatched=summary.mismatched,
-        unmatched=summary.unmatched,
-        started_at=summary.started_at,
-        finished_at=summary.finished_at,
-        reclassified_from=summary.reclassified_from,
-    )
+    return _run_summary_to_response(summary)
 
 
 @router.get("/runs", response_model=List[CompareRunResponse])
@@ -103,20 +112,7 @@ def list_runs(profile: Optional[str] = None, limit: int = 20) -> List[CompareRun
     db_path = _get_db_path()
     init_db(db_path)
     runs = get_runs(db_path, profile=profile, limit=limit)
-    return [
-        CompareRunResponse(
-            run_id=r.run_id,
-            profile=r.profile,
-            total_pairs=r.total_pairs,
-            matched=r.matched,
-            mismatched=r.mismatched,
-            unmatched=r.unmatched,
-            started_at=r.started_at,
-            finished_at=r.finished_at,
-            reclassified_from=r.reclassified_from,
-        )
-        for r in runs
-    ]
+    return [_run_summary_to_response(r) for r in runs]
 
 
 @router.get("/runs/{run_id}", response_model=CompareRunResponse)
@@ -126,17 +122,7 @@ def get_run_detail(run_id: int) -> CompareRunResponse:
     run = get_run(db_path, run_id)
     if run is None:
         raise HTTPException(status_code=404, detail=f"Run {run_id} not found")
-    return CompareRunResponse(
-        run_id=run.run_id,
-        profile=run.profile,
-        total_pairs=run.total_pairs,
-        matched=run.matched,
-        mismatched=run.mismatched,
-        unmatched=run.unmatched,
-        started_at=run.started_at,
-        finished_at=run.finished_at,
-        reclassified_from=run.reclassified_from,
-    )
+    return _run_summary_to_response(run)
 
 
 @router.post("/runs/{run_id}/reclassify", response_model=CompareRunResponse)
@@ -147,17 +133,7 @@ def reclassify_run(run_id: int) -> CompareRunResponse:
         summary = reclassify(run_id, db_path, _CONFIG_PATH)
     except (FileNotFoundError, ValueError) as exc:
         raise HTTPException(status_code=404, detail=str(exc))
-    return CompareRunResponse(
-        run_id=summary.run_id,
-        profile=summary.profile,
-        total_pairs=summary.total_pairs,
-        matched=summary.matched,
-        mismatched=summary.mismatched,
-        unmatched=summary.unmatched,
-        started_at=summary.started_at,
-        finished_at=summary.finished_at,
-        reclassified_from=summary.reclassified_from,
-    )
+    return _run_summary_to_response(summary)
 
 
 @router.get("/runs/{run_id}/pairs", response_model=List[ComparePairResponse])

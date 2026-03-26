@@ -23,6 +23,8 @@ class CompareProfile:
     match_key: MatchKeyConfig
     segment_qualifiers: dict[str, str | None]
     rules_file: str
+    trading_partner: str = ""
+    transaction_type: str = ""
 
 
 @dataclass
@@ -115,3 +117,5 @@ class RunSummary:
     started_at: str
     finished_at: str
     reclassified_from: int | None = None
+    trading_partner: str = ""
+    transaction_type: str = ""

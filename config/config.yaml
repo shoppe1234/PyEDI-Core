@@ -37,6 +37,8 @@ compare:
   profiles:
     810_invoice:
       description: "EDI 810 Invoice comparison"
+      trading_partner: ""
+      transaction_type: "810"
       match_key:
         segment: "BIG"
         field: "BIG02"
@@ -52,6 +54,8 @@ compare:
 
     850_purchase_order:
       description: "EDI 850 Purchase Order comparison"
+      trading_partner: ""
+      transaction_type: "850"
       match_key:
         segment: "BEG"
         field: "BEG03"
@@ -67,6 +71,8 @@ compare:
 
     856_asn:
       description: "EDI 856 Advance Ship Notice comparison"
+      trading_partner: ""
+      transaction_type: "856"
       match_key:
         segment: "BSN"
         field: "BSN02"
@@ -80,6 +86,8 @@ compare:
 
     820_payment:
       description: "EDI 820 Payment Order comparison"
+      trading_partner: ""
+      transaction_type: "820"
       match_key:
         segment: "BPR"
         field: "BPR16"
@@ -92,6 +100,8 @@ compare:
 
     csv_generic:
       description: "CSV output comparison (user-defined match key)"
+      trading_partner: ""
+      transaction_type: ""
       match_key:
         json_path: "header.invoice_number"
       segment_qualifiers: {}
@@ -99,6 +109,8 @@ compare:
 
     cxml_generic:
       description: "cXML output comparison (user-defined match key)"
+      trading_partner: ""
+      transaction_type: ""
       match_key:
         json_path: "header.order_id"
       segment_qualifiers: {}
@@ -106,6 +118,8 @@ compare:
 
     bevager_810:
       description: "Bevager 810 Invoice flat file comparison"
+      trading_partner: "Bevager"
+      transaction_type: "810"
       match_key:
         json_path: "header.InvoiceID"
       segment_qualifiers: {}

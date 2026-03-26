@@ -146,6 +146,8 @@ class CompareProfileResponse(BaseModel):
     match_key: CompareMatchKeyModel
     segment_qualifiers: Dict[str, Optional[str]] = {}
     rules_file: str
+    trading_partner: str = ""
+    transaction_type: str = ""
 
 
 class CompareRunRequest(BaseModel):
@@ -165,6 +167,8 @@ class CompareRunResponse(BaseModel):
     started_at: str
     finished_at: str
     reclassified_from: Optional[int] = None
+    trading_partner: str = ""
+    transaction_type: str = ""
 
 
 class ComparePairResponse(BaseModel):

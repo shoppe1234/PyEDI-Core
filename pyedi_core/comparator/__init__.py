@@ -69,7 +69,11 @@ def compare(
     else:
         mk_str = f"{profile.match_key.segment}:{profile.match_key.field}"
 
-    run_id = insert_run(db_path, profile.name, source_dir, target_dir, mk_str)
+    run_id = insert_run(
+        db_path, profile.name, source_dir, target_dir, mk_str,
+        trading_partner=profile.trading_partner,
+        transaction_type=profile.transaction_type,
+    )
 
     matched = 0
     mismatched = 0
@@ -310,4 +314,6 @@ def _parse_profile(name: str, data: dict) -> CompareProfile:
         ),
         segment_qualifiers=data.get("segment_qualifiers", {}),
         rules_file=data.get("rules_file", ""),
+        trading_partner=data.get("trading_partner", ""),
+        transaction_type=data.get("transaction_type", ""),
     )

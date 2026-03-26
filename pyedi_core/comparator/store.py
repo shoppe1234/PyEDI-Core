@@ -109,6 +109,9 @@ def _add_column_if_missing(conn: sqlite3.Connection, table: str, column: str, co
 def _migrate_db(conn: sqlite3.Connection) -> None:
     """Run forward-only migrations for schema evolution."""
     _add_column_if_missing(conn, "compare_runs", "reclassified_from", "INTEGER")
+    _add_column_if_missing(conn, "compare_runs", "trading_partner", "TEXT DEFAULT ''")
+    _add_column_if_missing(conn, "compare_runs", "transaction_type", "TEXT DEFAULT ''")
+    _add_column_if_missing(conn, "compare_runs", "run_notes", "TEXT DEFAULT ''")
 
 
 def init_db(db_path: str) -> None:
@@ -122,14 +125,24 @@ def init_db(db_path: str) -> None:
         conn.close()
 
 
-def insert_run(db_path: str, profile: str, source_dir: str, target_dir: str, match_key: str) -> int:
+def insert_run(
+    db_path: str,
+    profile: str,
+    source_dir: str,
+    target_dir: str,
+    match_key: str,
+    trading_partner: str = "",
+    transaction_type: str = "",
+) -> int:
     """Insert a new compare_runs row, return run_id."""
     conn = _connect(db_path)
     try:
         cursor = conn.execute(
-            "INSERT INTO compare_runs (profile, started_at, source_dir, target_dir, match_key) "
-            "VALUES (?, ?, ?, ?, ?)",
-            (profile, datetime.now(timezone.utc).isoformat(), source_dir, target_dir, match_key),
+            "INSERT INTO compare_runs "
+            "(profile, started_at, source_dir, target_dir, match_key, trading_partner, transaction_type) "
+            "VALUES (?, ?, ?, ?, ?, ?, ?)",
+            (profile, datetime.now(timezone.utc).isoformat(), source_dir, target_dir,
+             match_key, trading_partner, transaction_type),
         )
         conn.commit()
         return cursor.lastrowid  # type: ignore[return-value]
@@ -437,19 +450,17 @@ def clone_pairs_for_reclassify(db_path: str, original_run_id: int, new_run_id: i
 def _row_to_run_summary(row: sqlite3.Row) -> RunSummary:
     """Convert a sqlite3.Row to RunSummary dataclass."""
     # Safe access for columns that may not exist in older DBs
-    reclassified_from = None
-    try:
-        reclassified_from = row["reclassified_from"]
-    except (IndexError, KeyError):
-        pass
+    row_dict = dict(row)
     return RunSummary(
-        run_id=row["id"],
-        profile=row["profile"],
-        total_pairs=row["total_pairs"],
-        matched=row["matched"],
-        mismatched=row["mismatched"],
-        unmatched=row["unmatched"],
-        started_at=row["started_at"],
-        finished_at=row["finished_at"] or "",
-        reclassified_from=reclassified_from,
+        run_id=row_dict["id"],
+        profile=row_dict["profile"],
+        total_pairs=row_dict["total_pairs"],
+        matched=row_dict["matched"],
+        mismatched=row_dict["mismatched"],
+        unmatched=row_dict["unmatched"],
+        started_at=row_dict["started_at"],
+        finished_at=row_dict.get("finished_at") or "",
+        reclassified_from=row_dict.get("reclassified_from"),
+        trading_partner=row_dict.get("trading_partner") or "",
+        transaction_type=row_dict.get("transaction_type") or "",
     )

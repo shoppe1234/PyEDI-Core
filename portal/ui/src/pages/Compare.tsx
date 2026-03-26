@@ -76,6 +76,8 @@ export default function ComparePage() {
   useEffect(() => {
     const p = profiles.find(p => p.name === selectedProfile)
     setProfileDetail(p || null)
+    setDiscoveries([])
+    setDiscoveryFilter('all')
   }, [selectedProfile, profiles])
 
   const loadRuns = () => {

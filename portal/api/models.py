@@ -202,6 +202,13 @@ class CompareRulesUpdateRequest(BaseModel):
     ignore: List[Dict[str, Any]] = []
 
 
+class CompareSummaryResponse(BaseModel):
+    severity: Dict[str, int]
+    segments: Dict[str, int]
+    fields: Dict[str, int]
+    top_errors: List[Dict[str, Any]]
+
+
 class DiscoveryResponse(BaseModel):
     id: int
     run_id: int

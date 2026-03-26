@@ -162,6 +162,10 @@ def main(args: Optional[List[str]] = None) -> int:
         "--reclassify-run", type=int, metavar="RUN_ID",
         help="Re-evaluate diffs from an existing run against current rules",
     )
+    compare_parser.add_argument(
+        "--summary", type=int, metavar="RUN_ID",
+        help="Show summary statistics for a run",
+    )
 
     # Add run args to the top-level parser too (backward compat)
     _add_run_args(parser)
@@ -570,6 +574,37 @@ def _handle_compare(parsed: argparse.Namespace) -> int:
         init_db(db_path_early)
         apply_discovery(db_path_early, parsed.apply_discovery)
         print(f"Discovery #{parsed.apply_discovery} marked as applied")
+        return 0
+
+    if parsed.summary:
+        from .comparator.store import (
+            get_severity_breakdown, get_segment_breakdown,
+            get_field_breakdown, get_top_errors, init_db,
+        )
+        init_db(db_path_early)
+        run_id = parsed.summary
+        print(f"\n=== Summary for Run #{run_id} ===")
+
+        sev = get_severity_breakdown(db_path_early, run_id)
+        print(f"\nSeverity Breakdown:")
+        for k, v in sorted(sev.items()):
+            print(f"  {k:<10} {v}")
+
+        seg = get_segment_breakdown(db_path_early, run_id)
+        print(f"\nSegment Breakdown:")
+        for k, v in sorted(seg.items()):
+            print(f"  {k:<20} {v}")
+
+        fld = get_field_breakdown(db_path_early, run_id)
+        print(f"\nField Breakdown:")
+        for k, v in sorted(fld.items()):
+            print(f"  {k:<25} {v}")
+
+        top = get_top_errors(db_path_early, run_id)
+        print(f"\nTop Errors:")
+        for t in top:
+            print(f"  {t['segment']:<15} {t['field']:<25} {t['count']}")
+
         return 0
 
     if parsed.reclassify_run:

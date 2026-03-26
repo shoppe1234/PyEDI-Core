@@ -431,6 +431,67 @@ def apply_discovery(db_path: str, discovery_id: int, applied_by: str = "user") -
         conn.close()
 
 
+def get_severity_breakdown(db_path: str, run_id: int) -> dict[str, int]:
+    """COUNT(*) GROUP BY severity for all diffs in a run."""
+    conn = _connect(db_path)
+    try:
+        rows = conn.execute(
+            "SELECT d.severity, COUNT(*) as cnt FROM compare_diffs d "
+            "JOIN compare_pairs p ON d.pair_id = p.id "
+            "WHERE p.run_id = ? GROUP BY d.severity",
+            (run_id,),
+        ).fetchall()
+        return {r["severity"]: r["cnt"] for r in rows}
+    finally:
+        conn.close()
+
+
+def get_segment_breakdown(db_path: str, run_id: int) -> dict[str, int]:
+    """COUNT(*) GROUP BY segment for all diffs in a run."""
+    conn = _connect(db_path)
+    try:
+        rows = conn.execute(
+            "SELECT d.segment, COUNT(*) as cnt FROM compare_diffs d "
+            "JOIN compare_pairs p ON d.pair_id = p.id "
+            "WHERE p.run_id = ? GROUP BY d.segment",
+            (run_id,),
+        ).fetchall()
+        return {r["segment"]: r["cnt"] for r in rows}
+    finally:
+        conn.close()
+
+
+def get_field_breakdown(db_path: str, run_id: int) -> dict[str, int]:
+    """COUNT(*) GROUP BY field for all diffs in a run."""
+    conn = _connect(db_path)
+    try:
+        rows = conn.execute(
+            "SELECT d.field, COUNT(*) as cnt FROM compare_diffs d "
+            "JOIN compare_pairs p ON d.pair_id = p.id "
+            "WHERE p.run_id = ? GROUP BY d.field",
+            (run_id,),
+        ).fetchall()
+        return {r["field"]: r["cnt"] for r in rows}
+    finally:
+        conn.close()
+
+
+def get_top_errors(db_path: str, run_id: int, limit: int = 10) -> list[dict]:
+    """Top N (segment, field) combos by occurrence count."""
+    conn = _connect(db_path)
+    try:
+        rows = conn.execute(
+            "SELECT d.segment, d.field, COUNT(*) as cnt FROM compare_diffs d "
+            "JOIN compare_pairs p ON d.pair_id = p.id "
+            "WHERE p.run_id = ? GROUP BY d.segment, d.field "
+            "ORDER BY cnt DESC LIMIT ?",
+            (run_id, limit),
+        ).fetchall()
+        return [{"segment": r["segment"], "field": r["field"], "count": r["cnt"]} for r in rows]
+    finally:
+        conn.close()
+
+
 def get_all_diffs_for_run(db_path: str, run_id: int) -> list[dict]:
     """Return all diffs for a run, joined with pair info."""
     conn = _connect(db_path)

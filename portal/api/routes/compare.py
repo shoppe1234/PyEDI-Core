@@ -14,9 +14,13 @@ from pyedi_core.comparator.store import (
     apply_discovery as store_apply_discovery,
     get_diffs,
     get_discoveries,
+    get_field_breakdown,
     get_pairs,
     get_run,
     get_runs,
+    get_segment_breakdown,
+    get_severity_breakdown,
+    get_top_errors,
     init_db,
 )
 
@@ -29,6 +33,7 @@ from ..models import (
     CompareRunResponse,
     CompareRulesResponse,
     CompareRulesUpdateRequest,
+    CompareSummaryResponse,
     DiscoveryResponse,
 )
 
@@ -134,6 +139,18 @@ def reclassify_run(run_id: int) -> CompareRunResponse:
     except (FileNotFoundError, ValueError) as exc:
         raise HTTPException(status_code=404, detail=str(exc))
     return _run_summary_to_response(summary)
+
+
+@router.get("/runs/{run_id}/summary", response_model=CompareSummaryResponse)
+def get_run_summary(run_id: int) -> CompareSummaryResponse:
+    """Get summary statistics for a run."""
+    db_path = _get_db_path()
+    return CompareSummaryResponse(
+        severity=get_severity_breakdown(db_path, run_id),
+        segments=get_segment_breakdown(db_path, run_id),
+        fields=get_field_breakdown(db_path, run_id),
+        top_errors=get_top_errors(db_path, run_id),
+    )
 
 
 @router.get("/runs/{run_id}/pairs", response_model=List[ComparePairResponse])

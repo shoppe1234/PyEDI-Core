@@ -1,8 +1,0 @@
-{
-  "stage": "DETECTION",
-  "reason": "X12 file not found: tests\\user_supplied\\inputs\\200220261215033.dat",
-  "exception": "FileNotFoundError: X12 file not found: tests\\user_supplied\\inputs\\200220261215033.dat",
-  "correlation_id": "59d92c1f-eaf5-4950-8f61-d447d07a0935",
-  "timestamp": "2026-02-22T07:48:20.117320+00:00",
-  "source_file": "200220261215033.dat"
-}

@@ -1,0 +1,28 @@
+{
+  "header": {
+    "@orderID": "PO-001",
+    "@orderDate": "2026-01-15",
+    "@orderTotal": "1250.00",
+    "@type": "new",
+    "@currency": "USD",
+    "@{http://www.w3.org/XML/1998/namespace}lang": "en",
+    "@isoCountryCode": "US"
+  },
+  "lines": [
+    {
+      "@lineNumber": "1",
+      "@quantity": "10",
+      "@{http://www.w3.org/XML/1998/namespace}lang": "en",
+      "@currency": "USD"
+    },
+    {
+      "@lineNumber": "2",
+      "@quantity": "5",
+      "@{http://www.w3.org/XML/1998/namespace}lang": "en",
+      "@currency": "USD"
+    }
+  ],
+  "summary": {},
+  "_is_cxml": true,
+  "_source_file": "cxml_850_sample.cxml"
+}

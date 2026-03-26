@@ -1,8 +1,0 @@
-{
-  "stage": "TRANSFORMATION",
-  "reason": "Failed to load compiled map: Map file not found: ./schemas/compiled/gfs_ca_810_map.yaml",
-  "exception": "",
-  "correlation_id": "c09a6fbd-793d-4597-91c0-1949af224371",
-  "timestamp": "2026-02-21T21:27:22.711223+00:00",
-  "source_file": "UnivT701_small.csv"
-}

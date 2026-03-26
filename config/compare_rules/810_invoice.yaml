@@ -1,28 +1,32 @@
 classification:
-  - segment: "N1"
-    field: "N102"
-    severity: "hard"
-    ignore_case: true
-
-  - segment: "IT1"
-    field: "IT104"
-    severity: "hard"
-    numeric: true
-
-  - segment: "IT1"
-    field: "IT109"
-    severity: "soft"
-    conditional_qualifier: "IT108"
-
-  - segment: "*"
-    field: "*"
-    severity: "hard"
-
+- segment: N1
+  field: N102
+  severity: hard
+  ignore_case: true
+  numeric: false
+  conditional_qualifier: null
+- segment: IT1
+  field: IT104
+  severity: hard
+  ignore_case: false
+  numeric: true
+  conditional_qualifier: null
+- segment: IT1
+  field: IT109
+  severity: soft
+  ignore_case: false
+  numeric: false
+  conditional_qualifier: IT108
+- segment: '*'
+  field: '*'
+  severity: hard
+  ignore_case: false
+  numeric: false
+  conditional_qualifier: null
 ignore:
-  - segment: "SE"
-    field: "SE01"
-    reason: "Segment count varies by implementation"
-
-  - segment: "ISA"
-    field: "*"
-    reason: "Envelope-level fields are not business data"
+- segment: SE
+  field: SE01
+  reason: Segment count varies by implementation
+- segment: ISA
+  field: '*'
+  reason: Envelope-level fields are not business data

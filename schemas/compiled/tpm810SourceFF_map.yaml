@@ -1,0 +1,1629 @@
+transaction_type: 810_INVOICE
+input_format: CSV
+schema:
+  delimiter: '|'
+  columns:
+  - name: RecordId
+    type: string
+    required: true
+  - name: HDRInvoiceNumber
+    type: string
+    required: true
+  - name: HDRInvoiceType
+    type: string
+    required: true
+  - name: HDRInvoiceDate
+    type: string
+    required: true
+  - name: HDRGfsStoreInvoiceFlag
+    type: string
+    required: true
+  - name: HDRCustomerNumber
+    type: string
+    required: true
+  - name: HDRFamilyNumber
+    type: string
+    required: true
+  - name: HDRCustomerLanguageCode
+    type: string
+    required: true
+  - name: HDRCustomerGroupID
+    type: string
+    required: true
+  - name: HDRCustomerSuperGroupID
+    type: string
+    required: true
+  - name: HDRCustomerUltraGroupID
+    type: string
+    required: true
+  - name: HDRCustomerGroupName
+    type: string
+    required: true
+  - name: HDRCustomerSuperGroupName
+    type: string
+    required: true
+  - name: HDRCustomerUltraGroupName
+    type: string
+    required: true
+  - name: HDRShipToName
+    type: string
+    required: true
+  - name: HDRShipToStoreNumber
+    type: string
+    required: true
+  - name: HDRShipToAddress1
+    type: string
+    required: true
+  - name: HDRShipToAddress2
+    type: string
+    required: true
+  - name: HDRShipToAddress3
+    type: string
+    required: true
+  - name: HDRShipToCity
+    type: string
+    required: true
+  - name: HDRShipToStateProvince
+    type: string
+    required: true
+  - name: HDRShipToZip
+    type: string
+    required: true
+  - name: HDRShipToCountry
+    type: string
+    required: true
+  - name: HDRBillToID
+    type: string
+    required: true
+  - name: HDRBillToName
+    type: string
+    required: true
+  - name: HDRBillToAddress1
+    type: string
+    required: true
+  - name: HDRBillToAddress2
+    type: string
+    required: true
+  - name: HDRBillToAddress3
+    type: string
+    required: true
+  - name: HDRBillToCity
+    type: string
+    required: true
+  - name: HDRBillToStateProvince
+    type: string
+    required: true
+  - name: HDRBillToPostalCode
+    type: string
+    required: true
+  - name: HDRBillToCountry
+    type: string
+    required: true
+  - name: HDRRemitToName
+    type: string
+    required: true
+  - name: HDRRemitToName2
+    type: string
+    required: true
+  - name: HDRRemitToIDQualifier
+    type: string
+    required: true
+  - name: HDRRemitToID
+    type: string
+    required: true
+  - name: HDRRemitToAddress1
+    type: string
+    required: true
+  - name: HDRRemitToCity
+    type: string
+    required: true
+  - name: HDRRemitToStateProvince
+    type: string
+    required: true
+  - name: HDRRemitToPostalCode
+    type: string
+    required: true
+  - name: HDRCustomerPONumber
+    type: string
+    required: true
+  - name: HDROriginalOrderDate
+    type: string
+    required: true
+  - name: HDROrderNumber
+    type: string
+    required: true
+  - name: HDRExternalTrackingID
+    type: string
+    required: true
+  - name: HDRUserDefinedCode1
+    type: string
+    required: true
+  - name: HDRUserDefinedCode2
+    type: string
+    required: true
+  - name: HDRShipmentType
+    type: string
+    required: true
+  - name: HDRDeliveryDate
+    type: string
+    required: true
+  - name: HDRLeavesDCDate
+    type: string
+    required: true
+  - name: HDROriginalInvoiceNumber
+    type: string
+    required: true
+  - name: HDROriginalInvoiceDate
+    type: string
+    required: true
+  - name: HDRCreditReasonCode
+    type: string
+    required: true
+  - name: HDRCreditReasonDescription
+    type: string
+    required: true
+  - name: HDRFRCreditReasonDescription
+    type: string
+    required: true
+  - name: HDRRaNumber
+    type: string
+    required: true
+  - name: HDRCurrencyTypeCode
+    type: string
+    required: true
+  - name: HDRInvoiceTotalNetAmount
+    type: float
+    required: true
+  - name: HDRInvoiceTotalGrossAmount
+    type: float
+    required: true
+  - name: HDRTotalAdjustmentAmt
+    type: float
+    required: true
+  - name: HDRStateOrPstTaxDescription
+    type: string
+    required: true
+  - name: HDRStateOrPstTaxAmount
+    type: float
+    required: true
+  - name: HDRFederalOrGstTaxDescription
+    type: string
+    required: true
+  - name: HDRFederalOrGstTaxAmount
+    type: float
+    required: true
+  - name: HDROtherOrHSTTaxDescription
+    type: string
+    required: true
+  - name: HDROtherOrHSTTaxAmount
+    type: float
+    required: true
+  - name: HDRTotalTax
+    type: float
+    required: true
+  - name: HDRTotalWeight
+    type: float
+    required: true
+  - name: HDRTotalCubeArea
+    type: float
+    required: true
+  - name: HDRCaseCount
+    type: float
+    required: true
+  - name: HDRTermDiscountPercentage
+    type: string
+    required: true
+  - name: HDRCreditTermDescription
+    type: string
+    required: true
+  - name: HDRFRCreditTermDescription
+    type: string
+    required: true
+  - name: HDRTermDiscountDate
+    type: string
+    required: true
+  - name: HDRDiscountDays
+    type: integer
+    required: true
+  - name: HDRTermDueDate
+    type: string
+    required: true
+  - name: HDRTermsNetDays
+    type: integer
+    required: true
+  - name: HDRPaymentType
+    type: string
+    required: true
+  - name: HDRPaymentAmount
+    type: float
+    required: true
+  - name: HDRPaymentAmountDue
+    type: float
+    required: true
+  - name: HDRPrimaryDCNumber
+    type: string
+    required: true
+  - name: HDRDCNumber
+    type: string
+    required: true
+  - name: HDRDCName
+    type: string
+    required: true
+  - name: HDRDCAddress1
+    type: string
+    required: true
+  - name: HDRDCAddress2
+    type: string
+    required: true
+  - name: HDRDCCity
+    type: string
+    required: true
+  - name: HDRDCStateProvince
+    type: string
+    required: true
+  - name: HDRDCZip
+    type: string
+    required: true
+  - name: HDRLegacyCanadaDivisionId
+    type: string
+    required: true
+  - name: HDRLegacyCanadaDivisionLocation
+    type: string
+    required: true
+  - name: HDRLegacyWarehouse
+    type: string
+    required: true
+  - name: HDRRouteNumber
+    type: string
+    required: true
+  - name: HDRStopNumber
+    type: string
+    required: true
+  - name: HDRRoadNetArrival
+    type: string
+    required: true
+  - name: HDROrderGuideNumber
+    type: string
+    required: true
+  - name: HDRActualDeliveryStartDate
+    type: string
+    required: true
+  - name: HDRActualDeliveryStartTime
+    type: string
+    required: true
+  - name: HDRActualDeliveryEndDate
+    type: string
+    required: true
+  - name: HDRActualDeliveryEndTime
+    type: string
+    required: true
+  - name: HDRDeliveryWindowStartDate
+    type: string
+    required: true
+  - name: HDRDeliveryWindowStartTime
+    type: string
+    required: true
+  - name: HDRDeliveryWindowEndDate
+    type: string
+    required: true
+  - name: HDRDeliveryWindowEndTime
+    type: string
+    required: true
+  - name: HDRPurchaseOrderType
+    type: string
+    required: true
+  - name: DTLDistributorItemNumber
+    type: string
+    required: true
+  - name: DTLCaseUPC
+    type: string
+    required: true
+  - name: DTLEachUPC
+    type: string
+    required: true
+  - name: DTLCaseGTIN
+    type: string
+    required: true
+  - name: DTLEachGTIN
+    type: string
+    required: true
+  - name: DTLSCC
+    type: string
+    required: true
+  - name: DTLUpc
+    type: string
+    required: true
+  - name: DTLAlternateMaterialNumber
+    type: string
+    required: true
+  - name: DTLCustomerItemCode
+    type: string
+    required: true
+  - name: DTLItemDescription
+    type: string
+    required: true
+  - name: DTLFRItemDescription
+    type: string
+    required: true
+  - name: DTLCustomerItemDescription
+    type: string
+    required: true
+  - name: DTLUserDefined1
+    type: string
+    required: true
+  - name: DTLUserDefined2
+    type: string
+    required: true
+  - name: DTLBrand
+    type: string
+    required: true
+  - name: DTLFRBrand
+    type: string
+    required: true
+  - name: DTLOrderQuantity
+    type: float
+    required: true
+  - name: DTLShipQuantity
+    type: float
+    required: true
+  - name: DTLCatchWeightActual
+    type: float
+    required: true
+  - name: DTLUnitGrossWeight
+    type: float
+    required: true
+  - name: DTLUnitNetWeight
+    type: float
+    required: true
+  - name: DTLUnitPriceNet
+    type: float
+    required: true
+  - name: DTLExtendedPriceNet
+    type: float
+    required: true
+  - name: DTLLessCaseFlag
+    type: string
+    required: true
+  - name: DTLCatchWeightFlag
+    type: string
+    required: true
+  - name: DTLCostForSale
+    type: float
+    required: true
+  - name: DTLTaxableFlag
+    type: string
+    required: true
+  - name: DTLStateOrPSTTaxDescription
+    type: string
+    required: true
+  - name: DTLStateOrPSTTaxRate
+    type: float
+    required: true
+  - name: DTLStateOrPSTTaxAmt
+    type: float
+    required: true
+  - name: DTLFedOrGSTTaxDescription
+    type: string
+    required: true
+  - name: DTLFedOrGSTTaxRate
+    type: float
+    required: true
+  - name: DTLFedOrGSTTaxAmt
+    type: float
+    required: true
+  - name: DTLOtherOrHSTTaxDescription
+    type: string
+    required: true
+  - name: DTLOtherOrHSTTaxRate
+    type: float
+    required: true
+  - name: DTLOtherOrHSTTaxAmount
+    type: float
+    required: true
+  - name: DTLCreditReasonCode
+    type: string
+    required: true
+  - name: DTLCreditReasonCodeDescription
+    type: string
+    required: true
+  - name: DTLOfferingCategoryID
+    type: string
+    required: true
+  - name: DTLOfferingCategoryDescription
+    type: string
+    required: true
+  - name: DTLFROfferingCategoryDescription
+    type: string
+    required: true
+  - name: DTLOfferingSubCategoryID
+    type: string
+    required: true
+  - name: DTLSubOfferingCategoryDescription
+    type: string
+    required: true
+  - name: DTLFRSubOfferingCategoryDescription
+    type: string
+    required: true
+  - name: DTLCustomerItemGroupID
+    type: string
+    required: true
+  - name: DTLCustomerGroupSequenceID
+    type: string
+    required: true
+  - name: DTLCustomGroupDescription
+    type: string
+    required: true
+  - name: DTLRFIStorageType
+    type: string
+    required: true
+  - name: DTLInvoicePrintSequence
+    type: string
+    required: true
+  - name: DTLSpecialOrderNumber
+    type: string
+    required: true
+  - name: DTLOutOfStockQuantity
+    type: float
+    required: true
+  - name: DTLOrderDate
+    type: string
+    required: true
+  - name: DTLOrderNumber
+    type: string
+    required: true
+  - name: DTLSubstitutedItemCode
+    type: string
+    required: true
+  - name: DTLInvSubstitutionReasonCode
+    type: string
+    required: true
+  - name: DTLSubstitutionReasonDescription
+    type: string
+    required: true
+  - name: DTLDCNumber
+    type: string
+    required: true
+  - name: DTLOrderLineNumber
+    type: string
+    required: true
+  - name: DTLOrderEnteredVia
+    type: string
+    required: true
+  - name: DTLStockingCode
+    type: string
+    required: true
+  - name: DTLSellingUnit
+    type: string
+    required: true
+  - name: DTLSize
+    type: string
+    required: true
+  - name: DTLPackQuantity
+    type: float
+    required: true
+  - name: DTLPackDescription
+    type: string
+    required: true
+  - name: DTLPack
+    type: string
+    required: true
+  - name: DTLInnerPackQuantity
+    type: float
+    required: true
+  - name: DTLInnerPackUOM
+    type: string
+    required: true
+  - name: DTLServingsPerCase
+    type: string
+    required: true
+  - name: DTLServingsPerCaseUOM
+    type: string
+    required: true
+  - name: DTLVendorName
+    type: string
+    required: true
+  - name: DTLVendorNumber
+    type: string
+    required: true
+  - name: DTLVendorItemCode
+    type: string
+    required: true
+  - name: DTLVendorAddress1
+    type: string
+    required: true
+  - name: DTLVendorAddress2
+    type: string
+    required: true
+  - name: DTLVendorCity
+    type: string
+    required: true
+  - name: DTLVendorProvince
+    type: string
+    required: true
+  - name: DTLVendorPostalCode
+    type: string
+    required: true
+  - name: DTLVendorCountry
+    type: string
+    required: true
+  - name: DTLVendorPhoneNumber
+    type: string
+    required: true
+  - name: DTLManufactID
+    type: string
+    required: true
+  - name: DTLManufactItemNumber
+    type: string
+    required: true
+  - name: DTLManufactName
+    type: string
+    required: true
+  - name: DTLContractFlag
+    type: string
+    required: true
+  - name: DTLControlRestrictOpenFlag
+    type: string
+    required: true
+  - name: DTLBrandedItemFlag
+    type: string
+    required: true
+  - name: DTLCustomerOriginialOrderQuantity
+    type: float
+    required: true
+  - name: DTLCustomerOriginialOrderUOM
+    type: string
+    required: true
+  - name: DTLManagedFreight
+    type: float
+    required: true
+  - name: DTLBrokerName
+    type: string
+    required: true
+  - name: DTLDetailID
+    type: string
+    required: true
+  - name: DTLOriginalCustomerID
+    type: string
+    required: true
+  - name: DTLMarkupPerUnit
+    type: float
+    required: true
+  - name: DTLFullCaseUOM
+    type: string
+    required: true
+  - name: DTLLessCaseUOM
+    type: string
+    required: true
+  - name: DTLAgencyBilledFlag
+    type: string
+    required: true
+  - name: DTLAddOnGiveBack
+    type: string
+    required: true
+  - name: DTLDiscountChargeBack
+    type: string
+    required: true
+  - name: TPDocType
+    type: string
+    required: true
+  - name: TPEdiTradingPartnerCode
+    type: string
+    required: true
+  - name: TPAssociationID
+    type: string
+    required: true
+  - name: TPServiceUser
+    type: string
+    required: true
+  - name: TPTradingPartnerRefID
+    type: string
+    required: true
+  - name: TPSAPTradingPartnerName
+    type: string
+    required: true
+  - name: TPCreationDate
+    type: string
+    required: true
+  - name: TPCreationTime
+    type: string
+    required: true
+  - name: TPSalesOrg
+    type: string
+    required: true
+  - name: TPDivision
+    type: string
+    required: true
+  - name: DHISTWeekToDateCaseQuantity
+    type: float
+    required: true
+  - name: DHISTPreviousWeekCaseQuantity
+    type: float
+    required: true
+  - name: DHISTPrevious30DaysCaseQuantity
+    type: float
+    required: true
+  - name: DHISTPrevious60DaysCaseQuantity
+    type: float
+    required: true
+  - name: DHISTPrevious90DaysCaseQuantity
+    type: float
+    required: true
+  - name: DHISTYearToDateCaseQuantity
+    type: float
+    required: true
+  - name: DHISTYearToDateNumberOfDays
+    type: string
+    required: true
+  - name: DHISTPreviousYTDCaseQuantity
+    type: float
+    required: true
+  - name: SUMType
+    type: string
+    required: true
+  - name: SUMGroupID
+    type: string
+    required: true
+  - name: SUMGroupName
+    type: string
+    required: true
+  - name: SUMFRGroupName
+    type: string
+    required: true
+  - name: SUMGroupQuantity
+    type: float
+    required: true
+  - name: SUMGroupNetAmount
+    type: float
+    required: true
+  - name: SUMGroupGrossAmount
+    type: float
+    required: true
+  - name: SUMGroupStatePSTTaxDescription
+    type: string
+    required: true
+  - name: SUMGroupStatePSTTaxAmount
+    type: float
+    required: true
+  - name: SUMGroupFedGSTTaxDescription
+    type: string
+    required: true
+  - name: SUMGroupFedGSTTaxAmount
+    type: float
+    required: true
+  - name: SUMGroupOtherHSTTaxDescription
+    type: string
+    required: true
+  - name: SUMGroupOtherHSTTaxAmount
+    type: float
+    required: true
+  - name: SUMGroupTotalGrossWeight
+    type: float
+    required: true
+  - name: SUMAdjustments
+    type: string
+    required: true
+  - name: TRInvoiceNumber
+    type: string
+    required: true
+  - name: TRLineCount
+    type: string
+    required: true
+  - name: TRAdjustmentLines
+    type: string
+    required: true
+  - name: TRInvoiceFile
+    type: string
+    required: true
+  - name: HADJAllowanceChargeIndicator
+    type: string
+    required: true
+  - name: HADJAdjustmentOrFeeCode
+    type: string
+    required: true
+  - name: HADJAjustmentOrFeeDescription
+    type: string
+    required: true
+  - name: HADJAdjustmentOrFeePercentageRate
+    type: float
+    required: true
+  - name: HADJAdjustmentOrFeeAmount
+    type: float
+    required: true
+  - name: HADJStateProvidencePSTTaxDescription
+    type: string
+    required: true
+  - name: HADJStateProvidencePSTTaxRate
+    type: float
+    required: true
+  - name: HADJStateProvidencePSTTaxAmount
+    type: float
+    required: true
+  - name: HADJFederalOrGSTTaxDescription
+    type: string
+    required: true
+  - name: HADJFederalOrGSTTaxRate
+    type: float
+    required: true
+  - name: HADJFederalOrGSTTaxAmount
+    type: float
+    required: true
+  - name: HADJOtherOrHSTTaxDescription
+    type: string
+    required: true
+  - name: HADJOtherOrHSTTaxRate
+    type: float
+    required: true
+  - name: HADJOtherOrHSTTaxAmount
+    type: float
+    required: true
+  - name: HADJEdiChargeCode
+    type: string
+    required: true
+  - name: DADJAllowanceChargeIndicator
+    type: string
+    required: true
+  - name: DADJAdjustmentFeeCode
+    type: string
+    required: true
+  - name: DADJAdjustmentFeeDescription
+    type: string
+    required: true
+  - name: DADJAdjustmentFeePercentageRate
+    type: float
+    required: true
+  - name: DADJAdjustmentFeeAmount
+    type: float
+    required: true
+  - name: DADJAdjustmentFeeCodeStateOrPSTTaxDescription
+    type: string
+    required: true
+  - name: DADJAdjustmentFeeCodeStateOrPSTTaxRate
+    type: float
+    required: true
+  - name: DADJAdjustmentFeeCodeStateOrPSTTaxAmount
+    type: float
+    required: true
+  - name: DADJAdjustmentFeeCodeFederalOrGSTTaxDescription
+    type: string
+    required: true
+  - name: DADJAdjustmentFeeCodeFederalOrGSTTaxRate
+    type: float
+    required: true
+  - name: DADJAdjustmentFeeCodeFederalOrGSTTaxAmount
+    type: float
+    required: true
+  - name: DADJAdjustmentFeeCodeOtherOrHSTTaxDescription
+    type: string
+    required: true
+  - name: DADJAdjustmentFeeCodeOtherOrHSTTaxRate
+    type: float
+    required: true
+  - name: DADJAdjustmentFeeCodeOtherOrHSTTaxAmount
+    type: float
+    required: true
+  - name: DADJEdiChargeCode
+    type: string
+    required: true
+  records:
+    HDR:
+    - RecordId
+    - HDRInvoiceNumber
+    - HDRInvoiceType
+    - HDRInvoiceDate
+    - HDRGfsStoreInvoiceFlag
+    - HDRCustomerNumber
+    - HDRFamilyNumber
+    - HDRCustomerLanguageCode
+    - HDRCustomerGroupID
+    - HDRCustomerSuperGroupID
+    - HDRCustomerUltraGroupID
+    - HDRCustomerGroupName
+    - HDRCustomerSuperGroupName
+    - HDRCustomerUltraGroupName
+    - HDRShipToName
+    - HDRShipToStoreNumber
+    - HDRShipToAddress1
+    - HDRShipToAddress2
+    - HDRShipToAddress3
+    - HDRShipToCity
+    - HDRShipToStateProvince
+    - HDRShipToZip
+    - HDRShipToCountry
+    - HDRBillToID
+    - HDRBillToName
+    - HDRBillToAddress1
+    - HDRBillToAddress2
+    - HDRBillToAddress3
+    - HDRBillToCity
+    - HDRBillToStateProvince
+    - HDRBillToPostalCode
+    - HDRBillToCountry
+    - HDRRemitToName
+    - HDRRemitToName2
+    - HDRRemitToIDQualifier
+    - HDRRemitToID
+    - HDRRemitToAddress1
+    - HDRRemitToCity
+    - HDRRemitToStateProvince
+    - HDRRemitToPostalCode
+    - HDRCustomerPONumber
+    - HDROriginalOrderDate
+    - HDROrderNumber
+    - HDRExternalTrackingID
+    - HDRUserDefinedCode1
+    - HDRUserDefinedCode2
+    - HDRShipmentType
+    - HDRDeliveryDate
+    - HDRLeavesDCDate
+    - HDROriginalInvoiceNumber
+    - HDROriginalInvoiceDate
+    - HDRCreditReasonCode
+    - HDRCreditReasonDescription
+    - HDRFRCreditReasonDescription
+    - HDRRaNumber
+    - HDRCurrencyTypeCode
+    - HDRInvoiceTotalNetAmount
+    - HDRInvoiceTotalGrossAmount
+    - HDRTotalAdjustmentAmt
+    - HDRStateOrPstTaxDescription
+    - HDRStateOrPstTaxAmount
+    - HDRFederalOrGstTaxDescription
+    - HDRFederalOrGstTaxAmount
+    - HDROtherOrHSTTaxDescription
+    - HDROtherOrHSTTaxAmount
+    - HDRTotalTax
+    - HDRTotalWeight
+    - HDRTotalCubeArea
+    - HDRCaseCount
+    - HDRTermDiscountPercentage
+    - HDRCreditTermDescription
+    - HDRFRCreditTermDescription
+    - HDRTermDiscountDate
+    - HDRDiscountDays
+    - HDRTermDueDate
+    - HDRTermsNetDays
+    - HDRPaymentType
+    - HDRPaymentAmount
+    - HDRPaymentAmountDue
+    - HDRPrimaryDCNumber
+    - HDRDCNumber
+    - HDRDCName
+    - HDRDCAddress1
+    - HDRDCAddress2
+    - HDRDCCity
+    - HDRDCStateProvince
+    - HDRDCZip
+    - HDRLegacyCanadaDivisionId
+    - HDRLegacyCanadaDivisionLocation
+    - HDRLegacyWarehouse
+    - HDRRouteNumber
+    - HDRStopNumber
+    - HDRRoadNetArrival
+    - HDROrderGuideNumber
+    - HDRActualDeliveryStartDate
+    - HDRActualDeliveryStartTime
+    - HDRActualDeliveryEndDate
+    - HDRActualDeliveryEndTime
+    - HDRDeliveryWindowStartDate
+    - HDRDeliveryWindowStartTime
+    - HDRDeliveryWindowEndDate
+    - HDRDeliveryWindowEndTime
+    - HDRPurchaseOrderType
+    DTL:
+    - RecordId
+    - DTLDistributorItemNumber
+    - DTLCaseUPC
+    - DTLEachUPC
+    - DTLCaseGTIN
+    - DTLEachGTIN
+    - DTLSCC
+    - DTLUpc
+    - DTLAlternateMaterialNumber
+    - DTLCustomerItemCode
+    - DTLItemDescription
+    - DTLFRItemDescription
+    - DTLCustomerItemDescription
+    - DTLUserDefined1
+    - DTLUserDefined2
+    - DTLBrand
+    - DTLFRBrand
+    - DTLOrderQuantity
+    - DTLShipQuantity
+    - DTLCatchWeightActual
+    - DTLUnitGrossWeight
+    - DTLUnitNetWeight
+    - DTLUnitPriceNet
+    - DTLExtendedPriceNet
+    - DTLLessCaseFlag
+    - DTLCatchWeightFlag
+    - DTLCostForSale
+    - DTLTaxableFlag
+    - DTLStateOrPSTTaxDescription
+    - DTLStateOrPSTTaxRate
+    - DTLStateOrPSTTaxAmt
+    - DTLFedOrGSTTaxDescription
+    - DTLFedOrGSTTaxRate
+    - DTLFedOrGSTTaxAmt
+    - DTLOtherOrHSTTaxDescription
+    - DTLOtherOrHSTTaxRate
+    - DTLOtherOrHSTTaxAmount
+    - DTLCreditReasonCode
+    - DTLCreditReasonCodeDescription
+    - DTLOfferingCategoryID
+    - DTLOfferingCategoryDescription
+    - DTLFROfferingCategoryDescription
+    - DTLOfferingSubCategoryID
+    - DTLSubOfferingCategoryDescription
+    - DTLFRSubOfferingCategoryDescription
+    - DTLCustomerItemGroupID
+    - DTLCustomerGroupSequenceID
+    - DTLCustomGroupDescription
+    - DTLRFIStorageType
+    - DTLInvoicePrintSequence
+    - DTLSpecialOrderNumber
+    - DTLOutOfStockQuantity
+    - DTLOrderDate
+    - DTLOrderNumber
+    - DTLSubstitutedItemCode
+    - DTLInvSubstitutionReasonCode
+    - DTLSubstitutionReasonDescription
+    - DTLDCNumber
+    - DTLOrderLineNumber
+    - DTLOrderEnteredVia
+    - DTLStockingCode
+    - DTLSellingUnit
+    - DTLSize
+    - DTLPackQuantity
+    - DTLPackDescription
+    - DTLPack
+    - DTLInnerPackQuantity
+    - DTLInnerPackUOM
+    - DTLServingsPerCase
+    - DTLServingsPerCaseUOM
+    - DTLVendorName
+    - DTLVendorNumber
+    - DTLVendorItemCode
+    - DTLVendorAddress1
+    - DTLVendorAddress2
+    - DTLVendorCity
+    - DTLVendorProvince
+    - DTLVendorPostalCode
+    - DTLVendorCountry
+    - DTLVendorPhoneNumber
+    - DTLManufactID
+    - DTLManufactItemNumber
+    - DTLManufactName
+    - DTLContractFlag
+    - DTLControlRestrictOpenFlag
+    - DTLBrandedItemFlag
+    - DTLCustomerOriginialOrderQuantity
+    - DTLCustomerOriginialOrderUOM
+    - DTLManagedFreight
+    - DTLBrokerName
+    - DTLDetailID
+    - DTLOriginalCustomerID
+    - DTLMarkupPerUnit
+    - DTLFullCaseUOM
+    - DTLLessCaseUOM
+    - DTLAgencyBilledFlag
+    - DTLAddOnGiveBack
+    - DTLDiscountChargeBack
+    TP:
+    - RecordId
+    - TPDocType
+    - TPEdiTradingPartnerCode
+    - TPAssociationID
+    - TPServiceUser
+    - TPTradingPartnerRefID
+    - TPSAPTradingPartnerName
+    - TPCreationDate
+    - TPCreationTime
+    - TPSalesOrg
+    - TPDivision
+    D_HIST:
+    - RecordId
+    - DHISTWeekToDateCaseQuantity
+    - DHISTPreviousWeekCaseQuantity
+    - DHISTPrevious30DaysCaseQuantity
+    - DHISTPrevious60DaysCaseQuantity
+    - DHISTPrevious90DaysCaseQuantity
+    - DHISTYearToDateCaseQuantity
+    - DHISTYearToDateNumberOfDays
+    - DHISTPreviousYTDCaseQuantity
+    SUM:
+    - RecordId
+    - SUMType
+    - SUMGroupID
+    - SUMGroupName
+    - SUMFRGroupName
+    - SUMGroupQuantity
+    - SUMGroupNetAmount
+    - SUMGroupGrossAmount
+    - SUMGroupStatePSTTaxDescription
+    - SUMGroupStatePSTTaxAmount
+    - SUMGroupFedGSTTaxDescription
+    - SUMGroupFedGSTTaxAmount
+    - SUMGroupOtherHSTTaxDescription
+    - SUMGroupOtherHSTTaxAmount
+    - SUMGroupTotalGrossWeight
+    - SUMAdjustments
+    INV_TR:
+    - RecordId
+    - TRInvoiceNumber
+    - TRLineCount
+    - TRAdjustmentLines
+    FILE_TR:
+    - RecordId
+    - TRInvoiceFile
+    H_ADJ:
+    - RecordId
+    - HADJAllowanceChargeIndicator
+    - HADJAdjustmentOrFeeCode
+    - HADJAjustmentOrFeeDescription
+    - HADJAdjustmentOrFeePercentageRate
+    - HADJAdjustmentOrFeeAmount
+    - HADJStateProvidencePSTTaxDescription
+    - HADJStateProvidencePSTTaxRate
+    - HADJStateProvidencePSTTaxAmount
+    - HADJFederalOrGSTTaxDescription
+    - HADJFederalOrGSTTaxRate
+    - HADJFederalOrGSTTaxAmount
+    - HADJOtherOrHSTTaxDescription
+    - HADJOtherOrHSTTaxRate
+    - HADJOtherOrHSTTaxAmount
+    - HADJEdiChargeCode
+    D_ADJ:
+    - RecordId
+    - DADJAllowanceChargeIndicator
+    - DADJAdjustmentFeeCode
+    - DADJAdjustmentFeeDescription
+    - DADJAdjustmentFeePercentageRate
+    - DADJAdjustmentFeeAmount
+    - DADJAdjustmentFeeCodeStateOrPSTTaxDescription
+    - DADJAdjustmentFeeCodeStateOrPSTTaxRate
+    - DADJAdjustmentFeeCodeStateOrPSTTaxAmount
+    - DADJAdjustmentFeeCodeFederalOrGSTTaxDescription
+    - DADJAdjustmentFeeCodeFederalOrGSTTaxRate
+    - DADJAdjustmentFeeCodeFederalOrGSTTaxAmount
+    - DADJAdjustmentFeeCodeOtherOrHSTTaxDescription
+    - DADJAdjustmentFeeCodeOtherOrHSTTaxRate
+    - DADJAdjustmentFeeCodeOtherOrHSTTaxAmount
+    - DADJEdiChargeCode
+mapping:
+  header: {}
+  lines:
+  - RecordId:
+      source: RecordId
+  - HDRInvoiceNumber:
+      source: HDRInvoiceNumber
+  - HDRInvoiceType:
+      source: HDRInvoiceType
+  - HDRInvoiceDate:
+      source: HDRInvoiceDate
+  - HDRGfsStoreInvoiceFlag:
+      source: HDRGfsStoreInvoiceFlag
+  - HDRCustomerNumber:
+      source: HDRCustomerNumber
+  - HDRFamilyNumber:
+      source: HDRFamilyNumber
+  - HDRCustomerLanguageCode:
+      source: HDRCustomerLanguageCode
+  - HDRCustomerGroupID:
+      source: HDRCustomerGroupID
+  - HDRCustomerSuperGroupID:
+      source: HDRCustomerSuperGroupID
+  - HDRCustomerUltraGroupID:
+      source: HDRCustomerUltraGroupID
+  - HDRCustomerGroupName:
+      source: HDRCustomerGroupName
+  - HDRCustomerSuperGroupName:
+      source: HDRCustomerSuperGroupName
+  - HDRCustomerUltraGroupName:
+      source: HDRCustomerUltraGroupName
+  - HDRShipToName:
+      source: HDRShipToName
+  - HDRShipToStoreNumber:
+      source: HDRShipToStoreNumber
+  - HDRShipToAddress1:
+      source: HDRShipToAddress1
+  - HDRShipToAddress2:
+      source: HDRShipToAddress2
+  - HDRShipToAddress3:
+      source: HDRShipToAddress3
+  - HDRShipToCity:
+      source: HDRShipToCity
+  - HDRShipToStateProvince:
+      source: HDRShipToStateProvince
+  - HDRShipToZip:
+      source: HDRShipToZip
+  - HDRShipToCountry:
+      source: HDRShipToCountry
+  - HDRBillToID:
+      source: HDRBillToID
+  - HDRBillToName:
+      source: HDRBillToName
+  - HDRBillToAddress1:
+      source: HDRBillToAddress1
+  - HDRBillToAddress2:
+      source: HDRBillToAddress2
+  - HDRBillToAddress3:
+      source: HDRBillToAddress3
+  - HDRBillToCity:
+      source: HDRBillToCity
+  - HDRBillToStateProvince:
+      source: HDRBillToStateProvince
+  - HDRBillToPostalCode:
+      source: HDRBillToPostalCode
+  - HDRBillToCountry:
+      source: HDRBillToCountry
+  - HDRRemitToName:
+      source: HDRRemitToName
+  - HDRRemitToName2:
+      source: HDRRemitToName2
+  - HDRRemitToIDQualifier:
+      source: HDRRemitToIDQualifier
+  - HDRRemitToID:
+      source: HDRRemitToID
+  - HDRRemitToAddress1:
+      source: HDRRemitToAddress1
+  - HDRRemitToCity:
+      source: HDRRemitToCity
+  - HDRRemitToStateProvince:
+      source: HDRRemitToStateProvince
+  - HDRRemitToPostalCode:
+      source: HDRRemitToPostalCode
+  - HDRCustomerPONumber:
+      source: HDRCustomerPONumber
+  - HDROriginalOrderDate:
+      source: HDROriginalOrderDate
+  - HDROrderNumber:
+      source: HDROrderNumber
+  - HDRExternalTrackingID:
+      source: HDRExternalTrackingID
+  - HDRUserDefinedCode1:
+      source: HDRUserDefinedCode1
+  - HDRUserDefinedCode2:
+      source: HDRUserDefinedCode2
+  - HDRShipmentType:
+      source: HDRShipmentType
+  - HDRDeliveryDate:
+      source: HDRDeliveryDate
+  - HDRLeavesDCDate:
+      source: HDRLeavesDCDate
+  - HDROriginalInvoiceNumber:
+      source: HDROriginalInvoiceNumber
+  - HDROriginalInvoiceDate:
+      source: HDROriginalInvoiceDate
+  - HDRCreditReasonCode:
+      source: HDRCreditReasonCode
+  - HDRCreditReasonDescription:
+      source: HDRCreditReasonDescription
+  - HDRFRCreditReasonDescription:
+      source: HDRFRCreditReasonDescription
+  - HDRRaNumber:
+      source: HDRRaNumber
+  - HDRCurrencyTypeCode:
+      source: HDRCurrencyTypeCode
+  - HDRInvoiceTotalNetAmount:
+      source: HDRInvoiceTotalNetAmount
+  - HDRInvoiceTotalGrossAmount:
+      source: HDRInvoiceTotalGrossAmount
+  - HDRTotalAdjustmentAmt:
+      source: HDRTotalAdjustmentAmt
+  - HDRStateOrPstTaxDescription:
+      source: HDRStateOrPstTaxDescription
+  - HDRStateOrPstTaxAmount:
+      source: HDRStateOrPstTaxAmount
+  - HDRFederalOrGstTaxDescription:
+      source: HDRFederalOrGstTaxDescription
+  - HDRFederalOrGstTaxAmount:
+      source: HDRFederalOrGstTaxAmount
+  - HDROtherOrHSTTaxDescription:
+      source: HDROtherOrHSTTaxDescription
+  - HDROtherOrHSTTaxAmount:
+      source: HDROtherOrHSTTaxAmount
+  - HDRTotalTax:
+      source: HDRTotalTax
+  - HDRTotalWeight:
+      source: HDRTotalWeight
+  - HDRTotalCubeArea:
+      source: HDRTotalCubeArea
+  - HDRCaseCount:
+      source: HDRCaseCount
+  - HDRTermDiscountPercentage:
+      source: HDRTermDiscountPercentage
+  - HDRCreditTermDescription:
+      source: HDRCreditTermDescription
+  - HDRFRCreditTermDescription:
+      source: HDRFRCreditTermDescription
+  - HDRTermDiscountDate:
+      source: HDRTermDiscountDate
+  - HDRDiscountDays:
+      source: HDRDiscountDays
+  - HDRTermDueDate:
+      source: HDRTermDueDate
+  - HDRTermsNetDays:
+      source: HDRTermsNetDays
+  - HDRPaymentType:
+      source: HDRPaymentType
+  - HDRPaymentAmount:
+      source: HDRPaymentAmount
+  - HDRPaymentAmountDue:
+      source: HDRPaymentAmountDue
+  - HDRPrimaryDCNumber:
+      source: HDRPrimaryDCNumber
+  - HDRDCNumber:
+      source: HDRDCNumber
+  - HDRDCName:
+      source: HDRDCName
+  - HDRDCAddress1:
+      source: HDRDCAddress1
+  - HDRDCAddress2:
+      source: HDRDCAddress2
+  - HDRDCCity:
+      source: HDRDCCity
+  - HDRDCStateProvince:
+      source: HDRDCStateProvince
+  - HDRDCZip:
+      source: HDRDCZip
+  - HDRLegacyCanadaDivisionId:
+      source: HDRLegacyCanadaDivisionId
+  - HDRLegacyCanadaDivisionLocation:
+      source: HDRLegacyCanadaDivisionLocation
+  - HDRLegacyWarehouse:
+      source: HDRLegacyWarehouse
+  - HDRRouteNumber:
+      source: HDRRouteNumber
+  - HDRStopNumber:
+      source: HDRStopNumber
+  - HDRRoadNetArrival:
+      source: HDRRoadNetArrival
+  - HDROrderGuideNumber:
+      source: HDROrderGuideNumber
+  - HDRActualDeliveryStartDate:
+      source: HDRActualDeliveryStartDate
+  - HDRActualDeliveryStartTime:
+      source: HDRActualDeliveryStartTime
+  - HDRActualDeliveryEndDate:
+      source: HDRActualDeliveryEndDate
+  - HDRActualDeliveryEndTime:
+      source: HDRActualDeliveryEndTime
+  - HDRDeliveryWindowStartDate:
+      source: HDRDeliveryWindowStartDate
+  - HDRDeliveryWindowStartTime:
+      source: HDRDeliveryWindowStartTime
+  - HDRDeliveryWindowEndDate:
+      source: HDRDeliveryWindowEndDate
+  - HDRDeliveryWindowEndTime:
+      source: HDRDeliveryWindowEndTime
+  - HDRPurchaseOrderType:
+      source: HDRPurchaseOrderType
+  - DTLDistributorItemNumber:
+      source: DTLDistributorItemNumber
+  - DTLCaseUPC:
+      source: DTLCaseUPC
+  - DTLEachUPC:
+      source: DTLEachUPC
+  - DTLCaseGTIN:
+      source: DTLCaseGTIN
+  - DTLEachGTIN:
+      source: DTLEachGTIN
+  - DTLSCC:
+      source: DTLSCC
+  - DTLUpc:
+      source: DTLUpc
+  - DTLAlternateMaterialNumber:
+      source: DTLAlternateMaterialNumber
+  - DTLCustomerItemCode:
+      source: DTLCustomerItemCode
+  - DTLItemDescription:
+      source: DTLItemDescription
+  - DTLFRItemDescription:
+      source: DTLFRItemDescription
+  - DTLCustomerItemDescription:
+      source: DTLCustomerItemDescription
+  - DTLUserDefined1:
+      source: DTLUserDefined1
+  - DTLUserDefined2:
+      source: DTLUserDefined2
+  - DTLBrand:
+      source: DTLBrand
+  - DTLFRBrand:
+      source: DTLFRBrand
+  - DTLOrderQuantity:
+      source: DTLOrderQuantity
+  - DTLShipQuantity:
+      source: DTLShipQuantity
+  - DTLCatchWeightActual:
+      source: DTLCatchWeightActual
+  - DTLUnitGrossWeight:
+      source: DTLUnitGrossWeight
+  - DTLUnitNetWeight:
+      source: DTLUnitNetWeight
+  - DTLUnitPriceNet:
+      source: DTLUnitPriceNet
+  - DTLExtendedPriceNet:
+      source: DTLExtendedPriceNet
+  - DTLLessCaseFlag:
+      source: DTLLessCaseFlag
+  - DTLCatchWeightFlag:
+      source: DTLCatchWeightFlag
+  - DTLCostForSale:
+      source: DTLCostForSale
+  - DTLTaxableFlag:
+      source: DTLTaxableFlag
+  - DTLStateOrPSTTaxDescription:
+      source: DTLStateOrPSTTaxDescription
+  - DTLStateOrPSTTaxRate:
+      source: DTLStateOrPSTTaxRate
+  - DTLStateOrPSTTaxAmt:
+      source: DTLStateOrPSTTaxAmt
+  - DTLFedOrGSTTaxDescription:
+      source: DTLFedOrGSTTaxDescription
+  - DTLFedOrGSTTaxRate:
+      source: DTLFedOrGSTTaxRate
+  - DTLFedOrGSTTaxAmt:
+      source: DTLFedOrGSTTaxAmt
+  - DTLOtherOrHSTTaxDescription:
+      source: DTLOtherOrHSTTaxDescription
+  - DTLOtherOrHSTTaxRate:
+      source: DTLOtherOrHSTTaxRate
+  - DTLOtherOrHSTTaxAmount:
+      source: DTLOtherOrHSTTaxAmount
+  - DTLCreditReasonCode:
+      source: DTLCreditReasonCode
+  - DTLCreditReasonCodeDescription:
+      source: DTLCreditReasonCodeDescription
+  - DTLOfferingCategoryID:
+      source: DTLOfferingCategoryID
+  - DTLOfferingCategoryDescription:
+      source: DTLOfferingCategoryDescription
+  - DTLFROfferingCategoryDescription:
+      source: DTLFROfferingCategoryDescription
+  - DTLOfferingSubCategoryID:
+      source: DTLOfferingSubCategoryID
+  - DTLSubOfferingCategoryDescription:
+      source: DTLSubOfferingCategoryDescription
+  - DTLFRSubOfferingCategoryDescription:
+      source: DTLFRSubOfferingCategoryDescription
+  - DTLCustomerItemGroupID:
+      source: DTLCustomerItemGroupID
+  - DTLCustomerGroupSequenceID:
+      source: DTLCustomerGroupSequenceID
+  - DTLCustomGroupDescription:
+      source: DTLCustomGroupDescription
+  - DTLRFIStorageType:
+      source: DTLRFIStorageType
+  - DTLInvoicePrintSequence:
+      source: DTLInvoicePrintSequence
+  - DTLSpecialOrderNumber:
+      source: DTLSpecialOrderNumber
+  - DTLOutOfStockQuantity:
+      source: DTLOutOfStockQuantity
+  - DTLOrderDate:
+      source: DTLOrderDate
+  - DTLOrderNumber:
+      source: DTLOrderNumber
+  - DTLSubstitutedItemCode:
+      source: DTLSubstitutedItemCode
+  - DTLInvSubstitutionReasonCode:
+      source: DTLInvSubstitutionReasonCode
+  - DTLSubstitutionReasonDescription:
+      source: DTLSubstitutionReasonDescription
+  - DTLDCNumber:
+      source: DTLDCNumber
+  - DTLOrderLineNumber:
+      source: DTLOrderLineNumber
+  - DTLOrderEnteredVia:
+      source: DTLOrderEnteredVia
+  - DTLStockingCode:
+      source: DTLStockingCode
+  - DTLSellingUnit:
+      source: DTLSellingUnit
+  - DTLSize:
+      source: DTLSize
+  - DTLPackQuantity:
+      source: DTLPackQuantity
+  - DTLPackDescription:
+      source: DTLPackDescription
+  - DTLPack:
+      source: DTLPack
+  - DTLInnerPackQuantity:
+      source: DTLInnerPackQuantity
+  - DTLInnerPackUOM:
+      source: DTLInnerPackUOM
+  - DTLServingsPerCase:
+      source: DTLServingsPerCase
+  - DTLServingsPerCaseUOM:
+      source: DTLServingsPerCaseUOM
+  - DTLVendorName:
+      source: DTLVendorName
+  - DTLVendorNumber:
+      source: DTLVendorNumber
+  - DTLVendorItemCode:
+      source: DTLVendorItemCode
+  - DTLVendorAddress1:
+      source: DTLVendorAddress1
+  - DTLVendorAddress2:
+      source: DTLVendorAddress2
+  - DTLVendorCity:
+      source: DTLVendorCity
+  - DTLVendorProvince:
+      source: DTLVendorProvince
+  - DTLVendorPostalCode:
+      source: DTLVendorPostalCode
+  - DTLVendorCountry:
+      source: DTLVendorCountry
+  - DTLVendorPhoneNumber:
+      source: DTLVendorPhoneNumber
+  - DTLManufactID:
+      source: DTLManufactID
+  - DTLManufactItemNumber:
+      source: DTLManufactItemNumber
+  - DTLManufactName:
+      source: DTLManufactName
+  - DTLContractFlag:
+      source: DTLContractFlag
+  - DTLControlRestrictOpenFlag:
+      source: DTLControlRestrictOpenFlag
+  - DTLBrandedItemFlag:
+      source: DTLBrandedItemFlag
+  - DTLCustomerOriginialOrderQuantity:
+      source: DTLCustomerOriginialOrderQuantity
+  - DTLCustomerOriginialOrderUOM:
+      source: DTLCustomerOriginialOrderUOM
+  - DTLManagedFreight:
+      source: DTLManagedFreight
+  - DTLBrokerName:
+      source: DTLBrokerName
+  - DTLDetailID:
+      source: DTLDetailID
+  - DTLOriginalCustomerID:
+      source: DTLOriginalCustomerID
+  - DTLMarkupPerUnit:
+      source: DTLMarkupPerUnit
+  - DTLFullCaseUOM:
+      source: DTLFullCaseUOM
+  - DTLLessCaseUOM:
+      source: DTLLessCaseUOM
+  - DTLAgencyBilledFlag:
+      source: DTLAgencyBilledFlag
+  - DTLAddOnGiveBack:
+      source: DTLAddOnGiveBack
+  - DTLDiscountChargeBack:
+      source: DTLDiscountChargeBack
+  - TPDocType:
+      source: TPDocType
+  - TPEdiTradingPartnerCode:
+      source: TPEdiTradingPartnerCode
+  - TPAssociationID:
+      source: TPAssociationID
+  - TPServiceUser:
+      source: TPServiceUser
+  - TPTradingPartnerRefID:
+      source: TPTradingPartnerRefID
+  - TPSAPTradingPartnerName:
+      source: TPSAPTradingPartnerName
+  - TPCreationDate:
+      source: TPCreationDate
+  - TPCreationTime:
+      source: TPCreationTime
+  - TPSalesOrg:
+      source: TPSalesOrg
+  - TPDivision:
+      source: TPDivision
+  - DHISTWeekToDateCaseQuantity:
+      source: DHISTWeekToDateCaseQuantity
+  - DHISTPreviousWeekCaseQuantity:
+      source: DHISTPreviousWeekCaseQuantity
+  - DHISTPrevious30DaysCaseQuantity:
+      source: DHISTPrevious30DaysCaseQuantity
+  - DHISTPrevious60DaysCaseQuantity:
+      source: DHISTPrevious60DaysCaseQuantity
+  - DHISTPrevious90DaysCaseQuantity:
+      source: DHISTPrevious90DaysCaseQuantity
+  - DHISTYearToDateCaseQuantity:
+      source: DHISTYearToDateCaseQuantity
+  - DHISTYearToDateNumberOfDays:
+      source: DHISTYearToDateNumberOfDays
+  - DHISTPreviousYTDCaseQuantity:
+      source: DHISTPreviousYTDCaseQuantity
+  - SUMType:
+      source: SUMType
+  - SUMGroupID:
+      source: SUMGroupID
+  - SUMGroupName:
+      source: SUMGroupName
+  - SUMFRGroupName:
+      source: SUMFRGroupName
+  - SUMGroupQuantity:
+      source: SUMGroupQuantity
+  - SUMGroupNetAmount:
+      source: SUMGroupNetAmount
+  - SUMGroupGrossAmount:
+      source: SUMGroupGrossAmount
+  - SUMGroupStatePSTTaxDescription:
+      source: SUMGroupStatePSTTaxDescription
+  - SUMGroupStatePSTTaxAmount:
+      source: SUMGroupStatePSTTaxAmount
+  - SUMGroupFedGSTTaxDescription:
+      source: SUMGroupFedGSTTaxDescription
+  - SUMGroupFedGSTTaxAmount:
+      source: SUMGroupFedGSTTaxAmount
+  - SUMGroupOtherHSTTaxDescription:
+      source: SUMGroupOtherHSTTaxDescription
+  - SUMGroupOtherHSTTaxAmount:
+      source: SUMGroupOtherHSTTaxAmount
+  - SUMGroupTotalGrossWeight:
+      source: SUMGroupTotalGrossWeight
+  - SUMAdjustments:
+      source: SUMAdjustments
+  - TRInvoiceNumber:
+      source: TRInvoiceNumber
+  - TRLineCount:
+      source: TRLineCount
+  - TRAdjustmentLines:
+      source: TRAdjustmentLines
+  - TRInvoiceFile:
+      source: TRInvoiceFile
+  - HADJAllowanceChargeIndicator:
+      source: HADJAllowanceChargeIndicator
+  - HADJAdjustmentOrFeeCode:
+      source: HADJAdjustmentOrFeeCode
+  - HADJAjustmentOrFeeDescription:
+      source: HADJAjustmentOrFeeDescription
+  - HADJAdjustmentOrFeePercentageRate:
+      source: HADJAdjustmentOrFeePercentageRate
+  - HADJAdjustmentOrFeeAmount:
+      source: HADJAdjustmentOrFeeAmount
+  - HADJStateProvidencePSTTaxDescription:
+      source: HADJStateProvidencePSTTaxDescription
+  - HADJStateProvidencePSTTaxRate:
+      source: HADJStateProvidencePSTTaxRate
+  - HADJStateProvidencePSTTaxAmount:
+      source: HADJStateProvidencePSTTaxAmount
+  - HADJFederalOrGSTTaxDescription:
+      source: HADJFederalOrGSTTaxDescription
+  - HADJFederalOrGSTTaxRate:
+      source: HADJFederalOrGSTTaxRate
+  - HADJFederalOrGSTTaxAmount:
+      source: HADJFederalOrGSTTaxAmount
+  - HADJOtherOrHSTTaxDescription:
+      source: HADJOtherOrHSTTaxDescription
+  - HADJOtherOrHSTTaxRate:
+      source: HADJOtherOrHSTTaxRate
+  - HADJOtherOrHSTTaxAmount:
+      source: HADJOtherOrHSTTaxAmount
+  - HADJEdiChargeCode:
+      source: HADJEdiChargeCode
+  - DADJAllowanceChargeIndicator:
+      source: DADJAllowanceChargeIndicator
+  - DADJAdjustmentFeeCode:
+      source: DADJAdjustmentFeeCode
+  - DADJAdjustmentFeeDescription:
+      source: DADJAdjustmentFeeDescription
+  - DADJAdjustmentFeePercentageRate:
+      source: DADJAdjustmentFeePercentageRate
+  - DADJAdjustmentFeeAmount:
+      source: DADJAdjustmentFeeAmount
+  - DADJAdjustmentFeeCodeStateOrPSTTaxDescription:
+      source: DADJAdjustmentFeeCodeStateOrPSTTaxDescription
+  - DADJAdjustmentFeeCodeStateOrPSTTaxRate:
+      source: DADJAdjustmentFeeCodeStateOrPSTTaxRate
+  - DADJAdjustmentFeeCodeStateOrPSTTaxAmount:
+      source: DADJAdjustmentFeeCodeStateOrPSTTaxAmount
+  - DADJAdjustmentFeeCodeFederalOrGSTTaxDescription:
+      source: DADJAdjustmentFeeCodeFederalOrGSTTaxDescription
+  - DADJAdjustmentFeeCodeFederalOrGSTTaxRate:
+      source: DADJAdjustmentFeeCodeFederalOrGSTTaxRate
+  - DADJAdjustmentFeeCodeFederalOrGSTTaxAmount:
+      source: DADJAdjustmentFeeCodeFederalOrGSTTaxAmount
+  - DADJAdjustmentFeeCodeOtherOrHSTTaxDescription:
+      source: DADJAdjustmentFeeCodeOtherOrHSTTaxDescription
+  - DADJAdjustmentFeeCodeOtherOrHSTTaxRate:
+      source: DADJAdjustmentFeeCodeOtherOrHSTTaxRate
+  - DADJAdjustmentFeeCodeOtherOrHSTTaxAmount:
+      source: DADJAdjustmentFeeCodeOtherOrHSTTaxAmount
+  - DADJEdiChargeCode:
+      source: DADJEdiChargeCode
+  summary: {}

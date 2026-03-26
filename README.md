@@ -426,6 +426,93 @@ Test cases are defined in `tests/user_supplied/metadata.yaml` with per-case cont
 
 ---
 
+## Project Assessment
+
+A candid evaluation of PyEDI-Core's maturity, measured against its own success criteria (see `PROJECT_INTENT.md`) and informed by a full code review (`REVIEW_REPORT.md`), specification gap analysis, and open backlog.
+
+### Success Criteria Scorecard
+
+| # | Criterion | Verdict | Evidence / Caveat |
+|---|-----------|---------|-------------------|
+| 1 | Zero code changes for new transaction types | MET | All business logic in YAML. No `if transaction_type ==` patterns in engine code. |
+| 2 | Format-agnostic output | MET | Standard JSON envelope across X12, CSV, XML, cXML. Verified via compare engine. |
+| 3 | Deterministic results | MET | Core transforms are deterministic. Timezone-naive timestamps in metadata (W21) are an envelope issue, not a payload issue. |
+| 4 | Full traceability | MET | Correlation IDs, manifest, error sidecars all in place. Cross-process manifest locking (W11) is the gap for multi-instance deployments. |
+| 5 | No silent failures | MOSTLY MET | Dead-letter queue covers all stages. Two quiet paths remain: schema compilation failures can fall back to stale files (W2), and failed field transforms return the original untransformed value (W19). |
+| 6 | Comparison confidence | MET | Compare engine complete with 6 profiles, SQLite storage, field-level diffs. Not yet validated against production data volumes. |
+| 7 | Test coverage matches capability | PARTIALLY MET | 221 tests with strong pipeline coverage. Gaps: no real X12 segment parsing test (W52), no cXML fixture (W53), `main.py` has zero coverage (W50). |
+| 8 | Portal parity | MOSTLY MET | All major CLI operations available. Gaps: file upload not wired, manifest page not built, config editing is read-only. |
+| 9 | Business logic lives in YAML | MET | Verified — no hardcoded transaction-type logic in Python engine code. |
+
+### Architectural Strengths
+
+The configuration-over-code philosophy has held across 67 commits. The codebase has not accumulated hardcoded transaction logic — this is the project's strongest quality and its core design bet.
+
+The driver/strategy pattern is proven: XML and cXML were added as a third driver without modifying existing CSV or X12 code, validating the extension model. The compare engine was built as a complete subsystem (models, rules, matcher, engine, store, CLI, portal) on the same config-driven philosophy — it did not introduce architectural inconsistency.
+
+All 9 critical issues from the code review were resolved before any feature work continued. The test pyramid (unit, integration, E2E browser) is real and functional, not ceremonial — 221 tests run in under 10 seconds (engine) plus browser tests.
+
+### Known Weaknesses
+
+**Concurrency safety.** The manifest uses `threading.Lock` but has no cross-process file locking (W11). The config singleton is not thread-safe (W36). For single-process CLI usage this is fine; for multi-worker API deployments under load, these are real bugs.
+
+**Silent data issues.** Two paths where errors are swallowed: schema compilation failure falls back to stale compiled files (W2), and failed field transforms return the original untransformed value instead of raising (W19). Both violate the "no silent failures" criterion.
+
+**Test coverage gaps.** The 221-test count is solid, but specific holes exist: no real X12 segment parsing test, no cXML test fixture, no failure-path regression test (`should_succeed: false`), and `main.py` (the CLI entry point) has zero test coverage. See `REVIEW_REPORT.md` Tier 4 for the full list.
+
+**Scale hardening not started.** `SPECIFICATION.md` Phase 5 (Locust load tests, benchmark regressions, `max_workers` tuning) has not been attempted. The system has never been tested above trivial file volumes.
+
+**Portal is functional but incomplete.** File upload, manifest page, authentication, and config editing remain unbuilt (see `TODO.md`). The portal works well for what it covers, but users will encounter dead ends.
+
+**Open review warnings.** 57 warnings remain from the code review. Most are minor, but some are real data issues: the CSV handler does not handle quoted fields containing the delimiter (W24), multi-transaction X12 files are silently truncated to the first transaction (W28), and the transaction-type regex is too greedy (W5).
+
+### Risks
+
+- **Production readiness gap.** The project is tested at development scale but has never processed production-volume data. The first real deployment will surface issues that unit tests cannot predict (memory, I/O contention, manifest file growth, log volume).
+- **Single-maintainer bus factor.** 67 commits from a single contributor with AI assistance. Documentation is strong, but no second contributor has navigated the codebase independently.
+- **Dependency risk (badx12).** The X12 handler monkey-patches `collections.Iterable` to work around a compatibility issue in badx12 (C8). If badx12 is abandoned, the X12 driver needs a replacement parser.
+- **No CI/CD pipeline.** Tests pass locally but there is no configured CI. Test regressions can be introduced silently between commits.
+
+---
+
+## Enhancement Roadmap
+
+Improvements organized by the value they deliver. Items marked `[TODO]` have tracking entries in `TODO.md`. Items marked `[NEW]` are additional opportunities. Items marked `[Wnn]` reference warnings in `REVIEW_REPORT.md`.
+
+### End-User Experience
+
+| Enhancement | Value to User | Source |
+|-------------|---------------|--------|
+| Wire file upload on Pipeline page | Drag-and-drop files instead of manually placing them in inbound directories. Eliminates need for filesystem access. | [TODO] |
+| Build manifest page with search/filtering | Answer "was this file processed?" without reading a flat text file. Status filter and date range search. | [TODO] |
+| Add react-router for URL navigation | Bookmark pages, use browser back/forward, share deep links. Current manual page state breaks all of these. | [TODO] |
+| Improve error messages | Add human-readable `summary` field to `.error.json` sidecars (e.g., "Column 'Invoice Date' expected a date but received 'N/A'"). Current traces are developer-oriented. | [NEW] |
+| Trading partner onboarding guide | Step-by-step walkthrough: receive files, create mapping rule, register, validate, test. Currently requires synthesizing multiple README sections. | [NEW] |
+| Portal config editing | Allow inline editing of registry entries so users can onboard new schemas without editing YAML on disk. | [TODO] |
+
+### Business Value
+
+| Enhancement | Business Impact | Source |
+|-------------|-----------------|--------|
+| Compare error auto-discovery | Auto-suggest new comparison rules when unknown field mismatches appear. Reduces profile setup from hours to minutes. | [TODO] |
+| Export beyond CSV | PDF summary reports and Excel workbooks for stakeholders who do not use terminals or portals. | [NEW] |
+| `--watch` mode | Monitor inbound directories and process files as they arrive. Eliminates cron scheduling and reduces latency to seconds. | [NEW] |
+| Webhook/event triggers | Enable event-driven processing (S3 events, message queues) for real-time integrations. | [NEW] |
+| MCP server wrapper | Expose the pipeline as a Model Context Protocol server for native LLM tool integration without custom code. | [NEW] |
+
+### Operational Reliability
+
+| Enhancement | Operational Impact | Source |
+|-------------|-------------------|--------|
+| Portal authentication | No access control exists. Required before exposing outside localhost — anyone on the network can trigger pipeline runs. | [TODO] |
+| Cross-process manifest locking | Current `threading.Lock` does not protect multi-worker API deployments. Two processes can process the same file simultaneously. | [W11] |
+| CI/CD pipeline | Run the full test suite on every push. Currently test regressions can be introduced between commits undetected. | [NEW] |
+| Scale testing | Establish baseline throughput at 1,000+ files. Phase 5 calls for Locust load tests at 5,000 files — not yet started. | [SPEC] |
+| CSV quoted field handling | `line.split(delimiter)` corrupts data when fields contain the delimiter character inside quotes. | [W24] |
+| Multi-transaction X12 support | Files with multiple ST/SE loops are silently truncated to the first transaction. Lost data with no warning. | [W28] |
+
+---
+
 ## License
 
 MIT License - See LICENSE file for details

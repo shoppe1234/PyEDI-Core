@@ -61,6 +61,11 @@ def compare(
     # Load crosswalk overrides (cached once per run)
     crosswalk = load_crosswalk_overrides(db_path, profile.name)
 
+    if not crosswalk and profile.rules_file:
+        from pyedi_core.scaffold import scaffold_crosswalk_from_rules
+        scaffold_crosswalk_from_rules(profile.rules_file, profile.name, db_path)
+        crosswalk = load_crosswalk_overrides(db_path, profile.name)
+
     pairs = pair_transactions(source_dir, target_dir, profile.match_key)
 
     # Build match_key string for storage

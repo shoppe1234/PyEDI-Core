@@ -91,3 +91,32 @@ def scaffold_rules(
             )
 
     return output_path
+
+
+def scaffold_crosswalk_from_rules(rules_path: str, profile: str, db_path: str) -> int:
+    """Read classification entries from rules YAML, seed crosswalk. Returns count upserted."""
+    from pyedi_core.comparator.rules import load_rules
+    from pyedi_core.comparator.store import init_db, upsert_crosswalk
+
+    rules = load_rules(rules_path)
+    init_db(db_path)
+
+    count = 0
+    for entry in rules.classification:
+        # Skip the (*,*) wildcard — it's a default, not a concrete field
+        if entry.segment == "*" and entry.field == "*":
+            continue
+        upsert_crosswalk(
+            db_path=db_path,
+            profile=profile,
+            field_name=entry.field,
+            severity=entry.severity,
+            numeric=entry.numeric,
+            ignore_case=entry.ignore_case,
+            amount_variance=entry.amount_variance,
+            updated_by="scaffold_from_rules",
+            segment=entry.segment,
+        )
+        count += 1
+
+    return count

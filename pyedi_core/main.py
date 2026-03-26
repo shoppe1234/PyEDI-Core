@@ -97,7 +97,7 @@ def main(args: Optional[List[str]] = None) -> int:
         "scaffold-rules", help="Generate starter compare rules from compiled schema",
     )
     scaffold_parser.add_argument(
-        "--schema", required=True, help="Path to compiled schema YAML",
+        "--schema", required=False, default=None, help="Path to compiled schema YAML",
     )
     scaffold_parser.add_argument(
         "--output", default=None, help="Output rules YAML path",
@@ -107,6 +107,14 @@ def main(args: Optional[List[str]] = None) -> int:
     )
     scaffold_parser.add_argument(
         "--db", default=None, help="SQLite DB path for crosswalk seeding",
+    )
+    scaffold_parser.add_argument(
+        "--from-profile", default=None, metavar="PROFILE",
+        help="Seed crosswalk from an existing compare profile's rules YAML",
+    )
+    scaffold_parser.add_argument(
+        "--config", "-c", default="./config/config.yaml",
+        help="Config file path (default: ./config/config.yaml)",
     )
 
     # --- "compare" subcommand ---
@@ -472,6 +480,29 @@ def _print_validate_json(result: "object") -> None:
 
 def _handle_scaffold(parsed: argparse.Namespace) -> int:
     """Dispatch scaffold-rules subcommand."""
+    from_profile = getattr(parsed, "from_profile", None)
+
+    if from_profile:
+        from .comparator import load_profile
+        from .scaffold import scaffold_crosswalk_from_rules
+        config_path = getattr(parsed, "config", "./config/config.yaml")
+        try:
+            profile = load_profile(config_path, from_profile)
+        except (FileNotFoundError, ValueError) as exc:
+            print(f"Error loading profile: {exc}", file=sys.stderr)
+            return 1
+        import yaml
+        with open(config_path, "r", encoding="utf-8") as f:
+            config = yaml.safe_load(f)
+        db_path = parsed.db or config.get("compare", {}).get("sqlite_db", "data/compare.db")
+        count = scaffold_crosswalk_from_rules(profile.rules_file, from_profile, db_path)
+        print(f"Seeded {count} crosswalk entries for profile '{from_profile}'")
+        return 0
+
+    if not parsed.schema:
+        print("Error: --schema is required (or use --from-profile)", file=sys.stderr)
+        return 1
+
     from .scaffold import scaffold_rules
 
     try:

@@ -46,6 +46,9 @@ export default function ComparePage() {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
+  // Tab view
+  const [view, setView] = useState<'runs' | 'discoveries'>('runs')
+
   // Load profiles on mount
   useEffect(() => {
     api.compareProfiles().then(setProfiles).catch(e => setError(e.message))
@@ -143,6 +146,18 @@ export default function ComparePage() {
     <div>
       <h1 className="text-2xl font-bold mb-4">Compare</h1>
 
+      <div className="flex gap-1 mb-4">
+        {(['runs', 'discoveries'] as const).map(v => (
+          <button
+            key={v}
+            onClick={() => setView(v)}
+            className={`px-3 py-1 rounded text-sm capitalize ${view === v ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
+          >
+            {v}
+          </button>
+        ))}
+      </div>
+
       {error && (
         <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-2 rounded mb-4 text-sm">
           {error}
@@ -150,6 +165,8 @@ export default function ComparePage() {
         </div>
       )}
 
+      {view === 'runs' && (
+      <>
       {/* New Comparison */}
       <div className="bg-white rounded-lg shadow p-4 mb-4 space-y-3">
         <h2 className="font-semibold text-sm text-gray-500 uppercase">New Comparison</h2>
@@ -358,6 +375,14 @@ export default function ComparePage() {
               ))}
             </tbody>
           </table>
+        </div>
+      )}
+      </>
+      )}
+
+      {view === 'discoveries' && (
+        <div className="bg-white rounded-lg shadow p-4">
+          <p className="text-sm text-gray-400">Discoveries panel — coming in Phase C.</p>
         </div>
       )}
     </div>

@@ -85,4 +85,27 @@ export const api = {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(rules),
     }),
+
+  // Reclassify: re-evaluate diffs with current rules
+  compareReclassify: (runId: number) =>
+    request<any>(`/compare/runs/${runId}/reclassify`, { method: 'POST' }),
+
+  // Run diff: compare two runs for new/resolved/changed errors
+  compareRunDiff: (runIdA: number, runIdB: number) =>
+    request<any>(`/compare/runs/${runIdA}/diff/${runIdB}`),
+
+  // Summary: severity/segment/field breakdowns + top errors
+  compareRunSummary: (runId: number) =>
+    request<any>(`/compare/runs/${runId}/summary`),
+
+  // Discoveries: list unclassified field combos
+  compareDiscoveries: (profile: string, applied?: boolean) => {
+    const params = new URLSearchParams({ profile });
+    if (applied !== undefined) params.set('applied', String(applied));
+    return request<any[]>(`/compare/discoveries?${params}`);
+  },
+
+  // Apply discovery: promote to classification
+  compareApplyDiscovery: (discoveryId: number) =>
+    request<any>(`/compare/discoveries/${discoveryId}/apply`, { method: 'POST' }),
 };

@@ -164,6 +164,7 @@ class CompareRunResponse(BaseModel):
     unmatched: int
     started_at: str
     finished_at: str
+    reclassified_from: Optional[int] = None
 
 
 class ComparePairResponse(BaseModel):

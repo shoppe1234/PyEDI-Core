@@ -7,7 +7,7 @@ from fastapi import APIRouter, HTTPException
 from fastapi.responses import FileResponse
 
 from pyedi_core.comparator import compare as core_compare
-from pyedi_core.comparator import export_csv, list_profiles, load_profile
+from pyedi_core.comparator import export_csv, list_profiles, load_profile, reclassify
 from pyedi_core.comparator.models import MatchKeyConfig
 from pyedi_core.comparator.rules import load_rules
 from pyedi_core.comparator.store import (
@@ -93,6 +93,7 @@ def run_comparison(req: CompareRunRequest) -> CompareRunResponse:
         unmatched=summary.unmatched,
         started_at=summary.started_at,
         finished_at=summary.finished_at,
+        reclassified_from=summary.reclassified_from,
     )
 
 
@@ -112,6 +113,7 @@ def list_runs(profile: Optional[str] = None, limit: int = 20) -> List[CompareRun
             unmatched=r.unmatched,
             started_at=r.started_at,
             finished_at=r.finished_at,
+            reclassified_from=r.reclassified_from,
         )
         for r in runs
     ]
@@ -133,6 +135,28 @@ def get_run_detail(run_id: int) -> CompareRunResponse:
         unmatched=run.unmatched,
         started_at=run.started_at,
         finished_at=run.finished_at,
+        reclassified_from=run.reclassified_from,
+    )
+
+
+@router.post("/runs/{run_id}/reclassify", response_model=CompareRunResponse)
+def reclassify_run(run_id: int) -> CompareRunResponse:
+    """Re-evaluate diffs from an existing run against current rules."""
+    db_path = _get_db_path()
+    try:
+        summary = reclassify(run_id, db_path, _CONFIG_PATH)
+    except (FileNotFoundError, ValueError) as exc:
+        raise HTTPException(status_code=404, detail=str(exc))
+    return CompareRunResponse(
+        run_id=summary.run_id,
+        profile=summary.profile,
+        total_pairs=summary.total_pairs,
+        matched=summary.matched,
+        mismatched=summary.mismatched,
+        unmatched=summary.unmatched,
+        started_at=summary.started_at,
+        finished_at=summary.finished_at,
+        reclassified_from=summary.reclassified_from,
     )
 
 

@@ -99,11 +99,24 @@ def _connect(db_path: str) -> sqlite3.Connection:
     return conn
 
 
+def _add_column_if_missing(conn: sqlite3.Connection, table: str, column: str, col_type: str) -> None:
+    """Add a column to a table if it doesn't already exist."""
+    existing = {row[1] for row in conn.execute(f"PRAGMA table_info({table})").fetchall()}
+    if column not in existing:
+        conn.execute(f"ALTER TABLE {table} ADD COLUMN {column} {col_type}")
+
+
+def _migrate_db(conn: sqlite3.Connection) -> None:
+    """Run forward-only migrations for schema evolution."""
+    _add_column_if_missing(conn, "compare_runs", "reclassified_from", "INTEGER")
+
+
 def init_db(db_path: str) -> None:
     """Create tables if they don't exist. Idempotent."""
     conn = _connect(db_path)
     try:
         conn.executescript(_SCHEMA)
+        _migrate_db(conn)
         conn.commit()
     finally:
         conn.close()
@@ -362,8 +375,73 @@ def apply_discovery(db_path: str, discovery_id: int, applied_by: str = "user") -
         conn.close()
 
 
+def get_all_diffs_for_run(db_path: str, run_id: int) -> list[dict]:
+    """Return all diffs for a run, joined with pair info."""
+    conn = _connect(db_path)
+    try:
+        rows = conn.execute(
+            "SELECT d.*, p.match_value, p.source_file, p.target_file, p.id as pair_id "
+            "FROM compare_diffs d JOIN compare_pairs p ON d.pair_id = p.id "
+            "WHERE p.run_id = ?",
+            (run_id,),
+        ).fetchall()
+        return [dict(r) for r in rows]
+    finally:
+        conn.close()
+
+
+def clone_run_for_reclassify(db_path: str, original_run_id: int) -> int:
+    """Create a new run row cloned from original, with reclassified_from set. Returns new run_id."""
+    conn = _connect(db_path)
+    try:
+        orig = conn.execute("SELECT * FROM compare_runs WHERE id = ?", (original_run_id,)).fetchone()
+        if orig is None:
+            raise ValueError(f"Run {original_run_id} not found")
+        cursor = conn.execute(
+            "INSERT INTO compare_runs "
+            "(profile, started_at, source_dir, target_dir, match_key, reclassified_from) "
+            "VALUES (?, ?, ?, ?, ?, ?)",
+            (orig["profile"], datetime.now(timezone.utc).isoformat(),
+             orig["source_dir"], orig["target_dir"], orig["match_key"], original_run_id),
+        )
+        conn.commit()
+        return cursor.lastrowid  # type: ignore[return-value]
+    finally:
+        conn.close()
+
+
+def clone_pairs_for_reclassify(db_path: str, original_run_id: int, new_run_id: int) -> dict[int, int]:
+    """Copy pairs from original run to new run. Returns {old_pair_id: new_pair_id}."""
+    conn = _connect(db_path)
+    try:
+        orig_pairs = conn.execute(
+            "SELECT * FROM compare_pairs WHERE run_id = ?", (original_run_id,),
+        ).fetchall()
+        mapping: dict[int, int] = {}
+        for p in orig_pairs:
+            cursor = conn.execute(
+                "INSERT INTO compare_pairs "
+                "(run_id, source_file, source_tx_index, target_file, target_tx_index, "
+                "match_value, status, diff_count) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+                (new_run_id, p["source_file"], p["source_tx_index"],
+                 p["target_file"], p["target_tx_index"], p["match_value"],
+                 p["status"], 0),
+            )
+            mapping[p["id"]] = cursor.lastrowid  # type: ignore[assignment]
+        conn.commit()
+        return mapping
+    finally:
+        conn.close()
+
+
 def _row_to_run_summary(row: sqlite3.Row) -> RunSummary:
     """Convert a sqlite3.Row to RunSummary dataclass."""
+    # Safe access for columns that may not exist in older DBs
+    reclassified_from = None
+    try:
+        reclassified_from = row["reclassified_from"]
+    except (IndexError, KeyError):
+        pass
     return RunSummary(
         run_id=row["id"],
         profile=row["profile"],
@@ -373,4 +451,5 @@ def _row_to_run_summary(row: sqlite3.Row) -> RunSummary:
         unmatched=row["unmatched"],
         started_at=row["started_at"],
         finished_at=row["finished_at"] or "",
+        reclassified_from=reclassified_from,
     )

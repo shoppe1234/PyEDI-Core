@@ -114,3 +114,4 @@ class RunSummary:
     unmatched: int
     started_at: str
     finished_at: str
+    reclassified_from: int | None = None

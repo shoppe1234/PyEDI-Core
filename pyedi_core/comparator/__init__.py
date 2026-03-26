@@ -22,9 +22,14 @@ from pyedi_core.comparator.models import (
     RunSummary,
 )
 from pyedi_core.comparator.rules import is_wildcard_match, load_crosswalk_overrides, load_rules
+from pyedi_core.comparator.rules import get_field_rule
 from pyedi_core.comparator.store import (
+    clone_pairs_for_reclassify,
+    clone_run_for_reclassify,
+    get_all_diffs_for_run,
     get_diffs,
     get_pairs,
+    get_run,
     init_db,
     insert_diffs,
     insert_discoveries,
@@ -127,6 +132,107 @@ def compare(
 
     if discovery_count:
         print(f"Discovered {discovery_count} new field combinations not yet classified")
+
+    return summary
+
+
+def reclassify(run_id: int, db_path: str, config_path: str) -> RunSummary:
+    """Create a new run by re-evaluating diffs from an existing run against current rules + crosswalk.
+
+    1. Get original run profile via get_run()
+    2. Load profile from config via load_profile()
+    3. Load rules + crosswalk
+    4. Clone run + pairs into new run
+    5. Get all original diffs
+    6. For each diff: re-resolve severity via get_field_rule()
+    7. Insert diffs with updated severities into new pairs
+    8. Calculate counts and update run summary
+    """
+    init_db(db_path)
+
+    orig_run = get_run(db_path, run_id)
+    if orig_run is None:
+        raise ValueError(f"Run {run_id} not found")
+
+    profile = load_profile(config_path, orig_run.profile)
+    rules = load_rules(profile.rules_file)
+    crosswalk = load_crosswalk_overrides(db_path, profile.name)
+
+    # Apply crosswalk to rules if present
+    if crosswalk:
+        from pyedi_core.comparator.engine import _apply_crosswalk
+        effective_rules = _apply_crosswalk(rules, crosswalk)
+    else:
+        effective_rules = rules
+
+    new_run_id = clone_run_for_reclassify(db_path, run_id)
+    pair_mapping = clone_pairs_for_reclassify(db_path, run_id, new_run_id)
+
+    orig_diffs = get_all_diffs_for_run(db_path, run_id)
+
+    # Group diffs by original pair_id
+    diffs_by_pair: dict[int, list[dict]] = {}
+    for d in orig_diffs:
+        diffs_by_pair.setdefault(d["pair_id"], []).append(d)
+
+    matched = 0
+    mismatched = 0
+    unmatched = 0
+
+    for old_pair_id, new_pair_id in pair_mapping.items():
+        pair_diffs = diffs_by_pair.get(old_pair_id, [])
+        new_diffs: list[FieldDiff] = []
+
+        for d in pair_diffs:
+            # Re-resolve severity with current rules
+            new_rule = get_field_rule(effective_rules, d["segment"].split("*")[0] if "*" in d["segment"] else d["segment"], d["field"])
+            if new_rule.severity == "ignore":
+                continue
+            new_diffs.append(FieldDiff(
+                segment=d["segment"],
+                field=d["field"],
+                severity=new_rule.severity,
+                source_value=d["source_value"],
+                target_value=d["target_value"],
+                description=d["description"],
+            ))
+
+        if new_diffs:
+            insert_diffs(db_path, new_pair_id, new_diffs)
+            mismatched += 1
+        else:
+            # Check if this was an unmatched pair (no target)
+            if pair_diffs and any(d.get("target_file") is None for d in pair_diffs):
+                unmatched += 1
+            else:
+                matched += 1
+
+        # Update pair diff_count and status
+        from pyedi_core.comparator.store import _connect
+        conn = _connect(db_path)
+        try:
+            status = "MISMATCH" if new_diffs else "MATCH"
+            conn.execute(
+                "UPDATE compare_pairs SET diff_count = ?, status = ? WHERE id = ?",
+                (len(new_diffs), status, new_pair_id),
+            )
+            conn.commit()
+        finally:
+            conn.close()
+
+    finished_at = datetime.now(timezone.utc).isoformat()
+    summary = RunSummary(
+        run_id=new_run_id,
+        profile=orig_run.profile,
+        total_pairs=len(pair_mapping),
+        matched=matched,
+        mismatched=mismatched,
+        unmatched=unmatched,
+        started_at="",
+        finished_at=finished_at,
+        reclassified_from=run_id,
+    )
+    update_run(db_path, new_run_id, summary)
 
     return summary
 

@@ -150,6 +150,10 @@ def main(args: Optional[List[str]] = None) -> int:
         "--apply-discovery", type=int, metavar="ID",
         help="Mark a discovery record as applied and promote to crosswalk",
     )
+    compare_parser.add_argument(
+        "--reclassify-run", type=int, metavar="RUN_ID",
+        help="Re-evaluate diffs from an existing run against current rules",
+    )
 
     # Add run args to the top-level parser too (backward compat)
     _add_run_args(parser)
@@ -531,10 +535,25 @@ def _handle_compare(parsed: argparse.Namespace) -> int:
         return 0
 
     if parsed.apply_discovery:
-        from .comparator.store import apply_discovery, get_discoveries, init_db, upsert_crosswalk
+        from .comparator.store import apply_discovery, init_db
         init_db(db_path_early)
         apply_discovery(db_path_early, parsed.apply_discovery)
         print(f"Discovery #{parsed.apply_discovery} marked as applied")
+        return 0
+
+    if parsed.reclassify_run:
+        from .comparator import reclassify
+        try:
+            summary = reclassify(parsed.reclassify_run, db_path_early, config_path)
+        except (FileNotFoundError, ValueError) as exc:
+            print(f"Error: {exc}", file=sys.stderr)
+            return 1
+        print(f"\n=== Reclassified Run #{summary.run_id} (from #{parsed.reclassify_run}) ===")
+        print(f"Profile:    {summary.profile}")
+        print(f"Total:      {summary.total_pairs} pairs")
+        print(f"  Matched:    {summary.matched}")
+        print(f"  Mismatched: {summary.mismatched}")
+        print(f"  Unmatched:  {summary.unmatched}")
         return 0
 
     if not parsed.profile:

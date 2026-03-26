@@ -591,5 +591,203 @@ class TestPipeline:
         assert pipeline._max_workers == 8
 
 
+@pytest.mark.unit
+class TestFixedWidth:
+    """Tests for fixed-width DSL compilation and parsing."""
+
+    def test_compile_fixed_width_schema(self):
+        """Compile .ffSchema and verify width metadata, record_layouts, no delimiter."""
+        from pyedi_core.core.schema_compiler import compile_dsl
+        import os
+
+        # Remove cached compiled files to force fresh compilation
+        for f in [
+            "schemas/compiled/RetalixPIPOAckFF.yaml",
+            "schemas/compiled/RetalixPIPOAckFF.meta.json",
+        ]:
+            if os.path.exists(f):
+                os.remove(f)
+
+        result = compile_dsl("artifacts/RetalixPIPOAckFF.ffSchema")
+
+        assert result["input_format"] == "FIXED_WIDTH"
+        assert "delimiter" not in result["schema"]
+        assert "record_layouts" in result["schema"]
+        assert len(result["schema"]["record_layouts"]) > 0
+
+        # All columns should have width
+        for col in result["schema"]["columns"]:
+            assert "width" in col, f"Column {col['name']} missing width"
+
+        # Record keys should be stripped (no trailing whitespace)
+        for key in result["schema"]["records"]:
+            assert key == key.strip(), f"Record key '{key}' has padding"
+
+    def test_compile_delimited_backward_compat(self):
+        """Compile delimited DSL and verify no width/record_layouts appear."""
+        from pyedi_core.core.schema_compiler import parse_dsl_file, _compile_to_yaml
+
+        record_defs, delimiter, format_type = parse_dsl_file(
+            "schemas/source/gfsGenericOut810FF.txt"
+        )
+        result = _compile_to_yaml(record_defs, "gfsGenericOut810FF.txt", delimiter, format_type)
+
+        assert result["input_format"] == "CSV"
+        assert "delimiter" in result["schema"]
+        assert "record_layouts" not in result["schema"]
+        for col in result["schema"]["columns"]:
+            assert "width" not in col, f"Column {col['name']} should not have width"
+
+    def test_field_attribute_parsing(self):
+        """Verify _parse_dsl_record extracts length and readEmptyAsNull."""
+        from pyedi_core.core.schema_compiler import _parse_dsl_record
+
+        record_text = '''def record TestRec {
+            fieldIdentifier {
+                value = "TEST"
+                field = recordType
+            }
+
+            recordType String (
+                length = 10
+                readEmptyAsNull = true
+            )
+            amount Decimal (
+                length = 8
+            )
+            label String
+        }'''
+
+        result = _parse_dsl_record(record_text)
+        assert result["name"] == "TestRec"
+        assert result["fieldIdentifier"] == "TEST"
+
+        rt = result["fields"][0]
+        assert rt["name"] == "recordType"
+        assert rt["length"] == 10
+        assert rt["read_empty_as_null"] is True
+
+        amt = result["fields"][1]
+        assert amt["name"] == "amount"
+        assert amt["length"] == 8
+        assert "read_empty_as_null" not in amt
+
+        lbl = result["fields"][2]
+        assert lbl["name"] == "label"
+        assert "length" not in lbl
+
+    def test_read_fixed_width_file(self):
+        """CSVHandler._read_fixed_width slices fields by byte position."""
+        import yaml
+        from pyedi_core.drivers.csv_handler import CSVHandler
+
+        # recordType(10) + value1(5) + value2(3) = 18 chars
+        data_lines = [
+            "HDR       Hello 42",
+            "DTL       World 99",
+        ]
+        data_file = tempfile.NamedTemporaryFile(
+            mode="w", suffix=".txt", delete=False, encoding="utf-8"
+        )
+        data_file.write("\n".join(data_lines))
+        data_file.close()
+
+        schema = {
+            "transaction_type": "TEST",
+            "input_format": "FIXED_WIDTH",
+            "schema": {
+                "columns": [
+                    {"name": "recordType", "type": "string", "required": True, "width": 10},
+                    {"name": "value1", "type": "string", "required": True, "width": 5},
+                    {"name": "value2", "type": "integer", "required": True, "width": 3},
+                ],
+                "records": {
+                    "HDR": ["recordType", "value1", "value2"],
+                    "DTL": ["recordType", "value1", "value2"],
+                },
+                "record_layouts": {
+                    "HDR": [
+                        {"name": "recordType", "width": 10},
+                        {"name": "value1", "width": 5},
+                        {"name": "value2", "width": 3},
+                    ],
+                    "DTL": [
+                        {"name": "recordType", "width": 10},
+                        {"name": "value1", "width": 5},
+                        {"name": "value2", "width": 3},
+                    ],
+                },
+            },
+            "mapping": {"header": {}, "lines": [], "summary": {}},
+        }
+        schema_file = tempfile.NamedTemporaryFile(
+            mode="w", suffix=".yaml", delete=False, encoding="utf-8"
+        )
+        yaml.dump(schema, schema_file, default_flow_style=False)
+        schema_file.close()
+
+        try:
+            handler = CSVHandler()
+            handler.set_compiled_yaml_path(schema_file.name)
+            result = handler.read(data_file.name)
+
+            assert len(result["lines"]) == 2
+            assert result["lines"][0]["recordType"] == "HDR"
+            assert result["lines"][0]["value1"] == "Hello"
+            assert result["lines"][0]["value2"] == "42"
+            assert result["lines"][1]["value1"] == "World"
+        finally:
+            os.unlink(data_file.name)
+            os.unlink(schema_file.name)
+
+    def test_read_empty_as_null(self):
+        """Empty fields with read_empty_as_null should become None."""
+        import yaml
+        from pyedi_core.drivers.csv_handler import CSVHandler
+
+        # recordType(5) + val(5) = 10 chars; val is all spaces
+        data_file = tempfile.NamedTemporaryFile(
+            mode="w", suffix=".txt", delete=False, encoding="utf-8"
+        )
+        data_file.write("REC       ")  # 5 + 5 spaces
+        data_file.close()
+
+        schema = {
+            "transaction_type": "TEST",
+            "input_format": "FIXED_WIDTH",
+            "schema": {
+                "columns": [
+                    {"name": "recordType", "type": "string", "required": True, "width": 5},
+                    {"name": "val", "type": "string", "required": True, "width": 5, "read_empty_as_null": True},
+                ],
+                "records": {"REC": ["recordType", "val"]},
+                "record_layouts": {
+                    "REC": [
+                        {"name": "recordType", "width": 5},
+                        {"name": "val", "width": 5},
+                    ],
+                },
+            },
+            "mapping": {"header": {}, "lines": [], "summary": {}},
+        }
+        schema_file = tempfile.NamedTemporaryFile(
+            mode="w", suffix=".yaml", delete=False, encoding="utf-8"
+        )
+        yaml.dump(schema, schema_file, default_flow_style=False)
+        schema_file.close()
+
+        try:
+            handler = CSVHandler()
+            handler.set_compiled_yaml_path(schema_file.name)
+            result = handler.read(data_file.name)
+
+            assert len(result["lines"]) == 1
+            assert result["lines"][0]["recordType"] == "REC"
+            assert result["lines"][0]["val"] is None
+        finally:
+            os.unlink(data_file.name)
+            os.unlink(schema_file.name)
+
+
 if __name__ == "__main__":
     pytest.main([__file__, "-v"])

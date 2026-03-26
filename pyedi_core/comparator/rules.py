@@ -99,7 +99,7 @@ def load_crosswalk_overrides(db_path: str, profile: str) -> dict[str, FieldRule]
     overrides: dict[str, FieldRule] = {}
     for entry in entries:
         overrides[entry["field_name"]] = FieldRule(
-            segment="*",
+            segment=entry.get("segment", "*"),
             field=entry["field_name"],
             severity=entry["severity"],
             ignore_case=bool(entry["ignore_case"]),

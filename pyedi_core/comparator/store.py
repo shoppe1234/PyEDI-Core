@@ -112,6 +112,47 @@ def _migrate_db(conn: sqlite3.Connection) -> None:
     _add_column_if_missing(conn, "compare_runs", "trading_partner", "TEXT DEFAULT ''")
     _add_column_if_missing(conn, "compare_runs", "transaction_type", "TEXT DEFAULT ''")
     _add_column_if_missing(conn, "compare_runs", "run_notes", "TEXT DEFAULT ''")
+    _add_column_if_missing(conn, "field_crosswalk", "segment", "TEXT DEFAULT '*'")
+    _migrate_crosswalk_constraint(conn)
+
+
+def _migrate_crosswalk_constraint(conn: sqlite3.Connection) -> None:
+    """Rebuild field_crosswalk with UNIQUE(profile, segment, field_name) if needed."""
+    row = conn.execute(
+        "SELECT sql FROM sqlite_master WHERE type='table' AND name='field_crosswalk'"
+    ).fetchone()
+    if row is None:
+        return
+    ddl = row[0] or ""
+    # Already has segment in the unique constraint
+    if "segment, field_name" in ddl:
+        return
+    # Old constraint: UNIQUE(profile, field_name) — rebuild
+    conn.executescript("""
+        CREATE TABLE IF NOT EXISTS field_crosswalk_new (
+            id              INTEGER PRIMARY KEY,
+            profile         TEXT NOT NULL,
+            field_name      TEXT NOT NULL,
+            severity        TEXT NOT NULL DEFAULT 'hard',
+            numeric         BOOLEAN NOT NULL DEFAULT 0,
+            ignore_case     BOOLEAN NOT NULL DEFAULT 0,
+            amount_variance REAL DEFAULT NULL,
+            updated_at      TEXT NOT NULL,
+            updated_by      TEXT DEFAULT 'system',
+            segment         TEXT NOT NULL DEFAULT '*',
+            UNIQUE(profile, segment, field_name)
+        );
+        INSERT OR IGNORE INTO field_crosswalk_new
+            (id, profile, field_name, severity, numeric, ignore_case,
+             amount_variance, updated_at, updated_by, segment)
+        SELECT id, profile, field_name, severity, numeric, ignore_case,
+               amount_variance, updated_at, updated_by,
+               COALESCE(segment, '*')
+        FROM field_crosswalk;
+        DROP TABLE field_crosswalk;
+        ALTER TABLE field_crosswalk_new RENAME TO field_crosswalk;
+        CREATE INDEX IF NOT EXISTS idx_crosswalk_profile ON field_crosswalk(profile);
+    """)
 
 
 def init_db(db_path: str) -> None:
@@ -291,16 +332,18 @@ def upsert_crosswalk(
     ignore_case: bool = False,
     amount_variance: float | None = None,
     updated_by: str = "system",
+    segment: str = "*",
 ) -> None:
     """Insert or replace a field_crosswalk entry."""
     conn = _connect(db_path)
     try:
         conn.execute(
             "INSERT OR REPLACE INTO field_crosswalk "
-            "(profile, field_name, severity, numeric, ignore_case, amount_variance, updated_at, updated_by) "
-            "VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+            "(profile, field_name, severity, numeric, ignore_case, amount_variance, "
+            "updated_at, updated_by, segment) "
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
             (profile, field_name, severity, int(numeric), int(ignore_case),
-             amount_variance, datetime.now(timezone.utc).isoformat(), updated_by),
+             amount_variance, datetime.now(timezone.utc).isoformat(), updated_by, segment),
         )
         conn.commit()
     finally:
@@ -320,13 +363,13 @@ def get_crosswalk(db_path: str, profile: str) -> list[dict]:
         conn.close()
 
 
-def get_crosswalk_field(db_path: str, profile: str, field_name: str) -> dict | None:
+def get_crosswalk_field(db_path: str, profile: str, field_name: str, segment: str = "*") -> dict | None:
     """Return a single crosswalk entry, or None."""
     conn = _connect(db_path)
     try:
         row = conn.execute(
-            "SELECT * FROM field_crosswalk WHERE profile = ? AND field_name = ?",
-            (profile, field_name),
+            "SELECT * FROM field_crosswalk WHERE profile = ? AND field_name = ? AND segment = ?",
+            (profile, field_name, segment),
         ).fetchone()
         return dict(row) if row else None
     finally:

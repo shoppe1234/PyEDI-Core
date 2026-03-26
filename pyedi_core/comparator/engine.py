@@ -400,7 +400,9 @@ def _apply_crosswalk(
         # Replace or prepend the crosswalk rule (higher priority than wildcard)
         found = False
         for i, existing in enumerate(new_classification):
-            if existing.segment == "*" and existing.field == field_name:
+            if existing.field == field_name and (
+                existing.segment == xwalk_rule.segment or existing.segment == "*"
+            ):
                 new_classification[i] = xwalk_rule
                 found = True
                 break

@@ -6,8 +6,9 @@ import PipelinePage from './pages/Pipeline'
 import TestsPage from './pages/Tests'
 import ConfigPage from './pages/Config'
 import ComparePage from './pages/Compare'
+import OnboardPage from './pages/Onboard'
 
-type Page = 'dashboard' | 'validate' | 'pipeline' | 'tests' | 'compare' | 'config'
+type Page = 'dashboard' | 'validate' | 'pipeline' | 'tests' | 'compare' | 'config' | 'onboard'
 
 const NAV: { key: Page; label: string }[] = [
   { key: 'dashboard', label: 'Dashboard' },
@@ -15,6 +16,7 @@ const NAV: { key: Page; label: string }[] = [
   { key: 'pipeline', label: 'Pipeline' },
   { key: 'tests', label: 'Tests' },
   { key: 'compare', label: 'Compare' },
+  { key: 'onboard', label: 'Onboard' },
   { key: 'config', label: 'Config' },
 ]
 
@@ -56,6 +58,7 @@ function App() {
         {page === 'pipeline' && <PipelinePage />}
         {page === 'tests' && <TestsPage />}
         {page === 'compare' && <ComparePage />}
+        {page === 'onboard' && <OnboardPage onNavigate={(p) => setPage(p as Page)} />}
         {page === 'config' && <ConfigPage />}
       </main>
     </div>

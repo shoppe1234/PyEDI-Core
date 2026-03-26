@@ -84,6 +84,66 @@ class CSVHandler(TransactionProcessor):
             return detected
         return schema_delimiter
 
+    def _read_fixed_width(self, file_path: str, schema: Dict[str, Any]) -> Dict[str, Any]:
+        """Parse a fixed-width positional file using record_layouts from compiled schema."""
+        record_layouts = schema.get("schema", {}).get("record_layouts", {})
+        columns_meta = {
+            c["name"]: c
+            for c in schema.get("schema", {}).get("columns", [])
+        }
+
+        if not record_layouts:
+            raise ValueError(f"No record_layouts in schema for fixed-width file: {file_path}")
+
+        # Determine the width of the record identifier field (first field in every layout)
+        id_width = max(
+            layout[0]["width"] for layout in record_layouts.values() if layout
+        )
+
+        result: Dict[str, Any] = {"header": {}, "lines": [], "summary": {}}
+
+        with open(file_path, "r", encoding="utf-8") as f:
+            for line in f:
+                line = line.rstrip("\n\r")
+                if not line:
+                    continue
+
+                # Extract record identifier from the first id_width characters
+                record_id = line[:id_width].strip()
+
+                if record_id not in record_layouts:
+                    self.logger.debug(f"Unknown record type: '{record_id}', skipping line")
+                    continue
+
+                layout = record_layouts[record_id]
+                row: Dict[str, Any] = {}
+                pos = 0
+
+                for field_spec in layout:
+                    field_name = field_spec["name"]
+                    width = field_spec["width"]
+                    raw = line[pos:pos + width]
+
+                    # Strip padding
+                    value: Optional[str] = raw.strip()
+
+                    # Handle read_empty_as_null
+                    col_meta = columns_meta.get(field_name, {})
+                    if col_meta.get("read_empty_as_null") and not value:
+                        value = None
+
+                    row[field_name] = value
+                    pos += width
+
+                result["lines"].append(row)
+
+        self.logger.info(
+            f"Fixed-width file parsed",
+            lines=len(result["lines"]),
+            file_path=file_path,
+        )
+        return result
+
     def read(self, file_path: str) -> Dict[str, Any]:
         """
         Read and parse a CSV file.
@@ -106,8 +166,13 @@ class CSVHandler(TransactionProcessor):
 
         # Get schema - prefer explicit path from pipeline, fall back to discovery
         schema = self._get_schema_for_file(file_path)
-        
+
         try:
+            # Route to fixed-width parser if applicable
+            input_format = schema.get("input_format", "CSV") if schema else "CSV"
+            if input_format == "FIXED_WIDTH":
+                return self._read_fixed_width(file_path, schema)
+
             records_schema = schema.get("schema", {}).get("records", {}) if schema else {}
             
             if records_schema:

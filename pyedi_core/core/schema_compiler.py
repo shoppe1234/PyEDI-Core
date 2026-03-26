@@ -77,7 +77,7 @@ def _parse_dsl_record(record_text: str) -> Dict[str, Any]:
     # Extract field identifier
     identifier_match = re.search(r'fieldIdentifier\s*\{\s*value\s*=\s*"([^"]+)"', record_text)
     if identifier_match:
-        result["fieldIdentifier"] = identifier_match.group(1)
+        result["fieldIdentifier"] = identifier_match.group(1).strip()
         
     # Extract field definitions
     # Pattern: field_name Type
@@ -88,6 +88,8 @@ def _parse_dsl_record(record_text: str) -> Dict[str, Any]:
         rf'^\s*([A-Za-z0-9_]+)\s+({type_or})', re.MULTILINE
     )
     
+    attr_kv_pattern = re.compile(r'(\w+)\s*=\s*(\w+|"[^"]*")')
+
     for match in field_pattern.finditer(record_text):
         field_name = match.group(1)
         field_type = match.group(2)
@@ -105,14 +107,30 @@ def _parse_dsl_record(record_text: str) -> Dict[str, Any]:
             "Date": "date",
             "datetime": "date",
         }
-        
+
         field_def = {
             "name": field_name,
             "type": type_mapping.get(field_type, "string"),
             "dsl_type": field_type,
             "required": True
         }
-        
+
+        # Parse parenthesized field attributes: (length = 10, readEmptyAsNull = true, ...)
+        after_match = match.end()
+        remaining = record_text[after_match:]
+        stripped = remaining.lstrip()
+        if stripped.startswith("("):
+            paren_start = after_match + (len(remaining) - len(stripped))
+            paren_end = record_text.find(")", paren_start)
+            if paren_end != -1:
+                attr_text = record_text[paren_start + 1:paren_end]
+                for kv in attr_kv_pattern.finditer(attr_text):
+                    key, value = kv.group(1), kv.group(2).strip('"')
+                    if key == "length":
+                        field_def["length"] = int(value)
+                    elif key == "readEmptyAsNull" and value == "true":
+                        field_def["read_empty_as_null"] = True
+
         result["fields"].append(field_def)
     
     return result

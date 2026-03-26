@@ -1,0 +1,100 @@
+transaction_type: 810_INVOICE
+input_format: CSV
+schema:
+  delimiter: ','
+  columns:
+  - name: PurchaseOrderNumber
+    type: string
+    required: true
+  - name: InvoiceID
+    type: integer
+    required: true
+  - name: InvoiceAmount
+    type: float
+    required: true
+  - name: CustomerCode
+    type: string
+    required: true
+  - name: InvoiceDate
+    type: string
+    required: true
+  - name: DueDate
+    type: string
+    required: true
+  - name: ProductDescription
+    type: string
+    required: true
+  - name: DistributorProductID
+    type: string
+    required: true
+  - name: GTIN
+    type: string
+    required: true
+  - name: UnitofMeasure
+    type: string
+    required: true
+  - name: Pack
+    type: string
+    required: true
+  - name: Size
+    type: string
+    required: true
+  - name: WeightShipped
+    type: float
+    required: true
+  - name: UnitPrice
+    type: float
+    required: true
+  - name: QuantityShipped
+    type: float
+    required: true
+  - name: Discount
+    type: float
+    required: true
+  - name: Taxes
+    type: float
+    required: true
+  - name: ExtendedPrice
+    type: float
+    required: true
+  records: {}
+mapping:
+  header: {}
+  lines:
+  - PurchaseOrderNumber:
+      source: PurchaseOrderNumber
+  - InvoiceID:
+      source: InvoiceID
+  - InvoiceAmount:
+      source: InvoiceAmount
+  - CustomerCode:
+      source: CustomerCode
+  - InvoiceDate:
+      source: InvoiceDate
+  - DueDate:
+      source: DueDate
+  - ProductDescription:
+      source: ProductDescription
+  - DistributorProductID:
+      source: DistributorProductID
+  - GTIN:
+      source: GTIN
+  - UnitofMeasure:
+      source: UnitofMeasure
+  - Pack:
+      source: Pack
+  - Size:
+      source: Size
+  - WeightShipped:
+      source: WeightShipped
+  - UnitPrice:
+      source: UnitPrice
+  - QuantityShipped:
+      source: QuantityShipped
+  - Discount:
+      source: Discount
+  - Taxes:
+      source: Taxes
+  - ExtendedPrice:
+      source: ExtendedPrice
+  summary: {}

@@ -54,6 +54,21 @@ CREATE INDEX IF NOT EXISTS idx_pairs_run_id ON compare_pairs(run_id);
 CREATE INDEX IF NOT EXISTS idx_pairs_status ON compare_pairs(status);
 CREATE INDEX IF NOT EXISTS idx_diffs_pair_id ON compare_diffs(pair_id);
 CREATE INDEX IF NOT EXISTS idx_diffs_severity ON compare_diffs(severity);
+
+CREATE TABLE IF NOT EXISTS field_crosswalk (
+    id              INTEGER PRIMARY KEY,
+    profile         TEXT NOT NULL,
+    field_name      TEXT NOT NULL,
+    severity        TEXT NOT NULL DEFAULT 'hard',
+    numeric         BOOLEAN NOT NULL DEFAULT 0,
+    ignore_case     BOOLEAN NOT NULL DEFAULT 0,
+    amount_variance REAL DEFAULT NULL,
+    updated_at      TEXT NOT NULL,
+    updated_by      TEXT DEFAULT 'system',
+    UNIQUE(profile, field_name)
+);
+
+CREATE INDEX IF NOT EXISTS idx_crosswalk_profile ON field_crosswalk(profile);
 """
 
 
@@ -218,6 +233,57 @@ def get_diffs(db_path: str, pair_id: int) -> list[FieldDiff]:
             )
             for r in rows
         ]
+    finally:
+        conn.close()
+
+
+def upsert_crosswalk(
+    db_path: str,
+    profile: str,
+    field_name: str,
+    severity: str = "hard",
+    numeric: bool = False,
+    ignore_case: bool = False,
+    amount_variance: float | None = None,
+    updated_by: str = "system",
+) -> None:
+    """Insert or replace a field_crosswalk entry."""
+    conn = _connect(db_path)
+    try:
+        conn.execute(
+            "INSERT OR REPLACE INTO field_crosswalk "
+            "(profile, field_name, severity, numeric, ignore_case, amount_variance, updated_at, updated_by) "
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+            (profile, field_name, severity, int(numeric), int(ignore_case),
+             amount_variance, datetime.now(timezone.utc).isoformat(), updated_by),
+        )
+        conn.commit()
+    finally:
+        conn.close()
+
+
+def get_crosswalk(db_path: str, profile: str) -> list[dict]:
+    """Return all crosswalk entries for a profile."""
+    conn = _connect(db_path)
+    try:
+        rows = conn.execute(
+            "SELECT * FROM field_crosswalk WHERE profile = ? ORDER BY field_name",
+            (profile,),
+        ).fetchall()
+        return [dict(r) for r in rows]
+    finally:
+        conn.close()
+
+
+def get_crosswalk_field(db_path: str, profile: str, field_name: str) -> dict | None:
+    """Return a single crosswalk entry, or None."""
+    conn = _connect(db_path)
+    try:
+        row = conn.execute(
+            "SELECT * FROM field_crosswalk WHERE profile = ? AND field_name = ?",
+            (profile, field_name),
+        ).fetchone()
+        return dict(row) if row else None
     finally:
         conn.close()
 

@@ -1,0 +1,28 @@
+{
+  "header": {
+    "InvoiceID": "2003262439"
+  },
+  "lines": [
+    {
+      "PurchaseOrderNumber": NaN,
+      "InvoiceID": 2003262439,
+      "InvoiceAmount": -112.6,
+      "CustomerCode": 94002264,
+      "InvoiceDate": "03/24/2026",
+      "DueDate": NaN,
+      "ProductDescription": "PORK RIB BABY BACK 18-20Z EURO FZN",
+      "DistributorProductID": "1206064",
+      "GTIN": 620868141600.0,
+      "UnitofMeasure": "CA",
+      "Pack": 1,
+      "Size": "10KG",
+      "WeightShipped": 0.0,
+      "UnitPrice": 112.6,
+      "QuantityShipped": -1.0,
+      "Discount": 0.0,
+      "Taxes": 0.0,
+      "ExtendedPrice": -112.6
+    }
+  ],
+  "summary": {}
+}

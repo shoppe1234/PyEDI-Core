@@ -244,39 +244,36 @@ def compare_pair(
     return CompareResult(pair=pair, status=status, diffs=all_diffs, timestamp=timestamp)
 
 
-def compare_flat_pair(
-    pair: MatchPair,
+def _compare_flat_dict(
+    src_dict: dict,
+    tgt_dict: dict,
+    segment_label: str,
     rules: CompareRules,
-) -> CompareResult:
-    """Compare flat JSON pairs (CSV/cXML output).
+) -> list[FieldDiff]:
+    """Compare two flat dictionaries field-by-field using rules.
 
-    No segment structure — walks JSON keys, applies rules by key name.
+    Extracted from compare_flat_pair for reuse across header, line, and summary sections.
     """
-    timestamp = datetime.now(timezone.utc).isoformat()
-
-    if pair.target is None:
-        return CompareResult(
-            pair=pair, status="UNMATCHED", diffs=[], timestamp=timestamp,
-        )
-
-    source_data = pair.source.transaction_data
-    target_data = pair.target.transaction_data
-
     diffs: list[FieldDiff] = []
-    all_keys = set(source_data.keys()) | set(target_data.keys())
+    all_keys = set(src_dict.keys()) | set(tgt_dict.keys())
 
     for key in all_keys:
         if _is_ignored("*", key, rules):
             continue
 
-        src_val = str(source_data.get(key, ""))
-        tgt_val = str(target_data.get(key, ""))
+        src_val = str(src_dict.get(key, ""))
+        tgt_val = str(tgt_dict.get(key, ""))
 
         rule = get_field_rule(rules, "*", key)
 
         if rule.numeric:
             try:
-                if float(src_val) == float(tgt_val):
+                src_f, tgt_f = float(src_val), float(tgt_val)
+                variance = getattr(rule, "amount_variance", None)
+                if variance is not None:
+                    if abs(src_f - tgt_f) <= variance:
+                        continue
+                elif src_f == tgt_f:
                     continue
             except (ValueError, TypeError):
                 pass
@@ -292,21 +289,114 @@ def compare_flat_pair(
         if rule.severity == "ignore":
             continue
 
-        if key not in source_data:
+        if key not in src_dict:
             desc = f"Missing key in Source: {key} (Target has: '{tgt_val}')"
-        elif key not in target_data:
+        elif key not in tgt_dict:
             desc = f"Missing key in Target: {key} (Source has: '{src_val}')"
         else:
             desc = f"Content mismatch: Source='{src_val}' vs Target='{tgt_val}'"
 
         diffs.append(FieldDiff(
-            segment="flat",
+            segment=segment_label,
             field=key,
             severity=rule.severity,
-            source_value=src_val if key in source_data else None,
-            target_value=tgt_val if key in target_data else None,
+            source_value=src_val if key in src_dict else None,
+            target_value=tgt_val if key in tgt_dict else None,
             description=desc,
         ))
 
+    return diffs
+
+
+def compare_flat_pair(
+    pair: MatchPair,
+    rules: CompareRules,
+    crosswalk: dict[str, "FieldRule"] | None = None,
+) -> CompareResult:
+    """Compare flat JSON pairs (CSV/cXML output).
+
+    Handles both truly flat JSON and structured {header, lines, summary} payloads.
+    When crosswalk is provided, overrides YAML rules with crosswalk entries.
+    """
+    timestamp = datetime.now(timezone.utc).isoformat()
+
+    if pair.target is None:
+        return CompareResult(
+            pair=pair, status="UNMATCHED", diffs=[], timestamp=timestamp,
+        )
+
+    source_data = pair.source.transaction_data
+    target_data = pair.target.transaction_data
+
+    # Apply crosswalk overrides to a copy of rules if provided
+    effective_rules = _apply_crosswalk(rules, crosswalk) if crosswalk else rules
+
+    # Detect structured JSON (has "lines" key)
+    if "lines" in source_data or "lines" in target_data:
+        diffs: list[FieldDiff] = []
+
+        # Compare header
+        src_header = source_data.get("header", {})
+        tgt_header = target_data.get("header", {})
+        diffs.extend(_compare_flat_dict(src_header, tgt_header, "header", effective_rules))
+
+        # Compare lines positionally
+        src_lines = source_data.get("lines", [])
+        tgt_lines = target_data.get("lines", [])
+        max_lines = max(len(src_lines), len(tgt_lines))
+        for i in range(max_lines):
+            src_line = src_lines[i] if i < len(src_lines) else None
+            tgt_line = tgt_lines[i] if i < len(tgt_lines) else None
+            if src_line is None:
+                diffs.append(FieldDiff(
+                    segment=f"line_{i}", field="", severity="hard",
+                    source_value=None, target_value=str(tgt_line),
+                    description=f"Extra line in Target at position {i}",
+                ))
+                continue
+            if tgt_line is None:
+                diffs.append(FieldDiff(
+                    segment=f"line_{i}", field="", severity="hard",
+                    source_value=str(src_line), target_value=None,
+                    description=f"Missing line in Target at position {i}",
+                ))
+                continue
+            diffs.extend(_compare_flat_dict(src_line, tgt_line, f"line_{i}", effective_rules))
+
+        # Compare summary
+        src_summary = source_data.get("summary", {})
+        tgt_summary = target_data.get("summary", {})
+        diffs.extend(_compare_flat_dict(src_summary, tgt_summary, "summary", effective_rules))
+
+        status = "MISMATCH" if diffs else "MATCH"
+        return CompareResult(pair=pair, status=status, diffs=diffs, timestamp=timestamp)
+
+    # Backward compatible: truly flat JSON
+    diffs = _compare_flat_dict(source_data, target_data, "flat", effective_rules)
     status = "MISMATCH" if diffs else "MATCH"
     return CompareResult(pair=pair, status=status, diffs=diffs, timestamp=timestamp)
+
+
+def _apply_crosswalk(
+    rules: CompareRules,
+    crosswalk: dict[str, "FieldRule"],
+) -> CompareRules:
+    """Create a copy of rules with crosswalk overrides applied."""
+    if not crosswalk:
+        return rules
+
+    new_classification = list(rules.classification)
+
+    for field_name, xwalk_rule in crosswalk.items():
+        # Replace or prepend the crosswalk rule (higher priority than wildcard)
+        found = False
+        for i, existing in enumerate(new_classification):
+            if existing.segment == "*" and existing.field == field_name:
+                new_classification[i] = xwalk_rule
+                found = True
+                break
+        if not found:
+            # Insert before the default wildcard
+            new_classification.insert(len(new_classification) - 1, xwalk_rule)
+
+    return CompareRules(classification=new_classification, ignore=rules.ignore)

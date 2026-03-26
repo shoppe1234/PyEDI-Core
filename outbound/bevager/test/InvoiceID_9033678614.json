@@ -1,0 +1,48 @@
+{
+  "header": {
+    "InvoiceID": "9033678614"
+  },
+  "lines": [
+    {
+      "PurchaseOrderNumber": "Chemicals",
+      "InvoiceID": 9033678614,
+      "InvoiceAmount": 329.78,
+      "CustomerCode": 94004298,
+      "InvoiceDate": "03/25/2026",
+      "DueDate": NaN,
+      "ProductDescription": "CLEANER DESCALER CALX SUMA",
+      "DistributorProductID": "1398041",
+      "GTIN": 10807174548119.0,
+      "UnitofMeasure": "CA",
+      "Pack": 4,
+      "Size": "3.78L",
+      "WeightShipped": 0.0,
+      "UnitPrice": 180.46,
+      "QuantityShipped": 1.0,
+      "Discount": 0.0,
+      "Taxes": 0.0,
+      "ExtendedPrice": 180.46
+    },
+    {
+      "PurchaseOrderNumber": "Chemicals",
+      "InvoiceID": 9033678614,
+      "InvoiceAmount": 329.78,
+      "CustomerCode": 94004298,
+      "InvoiceDate": "03/25/2026",
+      "DueDate": NaN,
+      "ProductDescription": "SANITIZER T20 LOW TEMP",
+      "DistributorProductID": "1286837",
+      "GTIN": 10807174535614.0,
+      "UnitofMeasure": "CA",
+      "Pack": 4,
+      "Size": "3.78L",
+      "WeightShipped": 0.0,
+      "UnitPrice": 108.82,
+      "QuantityShipped": 1.0,
+      "Discount": 0.0,
+      "Taxes": 0.0,
+      "ExtendedPrice": 108.82
+    }
+  ],
+  "summary": {}
+}

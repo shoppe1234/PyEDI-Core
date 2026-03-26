@@ -117,7 +117,9 @@ class Pipeline:
         file: Optional[str] = None,
         files: Optional[List[str]] = None,
         return_payload: Optional[bool] = None,
-        dry_run: Optional[bool] = None
+        dry_run: Optional[bool] = None,
+        split_key: Optional[str] = None,
+        output_dir: Optional[str] = None,
     ) -> Union[PipelineResult, List[PipelineResult]]:
         """
         Run the pipeline on one or more files.
@@ -157,14 +159,18 @@ class Pipeline:
             return self._process_single(
                 file_list[0],
                 return_payload=return_payload,
-                dry_run=dry_run
+                dry_run=dry_run,
+                split_key=split_key,
+                output_dir=output_dir,
             )
-        
+
         # Handle multiple files
         return self._process_batch(
             file_list,
             return_payload=return_payload,
-            dry_run=dry_run
+            dry_run=dry_run,
+            split_key=split_key,
+            output_dir=output_dir,
         )
     
     def _scan_inbound(self) -> List[str]:
@@ -183,7 +189,9 @@ class Pipeline:
         file_path: str,
         return_payload: Optional[bool] = None,
         dry_run: Optional[bool] = None,
-        skip_dedup: bool = False
+        skip_dedup: bool = False,
+        split_key: Optional[str] = None,
+        output_dir: Optional[str] = None,
     ) -> PipelineResult:
         """Process a single file."""
         start_time = time.time()
@@ -302,8 +310,14 @@ class Pipeline:
             if not do_dry_run:
                 logger = logger.bind(stage="WRITE")
                 logger.info(f"Stage: WRITE")
-                output_path = self._get_output_path(filename, transaction_type)
-                driver.write(transformed_data, output_path)
+                if split_key and hasattr(driver, 'write_split'):
+                    target_dir = output_dir or self._outbound_dir
+                    split_paths = driver.write_split(transformed_data, target_dir, split_key)
+                    output_path = target_dir
+                    logger.info("Split write complete", split_files=len(split_paths))
+                else:
+                    output_path = self._get_output_path(filename, transaction_type)
+                    driver.write(transformed_data, output_path)
             
             # Return payload if requested
             if do_return_payload:
@@ -372,7 +386,9 @@ class Pipeline:
         self,
         file_list: List[str],
         return_payload: Optional[bool] = None,
-        dry_run: Optional[bool] = None
+        dry_run: Optional[bool] = None,
+        split_key: Optional[str] = None,
+        output_dir: Optional[str] = None,
     ) -> List[PipelineResult]:
         """Process multiple files in parallel."""
         # Filter against manifest
@@ -408,7 +424,9 @@ class Pipeline:
                     self._process_single, f,
                     return_payload=return_payload,
                     dry_run=dry_run,
-                    skip_dedup=True
+                    skip_dedup=True,
+                    split_key=split_key,
+                    output_dir=output_dir,
                 ): f
                 for f in new_files
             }

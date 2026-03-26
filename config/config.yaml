@@ -104,6 +104,13 @@ compare:
       segment_qualifiers: {}
       rules_file: "config/compare_rules/cxml_generic.yaml"
 
+    bevager_810:
+      description: "Bevager 810 Invoice flat file comparison"
+      match_key:
+        json_path: "header.InvoiceID"
+      segment_qualifiers: {}
+      rules_file: "config/compare_rules/bevager_810.yaml"
+
 csv_schema_registry:
   margin_edge_810:
     source_dsl:      ./tpm810SourceFF.txt
@@ -114,4 +121,14 @@ csv_schema_registry:
     source_dsl:      ./schemas/source/gfsGenericOut810FF.txt
     compiled_output: ./schemas/compiled/gfs_ca_810_map.yaml
     inbound_dir:     ./inbound/csv/gfs_ca
+    transaction_type: '810'
+  bevager_810_control:
+    source_dsl:      ./testingData/Batch1/bevager810FF.txt
+    compiled_output: ./schemas/compiled/bevager810FF_map.yaml
+    inbound_dir:     ./testingData/Batch1/controlSample-FlatFile-Target
+    transaction_type: '810'
+  bevager_810_test:
+    source_dsl:      ./testingData/Batch1/bevager810FF.txt
+    compiled_output: ./schemas/compiled/bevager810FF_map.yaml
+    inbound_dir:     ./testingData/Batch1/testSample-FlatFile-Target
     transaction_type: '810'

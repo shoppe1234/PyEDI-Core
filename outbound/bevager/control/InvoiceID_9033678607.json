@@ -1,0 +1,28 @@
+{
+  "header": {
+    "InvoiceID": "9033678607"
+  },
+  "lines": [
+    {
+      "PurchaseOrderNumber": "supplies",
+      "InvoiceID": 9033678607,
+      "InvoiceAmount": 14.61,
+      "CustomerCode": 94004297,
+      "InvoiceDate": "03/25/2026",
+      "DueDate": "04/10/2026",
+      "ProductDescription": "RAMEKIN CUP SAUCE 1.5Z SS",
+      "DistributorProductID": "1077880",
+      "GTIN": 10065506050581.0,
+      "UnitofMeasure": "CA",
+      "Pack": 1,
+      "Size": "12UN",
+      "WeightShipped": 0.0,
+      "UnitPrice": 6.41,
+      "QuantityShipped": 2.0,
+      "Discount": 0.0,
+      "Taxes": 1.79,
+      "ExtendedPrice": 12.82
+    }
+  ],
+  "summary": {}
+}

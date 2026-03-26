@@ -19,7 +19,7 @@ from pyedi_core.comparator.models import (
     MatchKeyConfig,
     RunSummary,
 )
-from pyedi_core.comparator.rules import load_rules
+from pyedi_core.comparator.rules import load_crosswalk_overrides, load_rules
 from pyedi_core.comparator.store import (
     get_diffs,
     get_pairs,
@@ -50,6 +50,9 @@ def compare(
 
     rules = load_rules(profile.rules_file)
 
+    # Load crosswalk overrides (cached once per run)
+    crosswalk = load_crosswalk_overrides(db_path, profile.name)
+
     pairs = pair_transactions(source_dir, target_dir, profile.match_key)
 
     # Build match_key string for storage
@@ -68,7 +71,7 @@ def compare(
 
     for pair in pairs:
         if is_flat:
-            result = compare_flat_pair(pair, rules)
+            result = compare_flat_pair(pair, rules, crosswalk=crosswalk)
         else:
             result = compare_pair(pair, rules, profile.segment_qualifiers)
 

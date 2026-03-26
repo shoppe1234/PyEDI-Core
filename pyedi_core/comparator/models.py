@@ -54,6 +54,7 @@ class FieldRule:
     ignore_case: bool = False
     numeric: bool = False
     conditional_qualifier: str | None = None
+    amount_variance: float | None = None
 
 
 @dataclass

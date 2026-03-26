@@ -1,0 +1,28 @@
+package com.gfs.customer.ca.tp.bevager.outbound.n810 ;
+
+def flatFileSchema bevager810FF {
+
+	_Record Record []
+
+	def record Record {
+
+		PurchaseOrderNumber String
+		InvoiceID Integer
+		InvoiceAmount Decimal
+		CustomerCode String
+		InvoiceDate String
+		DueDate String
+		ProductDescription String
+		DistributorProductID String
+		GTIN String
+		UnitofMeasure String
+		Pack String
+		Size String
+		WeightShipped Decimal
+		UnitPrice Decimal
+		QuantityShipped Decimal
+		Discount Decimal
+		Taxes Decimal
+		ExtendedPrice Decimal
+	}
+}

@@ -1,0 +1,28 @@
+{
+  "header": {
+    "InvoiceID": "2003260772"
+  },
+  "lines": [
+    {
+      "PurchaseOrderNumber": NaN,
+      "InvoiceID": 2003260772,
+      "InvoiceAmount": -8.19,
+      "CustomerCode": 94004947,
+      "InvoiceDate": "03/24/2026",
+      "DueDate": NaN,
+      "ProductDescription": "CREAMER 18PCT PORT",
+      "DistributorProductID": "1519841",
+      "GTIN": 65900100847.0,
+      "UnitofMeasure": "EA",
+      "Pack": 4,
+      "Size": "160UN",
+      "WeightShipped": 0.0,
+      "UnitPrice": 8.19,
+      "QuantityShipped": -1.0,
+      "Discount": 0.0,
+      "Taxes": 0.0,
+      "ExtendedPrice": -8.19
+    }
+  ],
+  "summary": {}
+}

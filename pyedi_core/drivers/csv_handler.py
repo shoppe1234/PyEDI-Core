@@ -59,16 +59,41 @@ class CSVHandler(TransactionProcessor):
         """
         self._compiled_yaml_path = compiled_yaml_path
     
+    def _detect_delimiter(self, file_path: str, schema_delimiter: str) -> str:
+        """Auto-detect delimiter by counting occurrences in the first line.
+
+        Args:
+            file_path: Path to data file
+            schema_delimiter: Delimiter declared in the compiled schema
+
+        Returns:
+            Detected delimiter (or schema_delimiter if detection is inconclusive)
+        """
+        with open(file_path, 'r', encoding='utf-8') as f:
+            first_line = f.readline().rstrip('\n\r')
+
+        candidates = {'|': first_line.count('|'), ',': first_line.count(','), '\t': first_line.count('\t')}
+        detected = max(candidates, key=candidates.get)
+
+        if detected != schema_delimiter and candidates[detected] > candidates.get(schema_delimiter, 0):
+            self.logger.info(
+                "Auto-detected delimiter differs from schema",
+                detected=detected,
+                schema_delimiter=schema_delimiter,
+            )
+            return detected
+        return schema_delimiter
+
     def read(self, file_path: str) -> Dict[str, Any]:
         """
         Read and parse a CSV file.
-        
+
         Args:
             file_path: Path to CSV file
-            
+
         Returns:
             Raw parsed data as dictionary
-            
+
         Raises:
             FileNotFoundError: If file doesn't exist
             ValueError: If CSV cannot be parsed
@@ -76,9 +101,9 @@ class CSVHandler(TransactionProcessor):
         path = Path(file_path)
         if not path.exists():
             raise FileNotFoundError(f"CSV file not found: {file_path}")
-        
+
         self.logger.info(f"Reading CSV file", file_path=file_path)
-        
+
         # Get schema - prefer explicit path from pipeline, fall back to discovery
         schema = self._get_schema_for_file(file_path)
         
@@ -88,6 +113,7 @@ class CSVHandler(TransactionProcessor):
             if records_schema:
                 # Manual parsing for heterogeneous multi-record file
                 delimiter = schema.get("schema", {}).get("delimiter", ",")
+                delimiter = self._detect_delimiter(file_path, delimiter)
                 
                 result = {
                     "header": {},
@@ -141,10 +167,25 @@ class CSVHandler(TransactionProcessor):
                         parse_dates.append(col["name"])
                 
                 delimiter = schema.get("schema", {}).get("delimiter", ",")
-                
+                delimiter = self._detect_delimiter(file_path, delimiter)
+
+                # Detect headerless files: read first line, check if it matches schema column names
+                schema_col_names = [c["name"] for c in column_config]
+                header_mode: Any = 0  # default: first row is header
+                col_names: Optional[List[str]] = None
+                with open(file_path, 'r', encoding='utf-8') as _f:
+                    first_line = _f.readline().rstrip('\n\r')
+                first_fields = first_line.split(delimiter)
+                # If none of the first-row fields match schema column names, treat as headerless
+                if schema_col_names and not any(f.strip() in schema_col_names for f in first_fields):
+                    header_mode = None
+                    col_names = schema_col_names
+
                 df = pd.read_csv(
                     file_path,
                     sep=delimiter,
+                    header=header_mode,
+                    names=col_names,
                     dtype=dtype if dtype else None,
                     parse_dates=parse_dates if parse_dates else False,
                     keep_default_na=True
@@ -311,6 +352,54 @@ class CSVHandler(TransactionProcessor):
         
         return transformed
     
+    def write_split(
+        self,
+        payload: Dict[str, Any],
+        output_dir: str,
+        split_key: str,
+    ) -> List[str]:
+        """Write transformed data split by a key field — one JSON per unique value.
+
+        Groups lines by split_key, promotes split_key into header for each group,
+        writes each group as a separate JSON file.
+
+        Args:
+            payload: Transformed data with {header, lines, summary}
+            output_dir: Output directory
+            split_key: Field name to group by (e.g., "InvoiceID")
+
+        Returns:
+            List of output file paths written
+        """
+        from collections import defaultdict
+
+        groups: Dict[str, List[Dict[str, Any]]] = defaultdict(list)
+        for line in payload.get("lines", []):
+            key_val = str(line.get(split_key, "unknown"))
+            groups[key_val].append(line)
+
+        out_dir = Path(output_dir)
+        out_dir.mkdir(parents=True, exist_ok=True)
+        output_paths: List[str] = []
+
+        for key_val, lines in groups.items():
+            split_payload = {
+                "header": {**payload.get("header", {}), split_key: key_val},
+                "lines": lines,
+                "summary": payload.get("summary", {}),
+            }
+            out_path = str(out_dir / f"{split_key}_{key_val}.json")
+            self.write(split_payload, out_path)
+            output_paths.append(out_path)
+
+        self.logger.info(
+            "Split output by key",
+            split_key=split_key,
+            total_lines=len(payload.get("lines", [])),
+            groups=len(groups),
+        )
+        return output_paths
+
     def write(self, payload: Dict[str, Any], output_path: str) -> None:
         """
         Write transformed data to JSON file.

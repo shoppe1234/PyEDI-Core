@@ -72,3 +72,28 @@ def get_field_rule(rules: CompareRules, segment: str, field: str) -> FieldRule:
 
     # Default: hard severity, exact match
     return FieldRule(segment=segment, field=field, severity="hard")
+
+
+def load_crosswalk_overrides(db_path: str, profile: str) -> dict[str, FieldRule]:
+    """Load crosswalk entries as a {field_name: FieldRule} dict for fast lookup.
+
+    Returns empty dict if table doesn't exist or has no entries.
+    """
+    from pyedi_core.comparator.store import get_crosswalk
+
+    try:
+        entries = get_crosswalk(db_path, profile)
+    except Exception:
+        return {}
+
+    overrides: dict[str, FieldRule] = {}
+    for entry in entries:
+        overrides[entry["field_name"]] = FieldRule(
+            segment="*",
+            field=entry["field_name"],
+            severity=entry["severity"],
+            ignore_case=bool(entry["ignore_case"]),
+            numeric=bool(entry["numeric"]),
+            amount_variance=entry.get("amount_variance"),
+        )
+    return overrides

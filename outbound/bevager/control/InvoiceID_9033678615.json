@@ -1,0 +1,28 @@
+{
+  "header": {
+    "InvoiceID": "9033678615"
+  },
+  "lines": [
+    {
+      "PurchaseOrderNumber": NaN,
+      "InvoiceID": 9033678615,
+      "InvoiceAmount": 63.37,
+      "CustomerCode": 94004298,
+      "InvoiceDate": "03/25/2026",
+      "DueDate": "04/10/2026",
+      "ProductDescription": "NAPKIN BEV 2PLY 1/4 FLD BLK 10X10IN",
+      "DistributorProductID": "1260282",
+      "GTIN": 10093901492750.0,
+      "UnitofMeasure": "CA",
+      "Pack": 12,
+      "Size": "50UN",
+      "WeightShipped": 0.0,
+      "UnitPrice": 55.59,
+      "QuantityShipped": 1.0,
+      "Discount": 0.0,
+      "Taxes": 7.78,
+      "ExtendedPrice": 55.59
+    }
+  ],
+  "summary": {}
+}

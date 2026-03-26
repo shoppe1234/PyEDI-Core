@@ -92,6 +92,23 @@ def main(args: Optional[List[str]] = None) -> int:
         help="Compiled YAML output directory (default: ./schemas/compiled)",
     )
 
+    # --- "scaffold-rules" subcommand ---
+    scaffold_parser = subparsers.add_parser(
+        "scaffold-rules", help="Generate starter compare rules from compiled schema",
+    )
+    scaffold_parser.add_argument(
+        "--schema", required=True, help="Path to compiled schema YAML",
+    )
+    scaffold_parser.add_argument(
+        "--output", default=None, help="Output rules YAML path",
+    )
+    scaffold_parser.add_argument(
+        "--profile", default=None, help="Profile name for crosswalk seeding",
+    )
+    scaffold_parser.add_argument(
+        "--db", default=None, help="SQLite DB path for crosswalk seeding",
+    )
+
     # --- "compare" subcommand ---
     compare_parser = subparsers.add_parser("compare", help="Compare source/target JSON outputs")
     compare_parser.add_argument(
@@ -137,6 +154,9 @@ def main(args: Optional[List[str]] = None) -> int:
     if parsed.command == "validate":
         return _handle_validate(parsed)
 
+    if parsed.command == "scaffold-rules":
+        return _handle_scaffold(parsed)
+
     if parsed.command == "compare":
         return _handle_compare(parsed)
 
@@ -165,6 +185,14 @@ def _add_run_args(parser: argparse.ArgumentParser) -> None:
         "--verbose", "-v", action="store_true",
         help="Enable verbose logging",
     )
+    parser.add_argument(
+        "--split-key", default=None,
+        help="Split output into separate JSON files by this field (e.g., InvoiceID)",
+    )
+    parser.add_argument(
+        "--output-dir", default=None,
+        help="Output directory for split files (used with --split-key)",
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -192,6 +220,8 @@ def _handle_run(parsed: argparse.Namespace) -> int:
             files=parsed.files,
             dry_run=dry_run,
             return_payload=return_payload,
+            split_key=getattr(parsed, 'split_key', None),
+            output_dir=getattr(parsed, 'output_dir', None),
         )
 
         if isinstance(result, PipelineResult):
@@ -422,6 +452,28 @@ def _print_validate_json(result: "object") -> None:
 
     data = dataclasses.asdict(result)
     print(json_mod.dumps(data, indent=2, default=str))
+
+
+# ---------------------------------------------------------------------------
+# Scaffold handler
+# ---------------------------------------------------------------------------
+
+def _handle_scaffold(parsed: argparse.Namespace) -> int:
+    """Dispatch scaffold-rules subcommand."""
+    from .scaffold import scaffold_rules
+
+    try:
+        output_path = scaffold_rules(
+            schema_path=parsed.schema,
+            output_path=parsed.output,
+            profile=parsed.profile,
+            db_path=parsed.db,
+        )
+        print(f"Rules scaffolded: {output_path}")
+        return 0
+    except (FileNotFoundError, ValueError) as exc:
+        print(f"Error: {exc}", file=sys.stderr)
+        return 1
 
 
 # ---------------------------------------------------------------------------

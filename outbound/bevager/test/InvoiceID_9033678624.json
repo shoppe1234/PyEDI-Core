@@ -1,0 +1,28 @@
+{
+  "header": {
+    "InvoiceID": "9033678624"
+  },
+  "lines": [
+    {
+      "PurchaseOrderNumber": "BOH Depo",
+      "InvoiceID": 9033678624,
+      "InvoiceAmount": 84.74,
+      "CustomerCode": 94004296,
+      "InvoiceDate": "03/25/2026",
+      "DueDate": NaN,
+      "ProductDescription": "BAG GARBAGE XSTRONG BLK 42X48IN",
+      "DistributorProductID": "1163822",
+      "GTIN": 620868129080.0,
+      "UnitofMeasure": "CA",
+      "Pack": 1,
+      "Size": "100UN",
+      "WeightShipped": 0.0,
+      "UnitPrice": 74.33,
+      "QuantityShipped": 1.0,
+      "Discount": 0.0,
+      "Taxes": 0.0,
+      "ExtendedPrice": 74.33
+    }
+  ],
+  "summary": {}
+}

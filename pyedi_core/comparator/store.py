@@ -9,7 +9,7 @@ from __future__ import annotations
 import sqlite3
 from datetime import datetime, timezone
 
-from pyedi_core.comparator.models import FieldDiff, MatchPair, RunSummary
+from pyedi_core.comparator.models import DiscoveryRecord, FieldDiff, MatchPair, RunSummary
 
 _SCHEMA = """
 CREATE TABLE IF NOT EXISTS compare_runs (
@@ -69,6 +69,25 @@ CREATE TABLE IF NOT EXISTS field_crosswalk (
 );
 
 CREATE INDEX IF NOT EXISTS idx_crosswalk_profile ON field_crosswalk(profile);
+
+CREATE TABLE IF NOT EXISTS error_discovery (
+    id               INTEGER PRIMARY KEY,
+    run_id           INTEGER NOT NULL REFERENCES compare_runs(id),
+    profile          TEXT NOT NULL,
+    segment          TEXT NOT NULL,
+    field            TEXT NOT NULL,
+    source_value     TEXT,
+    target_value     TEXT,
+    suggested_severity TEXT NOT NULL DEFAULT 'hard',
+    applied          BOOLEAN NOT NULL DEFAULT 0,
+    applied_at       TEXT,
+    applied_by       TEXT,
+    discovered_at    TEXT NOT NULL,
+    UNIQUE(profile, segment, field)
+);
+
+CREATE INDEX IF NOT EXISTS idx_discovery_profile ON error_discovery(profile);
+CREATE INDEX IF NOT EXISTS idx_discovery_applied ON error_discovery(applied);
 """
 
 
@@ -284,6 +303,61 @@ def get_crosswalk_field(db_path: str, profile: str, field_name: str) -> dict | N
             (profile, field_name),
         ).fetchone()
         return dict(row) if row else None
+    finally:
+        conn.close()
+
+
+def insert_discoveries(db_path: str, run_id: int, discoveries: list[DiscoveryRecord]) -> int:
+    """Bulk-insert discovery records (INSERT OR IGNORE). Returns count inserted."""
+    if not discoveries:
+        return 0
+    conn = _connect(db_path)
+    try:
+        cursor = conn.executemany(
+            "INSERT OR IGNORE INTO error_discovery "
+            "(run_id, profile, segment, field, source_value, target_value, "
+            "suggested_severity, applied, discovered_at) "
+            "VALUES (?, ?, ?, ?, ?, ?, ?, 0, ?)",
+            [
+                (run_id, d.profile, d.segment, d.field, d.source_value,
+                 d.target_value, d.suggested_severity, d.discovered_at)
+                for d in discoveries
+            ],
+        )
+        conn.commit()
+        return conn.total_changes
+    finally:
+        conn.close()
+
+
+def get_discoveries(db_path: str, profile: str, applied: bool | None = None) -> list[dict]:
+    """Return discovery records for a profile, optionally filtered by applied status."""
+    conn = _connect(db_path)
+    try:
+        if applied is None:
+            rows = conn.execute(
+                "SELECT * FROM error_discovery WHERE profile = ? ORDER BY id",
+                (profile,),
+            ).fetchall()
+        else:
+            rows = conn.execute(
+                "SELECT * FROM error_discovery WHERE profile = ? AND applied = ? ORDER BY id",
+                (profile, int(applied)),
+            ).fetchall()
+        return [dict(r) for r in rows]
+    finally:
+        conn.close()
+
+
+def apply_discovery(db_path: str, discovery_id: int, applied_by: str = "user") -> None:
+    """Mark a discovery as applied (sets applied=1, applied_at, applied_by)."""
+    conn = _connect(db_path)
+    try:
+        conn.execute(
+            "UPDATE error_discovery SET applied = 1, applied_at = ?, applied_by = ? WHERE id = ?",
+            (datetime.now(timezone.utc).isoformat(), applied_by, discovery_id),
+        )
+        conn.commit()
     finally:
         conn.close()
 

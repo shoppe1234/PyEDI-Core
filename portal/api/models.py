@@ -195,3 +195,16 @@ class CompareRulesResponse(BaseModel):
 class CompareRulesUpdateRequest(BaseModel):
     classification: List[Dict[str, Any]] = []
     ignore: List[Dict[str, Any]] = []
+
+
+class DiscoveryResponse(BaseModel):
+    id: int
+    run_id: int
+    profile: str
+    segment: str
+    field: str
+    source_value: Optional[str] = None
+    target_value: Optional[str] = None
+    suggested_severity: str
+    applied: bool
+    discovered_at: str

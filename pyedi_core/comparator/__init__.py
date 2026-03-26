@@ -16,15 +16,18 @@ from pyedi_core.comparator.engine import compare_flat_pair, compare_pair
 from pyedi_core.comparator.matcher import pair_transactions
 from pyedi_core.comparator.models import (
     CompareProfile,
+    DiscoveryRecord,
+    FieldDiff,
     MatchKeyConfig,
     RunSummary,
 )
-from pyedi_core.comparator.rules import load_crosswalk_overrides, load_rules
+from pyedi_core.comparator.rules import is_wildcard_match, load_crosswalk_overrides, load_rules
 from pyedi_core.comparator.store import (
     get_diffs,
     get_pairs,
     init_db,
     insert_diffs,
+    insert_discoveries,
     insert_pair,
     insert_run,
     update_run,
@@ -66,6 +69,7 @@ def compare(
     matched = 0
     mismatched = 0
     unmatched = 0
+    all_diffs: list[FieldDiff] = []
 
     is_flat = not profile.segment_qualifiers
 
@@ -79,6 +83,7 @@ def compare(
 
         if result.diffs:
             insert_diffs(db_path, pair_id, result.diffs)
+            all_diffs.extend(result.diffs)
 
         if result.status == "MATCH":
             matched += 1
@@ -86,6 +91,26 @@ def compare(
             mismatched += 1
         else:
             unmatched += 1
+
+    # Collect wildcard-fallback discoveries, deduplicate by (segment, field)
+    discovery_count = 0
+    seen: set[tuple[str, str]] = set()
+    discoveries: list[DiscoveryRecord] = []
+    now = datetime.now(timezone.utc).isoformat()
+    for diff in all_diffs:
+        if diff.wildcard_fallback and (diff.segment, diff.field) not in seen:
+            seen.add((diff.segment, diff.field))
+            discoveries.append(DiscoveryRecord(
+                profile=profile.name,
+                segment=diff.segment,
+                field=diff.field,
+                source_value=diff.source_value,
+                target_value=diff.target_value,
+                suggested_severity=diff.severity,
+                discovered_at=now,
+            ))
+    if discoveries:
+        discovery_count = insert_discoveries(db_path, run_id, discoveries)
 
     finished_at = datetime.now(timezone.utc).isoformat()
     summary = RunSummary(
@@ -99,6 +124,9 @@ def compare(
         finished_at=finished_at,
     )
     update_run(db_path, run_id, summary)
+
+    if discovery_count:
+        print(f"Discovered {discovery_count} new field combinations not yet classified")
 
     return summary
 

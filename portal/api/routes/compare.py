@@ -10,7 +10,15 @@ from pyedi_core.comparator import compare as core_compare
 from pyedi_core.comparator import export_csv, list_profiles, load_profile
 from pyedi_core.comparator.models import MatchKeyConfig
 from pyedi_core.comparator.rules import load_rules
-from pyedi_core.comparator.store import get_diffs, get_pairs, get_run, get_runs, init_db
+from pyedi_core.comparator.store import (
+    apply_discovery as store_apply_discovery,
+    get_diffs,
+    get_discoveries,
+    get_pairs,
+    get_run,
+    get_runs,
+    init_db,
+)
 
 from ..models import (
     CompareFieldDiffResponse,
@@ -21,6 +29,7 @@ from ..models import (
     CompareRunResponse,
     CompareRulesResponse,
     CompareRulesUpdateRequest,
+    DiscoveryResponse,
 )
 
 router = APIRouter(prefix="/api/compare", tags=["compare"])
@@ -167,6 +176,23 @@ def export_run(run_id: int) -> FileResponse:
 
     csv_path = export_csv(db_path, run_id, csv_dir)
     return FileResponse(csv_path, media_type="text/csv", filename=f"compare_run_{run_id}.csv")
+
+
+@router.get("/discoveries", response_model=List[DiscoveryResponse])
+def list_discoveries(profile: str, applied: Optional[bool] = None) -> List[DiscoveryResponse]:
+    """List discovered field combinations for a profile."""
+    db_path = _get_db_path()
+    init_db(db_path)
+    rows = get_discoveries(db_path, profile, applied=applied)
+    return [DiscoveryResponse(**r) for r in rows]
+
+
+@router.post("/discoveries/{discovery_id}/apply")
+def apply_discovery_endpoint(discovery_id: int):
+    """Mark a discovery as applied."""
+    db_path = _get_db_path()
+    store_apply_discovery(db_path, discovery_id)
+    return {"status": "applied"}
 
 
 @router.get("/profiles/{name}/rules", response_model=CompareRulesResponse)

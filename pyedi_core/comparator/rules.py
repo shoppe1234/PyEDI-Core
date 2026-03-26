@@ -74,6 +74,16 @@ def get_field_rule(rules: CompareRules, segment: str, field: str) -> FieldRule:
     return FieldRule(segment=segment, field=field, severity="hard")
 
 
+def is_wildcard_match(rules: CompareRules, segment: str, field: str) -> bool:
+    """Return True if (segment, field) resolves only to (*,*) or the hardcoded default."""
+    lookup = {(r.segment, r.field) for r in rules.classification}
+    return (
+        (segment, field) not in lookup
+        and (segment, "*") not in lookup
+        and ("*", field) not in lookup
+    )
+
+
 def load_crosswalk_overrides(db_path: str, profile: str) -> dict[str, FieldRule]:
     """Load crosswalk entries as a {field_name: FieldRule} dict for fast lookup.
 

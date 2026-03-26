@@ -142,6 +142,14 @@ def main(args: Optional[List[str]] = None) -> int:
     compare_parser.add_argument(
         "--db", help="SQLite database path (overrides config)",
     )
+    compare_parser.add_argument(
+        "--show-discoveries", action="store_true",
+        help="Show discovered field combinations not yet classified",
+    )
+    compare_parser.add_argument(
+        "--apply-discovery", type=int, metavar="ID",
+        help="Mark a discovery record as applied and promote to crosswalk",
+    )
 
     # Add run args to the top-level parser too (backward compat)
     _add_run_args(parser)
@@ -499,6 +507,36 @@ def _handle_compare(parsed: argparse.Namespace) -> int:
             print(f"  {p.name:<25} {key_str:<20} {p.description}")
         return 0
 
+    # Resolve DB path for discovery/reclassify commands
+    import yaml
+    with open(config_path, "r", encoding="utf-8") as f:
+        config = yaml.safe_load(f)
+    db_path_early = parsed.db or config.get("compare", {}).get("sqlite_db", "data/compare.db")
+
+    if parsed.show_discoveries:
+        from .comparator.store import get_discoveries, init_db
+        if not parsed.profile:
+            print("Error: --profile is required with --show-discoveries", file=sys.stderr)
+            return 1
+        init_db(db_path_early)
+        discoveries = get_discoveries(db_path_early, parsed.profile)
+        if not discoveries:
+            print(f"No discoveries for profile '{parsed.profile}'")
+            return 0
+        print(f"\n=== Discoveries for '{parsed.profile}' ({len(discoveries)}) ===")
+        print(f"  {'ID':<6} {'Segment':<15} {'Field':<25} {'Severity':<10} {'Applied'}")
+        for d in discoveries:
+            applied = "YES" if d["applied"] else "NO"
+            print(f"  {d['id']:<6} {d['segment']:<15} {d['field']:<25} {d['suggested_severity']:<10} {applied}")
+        return 0
+
+    if parsed.apply_discovery:
+        from .comparator.store import apply_discovery, get_discoveries, init_db, upsert_crosswalk
+        init_db(db_path_early)
+        apply_discovery(db_path_early, parsed.apply_discovery)
+        print(f"Discovery #{parsed.apply_discovery} marked as applied")
+        return 0
+
     if not parsed.profile:
         print("Error: --profile is required (use --list-profiles to see options)", file=sys.stderr)
         return 1
@@ -520,11 +558,7 @@ def _handle_compare(parsed: argparse.Namespace) -> int:
     if parsed.rules:
         profile.rules_file = parsed.rules
 
-    # Resolve DB path
-    import yaml
-    with open(config_path, "r", encoding="utf-8") as f:
-        config = yaml.safe_load(f)
-    db_path = parsed.db or config.get("compare", {}).get("sqlite_db", "data/compare.db")
+    db_path = db_path_early
 
     try:
         summary = compare(profile, parsed.source_dir, parsed.target_dir, db_path)

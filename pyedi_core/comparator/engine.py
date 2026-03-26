@@ -16,7 +16,7 @@ from pyedi_core.comparator.models import (
     FieldDiff,
     MatchPair,
 )
-from pyedi_core.comparator.rules import get_field_rule
+from pyedi_core.comparator.rules import get_field_rule, is_wildcard_match
 
 
 def segment_to_dict(segment: dict) -> dict[str, str]:
@@ -192,6 +192,7 @@ def compare_segment_fields(
             source_value=src_value if field_name in source_fields else None,
             target_value=tgt_value if field_name in target_fields else None,
             description=description,
+            wildcard_fallback=is_wildcard_match(rules, segment_id, field_name),
         ))
 
     return diffs
@@ -310,6 +311,7 @@ def _compare_flat_dict(
             source_value=src_val if key in src_dict else None,
             target_value=tgt_val if key in tgt_dict else None,
             description=desc,
+            wildcard_fallback=is_wildcard_match(rules, "*", key),
         ))
 
     return diffs

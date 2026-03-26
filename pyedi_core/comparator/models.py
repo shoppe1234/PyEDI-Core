@@ -75,6 +75,21 @@ class FieldDiff:
     source_value: str | None
     target_value: str | None
     description: str
+    wildcard_fallback: bool = False
+
+
+@dataclass
+class DiscoveryRecord:
+    """A (segment, field) combo classified by wildcard fallback — needs human review."""
+
+    profile: str
+    segment: str
+    field: str
+    source_value: str | None
+    target_value: str | None
+    suggested_severity: str = "hard"
+    applied: bool = False
+    discovered_at: str = ""
 
 
 @dataclass

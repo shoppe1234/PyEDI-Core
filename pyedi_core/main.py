@@ -166,6 +166,10 @@ def main(args: Optional[List[str]] = None) -> int:
         "--summary", type=int, metavar="RUN_ID",
         help="Show summary statistics for a run",
     )
+    compare_parser.add_argument(
+        "--diff-runs", nargs=2, type=int, metavar=("RUN_A", "RUN_B"),
+        help="Compare two runs and show new/resolved/changed errors",
+    )
 
     # Add run args to the top-level parser too (backward compat)
     _add_run_args(parser)
@@ -574,6 +578,30 @@ def _handle_compare(parsed: argparse.Namespace) -> int:
         init_db(db_path_early)
         apply_discovery(db_path_early, parsed.apply_discovery)
         print(f"Discovery #{parsed.apply_discovery} marked as applied")
+        return 0
+
+    if parsed.diff_runs:
+        from .comparator.store import compare_two_runs, init_db
+        init_db(db_path_early)
+        run_a, run_b = parsed.diff_runs
+        result = compare_two_runs(db_path_early, run_a, run_b)
+        print(f"\n=== Run #{run_a} vs Run #{run_b} ===")
+        print(f"New errors (in #{run_b} only):     {len(result.new_errors)}")
+        print(f"Resolved (in #{run_a} only):       {len(result.resolved_errors)}")
+        print(f"Changed severity:                  {len(result.changed_errors)}")
+        print(f"Unchanged:                         {result.unchanged_count}")
+        if result.new_errors:
+            print(f"\n  New Errors:")
+            for e in result.new_errors[:10]:
+                print(f"    [{e['severity']}] {e['segment']}/{e['field']}")
+        if result.resolved_errors:
+            print(f"\n  Resolved:")
+            for e in result.resolved_errors[:10]:
+                print(f"    [{e['severity']}] {e['segment']}/{e['field']}")
+        if result.changed_errors:
+            print(f"\n  Changed:")
+            for e in result.changed_errors[:10]:
+                print(f"    {e['segment']}/{e['field']}: {e['severity_a']} -> {e['severity_b']}")
         return 0
 
     if parsed.summary:

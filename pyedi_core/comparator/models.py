@@ -119,3 +119,13 @@ class RunSummary:
     reclassified_from: int | None = None
     trading_partner: str = ""
     transaction_type: str = ""
+
+
+@dataclass
+class RunDiffResult:
+    """Result of comparing two runs."""
+
+    new_errors: list[dict]        # in run B but not A
+    resolved_errors: list[dict]   # in run A but not B
+    changed_errors: list[dict]    # same (seg,field) different severity
+    unchanged_count: int

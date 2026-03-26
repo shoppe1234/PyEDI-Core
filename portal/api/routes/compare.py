@@ -12,6 +12,7 @@ from pyedi_core.comparator.models import MatchKeyConfig, RunSummary
 from pyedi_core.comparator.rules import load_rules
 from pyedi_core.comparator.store import (
     apply_discovery as store_apply_discovery,
+    compare_two_runs,
     get_diffs,
     get_discoveries,
     get_field_breakdown,
@@ -139,6 +140,19 @@ def reclassify_run(run_id: int) -> CompareRunResponse:
     except (FileNotFoundError, ValueError) as exc:
         raise HTTPException(status_code=404, detail=str(exc))
     return _run_summary_to_response(summary)
+
+
+@router.get("/runs/{run_id_a}/diff/{run_id_b}")
+def diff_runs(run_id_a: int, run_id_b: int):
+    """Diff two runs by (segment, field) keys."""
+    db_path = _get_db_path()
+    result = compare_two_runs(db_path, run_id_a, run_id_b)
+    return {
+        "new_errors": result.new_errors,
+        "resolved_errors": result.resolved_errors,
+        "changed_errors": result.changed_errors,
+        "unchanged_count": result.unchanged_count,
+    }
 
 
 @router.get("/runs/{run_id}/summary", response_model=CompareSummaryResponse)

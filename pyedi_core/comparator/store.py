@@ -9,7 +9,7 @@ from __future__ import annotations
 import sqlite3
 from datetime import datetime, timezone
 
-from pyedi_core.comparator.models import DiscoveryRecord, FieldDiff, MatchPair, RunSummary
+from pyedi_core.comparator.models import DiscoveryRecord, FieldDiff, MatchPair, RunDiffResult, RunSummary
 
 _SCHEMA = """
 CREATE TABLE IF NOT EXISTS compare_runs (
@@ -488,6 +488,54 @@ def get_top_errors(db_path: str, run_id: int, limit: int = 10) -> list[dict]:
             (run_id, limit),
         ).fetchall()
         return [{"segment": r["segment"], "field": r["field"], "count": r["cnt"]} for r in rows]
+    finally:
+        conn.close()
+
+
+def compare_two_runs(db_path: str, run_id_a: int, run_id_b: int) -> RunDiffResult:
+    """Diff two runs by (segment, field) keys. Returns new/resolved/changed/unchanged."""
+    conn = _connect(db_path)
+    try:
+        def _get_diff_set(rid: int) -> dict[tuple[str, str], dict]:
+            rows = conn.execute(
+                "SELECT d.segment, d.field, d.severity, d.source_value, d.target_value, d.description "
+                "FROM compare_diffs d JOIN compare_pairs p ON d.pair_id = p.id "
+                "WHERE p.run_id = ?",
+                (rid,),
+            ).fetchall()
+            result: dict[tuple[str, str], dict] = {}
+            for r in rows:
+                key = (r["segment"], r["field"])
+                result[key] = dict(r)
+            return result
+
+        diffs_a = _get_diff_set(run_id_a)
+        diffs_b = _get_diff_set(run_id_b)
+
+        keys_a = set(diffs_a.keys())
+        keys_b = set(diffs_b.keys())
+
+        new_errors = [diffs_b[k] for k in keys_b - keys_a]
+        resolved_errors = [diffs_a[k] for k in keys_a - keys_b]
+
+        changed_errors = []
+        unchanged_count = 0
+        for k in keys_a & keys_b:
+            if diffs_a[k]["severity"] != diffs_b[k]["severity"]:
+                changed_errors.append({
+                    "segment": k[0], "field": k[1],
+                    "severity_a": diffs_a[k]["severity"],
+                    "severity_b": diffs_b[k]["severity"],
+                })
+            else:
+                unchanged_count += 1
+
+        return RunDiffResult(
+            new_errors=new_errors,
+            resolved_errors=resolved_errors,
+            changed_errors=changed_errors,
+            unchanged_count=unchanged_count,
+        )
     finally:
         conn.close()
 

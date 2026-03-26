@@ -174,8 +174,8 @@ class CompareRunResponse(BaseModel):
 class ComparePairResponse(BaseModel):
     id: int
     run_id: int
-    source_file: str
-    source_tx_index: int
+    source_file: Optional[str] = None
+    source_tx_index: int = 0
     target_file: Optional[str] = None
     target_tx_index: int = 0
     match_value: str

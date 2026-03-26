@@ -37,6 +37,7 @@ class ColumnInfo:
     dsl_type: Optional[str]
     record_name: str
     type_preserved: bool
+    width: Optional[int] = None
 
 
 @dataclass
@@ -310,7 +311,7 @@ def _build_column_info(
 ) -> List[ColumnInfo]:
     """Build ColumnInfo list from record defs and compiled schema."""
     compiled_cols = {
-        c["name"]: c["type"]
+        c["name"]: c
         for c in compiled_yaml.get("schema", {}).get("columns", [])
     }
 
@@ -322,7 +323,8 @@ def _build_column_info(
             if name in seen:
                 continue
             seen.add(name)
-            compiled_type = compiled_cols.get(name, "string")
+            col_data = compiled_cols.get(name, {})
+            compiled_type = col_data.get("type", "string") if isinstance(col_data, dict) else col_data
             dsl_type = fld.get("dsl_type")
             infos.append(ColumnInfo(
                 name=name,
@@ -330,5 +332,6 @@ def _build_column_info(
                 dsl_type=dsl_type,
                 record_name=rec["name"],
                 type_preserved=compiled_type == fld["type"],
+                width=col_data.get("width") if isinstance(col_data, dict) else None,
             ))
     return infos

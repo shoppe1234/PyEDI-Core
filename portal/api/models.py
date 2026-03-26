@@ -21,6 +21,7 @@ class ColumnInfoModel(BaseModel):
     dsl_type: Optional[str] = None
     record_name: str
     type_preserved: bool
+    width: Optional[int] = None
 
 
 class TypeWarningModel(BaseModel):

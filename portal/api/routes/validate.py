@@ -33,6 +33,7 @@ def _to_response(result: object) -> ValidateResponse:
             dsl_type=c.dsl_type,
             record_name=c.record_name,
             type_preserved=c.type_preserved,
+            width=c.width,
         )
         for c in r.columns
     ]

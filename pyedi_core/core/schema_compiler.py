@@ -136,15 +136,16 @@ def _parse_dsl_record(record_text: str) -> Dict[str, Any]:
     return result
 
 
-def _compile_to_yaml(record_defs: List[Dict], source_filename: str, delimiter: str = ",") -> Dict[str, Any]:
+def _compile_to_yaml(record_defs: List[Dict], source_filename: str, delimiter: str = ",", format_type: str = "CSV") -> Dict[str, Any]:
     """
     Compile record definitions to standard YAML map format.
-    
+
     Args:
         record_defs: List of parsed record definitions
         source_filename: Original source filename (for context)
         delimiter: The delimited text file's delimiter (extracted from DSL)
-        
+        format_type: "FIXED_WIDTH" or "CSV"
+
     Returns:
         Standard PyEDI YAML map structure
     """
@@ -156,14 +157,19 @@ def _compile_to_yaml(record_defs: List[Dict], source_filename: str, delimiter: s
     transaction_type = transaction_type_match.group(1) if transaction_type_match else base_name.upper()
     
     # Build the YAML map structure
+    schema_section: Dict[str, Any] = {
+        "columns": [],
+        "records": {}
+    }
+    if format_type != "FIXED_WIDTH":
+        schema_section["delimiter"] = delimiter
+    if format_type == "FIXED_WIDTH":
+        schema_section["record_layouts"] = {}
+
     yaml_map = {
         "transaction_type": f"{transaction_type}_INVOICE" if transaction_type.isdigit() else transaction_type,
-        "input_format": "CSV",
-        "schema": {
-            "delimiter": delimiter,
-            "columns": [],
-            "records": {}
-        },
+        "input_format": format_type,
+        "schema": schema_section,
         "mapping": {
             "header": {},
             "lines": [],
@@ -183,12 +189,30 @@ def _compile_to_yaml(record_defs: List[Dict], source_filename: str, delimiter: s
                 record_key = record_def.get("name", record_key)
             yaml_map["schema"]["records"][record_key] = []
 
+        # Build record_layouts entry for fixed-width schemas
+        if format_type == "FIXED_WIDTH" and "fieldIdentifier" in record_def:
+            layout = []
+            for field in record_def.get("fields", []):
+                layout.append({"name": field["name"], "width": field.get("length", 0)})
+            yaml_map["schema"]["record_layouts"][record_key] = layout
+
         for field in record_def.get("fields", []):
             field_name = field["name"]
 
             if "fieldIdentifier" in record_def:
                 yaml_map["schema"]["records"][record_key].append(field_name)
-            
+
+            # Build column entry with optional width attributes
+            col_entry: Dict[str, Any] = {
+                "name": field_name,
+                "type": field.get("type", "string"),
+                "required": field.get("required", True),
+            }
+            if field.get("length") is not None:
+                col_entry["width"] = field["length"]
+            if field.get("read_empty_as_null"):
+                col_entry["read_empty_as_null"] = True
+
             # Determine source_path based on record type
             source_path = field_name
             if not has_records:
@@ -197,7 +221,7 @@ def _compile_to_yaml(record_defs: List[Dict], source_filename: str, delimiter: s
                 elif record_type == "summary":
                     source_path = f"summary.{field_name}"
             # For detail (or when we have records), source_path remains field_name
-            
+
             if has_records:
                 if not any(field_name in l for l in yaml_map["mapping"]["lines"]):
                     yaml_map["mapping"]["lines"].append({
@@ -206,51 +230,34 @@ def _compile_to_yaml(record_defs: List[Dict], source_filename: str, delimiter: s
                         }
                     })
                 # Add to schema columns logically
-                yaml_map["schema"]["columns"].append({
-                    "name": field_name,
-                    "type": field.get("type", "string"),
-                    "required": field.get("required", True)
-                })
+                yaml_map["schema"]["columns"].append(col_entry)
             else:
                 if record_type == "header":
                     yaml_map["mapping"]["header"][field_name] = {
                         "source": source_path
                     }
-                    # Add to schema columns
-                    yaml_map["schema"]["columns"].append({
-                        "name": field_name,
-                        "type": field.get("type", "string"),
-                        "required": field.get("required", True)
-                    })
-                    
+                    yaml_map["schema"]["columns"].append(col_entry)
+
                 elif record_type == "detail":
-                    # Only add if not already present 
+                    # Only add if not already present
                     if not any(field_name in l for l in yaml_map["mapping"]["lines"]):
                         yaml_map["mapping"]["lines"].append({
                             field_name: {
                                 "source": source_path
                             }
                         })
-                    
+
                     # Add to schema columns if not already there
                     if not any(c["name"] == field_name for c in yaml_map["schema"]["columns"]):
-                        yaml_map["schema"]["columns"].append({
-                            "name": field_name,
-                            "type": field.get("type", "string"),
-                            "required": field.get("required", True)
-                        })
-                        
+                        yaml_map["schema"]["columns"].append(col_entry)
+
                 elif record_type == "summary":
                     yaml_map["mapping"]["summary"][field_name] = {
                         "source": source_path
                     }
                     # Add to schema columns if not already there
                     if not any(c["name"] == field_name for c in yaml_map["schema"]["columns"]):
-                        yaml_map["schema"]["columns"].append({
-                            "name": field_name,
-                            "type": field.get("type", "string"),
-                            "required": field.get("required", True)
-                        })
+                        yaml_map["schema"]["columns"].append(col_entry)
     
     # Deduplicate columns by name, preferring the most specific type
     type_specificity = {"float": 5, "integer": 4, "date": 3, "boolean": 2, "string": 1}
@@ -264,20 +271,26 @@ def _compile_to_yaml(record_defs: List[Dict], source_filename: str, delimiter: s
             new_rank = type_specificity.get(col["type"], 0)
             if new_rank > existing_rank:
                 seen[name] = col
+            # Preserve width from whichever has it
+            if col.get("width") and not seen[name].get("width"):
+                seen[name]["width"] = col["width"]
+            if col.get("read_empty_as_null") and not seen[name].get("read_empty_as_null"):
+                seen[name]["read_empty_as_null"] = col["read_empty_as_null"]
     yaml_map["schema"]["columns"] = list(seen.values())
 
     return yaml_map
 
 
-def parse_dsl_file(source_file: str) -> Tuple[List[Dict[str, Any]], str]:
+def parse_dsl_file(source_file: str) -> Tuple[List[Dict[str, Any]], str, str]:
     """
-    Parse a DSL file into record definitions and delimiter.
+    Parse a DSL file into record definitions, delimiter, and format type.
 
     Args:
         source_file: Path to the source .txt DSL file
 
     Returns:
-        Tuple of (record_defs, delimiter)
+        Tuple of (record_defs, delimiter, format_type) where format_type
+        is "FIXED_WIDTH" if any field has a length attribute, else "CSV".
 
     Raises:
         FileNotFoundError: If source file doesn't exist
@@ -329,7 +342,15 @@ def parse_dsl_file(source_file: str) -> Tuple[List[Dict[str, Any]], str]:
         raise ValueError(f"No valid record definitions found in {source_file}")
 
     record_defs = [_parse_dsl_record(m) for m in record_matches]
-    return record_defs, delimiter
+
+    has_lengths = any(
+        fld.get("length") is not None
+        for rec in record_defs
+        for fld in rec.get("fields", [])
+    )
+    format_type = "FIXED_WIDTH" if has_lengths else "CSV"
+
+    return record_defs, delimiter, format_type
 
 
 def compile_dsl(
@@ -424,10 +445,10 @@ def compile_dsl(
     # Compile the DSL file
     logger.info(f"Compiling DSL schema", source_file=source_filename)
 
-    record_defs, delimiter = parse_dsl_file(source_file)
+    record_defs, delimiter, format_type = parse_dsl_file(source_file)
 
     # Compile to YAML format
-    yaml_map = _compile_to_yaml(record_defs, source_filename, delimiter)
+    yaml_map = _compile_to_yaml(record_defs, source_filename, delimiter, format_type)
     
     # Write compiled YAML
     with open(yaml_path, "w", encoding="utf-8") as f:

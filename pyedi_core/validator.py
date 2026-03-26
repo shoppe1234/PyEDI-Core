@@ -127,10 +127,10 @@ def compile_and_write(
     compiled_dir: str = "./schemas/compiled",
 ) -> Tuple[Dict[str, Any], str, List[Dict[str, Any]]]:
     """Parse DSL, compile to YAML, write to disk, return (yaml_dict, yaml_path, record_defs)."""
-    record_defs, delimiter = parse_dsl_file(dsl_path)
+    record_defs, delimiter, format_type = parse_dsl_file(dsl_path)
 
     source_path = Path(dsl_path)
-    compiled_yaml = _compile_to_yaml(record_defs, source_path.name, delimiter)
+    compiled_yaml = _compile_to_yaml(record_defs, source_path.name, delimiter, format_type)
 
     compiled_path = Path(compiled_dir)
     compiled_path.mkdir(parents=True, exist_ok=True)

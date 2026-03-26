@@ -29,8 +29,8 @@ CREATE TABLE IF NOT EXISTS compare_runs (
 CREATE TABLE IF NOT EXISTS compare_pairs (
     id                  INTEGER PRIMARY KEY,
     run_id              INTEGER NOT NULL REFERENCES compare_runs(id),
-    source_file         TEXT NOT NULL,
-    source_tx_index     INTEGER NOT NULL DEFAULT 0,
+    source_file         TEXT,
+    source_tx_index     INTEGER DEFAULT 0,
     target_file         TEXT,
     target_tx_index     INTEGER DEFAULT 0,
     match_value         TEXT NOT NULL,

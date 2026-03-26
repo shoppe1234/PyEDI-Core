@@ -52,6 +52,9 @@ export default function ComparePage() {
   // Reclassify
   const [reclassifying, setReclassifying] = useState(false)
 
+  // Summary
+  const [summary, setSummary] = useState<any>(null)
+
   // Load profiles on mount
   useEffect(() => {
     api.compareProfiles().then(setProfiles).catch(e => setError(e.message))
@@ -86,9 +89,11 @@ export default function ComparePage() {
     setSelectedPair(null)
     setDiffs([])
     setStatusFilter('')
+    setSummary(null)
     setLoading(true)
     try {
       setPairs(await api.comparePairs(run.run_id))
+      setSummary(await api.compareRunSummary(run.run_id))
     } catch (e: any) {
       setError(e.message)
     } finally {
@@ -375,6 +380,102 @@ export default function ComparePage() {
               </tbody>
             </table>
           )}
+        </div>
+      )}
+
+      {/* Summary Statistics */}
+      {selectedRun && summary && (
+        <div className="bg-white rounded-lg shadow p-4 mb-4">
+          <h2 className="font-semibold text-sm text-gray-500 uppercase mb-3">
+            Run #{selectedRun.run_id} — Summary
+          </h2>
+          <div className="grid grid-cols-2 gap-4">
+            {/* Severity Breakdown */}
+            <div>
+              <h3 className="text-xs text-gray-500 mb-2 uppercase">Severity</h3>
+              {Object.entries(summary.severity || {}).map(([sev, count]: [string, any]) => {
+                const max = Math.max(...Object.values(summary.severity || {}).map(Number))
+                const pct = max > 0 ? (Number(count) / max) * 100 : 0
+                const barColor = sev === 'hard' ? 'bg-red-300' : sev === 'soft' ? 'bg-yellow-300' : 'bg-gray-300'
+                return (
+                  <div key={sev} className="flex items-center gap-2 mb-1">
+                    <StatusBadge status={sev} />
+                    <div className="flex-1 bg-gray-100 rounded h-2">
+                      <div className={`${barColor} h-2 rounded`} style={{ width: `${pct}%` }} />
+                    </div>
+                    <span className="text-xs text-gray-600 w-8 text-right">{String(count)}</span>
+                  </div>
+                )
+              })}
+            </div>
+
+            {/* Segment Breakdown */}
+            <div>
+              <h3 className="text-xs text-gray-500 mb-2 uppercase">By Segment</h3>
+              <div className="max-h-40 overflow-auto">
+                {Object.entries(summary.segments || {})
+                  .sort(([,a]: any, [,b]: any) => b - a)
+                  .map(([seg, count]: [string, any]) => {
+                    const max = Math.max(...Object.values(summary.segments || {}).map(Number))
+                    const pct = max > 0 ? (Number(count) / max) * 100 : 0
+                    return (
+                      <div key={seg} className="flex items-center gap-2 mb-1">
+                        <span className="text-xs font-mono w-20 truncate">{seg}</span>
+                        <div className="flex-1 bg-gray-100 rounded h-2">
+                          <div className="bg-blue-300 h-2 rounded" style={{ width: `${pct}%` }} />
+                        </div>
+                        <span className="text-xs text-gray-600 w-8 text-right">{String(count)}</span>
+                      </div>
+                    )
+                  })}
+              </div>
+            </div>
+
+            {/* Field Breakdown */}
+            <div>
+              <h3 className="text-xs text-gray-500 mb-2 uppercase">By Field</h3>
+              <div className="max-h-40 overflow-auto">
+                {Object.entries(summary.fields || {})
+                  .sort(([,a]: any, [,b]: any) => b - a)
+                  .map(([field, count]: [string, any]) => {
+                    const max = Math.max(...Object.values(summary.fields || {}).map(Number))
+                    const pct = max > 0 ? (Number(count) / max) * 100 : 0
+                    return (
+                      <div key={field} className="flex items-center gap-2 mb-1">
+                        <span className="text-xs font-mono w-24 truncate">{field}</span>
+                        <div className="flex-1 bg-gray-100 rounded h-2">
+                          <div className="bg-blue-300 h-2 rounded" style={{ width: `${pct}%` }} />
+                        </div>
+                        <span className="text-xs text-gray-600 w-8 text-right">{String(count)}</span>
+                      </div>
+                    )
+                  })}
+              </div>
+            </div>
+
+            {/* Top 10 Errors */}
+            <div>
+              <h3 className="text-xs text-gray-500 mb-2 uppercase">Top Errors</h3>
+              <table className="w-full text-xs">
+                <thead>
+                  <tr className="text-left text-gray-500 border-b">
+                    <th className="py-1 pr-2">Segment</th>
+                    <th className="py-1 pr-2">Field</th>
+                    <th className="py-1 pr-2 text-right">Count</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {(summary.top_errors || []).map((e: any, i: number) => (
+                    <tr key={i} className="border-b border-gray-50">
+                      <td className="py-1 pr-2 font-mono">{e.segment}</td>
+                      <td className="py-1 pr-2 font-mono">{e.field}</td>
+                      <td className="py-1 pr-2 text-right">{e.count}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
       )}
 

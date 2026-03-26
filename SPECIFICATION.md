@@ -375,7 +375,7 @@ Phase 5	Scale Hardening	Locust load tests at 5,000 files, benchmark regressions 
 Post-v1.0 features prioritized by operational value:
 
 Feature	Priority	Description
-JSON Comparison Engine	DONE — v1.1	Built-in diff tool ported from json810Compare. Profile-driven comparison engine in `pyedi_core/comparator/`, `pyedi compare` CLI, portal `/compare` page. SQLite storage. 6 profiles (810, 850, 856, 820, CSV, cXML)
+JSON Comparison Engine	DONE — v1.1	Built-in diff tool ported from json810Compare. Profile-driven comparison engine in `pyedi_core/comparator/`, `pyedi compare` CLI, portal `/compare` page. SQLite storage with field_crosswalk table for runtime severity overrides + amount_variance. 7 profiles (810, 850, 856, 820, CSV, cXML, bevager_810). Flat file compare mode (`_compare_flat_dict`) for structured JSON. Scaffold-rules CLI generates compare rules from compiled schemas. First real trading partner (Bevager) onboarded end-to-end (2026-03-26). SQLite gap analysis (10 gaps vs json810Compare) documented in `sqlLiteReport.md`
 Output Schema Versioning	HIGH — v1.1	Define and enforce a canonical JSON schema contract. Version the envelope schema_version field. Downstream consumers declare version dependency.
 Private PyPI Publishing	MEDIUM — v1.2	Publish pyedi_core as an installable package to a private registry for distribution across projects
 MCP Server Wrapper	MEDIUM — v1.2	Expose pipeline as a Model Context Protocol server for native integration with MCP-compatible LLM clients

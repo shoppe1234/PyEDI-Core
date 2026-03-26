@@ -1,7 +1,7 @@
 # PyEDI-Core Test Results
 
-**Date:** 2026-03-24
-**Run:** Full suite after Compare engine + Playwright E2E build
+**Date:** 2026-03-26
+**Run:** Full suite after Bevager 810 end-to-end compare workflow + code refactoring
 **Result:** **221 / 221 PASSED**, 1 warning
 
 ---
@@ -63,6 +63,15 @@ The single warning is a non-fatal discrepancy in the x12 integration test (unexp
 | 1 | UnivT701 Demo Invoice CSV | `inputs/UnivT701_small.csv` | `expected_outputs/UnivT701_small.json` | PASS |
 | 2 | MarginEdge 810 Text File | `inputs/NA_810_MARGINEDGE_20260129.txt` | `expected_outputs/NA_810_MARGINEDGE_20260129.json` | PASS |
 | 3 | x12 Data Comparison | `inputs/200220261215033.dat` | `expected_outputs/200220261215033.json` | PASS (with non-fatal discrepancies) |
+
+## Bevager Refactoring Validated (2026-03-26)
+
+- **Delimiter auto-detection** — `csv_handler.py` `_detect_delimiter()` correctly identifies `|` delimiter for bevager flat files. No hardcoded delimiter.
+- **Split-by-key output** — `write_split()` produces 1 JSON per InvoiceID. 22 unique invoices across 2 input files → 22 JSON files per directory.
+- **Flat file compare** — `_compare_flat_dict()` compares `{header, lines, summary}` JSON structure with positional line matching.
+- **Crosswalk overrides** — `field_crosswalk` table with `amount_variance` correctly overrides YAML rules at runtime. Taxes field with 50.0 variance validated.
+- **Scaffold rules** — `scaffold.py` generates bevager_810 compare rules YAML with correct numeric flags from compiled schema.
+- **End-to-end bevager run** — 22 pairs compared, 660 diffs recorded in SQLite, CSV export generated (`reports/compare/compare_run_33.csv`).
 
 ## Compiler Bug Fixes Validated (2026-03-24)
 

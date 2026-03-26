@@ -271,7 +271,9 @@ pyedi compare --profile 810_invoice --source-dir src/ --target-dir tgt/ --export
 
 Profiles are defined in `config/config.yaml` under `compare.profiles`. Each profile specifies a match key (e.g., `BIG:BIG02` for 810 invoices), segment qualifiers, and a rules YAML file. Adding a new transaction type is a config change — no code changes required.
 
-Built-in profiles: `810_invoice`, `850_purchase_order`, `856_asn`, `820_payment`, `csv_generic`, `cxml_generic`.
+Built-in profiles: `810_invoice`, `850_purchase_order`, `856_asn`, `820_payment`, `csv_generic`, `cxml_generic`, `bevager_810`.
+
+Flat file compare mode (`_compare_flat_dict`) handles structured JSON with `{header, lines, summary}` by matching lines positionally. The `scaffold-rules` CLI command auto-generates compare rules YAML from compiled schemas. Runtime severity overrides are stored in the `field_crosswalk` SQLite table with `amount_variance` support for numeric tolerance.
 
 Results are stored in SQLite (`data/compare.db`) and queryable from both CLI and portal.
 
@@ -297,13 +299,14 @@ pyedi_core/
 ├── pipeline.py          # Orchestration engine
 ├── test_harness.py      # Test harness (pyedi test)
 ├── validator.py         # DSL validation, trace, coverage (pyedi validate)
+├── scaffold.py          # Auto-generate compare rules YAML from compiled schemas
 ├── comparator/          # Compare engine (pyedi compare)
 │   ├── __init__.py      # Public API: compare(), export_csv(), load/list_profiles()
 │   ├── models.py        # Dataclasses: MatchPair, FieldDiff, CompareResult, RunSummary
 │   ├── rules.py         # YAML rule loading + wildcard resolution
 │   ├── matcher.py       # File pairing + transaction extraction
 │   ├── engine.py        # Segment matching + field comparison
-│   └── store.py         # SQLite CRUD for runs/pairs/diffs
+│   └── store.py         # SQLite CRUD for runs/pairs/diffs + field_crosswalk
 ├── config/
 │   └── __init__.py      # Pydantic config models
 ├── core/                # Core processing modules
@@ -349,7 +352,8 @@ config/
     ├── 856_asn.yaml
     ├── 820_payment.yaml
     ├── csv_generic.yaml
-    └── cxml_generic.yaml
+    ├── cxml_generic.yaml
+    └── bevager_810.yaml
 data/
 └── compare.db           # SQLite database (compare run history)
 schemas/
@@ -439,14 +443,14 @@ A candid evaluation of PyEDI-Core's maturity, measured against its own success c
 | 3 | Deterministic results | MET | Core transforms are deterministic. Timezone-naive timestamps in metadata (W21) are an envelope issue, not a payload issue. |
 | 4 | Full traceability | MET | Correlation IDs, manifest, error sidecars all in place. Cross-process manifest locking (W11) is the gap for multi-instance deployments. |
 | 5 | No silent failures | MOSTLY MET | Dead-letter queue covers all stages. Two quiet paths remain: schema compilation failures can fall back to stale files (W2), and failed field transforms return the original untransformed value (W19). |
-| 6 | Comparison confidence | MET | Compare engine complete with 6 profiles, SQLite storage, field-level diffs. Not yet validated against production data volumes. |
-| 7 | Test coverage matches capability | PARTIALLY MET | 221 tests with strong pipeline coverage. Gaps: no real X12 segment parsing test (W52), no cXML fixture (W53), `main.py` has zero coverage (W50). |
+| 6 | Comparison confidence | MET | Compare engine complete with 7 profiles, SQLite storage, field-level diffs, field_crosswalk for runtime overrides. Validated against real bevager 810 data (22 invoice pairs, 660 diffs). SQLite gap analysis completed — 10 gaps identified vs json810Compare. |
+| 7 | Test coverage matches capability | MOSTLY MET | 221 tests with strong pipeline coverage. W50 (main.py), W52 (X12 parsing), W53 (cXML fixture), W57 (failure paths) all resolved. Remaining gap: schema compilation round-trip test. |
 | 8 | Portal parity | MOSTLY MET | All major CLI operations available. Gaps: file upload not wired, manifest page not built, config editing is read-only. |
 | 9 | Business logic lives in YAML | MET | Verified — no hardcoded transaction-type logic in Python engine code. |
 
 ### Architectural Strengths
 
-The configuration-over-code philosophy has held across 67 commits. The codebase has not accumulated hardcoded transaction logic — this is the project's strongest quality and its core design bet.
+The configuration-over-code philosophy has held across 69 commits. The codebase has not accumulated hardcoded transaction logic — this is the project's strongest quality and its core design bet.
 
 The driver/strategy pattern is proven: XML and cXML were added as a third driver without modifying existing CSV or X12 code, validating the extension model. The compare engine was built as a complete subsystem (models, rules, matcher, engine, store, CLI, portal) on the same config-driven philosophy — it did not introduce architectural inconsistency.
 
@@ -458,18 +462,20 @@ All 9 critical issues from the code review were resolved before any feature work
 
 **Silent data issues.** Two paths where errors are swallowed: schema compilation failure falls back to stale compiled files (W2), and failed field transforms return the original untransformed value instead of raising (W19). Both violate the "no silent failures" criterion.
 
-**Test coverage gaps.** The 221-test count is solid, but specific holes exist: no real X12 segment parsing test, no cXML test fixture, no failure-path regression test (`should_succeed: false`), and `main.py` (the CLI entry point) has zero test coverage. See `REVIEW_REPORT.md` Tier 4 for the full list.
+**Test coverage gaps.** The 221-test count is solid, and most Tier 4 gaps have been closed (W50: main.py tests added, W52: X12 parsing covered, W53: cXML fixture added, W57: failure paths tested). Remaining gap: schema compilation round-trip test.
 
 **Scale hardening not started.** `SPECIFICATION.md` Phase 5 (Locust load tests, benchmark regressions, `max_workers` tuning) has not been attempted. The system has never been tested above trivial file volumes.
 
 **Portal is functional but incomplete.** File upload, manifest page, authentication, and config editing remain unbuilt (see `TODO.md`). The portal works well for what it covers, but users will encounter dead ends.
+
+**SQLite comparator gaps.** Gap analysis (`sqlLiteReport.md`) identified 10 gaps vs the original json810Compare system. Key gaps: no error discovery workflow (new field combos silently hit wildcard), no reclassification mode (must re-run full compare to re-evaluate rules), sparse crosswalk table (only 1 entry), CSV exports not self-contained. 11 improvement tasks documented across 4 phases.
 
 **Open review warnings.** 57 warnings remain from the code review. Most are minor, but some are real data issues: the CSV handler does not handle quoted fields containing the delimiter (W24), multi-transaction X12 files are silently truncated to the first transaction (W28), and the transaction-type regex is too greedy (W5).
 
 ### Risks
 
 - **Production readiness gap.** The project is tested at development scale but has never processed production-volume data. The first real deployment will surface issues that unit tests cannot predict (memory, I/O contention, manifest file growth, log volume).
-- **Single-maintainer bus factor.** 67 commits from a single contributor with AI assistance. Documentation is strong, but no second contributor has navigated the codebase independently.
+- **Single-maintainer bus factor.** 69 commits from a single contributor with AI assistance. Documentation is strong, but no second contributor has navigated the codebase independently.
 - **Dependency risk (badx12).** The X12 handler monkey-patches `collections.Iterable` to work around a compatibility issue in badx12 (C8). If badx12 is abandoned, the X12 driver needs a replacement parser.
 - **No CI/CD pipeline.** Tests pass locally but there is no configured CI. Test regressions can be introduced silently between commits.
 

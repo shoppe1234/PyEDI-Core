@@ -2,7 +2,7 @@
 
 **Date:** 2026-03-17
 **Scope:** Full codebase review — Python scripts, workflow, configuration, documentation, tests, YAML rules
-**Status:** All 9 criticals resolved (Tiers 1-4, 2026-03-17 through 2026-03-24). Two additional compiler bugs (type loss in dedup, fieldIdentifier collision) discovered and fixed on 2026-03-24 as part of the Portal build. Compare engine (Phase D-E) completed 2026-03-24: `pyedi_core/comparator/` module, `pyedi compare` CLI, `/api/compare` endpoints, React `/compare` page. 221 total tests passing (187 engine + 5 API + 29 Playwright E2E browser tests).
+**Status:** All 9 criticals resolved (Tiers 1-4, 2026-03-17 through 2026-03-24). Two additional compiler bugs (type loss in dedup, fieldIdentifier collision) discovered and fixed on 2026-03-24 as part of the Portal build. Compare engine (Phase D-E) completed 2026-03-24. Bevager 810 flat file end-to-end compare workflow completed 2026-03-25/26: csv_handler refactored (delimiter auto-detect, split-by-key output), engine enhanced for flat file compare, scaffold-rules CLI added, field_crosswalk SQLite table + crosswalk-aware rule resolution. SQLite gap analysis completed (10 gaps vs json810Compare, 11 improvement tasks). 69 total commits. 221 total tests passing (187 engine + 5 API + 29 Playwright E2E browser tests).
 
 ---
 
@@ -187,17 +187,34 @@
 14. ~~Deduplicate compiled schemas — fix triple-column bug (W45, W46)~~ — investigated 2026-03-24: W45 is not a bug (DSL defines 3 record types sharing 42 columns); W46 `test_map.yaml` does not exist in codebase
 15. ~~Remove/complete empty `gfsGenericOut810FF.yaml` (W47)~~ — done; deleted stale empty artifact + meta.json
 
-### Tier 3: Cleanup & Documentation
-16. Clean up stale files: `TEST_RESULTS copy.md`, `AGENTIC_IDE_TEST_PROMPT-OG.md`, `schema_compiler.py.bak`
-17. Update README to match actual codebase (W38, W39, W40)
-18. Consolidate `gfs_ca_810_map.yaml` and `test_map.yaml` (W48)
-19. Standardize YAML quoting and naming conventions
-20. Remove stale root-level scripts (see `UTILITY_SCRIPTS.md`)
+### Tier 3: Cleanup & Documentation — MOSTLY COMPLETE (2026-03-26)
+16. ~~Clean up stale files: `TEST_RESULTS copy.md`, `AGENTIC_IDE_TEST_PROMPT-OG.md`, `schema_compiler.py.bak`~~ — done (2026-03-24)
+17. ~~Update README to match actual codebase (W38, W39, W40)~~ — done; README now includes full architecture tree, project assessment, enhancement roadmap
+18. Consolidate `gfs_ca_810_map.yaml` and `test_map.yaml` (W48) — not yet done
+19. ~~Standardize YAML quoting and naming conventions~~ — partially done; `810_invoice.yaml` normalized (2026-03-26), remaining files deferred (see TODO.md)
+20. ~~Remove stale root-level scripts (see `UTILITY_SCRIPTS.md`)~~ — done (2026-03-24); `generate_expected.py`, `verify_environment.py`, `verify_structure.py` deleted
 
-### Tier 4: Test Coverage Expansion (feeds into test harness)
-21. Add `main.py` tests (W50)
-22. Add real X12 segment parsing tests (W52)
-23. Add cXML test fixtures and tests (W53)
-24. Add `should_succeed: false` failure-path test cases (W57)
-25. Add schema compilation round-trip test
-26. Add concurrent batch processing test
+### Tier 4: Test Coverage Expansion — MOSTLY COMPLETE (2026-03-24)
+21. ~~Add `main.py` tests (W50)~~ — done; 11 tests in `test_main.py` covering CLI entry point and `_print_result`
+22. ~~Add real X12 segment parsing tests (W52)~~ — covered by `test_drivers.py` integration tests with real EDI segments
+23. ~~Add cXML test fixtures and tests (W53)~~ — done; `cxml_850_sample.cxml` fixture + integration test in `test_user_supplied_data.py`
+24. ~~Add `should_succeed: false` failure-path test cases (W57)~~ — done; `malformed_x12.dat` and `unmapped_csv.csv` with `should_succeed: false` in `metadata.yaml`
+25. Add schema compilation round-trip test — not yet done
+26. ~~Add concurrent batch processing test~~ — done; stress tests in `test_drivers.py`
+
+### Post-Review: Bevager Refactoring (2026-03-25/26)
+
+Code refactoring completed as part of bevager 810 end-to-end workflow:
+
+| Change | File | Impact |
+|--------|------|--------|
+| Delimiter auto-detection | `csv_handler.py` | Eliminates hardcoded delimiter per partner — data-driven |
+| Split-by-key output (`write_split()`) | `csv_handler.py` | 1 JSON per match key instead of 1 per input file |
+| `--split-key` / `--output-dir` flags | `main.py`, `pipeline.py` | CLI support for split output |
+| Flat file compare (`_compare_flat_dict`) | `engine.py` | Compare `{header, lines, summary}` JSON — not just X12 segments |
+| `scaffold-rules` CLI subcommand | `scaffold.py` (new) | Auto-generate compare rules YAML from compiled schema |
+| `field_crosswalk` table | `store.py` | Runtime-editable severity overrides with amount_variance |
+| Crosswalk-aware rule resolution | `rules.py` | Crosswalk overrides checked before YAML fallback |
+| `amount_variance` field | `models.py` | Numeric tolerance for field comparison |
+
+**SQLite gap analysis completed:** 10 gaps identified between pyedi comparator and json810Compare. 11 improvement tasks across 4 phases documented in `sqlLiteReport.md`. Key gaps: no error discovery workflow (G1), no reclassification mode (G2), sparse crosswalk (G5), CSV export missing context (G7).

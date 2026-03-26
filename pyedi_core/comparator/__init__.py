@@ -249,26 +249,48 @@ def reclassify(run_id: int, db_path: str, config_path: str) -> RunSummary:
 def export_csv(db_path: str, run_id: int, output_dir: str) -> str:
     """Export a run's results to CSV. Returns the output file path.
 
-    Format: run_id,pair_id,source_file,target_file,match_value,status,
-            segment,field,severity,source_value,target_value,description
+    Format: 15 columns with metadata header and summary footer.
     """
     os.makedirs(output_dir, exist_ok=True)
     output_path = os.path.join(output_dir, f"compare_run_{run_id}.csv")
 
+    run = get_run(db_path, run_id)
     pair_rows = get_pairs(db_path, run_id, limit=10000)
+
+    severity_counts: dict[str, int] = {}
 
     with open(output_path, "w", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
+
+        # Metadata header
+        if run:
+            f.write(f"# Profile: {run.profile}\n")
+            f.write(f"# Trading Partner: {run.trading_partner}\n")
+            f.write(f"# Transaction Type: {run.transaction_type}\n")
+            f.write(f"# Run ID: {run_id}\n")
+            f.write(f"# Started: {run.started_at}\n")
+            f.write(f"# Total Pairs: {run.total_pairs} | Matched: {run.matched}"
+                    f" | Mismatched: {run.mismatched} | Unmatched: {run.unmatched}\n")
+
+        # 15-column header
         writer.writerow([
-            "run_id", "pair_id", "source_file", "target_file", "match_value",
-            "status", "segment", "field", "severity", "source_value",
+            "timestamp", "profile", "trading_partner", "run_id", "pair_id",
+            "source_file", "target_file", "match_value", "status",
+            "segment", "field", "severity", "source_value",
             "target_value", "description",
         ])
+
+        timestamp = run.started_at if run else ""
+        profile_name = run.profile if run else ""
+        trading_partner = run.trading_partner if run else ""
+
         for pair in pair_rows:
             diffs = get_diffs(db_path, pair["id"])
             if diffs:
                 for diff in diffs:
+                    severity_counts[diff.severity] = severity_counts.get(diff.severity, 0) + 1
                     writer.writerow([
+                        timestamp, profile_name, trading_partner,
                         run_id, pair["id"], pair["source_file"],
                         pair.get("target_file", ""), pair["match_value"],
                         pair["status"], diff.segment, diff.field,
@@ -277,10 +299,15 @@ def export_csv(db_path: str, run_id: int, output_dir: str) -> str:
                     ])
             else:
                 writer.writerow([
+                    timestamp, profile_name, trading_partner,
                     run_id, pair["id"], pair["source_file"],
                     pair.get("target_file", ""), pair["match_value"],
                     pair["status"], "", "", "", "", "", "",
                 ])
+
+        # Summary footer
+        parts = [f"{k}={v}" for k, v in sorted(severity_counts.items())]
+        f.write(f"# Summary: {', '.join(parts) if parts else 'no diffs'}\n")
 
     return output_path
 

@@ -150,4 +150,10 @@ def pair_transactions(
             tgt = target_entries[i] if i < len(target_entries) else None
             pairs.append(MatchPair(source=src, target=tgt, match_value=match_value))
 
+    # Target-only pairs (match values present in target but not in source)
+    for match_value, target_entries in target_index.items():
+        if match_value not in source_index:
+            for tgt in target_entries:
+                pairs.append(MatchPair(source=None, target=tgt, match_value=match_value))
+
     return pairs

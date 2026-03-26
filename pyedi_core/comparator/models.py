@@ -41,7 +41,7 @@ class MatchEntry:
 class MatchPair:
     """A paired source and target transaction sharing the same match value."""
 
-    source: MatchEntry
+    source: MatchEntry | None
     target: MatchEntry | None
     match_value: str
 

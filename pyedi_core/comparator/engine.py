@@ -214,7 +214,7 @@ def compare_pair(
     """
     timestamp = datetime.now(timezone.utc).isoformat()
 
-    if pair.target is None:
+    if pair.source is None or pair.target is None:
         return CompareResult(
             pair=pair, status="UNMATCHED", diffs=[], timestamp=timestamp,
         )
@@ -329,7 +329,7 @@ def compare_flat_pair(
     """
     timestamp = datetime.now(timezone.utc).isoformat()
 
-    if pair.target is None:
+    if pair.source is None or pair.target is None:
         return CompareResult(
             pair=pair, status="UNMATCHED", diffs=[], timestamp=timestamp,
         )

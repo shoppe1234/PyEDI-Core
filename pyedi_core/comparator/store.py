@@ -216,8 +216,8 @@ def insert_pair(db_path: str, run_id: int, pair: MatchPair, status: str, diff_co
             "VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
             (
                 run_id,
-                pair.source.file_path,
-                pair.source.transaction_index,
+                pair.source.file_path if pair.source else None,
+                pair.source.transaction_index if pair.source else 0,
                 pair.target.file_path if pair.target else None,
                 pair.target.transaction_index if pair.target else 0,
                 pair.match_value,

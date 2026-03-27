@@ -71,7 +71,7 @@ def extract_match_values(json_data: dict, match_key: MatchKeyConfig) -> list[Mat
     # Flat JSON path mode (CSV/cXML)
     if match_key.json_path:
         value = _resolve_json_path(json_data, match_key.json_path)
-        if value:
+        if value and value != "unknown":
             results.append(MatchEntry(
                 file_path="",
                 match_value=value,

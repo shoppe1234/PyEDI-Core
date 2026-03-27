@@ -278,6 +278,17 @@ def _compile_to_yaml(record_defs: List[Dict], source_filename: str, delimiter: s
                 seen[name]["read_empty_as_null"] = col["read_empty_as_null"]
     yaml_map["schema"]["columns"] = list(seen.values())
 
+    # Build record_inventory summary
+    records = yaml_map["schema"].get("records", {})
+    if records:
+        inventory = []
+        for rec_key, fields in records.items():
+            inventory.append({
+                "fieldIdentifier": rec_key,
+                "field_count": len(fields) if isinstance(fields, list) else 0,
+            })
+        yaml_map["schema"]["record_inventory"] = inventory
+
     return yaml_map
 
 

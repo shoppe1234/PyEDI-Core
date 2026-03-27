@@ -446,9 +446,24 @@ function StepRegister({
   const [jsonField, setJsonField] = useState(wizard.columns[0]?.name || '')
   const [x12Segment, setX12Segment] = useState('')
   const [x12Field, setX12Field] = useState('')
+  const [splitKey, setSplitKey] = useState<string | null>(null)
+  const [splitBoundary, setSplitBoundary] = useState<string | null>(null)
+  const [splitAutoDetected, setSplitAutoDetected] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
+
+  // Auto-detect split key from compiled schema
+  useEffect(() => {
+    if (!wizard.compiledYamlPath) return
+    api.onboardSplitSuggestion(wizard.compiledYamlPath).then(res => {
+      if (res.split_key) {
+        setSplitKey(res.split_key)
+        setSplitBoundary(res.boundary_record)
+        setSplitAutoDetected(true)
+      }
+    }).catch(() => { /* no split suggestion available */ })
+  }, [wizard.compiledYamlPath])
 
   const profileNameValid = /^[a-z0-9_]+$/.test(profileName)
   const canRegister = profileNameValid && tradingPartner && transactionType && !success
@@ -471,6 +486,7 @@ function StepRegister({
         inbound_dir: inboundDir,
         match_key: matchKey,
         segment_qualifiers: {},
+        split_config: splitKey ? { split_key: splitKey, ...(splitBoundary ? { boundary_record: splitBoundary } : {}) } : null,
       })
       onUpdate({ profileName: res.profile_name, rulesFile: res.rules_file })
       setSuccess(true)
@@ -538,6 +554,37 @@ function StepRegister({
             <div className="flex gap-3">
               <Input label="Segment" value={x12Segment} onChange={setX12Segment} placeholder="BIG" />
               <Input label="Field" value={x12Field} onChange={setX12Field} placeholder="BIG02" />
+            </div>
+          )}
+        </div>
+
+        {/* Split key */}
+        <div className="mt-5 pt-4 border-t border-gray-100">
+          <label className="block text-xs font-medium text-gray-500 uppercase tracking-wide mb-2">
+            Transaction Split Key
+            <span className="ml-2 text-gray-400 normal-case font-normal" title="Field that identifies individual transactions in batch files. Records without this field will be grouped as file-level metadata.">(?)</span>
+          </label>
+          {splitAutoDetected ? (
+            <div className="flex items-center gap-2">
+              <span className="font-mono text-sm bg-emerald-50 text-emerald-700 px-3 py-1.5 rounded-lg border border-emerald-200">
+                {splitKey}
+              </span>
+              <span className="text-xs text-emerald-600">(auto-detected from schema, boundary: {splitBoundary})</span>
+            </div>
+          ) : (
+            <div>
+              <select
+                value={splitKey || ''}
+                onChange={e => setSplitKey(e.target.value || null)}
+                className="border border-gray-200 rounded-lg px-3 py-2 text-sm bg-white w-64
+                           focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400"
+              >
+                <option value="">None (no batch splitting)</option>
+                {wizard.columns.map(c => (
+                  <option key={c.name} value={c.name}>{c.name}</option>
+                ))}
+              </select>
+              <p className="text-xs text-gray-400 mt-1">Optional: select the field that identifies individual transactions in batch files</p>
             </div>
           )}
         </div>

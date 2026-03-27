@@ -109,6 +109,7 @@ export const api = {
     inbound_dir: string;
     match_key: Record<string, string>;
     segment_qualifiers: Record<string, string | null>;
+    split_config?: Record<string, string> | null;
   }) =>
     request<{
       profile_name: string;
@@ -120,6 +121,13 @@ export const api = {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
     }),
+
+  onboardSplitSuggestion: (compiledYaml: string) =>
+    request<{
+      split_key: string | null;
+      boundary_record: string | null;
+      source: string | null;
+    }>(`/onboard/split-suggestion?compiled_yaml=${encodeURIComponent(compiledYaml)}`),
 
   onboardRulesTemplate: (compiledYaml: string) =>
     request<{

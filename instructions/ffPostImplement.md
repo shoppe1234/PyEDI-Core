@@ -176,3 +176,42 @@ With split-key broken (Issue 1), we fell back to whole-file comparison using inj
 5. **Scaffold rules need manual tuning.** Auto-generated rules can't distinguish financial fields from description text. Human review is required after scaffolding.
 
 6. **Windows console encoding requires ASCII-safe output.** Any character beyond cp1252 (like ∅, —) will crash on Windows. Use ASCII fallbacks.
+
+---
+
+## Issue 6: Split Key Not Registered During Onboarding (Post-Run #83 Fix)
+
+**Severity:** Design — configuration gap caused phantom "unknown" compare pair
+
+**Observed behavior:**
+Compare Run #83 showed 7 pairs instead of 6. Pair 405 (`match_value: "unknown"`) paired two `invoiceNumber_unknown.json` files — file-level metadata records (O_TPID, OIN_DSTID, OIN_HDRA) that don't belong to any invoice. Initially fixed with a hardcoded `value != "unknown"` filter in `matcher.py`.
+
+**Root cause:**
+The onboard wizard collects `match_key` (for compare pairing) but never collects or infers `split_key` (for splitting batch files into individual transactions). These are two sides of the same coin. The `split_key` was only a transient CLI parameter (`--split-key invoiceNumber`), not persisted in config. The compiled schema already contains `record_groups` metadata with `boundary_record` and `key_field` — but this knowledge wasn't surfaced during onboarding.
+
+**Solution — 6 changes:**
+
+1. **`_is_split_remainder` flag in `csv_handler.py`** — `write_split()` now sets `_is_split_remainder: true` in the header of unknown group files. This makes remainder files self-describing.
+
+2. **Config-aware exclusion in `matcher.py`** — `extract_match_values()` checks `_is_split_remainder` flag instead of hardcoded `"unknown"` string. Data-driven, not magic-string-dependent.
+
+3. **`split_key` in `CsvSchemaEntry` config model** — New optional field so the pipeline can auto-split without CLI arg.
+
+4. **Pipeline fallback chain in `pipeline.py`** — `split_key` resolution: CLI arg → registry `split_key` → None.
+
+5. **`_detect_split_config()` + `GET /api/onboard/split-suggestion`** in `onboard.py` — Reads compiled YAML `record_groups`, extracts `key_field` and `boundary_record`, returns suggestion to wizard UI.
+
+6. **Split key UI in wizard Step 2** — StepRegister now shows auto-detected split key (from `record_groups`) or manual dropdown. Persists `split_config` to both compare profile and `csv_schema_registry`.
+
+**Files changed:**
+- `pyedi_core/comparator/matcher.py` — `_is_split_remainder` check replaces hardcoded filter
+- `pyedi_core/drivers/csv_handler.py` — `write_split()` flags remainder groups
+- `pyedi_core/config/__init__.py` — `CsvSchemaEntry.split_key` field
+- `pyedi_core/pipeline.py` — split_key fallback from config
+- `portal/api/routes/onboard.py` — `_detect_split_config()`, split-suggestion endpoint, split_config in register
+- `portal/ui/src/api.ts` — `onboardSplitSuggestion()`, `split_config` in register payload
+- `portal/ui/src/pages/Onboard.tsx` — Split key section in StepRegister
+- `tests/test_comparator.py` — 2 new tests for remainder exclusion
+- `tests/test_drivers.py` — 3 new tests for remainder flag and config model
+
+**Verification:** Run #84 confirmed 6 pairs (unknown excluded), 197 tests pass.

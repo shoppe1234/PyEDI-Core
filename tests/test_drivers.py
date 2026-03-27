@@ -619,6 +619,62 @@ class TestCsvHandlerCompiledYamlPath:
             assert "does not exist" in call_kwargs['reason']
 
 
+@pytest.mark.unit
+class TestWriteSplitRemainder:
+    """write_split flags unknown groups with _is_split_remainder."""
+
+    def test_remainder_flag_set(self, tmp_path: Path) -> None:
+        from pyedi_core.drivers import CSVHandler
+        import json
+
+        handler = CSVHandler()
+        payload = {
+            "header": {"source": "test"},
+            "lines": [
+                {"invoiceNumber": "INV-1", "amount": "100"},
+                {"amount": "200"},  # no invoiceNumber → unknown
+            ],
+            "summary": {},
+        }
+        paths = handler.write_split(payload, str(tmp_path), "invoiceNumber")
+
+        # Should produce 2 files: INV-1 and unknown
+        assert len(paths) == 2
+
+        unknown_path = str(tmp_path / "invoiceNumber_unknown.json")
+        with open(unknown_path, "r") as f:
+            data = json.load(f)
+        assert data["header"]["_is_split_remainder"] is True
+
+        inv_path = str(tmp_path / "invoiceNumber_INV-1.json")
+        with open(inv_path, "r") as f:
+            data = json.load(f)
+        assert "_is_split_remainder" not in data["header"]
+
+    def test_split_key_in_config_model(self) -> None:
+        from pyedi_core.config import CsvSchemaEntry
+
+        entry = CsvSchemaEntry(
+            source_dsl="a.dsl",
+            compiled_output="b.yaml",
+            inbound_dir="./in",
+            transaction_type="810",
+            split_key="invoiceNumber",
+        )
+        assert entry.split_key == "invoiceNumber"
+
+    def test_split_key_defaults_none(self) -> None:
+        from pyedi_core.config import CsvSchemaEntry
+
+        entry = CsvSchemaEntry(
+            source_dsl="a.dsl",
+            compiled_output="b.yaml",
+            inbound_dir="./in",
+            transaction_type="810",
+        )
+        assert entry.split_key is None
+
+
 @pytest.mark.integration
 class TestCxmlParsing:
     """Integration tests for cXML detection and parsing."""

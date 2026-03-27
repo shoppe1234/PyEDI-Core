@@ -137,12 +137,60 @@ class CSVHandler(TransactionProcessor):
 
                 result["lines"].append(row)
 
+        # Propagate transaction key to all lines using record_groups hierarchy
+        record_groups = schema.get("record_groups", {})
+        result["lines"] = self._group_by_transaction(result["lines"], record_groups)
+
         self.logger.info(
             f"Fixed-width file parsed",
             lines=len(result["lines"]),
             file_path=file_path,
         )
         return result
+
+    def _group_by_transaction(
+        self,
+        lines: list,
+        record_groups: Dict[str, Any],
+    ) -> list:
+        """Propagate boundary record's key field to all lines in same transaction.
+
+        When a boundary record (e.g., TPM_HDR) is encountered, its key field
+        value (e.g., invoiceNumber) is captured and propagated to all subsequent
+        lines until the next boundary record appears.
+
+        Args:
+            lines: Flat list of parsed rows
+            record_groups: record_groups section from compiled schema
+
+        Returns:
+            The same lines list with key field values propagated
+        """
+        if not record_groups:
+            return lines
+
+        # Find the primary group with group_on_record
+        primary = next(
+            (g for g in record_groups.values() if g.get("group_on_record")),
+            None,
+        )
+        if not primary or not primary.get("boundary_record") or not primary.get("key_field"):
+            return lines
+
+        boundary_record = primary["boundary_record"]
+        key_field = primary["key_field"]
+
+        current_key: Optional[str] = None
+        for line in lines:
+            record_id = (line.get("recordID") or "").strip()
+            if record_id == boundary_record:
+                current_key = line.get(key_field)
+            # Propagate boundary key to ALL lines in the transaction
+            # so write_split groups them together correctly
+            if current_key is not None:
+                line[key_field] = current_key
+
+        return lines
 
     def read(self, file_path: str) -> Dict[str, Any]:
         """
@@ -448,8 +496,11 @@ class CSVHandler(TransactionProcessor):
         output_paths: List[str] = []
 
         for key_val, lines in groups.items():
+            header = {**payload.get("header", {}), split_key: key_val}
+            if key_val == "unknown":
+                header["_is_split_remainder"] = True
             split_payload = {
-                "header": {**payload.get("header", {}), split_key: key_val},
+                "header": header,
                 "lines": lines,
                 "summary": payload.get("summary", {}),
             }

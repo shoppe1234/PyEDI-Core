@@ -230,6 +230,24 @@ class TestMatchKeyExtraction:
         assert len(entries) == 1
         assert entries[0].match_value == "INV-999"
 
+    def test_split_remainder_excluded(self) -> None:
+        """Files flagged as split remainders should not produce match entries."""
+        data = {
+            "header": {"invoiceNumber": "unknown", "_is_split_remainder": True},
+            "lines": [],
+        }
+        mk = MatchKeyConfig(json_path="header.invoiceNumber")
+        entries = extract_match_values(data, mk)
+        assert len(entries) == 0
+
+    def test_split_remainder_flag_absent_allows_match(self) -> None:
+        """Normal files without the remainder flag should match normally."""
+        data = {"header": {"invoiceNumber": "INV-123"}, "lines": []}
+        mk = MatchKeyConfig(json_path="header.invoiceNumber")
+        entries = extract_match_values(data, mk)
+        assert len(entries) == 1
+        assert entries[0].match_value == "INV-123"
+
 
 @pytest.mark.unit
 class TestModelsSerializable:

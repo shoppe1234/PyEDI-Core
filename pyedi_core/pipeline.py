@@ -278,7 +278,11 @@ class Pipeline:
                     raise error_handler.SchemaLookupError(f"Failed to load compiled map: {e}")
                 
                 transaction_type = csv_entry.transaction_type
-                
+
+                # Resolve split_key: CLI arg → registry config → None
+                if not split_key and csv_entry.split_key:
+                    split_key = csv_entry.split_key
+
                 # Pass compiled_yaml_path to CSV handler
                 if hasattr(driver, 'set_compiled_yaml_path'):
                     driver.set_compiled_yaml_path(compiled_yaml_path)

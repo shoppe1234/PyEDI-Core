@@ -27,6 +27,7 @@ class RegisterPartnerRequest(BaseModel):
     inbound_dir: str
     match_key: Dict[str, str]
     segment_qualifiers: Dict[str, Optional[str]] = {}
+    split_config: Optional[Dict[str, str]] = None
 
 
 class RegisterPartnerResponse(BaseModel):
@@ -63,18 +64,27 @@ def register_partner(req: RegisterPartnerRequest) -> RegisterPartnerResponse:
 
     # Add csv_schema_registry entry
     registry = config.setdefault("csv_schema_registry", {})
-    registry[req.profile_name] = {
+    registry_entry: Dict[str, Any] = {
         "source_dsl": req.source_dsl,
         "compiled_output": req.compiled_output,
         "inbound_dir": req.inbound_dir,
         "transaction_type": req.transaction_type,
     }
 
+    # Detect split_key for the registry (pipeline uses this for auto-splitting)
+    split_cfg = req.split_config
+    if not split_cfg:
+        split_cfg = _detect_split_config(req.compiled_output)
+    if split_cfg:
+        registry_entry["split_key"] = split_cfg["split_key"]
+
+    registry[req.profile_name] = registry_entry
+
     # Add compare profile entry
     rules_file = f"config/compare_rules/{req.profile_name}.yaml"
     compare = config.setdefault("compare", {})
     compare_profiles = compare.setdefault("profiles", {})
-    compare_profiles[req.profile_name] = {
+    profile_entry: Dict[str, Any] = {
         "description": req.description,
         "trading_partner": req.trading_partner,
         "transaction_type": req.transaction_type,
@@ -82,6 +92,15 @@ def register_partner(req: RegisterPartnerRequest) -> RegisterPartnerResponse:
         "segment_qualifiers": {k: v for k, v in req.segment_qualifiers.items()},
         "rules_file": rules_file,
     }
+
+    # Add split_config if provided by wizard or auto-detected from compiled schema
+    split_cfg = req.split_config
+    if not split_cfg:
+        split_cfg = _detect_split_config(req.compiled_output)
+    if split_cfg:
+        profile_entry["split_config"] = dict(split_cfg)
+
+    compare_profiles[req.profile_name] = profile_entry
 
     # Write updated config
     with open(_CONFIG_PATH, "w", encoding="utf-8") as f:
@@ -111,6 +130,59 @@ def register_partner(req: RegisterPartnerRequest) -> RegisterPartnerResponse:
         config_updated=True,
         rules_created=True,
     )
+
+
+# ---------------------------------------------------------------------------
+# Helpers
+# ---------------------------------------------------------------------------
+
+def _detect_split_config(compiled_output: str) -> Optional[Dict[str, str]]:
+    """Read compiled YAML and extract split_key from record_groups if present."""
+    schema_path = _PROJECT_ROOT / compiled_output
+    if not schema_path.exists():
+        return None
+    try:
+        with open(schema_path, "r", encoding="utf-8") as f:
+            schema_data = yaml.safe_load(f)
+    except (yaml.YAMLError, OSError):
+        return None
+
+    record_groups = schema_data.get("record_groups", {})
+    for group_data in record_groups.values():
+        if group_data.get("group_on_record"):
+            key_field = group_data.get("key_field")
+            boundary_record = group_data.get("boundary_record")
+            if key_field and boundary_record:
+                return {
+                    "split_key": key_field,
+                    "boundary_record": boundary_record,
+                }
+    return None
+
+
+class SplitSuggestionResponse(BaseModel):
+    split_key: Optional[str] = None
+    boundary_record: Optional[str] = None
+    source: Optional[str] = None
+
+
+# ---------------------------------------------------------------------------
+# GET /api/onboard/split-suggestion
+# ---------------------------------------------------------------------------
+
+@router.get("/split-suggestion", response_model=SplitSuggestionResponse)
+def split_suggestion(
+    compiled_yaml: str = Query(..., description="Path to compiled YAML schema"),
+) -> SplitSuggestionResponse:
+    """Detect split key from compiled schema record_groups metadata."""
+    result = _detect_split_config(compiled_yaml)
+    if result:
+        return SplitSuggestionResponse(
+            split_key=result["split_key"],
+            boundary_record=result["boundary_record"],
+            source="record_groups",
+        )
+    return SplitSuggestionResponse()
 
 
 # ---------------------------------------------------------------------------

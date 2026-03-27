@@ -70,8 +70,11 @@ def extract_match_values(json_data: dict, match_key: MatchKeyConfig) -> list[Mat
 
     # Flat JSON path mode (CSV/cXML)
     if match_key.json_path:
+        # Skip split-key remainder files (file-level metadata without a real key)
+        if json_data.get("header", {}).get("_is_split_remainder"):
+            return results
         value = _resolve_json_path(json_data, match_key.json_path)
-        if value and value != "unknown":
+        if value:
             results.append(MatchEntry(
                 file_path="",
                 match_value=value,

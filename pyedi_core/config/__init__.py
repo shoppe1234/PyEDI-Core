@@ -17,6 +17,7 @@ class CsvSchemaEntry(BaseModel):
     compiled_output: str = Field(..., description="Path to compiled YAML map")
     inbound_dir: str = Field(..., description="Inbound directory for CSV files")
     transaction_type: str = Field(..., description="Transaction type (e.g., 810)")
+    split_key: Optional[str] = Field(None, description="Field to split batch files by (e.g., invoiceNumber)")
 
 
 class SystemConfig(BaseModel):

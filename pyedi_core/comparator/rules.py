@@ -6,9 +6,11 @@ load_ignore_rules(), get_rule_property(). Reads from YAML instead of Google Shee
 
 from __future__ import annotations
 
+import os
+
 import yaml
 
-from pyedi_core.comparator.models import CompareRules, FieldRule
+from pyedi_core.comparator.models import CompareRules, FieldRule, TieredRules
 
 
 def load_rules(rules_path: str) -> CompareRules:
@@ -44,6 +46,38 @@ def load_rules(rules_path: str) -> CompareRules:
     return CompareRules(classification=classification, ignore=ignore)
 
 
+def load_tiered_rules(
+    rules_dir: str,
+    transaction_type: str,
+    partner_rules_path: str,
+) -> TieredRules:
+    """Load up to 3 tiers of rules from the rules directory.
+
+    Tier 1: {rules_dir}/_universal.yaml
+    Tier 2: {rules_dir}/_global_{transaction_type}.yaml
+    Tier 3: partner_rules_path (the profile's existing rules file)
+
+    Missing tier files produce empty CompareRules (no error).
+    """
+    universal = CompareRules()
+    transaction = CompareRules()
+    partner = CompareRules()
+
+    universal_path = os.path.join(rules_dir, "_universal.yaml")
+    if os.path.isfile(universal_path):
+        universal = load_rules(universal_path)
+
+    if transaction_type:
+        txn_path = os.path.join(rules_dir, f"_global_{transaction_type}.yaml")
+        if os.path.isfile(txn_path):
+            transaction = load_rules(txn_path)
+
+    if partner_rules_path and os.path.isfile(partner_rules_path):
+        partner = load_rules(partner_rules_path)
+
+    return TieredRules(universal=universal, transaction=transaction, partner=partner)
+
+
 def get_field_rule(rules: CompareRules, segment: str, field: str) -> FieldRule:
     """Resolve rule for (segment, field) with wildcard fallback.
 
@@ -77,11 +111,11 @@ def get_field_rule(rules: CompareRules, segment: str, field: str) -> FieldRule:
 def is_wildcard_match(rules: CompareRules, segment: str, field: str) -> bool:
     """Return True if (segment, field) resolves only to (*,*) or the hardcoded default."""
     lookup = {(r.segment, r.field) for r in rules.classification}
-    return (
-        (segment, field) not in lookup
-        and (segment, "*") not in lookup
-        and ("*", field) not in lookup
-    )
+    has_exact = (segment, field) in lookup
+    # Exclude the (*,*) catch-all when checking for segment/field wildcards
+    has_segment_wildcard = (segment, "*") in lookup and segment != "*"
+    has_field_wildcard = ("*", field) in lookup and field != "*"
+    return not has_exact and not has_segment_wildcard and not has_field_wildcard
 
 
 def load_crosswalk_overrides(db_path: str, profile: str) -> dict[str, FieldRule]:

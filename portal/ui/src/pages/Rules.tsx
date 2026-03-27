@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { api } from '../api'
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -31,6 +31,12 @@ interface IgnoreEntry {
 
 interface EffectiveRule extends ClassificationRule {
   tier: string
+}
+
+interface SegmentOption {
+  name: string
+  label: string
+  fields: string[]
 }
 
 type Tab = 'overview' | 'universal' | 'transaction' | 'partner' | 'effective'
@@ -85,6 +91,90 @@ function CountBadge({ count, label, color }: { count: number; label: string; col
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
+   FIELD COMBOBOX (searchable dropdown with manual entry)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+function FieldCombobox({
+  value,
+  options,
+  onChange,
+  placeholder,
+}: {
+  value: string
+  options: string[]
+  onChange: (v: string) => void
+  placeholder?: string
+}) {
+  const [open, setOpen] = useState(false)
+  const [search, setSearch] = useState('')
+  const ref = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false)
+    }
+    document.addEventListener('mousedown', handler)
+    return () => document.removeEventListener('mousedown', handler)
+  }, [])
+
+  const filtered = options.filter(o =>
+    o.toLowerCase().includes((search || value).toLowerCase())
+  )
+
+  const hasOptions = options.length > 0
+
+  return (
+    <div ref={ref} className="relative">
+      <input
+        value={open ? search : value}
+        onChange={e => {
+          setSearch(e.target.value)
+          onChange(e.target.value)
+          if (!open && hasOptions) setOpen(true)
+        }}
+        onFocus={() => { setSearch(value); if (hasOptions) setOpen(true) }}
+        onBlur={() => setTimeout(() => setOpen(false), 150)}
+        placeholder={placeholder}
+        className="w-full px-2 py-1 border border-gray-200 rounded text-xs font-mono focus:ring-1 focus:ring-blue-400 focus:border-blue-400 outline-none pr-6"
+      />
+      {hasOptions && (
+        <button
+          type="button"
+          tabIndex={-1}
+          onClick={() => { setSearch(value); setOpen(!open) }}
+          className="absolute right-1 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+        >
+          <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d={open ? "M5 15l7-7 7 7" : "M19 9l-7 7-7-7"} />
+          </svg>
+        </button>
+      )}
+      {open && filtered.length > 0 && (
+        <div className="absolute z-50 mt-1 w-full max-h-48 overflow-auto bg-white border border-gray-200 rounded-lg shadow-lg">
+          {filtered.map(o => (
+            <button
+              key={o}
+              type="button"
+              onMouseDown={e => {
+                e.preventDefault()
+                onChange(o)
+                setSearch(o)
+                setOpen(false)
+              }}
+              className={`w-full text-left px-2 py-1.5 text-xs font-mono hover:bg-blue-50 transition-colors ${
+                o === value ? 'bg-blue-50 text-blue-700 font-semibold' : 'text-gray-700'
+              }`}
+            >
+              {o}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
    RULES GRID (reusable)
    ═══════════════════════════════════════════════════════════════════════════ */
 
@@ -94,12 +184,14 @@ function RulesGrid({
   onChange,
   onIgnoreChange,
   readOnly = false,
+  fieldOptions = [],
 }: {
   rules: ClassificationRule[]
   ignores: IgnoreEntry[]
   onChange?: (rules: ClassificationRule[]) => void
   onIgnoreChange?: (ignores: IgnoreEntry[]) => void
   readOnly?: boolean
+  fieldOptions?: SegmentOption[]
 }) {
   const updateRule = (idx: number, patch: Partial<ClassificationRule>) => {
     if (!onChange) return
@@ -161,18 +253,32 @@ function RulesGrid({
               {rules.length === 0 && (
                 <tr><td colSpan={readOnly ? 5 : 6} className="px-3 py-6 text-center text-gray-400 text-sm italic">No classification rules</td></tr>
               )}
-              {rules.map((r, i) => (
+              {rules.map((r, i) => {
+                const segmentNames = fieldOptions.map(s => s.name)
+                const matchedSeg = fieldOptions.find(s => s.name === r.segment)
+                const fieldNames = matchedSeg
+                  ? matchedSeg.fields
+                  : fieldOptions.flatMap(s => s.fields)
+                return (
                 <tr key={i} className="even:bg-gray-50/60 hover:bg-blue-50/40 transition-colors">
                   <td className="px-3 py-2">
                     {readOnly ? <span className="font-mono text-xs">{r.segment}</span> : (
-                      <input value={r.segment} onChange={e => updateRule(i, { segment: e.target.value })}
-                        className="w-full px-2 py-1 border border-gray-200 rounded text-xs font-mono focus:ring-1 focus:ring-blue-400 focus:border-blue-400 outline-none" />
+                      <FieldCombobox
+                        value={r.segment}
+                        options={segmentNames}
+                        onChange={v => updateRule(i, { segment: v })}
+                        placeholder="e.g. N1 or *"
+                      />
                     )}
                   </td>
                   <td className="px-3 py-2">
                     {readOnly ? <span className="font-mono text-xs">{r.field}</span> : (
-                      <input value={r.field} onChange={e => updateRule(i, { field: e.target.value })}
-                        className="w-full px-2 py-1 border border-gray-200 rounded text-xs font-mono focus:ring-1 focus:ring-blue-400 focus:border-blue-400 outline-none" />
+                      <FieldCombobox
+                        value={r.field}
+                        options={fieldNames}
+                        onChange={v => updateRule(i, { field: v })}
+                        placeholder="e.g. N102"
+                      />
                     )}
                   </td>
                   <td className="px-3 py-2">
@@ -211,7 +317,7 @@ function RulesGrid({
                     </td>
                   )}
                 </tr>
-              ))}
+              )})}
             </tbody>
           </table>
         </div>
@@ -241,18 +347,32 @@ function RulesGrid({
               {ignores.length === 0 && (
                 <tr><td colSpan={readOnly ? 3 : 4} className="px-3 py-6 text-center text-gray-400 text-sm italic">No ignore entries</td></tr>
               )}
-              {ignores.map((e, i) => (
+              {ignores.map((e, i) => {
+                const segmentNames = fieldOptions.map(s => s.name)
+                const matchedSeg = fieldOptions.find(s => s.name === e.segment)
+                const fieldNames = matchedSeg
+                  ? matchedSeg.fields
+                  : fieldOptions.flatMap(s => s.fields)
+                return (
                 <tr key={i} className="even:bg-gray-50/60 hover:bg-blue-50/40 transition-colors">
                   <td className="px-3 py-2">
                     {readOnly ? <span className="font-mono text-xs">{e.segment}</span> : (
-                      <input value={e.segment} onChange={ev => updateIgnore(i, { segment: ev.target.value })}
-                        className="w-full px-2 py-1 border border-gray-200 rounded text-xs font-mono focus:ring-1 focus:ring-blue-400 focus:border-blue-400 outline-none" />
+                      <FieldCombobox
+                        value={e.segment}
+                        options={segmentNames}
+                        onChange={v => updateIgnore(i, { segment: v })}
+                        placeholder="e.g. N1 or *"
+                      />
                     )}
                   </td>
                   <td className="px-3 py-2">
                     {readOnly ? <span className="font-mono text-xs">{e.field}</span> : (
-                      <input value={e.field} onChange={ev => updateIgnore(i, { field: ev.target.value })}
-                        className="w-full px-2 py-1 border border-gray-200 rounded text-xs font-mono focus:ring-1 focus:ring-blue-400 focus:border-blue-400 outline-none" />
+                      <FieldCombobox
+                        value={e.field}
+                        options={fieldNames}
+                        onChange={v => updateIgnore(i, { field: v })}
+                        placeholder="e.g. N102"
+                      />
                     )}
                   </td>
                   <td className="px-3 py-2">
@@ -271,7 +391,7 @@ function RulesGrid({
                     </td>
                   )}
                 </tr>
-              ))}
+              )})}
             </tbody>
           </table>
         </div>
@@ -321,6 +441,12 @@ export default function RulesPage({ onNavigate }: { onNavigate?: (page: string) 
   const [effectiveRules, setEffectiveRules] = useState<EffectiveRule[]>([])
   const [effectiveIgnores, setEffectiveIgnores] = useState<IgnoreEntry[]>([])
   const [effectiveLoading, setEffectiveLoading] = useState(false)
+
+  // Field options state (dropdown data)
+  const [uniFormat, setUniFormat] = useState<string>('edi')
+  const [uniFieldOpts, setUniFieldOpts] = useState<SegmentOption[]>([])
+  const [txnFieldOpts, setTxnFieldOpts] = useState<SegmentOption[]>([])
+  const [partnerFieldOpts, setPartnerFieldOpts] = useState<SegmentOption[]>([])
 
   // Load tiers on mount
   useEffect(() => {
@@ -392,6 +518,33 @@ export default function RulesPage({ onNavigate }: { onNavigate?: (page: string) 
         .finally(() => setEffectiveLoading(false))
     }
   }, [selectedProfile, tab])
+
+  // Load field options for Universal tier when format changes
+  useEffect(() => {
+    if (tab === 'universal') {
+      api.ruleFieldOptions({ format: uniFormat })
+        .then(d => setUniFieldOpts(d.segments))
+        .catch(() => setUniFieldOpts([]))
+    }
+  }, [tab, uniFormat])
+
+  // Load field options for Transaction tier
+  useEffect(() => {
+    if (selectedTxn && tab === 'transaction') {
+      api.ruleFieldOptions({ transaction_type: selectedTxn })
+        .then(d => setTxnFieldOpts(d.segments))
+        .catch(() => setTxnFieldOpts([]))
+    }
+  }, [selectedTxn, tab])
+
+  // Load field options for Partner tier
+  useEffect(() => {
+    if (selectedPartner && tab === 'partner') {
+      api.ruleFieldOptions({ profile: selectedPartner })
+        .then(d => setPartnerFieldOpts(d.segments))
+        .catch(() => setPartnerFieldOpts([]))
+    }
+  }, [selectedPartner, tab])
 
   const normRule = (r: any): ClassificationRule => ({
     segment: r.segment || '*',
@@ -670,11 +823,31 @@ export default function RulesPage({ onNavigate }: { onNavigate?: (page: string) 
               Universal rules saved successfully
             </div>
           )}
+
+          {/* Format toggle for field dropdowns */}
+          <div className="mb-5 flex items-center gap-2">
+            <span className="text-xs font-medium text-gray-500 uppercase tracking-wider">Field format:</span>
+            {(['edi', 'csv', 'xml'] as const).map(fmt => (
+              <button
+                key={fmt}
+                onClick={() => setUniFormat(fmt)}
+                className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${
+                  uniFormat === fmt
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                }`}
+              >
+                {fmt.toUpperCase()}
+              </button>
+            ))}
+          </div>
+
           <RulesGrid
             rules={uniRules}
             ignores={uniIgnores}
             onChange={setUniRules}
             onIgnoreChange={setUniIgnores}
+            fieldOptions={uniFieldOpts}
           />
         </div>
       )}
@@ -733,6 +906,7 @@ export default function RulesPage({ onNavigate }: { onNavigate?: (page: string) 
                 ignores={txnIgnores}
                 onChange={setTxnRules}
                 onIgnoreChange={setTxnIgnores}
+                fieldOptions={txnFieldOpts}
               />
               <div className="flex items-center justify-between mt-6 pt-4 border-t border-gray-100">
                 <div>
@@ -812,6 +986,7 @@ export default function RulesPage({ onNavigate }: { onNavigate?: (page: string) 
                 ignores={partnerIgnores}
                 onChange={setPartnerRules}
                 onIgnoreChange={setPartnerIgnores}
+                fieldOptions={partnerFieldOpts}
               />
               <div className="flex justify-end mt-6 pt-4 border-t border-gray-100">
                 <button

@@ -191,6 +191,18 @@ export const api = {
       ignore: Array<Record<string, any>>;
     }>(`/rules/effective/${encodeURIComponent(profileName)}`),
 
+  // Field options for dropdowns
+  ruleFieldOptions: (params: { profile?: string; format?: string; transaction_type?: string }) => {
+    const qs = new URLSearchParams();
+    if (params.profile) qs.set('profile', params.profile);
+    if (params.format) qs.set('format', params.format);
+    if (params.transaction_type) qs.set('transaction_type', params.transaction_type);
+    return request<{
+      format: string;
+      segments: Array<{ name: string; label: string; fields: string[] }>;
+    }>(`/rules/field-options?${qs}`);
+  },
+
   // Discoveries: list unclassified field combos
   compareDiscoveries: (profile: string, applied?: boolean) => {
     const params = new URLSearchParams({ profile });

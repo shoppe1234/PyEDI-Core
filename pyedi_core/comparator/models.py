@@ -68,6 +68,23 @@ class CompareRules:
 
 
 @dataclass
+class TieredRules:
+    """Three-tier rule container: universal → transaction-type → partner."""
+
+    universal: CompareRules = field(default_factory=CompareRules)
+    transaction: CompareRules = field(default_factory=CompareRules)
+    partner: CompareRules = field(default_factory=CompareRules)
+
+
+@dataclass
+class ResolvedFieldRule:
+    """A FieldRule annotated with the tier it came from."""
+
+    rule: FieldRule
+    tier: str  # "universal" | "transaction" | "partner" | "default"
+
+
+@dataclass
 class FieldDiff:
     """A single field-level difference found during comparison."""
 

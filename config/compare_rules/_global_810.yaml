@@ -1,0 +1,5 @@
+# Transaction-type rules for EDI 810 (Invoice).
+# Apply to all 810 profiles. Partner rules override these.
+
+classification: []
+ignore: []

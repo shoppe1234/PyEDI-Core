@@ -78,6 +78,40 @@ def load_tiered_rules(
     return TieredRules(universal=universal, transaction=transaction, partner=partner)
 
 
+def merge_rules(tiered: TieredRules) -> CompareRules:
+    """Flatten 3-tier rules into a single CompareRules.
+
+    Resolution: partner overrides transaction overrides universal.
+    For each (segment, field) key, the most specific tier wins.
+    Ignore lists are unioned across all tiers (deduplicated by segment+field).
+    """
+    # Build merged classification dict: universal → overlay txn → overlay partner
+    merged: dict[tuple[str, str], FieldRule] = {}
+
+    for rule in tiered.universal.classification:
+        merged[(rule.segment, rule.field)] = rule
+    for rule in tiered.transaction.classification:
+        merged[(rule.segment, rule.field)] = rule
+    for rule in tiered.partner.classification:
+        merged[(rule.segment, rule.field)] = rule
+
+    # Union ignore lists, deduplicate by (segment, field)
+    seen_ignores: set[tuple[str, str]] = set()
+    merged_ignores: list[dict[str, str]] = []
+    for ignore_list in [
+        tiered.universal.ignore,
+        tiered.transaction.ignore,
+        tiered.partner.ignore,
+    ]:
+        for entry in ignore_list:
+            key = (entry.get("segment", ""), entry.get("field", ""))
+            if key not in seen_ignores:
+                seen_ignores.add(key)
+                merged_ignores.append(entry)
+
+    return CompareRules(classification=list(merged.values()), ignore=merged_ignores)
+
+
 def get_field_rule(rules: CompareRules, segment: str, field: str) -> FieldRule:
     """Resolve rule for (segment, field) with wildcard fallback.
 

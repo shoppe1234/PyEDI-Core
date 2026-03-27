@@ -23,6 +23,7 @@ from pyedi_core.comparator.models import (
 )
 from pyedi_core.comparator.rules import is_wildcard_match, load_crosswalk_overrides, load_rules
 from pyedi_core.comparator.rules import get_field_rule
+from pyedi_core.comparator.rules import load_tiered_rules, merge_rules
 from pyedi_core.comparator.store import (
     clone_pairs_for_reclassify,
     clone_run_for_reclassify,
@@ -56,7 +57,9 @@ def compare(
     """
     init_db(db_path)
 
-    rules = load_rules(profile.rules_file)
+    rules_dir = os.path.dirname(profile.rules_file)
+    tiered = load_tiered_rules(rules_dir, profile.transaction_type, profile.rules_file)
+    rules = merge_rules(tiered)
 
     # Load crosswalk overrides (cached once per run)
     crosswalk = load_crosswalk_overrides(db_path, profile.name)
@@ -164,7 +167,9 @@ def reclassify(run_id: int, db_path: str, config_path: str) -> RunSummary:
         raise ValueError(f"Run {run_id} not found")
 
     profile = load_profile(config_path, orig_run.profile)
-    rules = load_rules(profile.rules_file)
+    rules_dir = os.path.dirname(profile.rules_file)
+    tiered = load_tiered_rules(rules_dir, profile.transaction_type, profile.rules_file)
+    rules = merge_rules(tiered)
     crosswalk = load_crosswalk_overrides(db_path, profile.name)
 
     # Apply crosswalk to rules if present

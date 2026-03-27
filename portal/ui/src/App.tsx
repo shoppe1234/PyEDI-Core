@@ -11,6 +11,12 @@ import RulesPage from './pages/Rules'
 
 type Page = 'dashboard' | 'validate' | 'pipeline' | 'tests' | 'compare' | 'rules' | 'config' | 'onboard'
 
+function getInitialPage(): Page {
+  const hash = window.location.hash.replace('#', '')
+  const valid: Page[] = ['dashboard','validate','pipeline','tests','compare','rules','config','onboard']
+  return valid.includes(hash as Page) ? (hash as Page) : 'dashboard'
+}
+
 const NAV: { key: Page; label: string }[] = [
   { key: 'dashboard', label: 'Dashboard' },
   { key: 'validate', label: 'Validate' },
@@ -23,17 +29,34 @@ const NAV: { key: Page; label: string }[] = [
 ]
 
 function App() {
-  const [page, setPage] = useState<Page>('dashboard')
+  const [page, setPage] = useState<Page>(getInitialPage)
   const [health, setHealth] = useState<string>('...')
 
   useEffect(() => {
     api.health().then(d => setHealth(d.status)).catch(() => setHealth('offline'))
   }, [])
 
+  // Sync page state to URL hash
+  useEffect(() => {
+    window.location.hash = page
+  }, [page])
+
+  // Listen for browser back/forward navigation
+  useEffect(() => {
+    const onHash = () => {
+      const h = window.location.hash.replace('#', '')
+      const valid: Page[] = ['dashboard','validate','pipeline','tests','compare','rules','config','onboard']
+      if (valid.includes(h as Page)) setPage(h as Page)
+    }
+    window.addEventListener('hashchange', onHash)
+    return () => window.removeEventListener('hashchange', onHash)
+  }, [])
+
   return (
     <div className="flex h-screen bg-gray-50 text-gray-900">
-      <nav className="w-56 bg-white border-r border-gray-200 text-gray-600 flex flex-col">
-        <div className="px-4 py-4 text-lg font-bold tracking-tight text-gray-900">
+      <nav className="w-56 bg-gray-200 border-r border-gray-300 text-gray-600 flex flex-col">
+        <div className="h-1 bg-gradient-to-r from-blue-500 to-blue-400" />
+        <div className="px-4 py-4 text-lg font-bold tracking-tight text-blue-900">
           PyEDI Portal
         </div>
         <div className="flex-1">
@@ -43,8 +66,8 @@ function App() {
               onClick={() => setPage(n.key)}
               className={`block w-full text-left px-4 py-2 text-sm cursor-pointer transition-colors ${
                 page === n.key
-                  ? 'bg-blue-50 text-blue-700 font-medium border-l-[3px] border-blue-500'
-                  : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                  ? 'bg-blue-100 text-blue-700 font-medium border-l-[3px] border-blue-500'
+                  : 'text-gray-600 hover:bg-gray-300 hover:text-gray-900'
               }`}
             >
               {n.label}

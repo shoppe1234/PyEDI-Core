@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { api } from '../api'
 
 interface ColumnInfo {
@@ -190,6 +190,30 @@ function StepCompile({
   const [error, setError] = useState('')
   const [result, setResult] = useState<any>(null)
   const compiled = !!result
+  const [columnSearch, setColumnSearch] = useState('')
+  const [collapsedRecords, setCollapsedRecords] = useState<Set<string>>(new Set())
+
+  const groupedColumns = useMemo(() => {
+    const groups = new Map<string, ColumnInfo[]>()
+    const cols = result?.columns || []
+    const search = columnSearch.toLowerCase()
+
+    for (const col of cols) {
+      if (search && !col.name.toLowerCase().includes(search)) continue
+      const key = col.record_name || '(ungrouped)'
+      if (!groups.has(key)) groups.set(key, [])
+      groups.get(key)!.push(col)
+    }
+    return groups
+  }, [result?.columns, columnSearch])
+
+  const toggleRecord = (name: string) => {
+    setCollapsedRecords(prev => {
+      const next = new Set(prev)
+      next.has(name) ? next.delete(name) : next.add(name)
+      return next
+    })
+  }
 
   const runCompile = async () => {
     setError('')
@@ -279,6 +303,11 @@ function StepCompile({
                 <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700">
                   {result.columns?.length || 0} columns
                 </span>
+                {new Set((result?.columns || []).map((c: any) => c.record_name).filter(Boolean)).size > 1 && (
+                  <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-700">
+                    {new Set((result?.columns || []).map((c: any) => c.record_name).filter(Boolean)).size} records
+                  </span>
+                )}
               </div>
             </div>
             <dl className="grid grid-cols-2 gap-x-6 gap-y-2 text-sm">
@@ -312,36 +341,56 @@ function StepCompile({
           {/* Columns table */}
           <Card>
             <CardHeader title="Schema Columns" />
+            <input
+              type="text"
+              placeholder="Search fields..."
+              value={columnSearch}
+              onChange={e => setColumnSearch(e.target.value)}
+              className="w-full px-3 py-1.5 border border-gray-200 rounded text-sm mb-3"
+            />
             <div className="overflow-auto max-h-80 rounded-lg border border-gray-100">
-              <table className="w-full text-sm text-left">
-                <thead className="bg-gray-50 sticky top-0">
-                  <tr>
-                    <Th>Field Name</Th>
-                    <Th>DSL Type</Th>
-                    <Th>Compiled Type</Th>
-                    <Th align="center">Width</Th>
-                    <Th align="center">Preserved</Th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {result.columns?.map((c: any, i: number) => (
-                    <tr key={i} className={`border-t border-gray-50 ${i % 2 === 0 ? 'bg-white' : 'bg-gray-50/50'} hover:bg-indigo-50/40 transition-colors`}>
-                      <td className="px-3 py-1.5 font-mono text-xs font-medium text-gray-800">{c.name}</td>
-                      <td className="px-3 py-1.5 text-gray-500">{c.dsl_type || '\u2014'}</td>
-                      <td className="px-3 py-1.5 text-gray-500">{c.compiled_type}</td>
-                      <td className="px-3 py-1.5 text-center font-mono text-xs text-gray-500">
-                        {c.width || '\u2014'}
-                      </td>
-                      <td className="px-3 py-1.5 text-center">
-                        {c.type_preserved
-                          ? <span className="text-emerald-500 font-bold">&#10003;</span>
-                          : <span className="text-red-400 font-bold">&#10007;</span>
-                        }
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+              {Array.from(groupedColumns.entries()).map(([recordName, cols]) => (
+                <div key={recordName} className="mb-2">
+                  {groupedColumns.size > 1 && (
+                    <button
+                      onClick={() => toggleRecord(recordName)}
+                      className="w-full flex items-center justify-between px-3 py-2 bg-indigo-50 rounded-t text-sm font-semibold text-indigo-800 hover:bg-indigo-100 transition-colors"
+                    >
+                      <span>{recordName} <span className="font-normal text-indigo-500">({cols.length} fields)</span></span>
+                      <span className="text-indigo-400">{collapsedRecords.has(recordName) ? '\u25B6' : '\u25BC'}</span>
+                    </button>
+                  )}
+                  {!collapsedRecords.has(recordName) && (
+                    <table className="w-full text-sm text-left">
+                      <thead className="bg-gray-50 sticky top-0">
+                        <tr>
+                          <Th>Field Name</Th>
+                          <Th>DSL Type</Th>
+                          <Th>Compiled Type</Th>
+                          <Th align="center">Width</Th>
+                          <Th align="center">Preserved</Th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {cols.map((c, i) => (
+                          <tr key={i} className={i % 2 === 0 ? 'bg-white' : 'bg-gray-50/50'}>
+                            <td className="px-3 py-1.5 font-mono text-xs font-medium text-gray-800">{c.name}</td>
+                            <td className="px-3 py-1.5 text-gray-500">{c.dsl_type || '\u2014'}</td>
+                            <td className="px-3 py-1.5 text-gray-500">{c.compiled_type}</td>
+                            <td className="px-3 py-1.5 text-center font-mono text-xs text-gray-500">{c.width || '\u2014'}</td>
+                            <td className="px-3 py-1.5 text-center">
+                              {c.type_preserved
+                                ? <span className="text-emerald-500 font-bold">&#10003;</span>
+                                : <span className="text-red-400 font-bold">&#10007;</span>
+                              }
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  )}
+                </div>
+              ))}
             </div>
           </Card>
         </>

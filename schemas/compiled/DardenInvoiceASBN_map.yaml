@@ -1,0 +1,170 @@
+transaction_type: DARDENINVOICEASBN
+input_format: XML
+xml_config:
+  namespace: null
+  root_element: ASBNS
+  transaction_element: ASBN
+  header_path: ASBN/ASBNHeader
+  line_container_path: ASBN/ASBNItems
+  line_element: ASBNItem
+  transmission_header_path: ASBNTransmissionHeader
+schema:
+  columns:
+  - name: Concept
+    type: string
+  - name: Restaurant
+    type: string
+  - name: PONumber
+    type: string
+  - name: OrderDate
+    type: string
+  - name: ShipDate
+    type: string
+  - name: InvoiceDate
+    type: string
+  - name: InvoiceNumber
+    type: string
+  - name: InvoiceTotal
+    type: float
+  - name: InvoiceType
+    type: string
+  - name: DeliveryDate
+    type: string
+  - name: TotalQtyShipped
+    type: string
+  - name: CenterID
+    type: string
+  - name: SpecialCharges.SpecialCharge.ChargeType
+    type: string
+  - name: SpecialCharges.SpecialCharge.ChargeAmount
+    type: float
+  - name: ASBNTotalLines
+    type: string
+  - name: ASBNCount
+    type: string
+  - name: TransmissionID
+    type: string
+  - name: SenderID
+    type: string
+  - name: ReceiverID
+    type: string
+  - name: TimeStamp
+    type: string
+  - name: LineNumber
+    type: string
+  - name: ItemID
+    type: string
+  - name: UnitPrice
+    type: float
+  - name: Description
+    type: string
+  - name: OrderUOM
+    type: string
+  - name: OrderQty
+    type: string
+  - name: ShipDetail.ShipDetailItem.ShipUOM
+    type: string
+  - name: ShipDetail.ShipDetailItem.ShipQty
+    type: string
+  - name: ShipDetail.ShipDetailItem.Freight
+    type: string
+  - name: ShipDetail.ShipDetailItem.ItemTotal
+    type: string
+  records:
+    ASBNHeader:
+    - Concept
+    - Restaurant
+    - PONumber
+    - OrderDate
+    - ShipDate
+    - InvoiceDate
+    - InvoiceNumber
+    - InvoiceTotal
+    - InvoiceType
+    - DeliveryDate
+    - TotalQtyShipped
+    - CenterID
+    - SpecialCharges.SpecialCharge.ChargeType
+    - SpecialCharges.SpecialCharge.ChargeAmount
+    - ASBNTotalLines
+    ASBNTransmissionHeader:
+    - ASBNCount
+    - TransmissionID
+    - SenderID
+    - ReceiverID
+    - TimeStamp
+    ASBNItem:
+    - LineNumber
+    - ItemID
+    - UnitPrice
+    - Description
+    - OrderUOM
+    - OrderQty
+    - ShipDetail.ShipDetailItem.ShipUOM
+    - ShipDetail.ShipDetailItem.ShipQty
+    - ShipDetail.ShipDetailItem.Freight
+    - ShipDetail.ShipDetailItem.ItemTotal
+mapping:
+  header:
+    Concept:
+      source: header.Concept
+    Restaurant:
+      source: header.Restaurant
+    PONumber:
+      source: header.PONumber
+    OrderDate:
+      source: header.OrderDate
+    ShipDate:
+      source: header.ShipDate
+    InvoiceDate:
+      source: header.InvoiceDate
+    InvoiceNumber:
+      source: header.InvoiceNumber
+    InvoiceTotal:
+      source: header.InvoiceTotal
+    InvoiceType:
+      source: header.InvoiceType
+    DeliveryDate:
+      source: header.DeliveryDate
+    TotalQtyShipped:
+      source: header.TotalQtyShipped
+    CenterID:
+      source: header.CenterID
+    SpecialCharges.SpecialCharge.ChargeType:
+      source: header.SpecialCharges.SpecialCharge.ChargeType
+    SpecialCharges.SpecialCharge.ChargeAmount:
+      source: header.SpecialCharges.SpecialCharge.ChargeAmount
+    ASBNTotalLines:
+      source: header.ASBNTotalLines
+    ASBNCount:
+      source: header.ASBNCount
+    TransmissionID:
+      source: header.TransmissionID
+    SenderID:
+      source: header.SenderID
+    ReceiverID:
+      source: header.ReceiverID
+    TimeStamp:
+      source: header.TimeStamp
+  lines:
+  - LineNumber:
+      source: LineNumber
+  - ItemID:
+      source: ItemID
+  - UnitPrice:
+      source: UnitPrice
+  - Description:
+      source: Description
+  - OrderUOM:
+      source: OrderUOM
+  - OrderQty:
+      source: OrderQty
+  - ShipDetail.ShipDetailItem.ShipUOM:
+      source: ShipDetail.ShipDetailItem.ShipUOM
+  - ShipDetail.ShipDetailItem.ShipQty:
+      source: ShipDetail.ShipDetailItem.ShipQty
+  - ShipDetail.ShipDetailItem.Freight:
+      source: ShipDetail.ShipDetailItem.Freight
+  - ShipDetail.ShipDetailItem.ItemTotal:
+      source: ShipDetail.ShipDetailItem.ItemTotal
+  summary: {}

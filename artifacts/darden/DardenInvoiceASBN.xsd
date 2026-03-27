@@ -1,0 +1,92 @@
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="ASBNS">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="ASBNTransmissionHeader">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element type="xs:string" name="ASBNCount"/>
+              <xs:element type="xs:string" name="TransmissionID"/>
+              <xs:element type="xs:string" name="SenderID"/>
+              <xs:element type="xs:string" name="ReceiverID"/>
+              <xs:element type="xs:string" name="TimeStamp"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="ASBN">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="ASBNHeader">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element type="xs:string" name="Concept"/>
+                    <xs:element type="xs:string" name="Restaurant"/>
+                    <xs:element type="xs:string" name="PONumber"/>
+                    <xs:element type="xs:string" name="OrderDate"/>
+                    <xs:element type="xs:string" name="ShipDate"/>
+                    <xs:element type="xs:string" name="InvoiceDate"/>
+                    <xs:element type="xs:string" name="InvoiceNumber"/>
+                    <xs:element type="xs:float" name="InvoiceTotal"/>
+                    <xs:element type="xs:string" name="InvoiceType"/>
+                    <xs:element type="xs:string" name="DeliveryDate"/>
+                    <xs:element type="xs:string" name="TotalQtyShipped"/>
+                    <xs:element type="xs:string" name="CenterID"/>
+                    <xs:element name="SpecialCharges">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="SpecialCharge">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element type="xs:string" name="ChargeType"/>
+                                <xs:element type="xs:float" name="ChargeAmount"/>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element type="xs:string" name="ASBNTotalLines"/>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="ASBNItems">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="ASBNItem" maxOccurs="unbounded" minOccurs="0">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element type="xs:string" name="LineNumber"/>
+                          <xs:element type="xs:string" name="ItemID"/>
+                          <xs:element type="xs:float" name="UnitPrice"/>
+                          <xs:element type="xs:string" name="Description"/>
+                          <xs:element type="xs:string" name="OrderUOM"/>
+                          <xs:element type="xs:string" name="OrderQty"/>
+                          <xs:element name="ShipDetail">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="ShipDetailItem">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element type="xs:string" name="ShipUOM"/>
+                                      <xs:element type="xs:string" name="ShipQty"/>
+                                      <xs:element type="xs:string" name="Freight"/>
+                                      <xs:element type="xs:string" name="ItemTotal"/>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

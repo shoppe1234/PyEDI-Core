@@ -136,7 +136,122 @@ def _parse_dsl_record(record_text: str) -> Dict[str, Any]:
     return result
 
 
-def _compile_to_yaml(record_defs: List[Dict], source_filename: str, delimiter: str = ",", format_type: str = "CSV") -> Dict[str, Any]:
+def _parse_record_sequences(dsl_text: str, record_defs: List[Dict]) -> Dict[str, Any]:
+    """
+    Parse recordSequence blocks from DSL text and resolve member record IDs.
+
+    Args:
+        dsl_text: Raw DSL file content
+        record_defs: Parsed record definitions (from _parse_dsl_record)
+
+    Returns:
+        Dict mapping group name to group metadata with resolved record IDs.
+    """
+    # Build DSL class name → fieldIdentifier mapping (e.g., TpmHdr → TPM_HDR)
+    name_to_id: Dict[str, str] = {}
+    for rec in record_defs:
+        rec_name = rec.get("name", "")
+        fid = rec.get("fieldIdentifier")
+        if rec_name and fid:
+            name_to_id[rec_name] = fid
+
+    # Find all recordSequence blocks using brace counting
+    seq_pattern = re.compile(r'def\s+recordSequence\s+(\w+)\s*\{')
+    groups: Dict[str, Any] = {}
+
+    search_pos = 0
+    while True:
+        match = seq_pattern.search(dsl_text, search_pos)
+        if not match:
+            break
+
+        group_name = match.group(1)
+        brace_count = 0
+        end_idx = -1
+
+        for i in range(match.end() - 1, len(dsl_text)):
+            if dsl_text[i] == '{':
+                brace_count += 1
+            elif dsl_text[i] == '}':
+                brace_count -= 1
+                if brace_count == 0:
+                    end_idx = i + 1
+                    break
+
+        if end_idx == -1:
+            search_pos = match.end()
+            continue
+
+        block_text = dsl_text[match.start():end_idx]
+        search_pos = end_idx
+
+        group: Dict[str, Any] = {
+            "group_on_record": False,
+            "member_records": [],
+            "nested_groups": [],
+        }
+
+        # Check for groupOnRecord = true
+        if re.search(r'groupOnRecord\s*=\s*true', block_text):
+            group["group_on_record"] = True
+
+        # Check for groupType
+        gt_match = re.search(r'groupType\s*=\s*(\w+)', block_text)
+        if gt_match:
+            group["group_type"] = gt_match.group(1)
+
+        # Parse members: _varName TypeName [cardinality] or _varName TypeName []
+        member_pattern = re.compile(r'_\w+\s+(\w+)\s+\[([^\]]*)\]')
+        for mem in member_pattern.finditer(block_text):
+            type_name = mem.group(1)
+            # Check if this is a nested group (references another recordSequence)
+            # or a record (has a fieldIdentifier mapping)
+            if type_name in name_to_id:
+                group["member_records"].append(name_to_id[type_name])
+            else:
+                # Could be a nested group reference (e.g., OinDtl1Group)
+                group["nested_groups"].append(type_name)
+
+        groups[group_name] = group
+
+    # Flatten nested groups: collect all member_records transitively
+    def _collect_all_records(group_name: str, visited: Optional[set] = None) -> List[str]:
+        if visited is None:
+            visited = set()
+        if group_name in visited:
+            return []
+        visited.add(group_name)
+        g = groups.get(group_name)
+        if not g:
+            return []
+        records = list(g["member_records"])
+        for nested in g.get("nested_groups", []):
+            records.extend(_collect_all_records(nested, visited))
+        return records
+
+    # Add all_member_records (flattened) to each group
+    for gname, gdata in groups.items():
+        gdata["all_member_records"] = _collect_all_records(gname)
+
+    # For the primary group (group_on_record=true), identify boundary_record and key_field
+    for gdata in groups.values():
+        if gdata.get("group_on_record"):
+            # The boundary record is the first member that contains invoiceNumber
+            # Look through record_defs to find which record has an invoiceNumber field
+            for rec_id in gdata["member_records"]:
+                rec_def = next((r for r in record_defs if r.get("fieldIdentifier") == rec_id), None)
+                if rec_def:
+                    field_names = [f["name"] for f in rec_def.get("fields", [])]
+                    if "invoiceNumber" in field_names or "InvoiceID" in field_names:
+                        key_field = "invoiceNumber" if "invoiceNumber" in field_names else "InvoiceID"
+                        gdata["boundary_record"] = rec_id
+                        gdata["key_field"] = key_field
+                        break
+
+    return groups
+
+
+def _compile_to_yaml(record_defs: List[Dict], source_filename: str, delimiter: str = ",", format_type: str = "CSV", dsl_content: str = "") -> Dict[str, Any]:
     """
     Compile record definitions to standard YAML map format.
 
@@ -289,6 +404,27 @@ def _compile_to_yaml(record_defs: List[Dict], source_filename: str, delimiter: s
             })
         yaml_map["schema"]["record_inventory"] = inventory
 
+    # Parse and emit record_groups for fixed-width schemas with hierarchy
+    if format_type == "FIXED_WIDTH" and dsl_content:
+        record_groups = _parse_record_sequences(dsl_content, record_defs)
+        if record_groups:
+            yaml_map["record_groups"] = {}
+            for gname, gdata in record_groups.items():
+                entry: Dict[str, Any] = {
+                    "member_records": gdata.get("all_member_records", []),
+                }
+                if gdata.get("group_on_record"):
+                    entry["group_on_record"] = True
+                if gdata.get("boundary_record"):
+                    entry["boundary_record"] = gdata["boundary_record"]
+                if gdata.get("key_field"):
+                    entry["key_field"] = gdata["key_field"]
+                if gdata.get("group_type"):
+                    entry["group_type"] = gdata["group_type"]
+                if gdata.get("nested_groups"):
+                    entry["nested_groups"] = gdata["nested_groups"]
+                yaml_map["record_groups"][gname] = entry
+
     return yaml_map
 
 
@@ -361,7 +497,7 @@ def parse_dsl_file(source_file: str) -> Tuple[List[Dict[str, Any]], str, str]:
     )
     format_type = "FIXED_WIDTH" if has_lengths else "CSV"
 
-    return record_defs, delimiter, format_type
+    return record_defs, delimiter, format_type, dsl_content
 
 
 def compile_dsl(
@@ -456,10 +592,10 @@ def compile_dsl(
     # Compile the DSL file
     logger.info(f"Compiling DSL schema", source_file=source_filename)
 
-    record_defs, delimiter, format_type = parse_dsl_file(source_file)
+    record_defs, delimiter, format_type, dsl_content = parse_dsl_file(source_file)
 
     # Compile to YAML format
-    yaml_map = _compile_to_yaml(record_defs, source_filename, delimiter, format_type)
+    yaml_map = _compile_to_yaml(record_defs, source_filename, delimiter, format_type, dsl_content)
     
     # Write compiled YAML
     with open(yaml_path, "w", encoding="utf-8") as f:
@@ -478,6 +614,342 @@ def compile_dsl(
     
     logger.info(f"Compiled schema to {yaml_path}")
     
+    return yaml_map
+
+
+def parse_xsd_file(source_file: str) -> Tuple[List[Dict[str, Any]], Dict[str, Any]]:
+    """
+    Parse an XSD file into record definitions and hierarchy metadata.
+
+    Args:
+        source_file: Path to the source XSD file
+
+    Returns:
+        Tuple of (record_defs, hierarchy_metadata)
+        record_defs: list of {"name", "type", "fields": [{"name", "type"}]}
+        hierarchy_metadata: {"root_element", "transaction_element", "header_path",
+                             "line_container_path", "line_element", "transmission_header_path"}
+
+    Raises:
+        FileNotFoundError: If source file doesn't exist
+        ValueError: If XSD structure cannot be parsed
+    """
+    import defusedxml.ElementTree as DET
+
+    source_path = Path(source_file)
+    if not source_path.exists():
+        raise FileNotFoundError(f"Source XSD file not found: {source_file}")
+
+    XS = "{http://www.w3.org/2001/XMLSchema}"
+    XSD_TYPE_MAP: Dict[str, str] = {
+        "xs:string": "string", "xs:float": "float", "xs:decimal": "float",
+        "xs:integer": "integer", "xs:int": "integer", "xs:boolean": "boolean",
+        "xs:date": "date", "xs:dateTime": "date",
+    }
+
+    def _get_sequence(elem: Any) -> Any:
+        ct = elem.find(f"{XS}complexType")
+        if ct is not None:
+            return ct.find(f"{XS}sequence")
+        return None
+
+    def _extract_fields(elem: Any, prefix: str = "") -> List[Dict[str, Any]]:
+        """Recursively extract fields with dot-notation paths."""
+        fields: List[Dict[str, Any]] = []
+        seq = _get_sequence(elem)
+        if seq is None:
+            return fields
+        for child in seq:
+            if child.tag != f"{XS}element":
+                continue
+            name = child.get("name")
+            if not name:
+                continue
+            ftype = child.get("type")
+            full_name = f"{prefix}.{name}" if prefix else name
+            if ftype:
+                mapped = XSD_TYPE_MAP.get(ftype, "string")
+                fields.append({"name": full_name, "type": mapped})
+            else:
+                nested = _extract_fields(child, full_name)
+                fields.extend(nested)
+        return fields
+
+    tree = DET.parse(source_file)
+    root = tree.getroot()
+
+    # Root xs:element
+    root_elem = root.find(f"{XS}element")
+    if root_elem is None:
+        raise ValueError(f"No root element found in {source_file}")
+
+    root_element_name: str = root_elem.get("name", "")
+    root_seq = _get_sequence(root_elem)
+    if root_seq is None:
+        raise ValueError(f"No sequence under root element in {source_file}")
+
+    record_defs: List[Dict[str, Any]] = []
+    transmission_header_name: Optional[str] = None
+    transaction_element_name: Optional[str] = None
+    header_name: Optional[str] = None
+    line_container_name: Optional[str] = None
+    line_element_name: Optional[str] = None
+
+    for child in root_seq:
+        if child.tag != f"{XS}element":
+            continue
+        name: str = child.get("name", "")
+        child_seq = _get_sequence(child)
+        if child_seq is None:
+            continue
+
+        # Check whether any grandchild's sequence has an unbounded element
+        has_transaction_structure = False
+        for gc in child_seq:
+            if gc.tag != f"{XS}element":
+                continue
+            gc_seq = _get_sequence(gc)
+            if gc_seq is not None:
+                for ggc in gc_seq:
+                    if ggc.tag == f"{XS}element" and ggc.get("maxOccurs") == "unbounded":
+                        has_transaction_structure = True
+                        break
+            if has_transaction_structure:
+                break
+
+        if has_transaction_structure:
+            transaction_element_name = name
+            for gc in child_seq:
+                if gc.tag != f"{XS}element":
+                    continue
+                gc_name: str = gc.get("name", "")
+                gc_seq = _get_sequence(gc)
+                if gc_seq is None:
+                    continue
+                has_unbounded = any(
+                    ggc.tag == f"{XS}element" and ggc.get("maxOccurs") == "unbounded"
+                    for ggc in gc_seq
+                )
+                if has_unbounded:
+                    line_container_name = gc_name
+                    for ggc in gc_seq:
+                        if ggc.tag == f"{XS}element" and ggc.get("maxOccurs") == "unbounded":
+                            line_element_name = ggc.get("name", "")
+                            line_fields = _extract_fields(ggc)
+                            record_defs.append({
+                                "name": line_element_name,
+                                "type": "line",
+                                "fields": line_fields,
+                            })
+                            break
+                else:
+                    header_name = gc_name
+                    header_fields = _extract_fields(gc)
+                    record_defs.insert(0, {
+                        "name": gc_name,
+                        "type": "header",
+                        "fields": header_fields,
+                    })
+        else:
+            transmission_header_name = name
+            trans_fields = _extract_fields(child)
+            record_defs.insert(0, {
+                "name": name,
+                "type": "transmission",
+                "fields": trans_fields,
+            })
+
+    if not record_defs:
+        raise ValueError(f"No record definitions found in {source_file}")
+
+    hierarchy_metadata: Dict[str, Any] = {
+        "root_element": root_element_name,
+        "transaction_element": transaction_element_name,
+        "header_path": (
+            f"{transaction_element_name}/{header_name}"
+            if transaction_element_name and header_name else None
+        ),
+        "line_container_path": (
+            f"{transaction_element_name}/{line_container_name}"
+            if transaction_element_name and line_container_name else None
+        ),
+        "line_element": line_element_name,
+        "transmission_header_path": transmission_header_name,
+    }
+
+    return record_defs, hierarchy_metadata
+
+
+def _compile_xsd_to_yaml(
+    record_defs: List[Dict[str, Any]],
+    hierarchy: Dict[str, Any],
+    source_filename: str,
+) -> Dict[str, Any]:
+    """
+    Compile XSD record definitions to standard YAML map format.
+
+    Args:
+        record_defs: Parsed record definitions from parse_xsd_file
+        hierarchy: Hierarchy metadata from parse_xsd_file
+        source_filename: Original XSD filename (for transaction_type derivation)
+
+    Returns:
+        Standard PyEDI YAML map structure for XML
+    """
+    base_name = Path(source_filename).stem
+    transaction_type = re.sub(r"[^A-Z0-9]+", "_", base_name.upper()).strip("_")
+
+    all_columns: List[Dict[str, Any]] = []
+    seen_col_names: set = set()
+    for rec in record_defs:
+        for field in rec.get("fields", []):
+            fname = field["name"]
+            if fname not in seen_col_names:
+                seen_col_names.add(fname)
+                all_columns.append({"name": fname, "type": field["type"]})
+
+    records_section: Dict[str, Any] = {}
+    for rec in record_defs:
+        records_section[rec["name"]] = [f["name"] for f in rec.get("fields", [])]
+
+    # Header mapping: source uses "header.<field>" path so mapper.map_data resolves correctly
+    header_mapping: Dict[str, Any] = {}
+    for rec in record_defs:
+        if rec["type"] in ("header", "transmission"):
+            for field in rec.get("fields", []):
+                fname = field["name"]
+                header_mapping[fname] = {"source": f"header.{fname}"}
+
+    # Lines mapping: list-of-dicts format expected by mapper
+    lines_mapping: List[Dict[str, Any]] = []
+    for rec in record_defs:
+        if rec["type"] == "line":
+            for field in rec.get("fields", []):
+                fname = field["name"]
+                lines_mapping.append({fname: {"source": fname}})
+
+    return {
+        "transaction_type": transaction_type,
+        "input_format": "XML",
+        "xml_config": {
+            "namespace": None,
+            "root_element": hierarchy.get("root_element"),
+            "transaction_element": hierarchy.get("transaction_element"),
+            "header_path": hierarchy.get("header_path"),
+            "line_container_path": hierarchy.get("line_container_path"),
+            "line_element": hierarchy.get("line_element"),
+            "transmission_header_path": hierarchy.get("transmission_header_path"),
+        },
+        "schema": {
+            "columns": all_columns,
+            "records": records_section,
+        },
+        "mapping": {
+            "header": header_mapping,
+            "lines": lines_mapping,
+            "summary": {},
+        },
+    }
+
+
+def compile_xsd(
+    source_file: str,
+    compiled_dir: str = DEFAULT_SCHEMA_COMPILED_DIR,
+    archive_dir: str = DEFAULT_SCHEMA_ARCHIVE_DIR,
+    correlation_id: Optional[str] = None,
+    target_yaml_path: Optional[str] = None,
+    namespace: Optional[str] = None,
+) -> Dict[str, Any]:
+    """
+    Compile an XSD file to YAML format with version awareness.
+
+    Mirrors compile_dsl() — checks hash, archives on change, skips if unchanged.
+
+    Args:
+        source_file: Path to the source XSD file
+        compiled_dir: Directory for compiled YAML maps
+        archive_dir: Directory for archived previous versions
+        correlation_id: Optional correlation ID for logging
+        target_yaml_path: Explicit output path for compiled YAML
+        namespace: XML namespace URI to record in xml_config
+
+    Returns:
+        Compiled YAML map as a dictionary
+
+    Raises:
+        FileNotFoundError: If source file doesn't exist
+        ValueError: If XSD parsing fails
+    """
+    source_path = Path(source_file)
+    if not source_path.exists():
+        raise FileNotFoundError(f"Source XSD file not found: {source_file}")
+
+    source_hash = compute_file_hash(str(source_path.absolute()))
+    source_filename = source_path.name
+
+    if target_yaml_path:
+        yaml_path = Path(target_yaml_path)
+        compiled_path = yaml_path.parent
+        compiled_path.mkdir(parents=True, exist_ok=True)
+        yaml_filename = yaml_path.name
+        meta_filename = yaml_path.stem + ".meta.json"
+        meta_path = compiled_path / meta_filename
+    else:
+        compiled_path = Path(compiled_dir)
+        compiled_path.mkdir(parents=True, exist_ok=True)
+        yaml_filename = source_path.stem + "_map.yaml"
+        yaml_path = compiled_path / yaml_filename
+        meta_filename = source_path.stem + "_map.meta.json"
+        meta_path = compiled_path / meta_filename
+
+    if yaml_path.exists() and meta_path.exists():
+        with open(meta_path, "r") as f:
+            meta = json.load(f)
+        existing_hash = meta.get("source_hash", "")
+        if existing_hash == source_hash:
+            logger.info(
+                "Schema unchanged, loading existing",
+                source_file=source_filename,
+                hash=source_hash[:16] + "...",
+            )
+            with open(yaml_path, "r") as f:
+                return yaml.safe_load(f)
+
+        logger.info(
+            "Schema changed, archiving and recompiling",
+            source_file=source_filename,
+            old_hash=existing_hash[:16] + "...",
+            new_hash=source_hash[:16] + "...",
+        )
+        archive_path = Path(archive_dir)
+        archive_path.mkdir(parents=True, exist_ok=True)
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        if yaml_path.exists():
+            yaml_path.rename(archive_path / f"{yaml_path.stem}_{timestamp}.yaml")
+        if meta_path.exists():
+            meta_path.rename(archive_path / f"{meta_path.stem}_{timestamp}.meta.json")
+
+    logger.info("Compiling XSD schema", source_file=source_filename)
+
+    record_defs, hierarchy = parse_xsd_file(source_file)
+    yaml_map = _compile_xsd_to_yaml(record_defs, hierarchy, source_filename)
+
+    if namespace:
+        yaml_map["xml_config"]["namespace"] = namespace
+
+    with open(yaml_path, "w", encoding="utf-8") as f:
+        yaml.dump(yaml_map, f, default_flow_style=False, sort_keys=False)
+
+    meta = {
+        "source_file": source_filename,
+        "source_hash": source_hash,
+        "compiled_at": datetime.now().isoformat(),
+        "compiled_yaml": yaml_filename,
+    }
+    with open(meta_path, "w", encoding="utf-8") as f:
+        json.dump(meta, f, indent=2)
+
+    logger.info(f"Compiled XSD to {yaml_path}")
     return yaml_map
 
 

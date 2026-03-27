@@ -1,26 +1,21 @@
-# PyEDI-Core Configuration (merged)
-
 system:
-  source_system_id: 'gfs'
+  source_system_id: gfs
   max_workers: 8
   dry_run: false
   return_payload: false
-
 observability:
   log_level: INFO
   output: console
   log_file: ./logs/pyedi.log
   format: pretty
-
 directories:
   inbound:
-    - ./inbound/x12
-    - ./inbound/csv
-    - ./inbound/xml
+  - ./inbound/x12
+  - ./inbound/csv
+  - ./inbound/xml
   outbound: ./outbound
   failed: ./failed
   processed: ./.processed
-
 transaction_registry:
   '810': ./rules/gfs_810_map.yaml
   '850': ./rules/gfs_850_map.yaml
@@ -29,148 +24,181 @@ transaction_registry:
   cxml_850: ./rules/cxml_850_map.yaml
   _default_x12: ./rules/default_x12_map.yaml
   _rules_dir: ./rules
-
 compare:
-  sqlite_db: "data/compare.db"
-  csv_dir: "reports/compare"
-
+  sqlite_db: data/compare.db
+  csv_dir: reports/compare
   profiles:
     810_invoice:
-      description: "EDI 810 Invoice comparison"
-      trading_partner: ""
-      transaction_type: "810"
+      description: EDI 810 Invoice comparison
+      trading_partner: ''
+      transaction_type: '810'
       match_key:
-        segment: "BIG"
-        field: "BIG02"
+        segment: BIG
+        field: BIG02
       segment_qualifiers:
-        N1: "N101"
-        REF: "REF01"
-        DTM: "DTM01"
-        PER: "PER01"
-        IT1: "IT101"
+        N1: N101
+        REF: REF01
+        DTM: DTM01
+        PER: PER01
+        IT1: IT101
         N3: null
         N4: null
-      rules_file: "config/compare_rules/810_invoice.yaml"
-
+      rules_file: config/compare_rules/810_invoice.yaml
     850_purchase_order:
-      description: "EDI 850 Purchase Order comparison"
-      trading_partner: ""
-      transaction_type: "850"
+      description: EDI 850 Purchase Order comparison
+      trading_partner: ''
+      transaction_type: '850'
       match_key:
-        segment: "BEG"
-        field: "BEG03"
+        segment: BEG
+        field: BEG03
       segment_qualifiers:
-        N1: "N101"
-        REF: "REF01"
-        DTM: "DTM01"
-        PER: "PER01"
-        PO1: "PO101"
+        N1: N101
+        REF: REF01
+        DTM: DTM01
+        PER: PER01
+        PO1: PO101
         N3: null
         N4: null
-      rules_file: "config/compare_rules/850_po.yaml"
-
+      rules_file: config/compare_rules/850_po.yaml
     856_asn:
-      description: "EDI 856 Advance Ship Notice comparison"
-      trading_partner: ""
-      transaction_type: "856"
+      description: EDI 856 Advance Ship Notice comparison
+      trading_partner: ''
+      transaction_type: '856'
       match_key:
-        segment: "BSN"
-        field: "BSN02"
+        segment: BSN
+        field: BSN02
       segment_qualifiers:
-        N1: "N101"
-        REF: "REF01"
-        DTM: "DTM01"
-        HL: "HL01"
-        LIN: "LIN01"
-      rules_file: "config/compare_rules/856_asn.yaml"
-
+        N1: N101
+        REF: REF01
+        DTM: DTM01
+        HL: HL01
+        LIN: LIN01
+      rules_file: config/compare_rules/856_asn.yaml
     820_payment:
-      description: "EDI 820 Payment Order comparison"
-      trading_partner: ""
-      transaction_type: "820"
+      description: EDI 820 Payment Order comparison
+      trading_partner: ''
+      transaction_type: '820'
       match_key:
-        segment: "BPR"
-        field: "BPR16"
+        segment: BPR
+        field: BPR16
       segment_qualifiers:
-        N1: "N101"
-        REF: "REF01"
-        DTM: "DTM01"
-        ENT: "ENT01"
-      rules_file: "config/compare_rules/820_payment.yaml"
-
+        N1: N101
+        REF: REF01
+        DTM: DTM01
+        ENT: ENT01
+      rules_file: config/compare_rules/820_payment.yaml
     csv_generic:
-      description: "CSV output comparison (user-defined match key)"
-      trading_partner: ""
-      transaction_type: ""
+      description: CSV output comparison (user-defined match key)
+      trading_partner: ''
+      transaction_type: ''
       match_key:
-        json_path: "header.invoice_number"
+        json_path: header.invoice_number
       segment_qualifiers: {}
-      rules_file: "config/compare_rules/csv_generic.yaml"
-
+      rules_file: config/compare_rules/csv_generic.yaml
     cxml_generic:
-      description: "cXML output comparison (user-defined match key)"
-      trading_partner: ""
-      transaction_type: ""
+      description: cXML output comparison (user-defined match key)
+      trading_partner: ''
+      transaction_type: ''
       match_key:
-        json_path: "header.order_id"
+        json_path: header.order_id
       segment_qualifiers: {}
-      rules_file: "config/compare_rules/cxml_generic.yaml"
-
+      rules_file: config/compare_rules/cxml_generic.yaml
     bevager_810:
-      description: "Bevager 810 Invoice flat file comparison"
-      trading_partner: "Bevager"
-      transaction_type: "810"
+      description: Bevager 810 Invoice flat file comparison
+      trading_partner: Bevager
+      transaction_type: '810'
       match_key:
-        json_path: "header.InvoiceID"
+        json_path: header.InvoiceID
       segment_qualifiers: {}
-      rules_file: "config/compare_rules/bevager_810.yaml"
-
+      rules_file: config/compare_rules/bevager_810.yaml
     855_po_ack:
-      description: "EDI 855 Purchase Order Acknowledgment"
-      trading_partner: ""
-      transaction_type: "855"
+      description: EDI 855 Purchase Order Acknowledgment
+      trading_partner: ''
+      transaction_type: '855'
       match_key:
-        segment: "BAK"
-        field: "BAK03"
+        segment: BAK
+        field: BAK03
       segment_qualifiers:
-        N1: "N101"
-        REF: "REF01"
-        DTM: "DTM01"
+        N1: N101
+        REF: REF01
+        DTM: DTM01
         PO1: null
-      rules_file: "config/compare_rules/855_po_ack.yaml"
-
+      rules_file: config/compare_rules/855_po_ack.yaml
     860_po_change:
-      description: "EDI 860 Purchase Order Change"
-      trading_partner: ""
-      transaction_type: "860"
+      description: EDI 860 Purchase Order Change
+      trading_partner: ''
+      transaction_type: '860'
       match_key:
-        segment: "BCH"
-        field: "BCH03"
+        segment: BCH
+        field: BCH03
       segment_qualifiers:
-        N1: "N101"
-        REF: "REF01"
-        DTM: "DTM01"
+        N1: N101
+        REF: REF01
+        DTM: DTM01
         POC: null
-      rules_file: "config/compare_rules/860_po_change.yaml"
-
+      rules_file: config/compare_rules/860_po_change.yaml
+    darden_asbn:
+      description: Darden ASBN Invoice XML comparison
+      trading_partner: Darden
+      transaction_type: DARDEN_ASBN
+      match_key:
+        json_path: header.InvoiceNumber
+      segment_qualifiers: {}
+      rules_file: config/compare_rules/darden_asbn.yaml
+    retalix_p_i_invo:
+      description: Retalix PI Invoice fixed-width comparison (Silverbirch)
+      trading_partner: Silverbirch
+      transaction_type: RETALIXPIINVOICEFILESCHEMASACFF
+      match_key:
+        json_path: header.invoiceNumber
+      segment_qualifiers: {}
+      rules_file: config/compare_rules/retalix_p_i_invo.yaml
+xml_schema_registry:
+  darden_asbn_control:
+    source_xsd: ./artifacts/darden/DardenInvoiceASBN.xsd
+    compiled_output: ./schemas/compiled/DardenInvoiceASBN_map.yaml
+    inbound_dir: ./artifacts/darden/ca-source
+    transaction_type: DARDEN_ASBN
+    namespace: "http://DRI.iKitchen.BTS.Shared.Schemas.AdvancedShippingNotification.InBoundASN"
+  darden_asbn_test:
+    source_xsd: ./artifacts/darden/DardenInvoiceASBN.xsd
+    compiled_output: ./schemas/compiled/DardenInvoiceASBN_map.yaml
+    inbound_dir: ./artifacts/darden/na-source
+    transaction_type: DARDEN_ASBN
+    namespace: "http://DRI.iKitchen.BTS.Shared.Schemas.AdvancedShippingNotification.InBoundASN"
 csv_schema_registry:
   margin_edge_810:
-    source_dsl:      ./tpm810SourceFF.txt
+    source_dsl: ./tpm810SourceFF.txt
     compiled_output: ./schemas/compiled/margin_edge_810_map.yaml
-    inbound_dir:     ./inbound/csv/margin_edge
+    inbound_dir: ./inbound/csv/margin_edge
     transaction_type: '810'
   gfs_ca_810:
-    source_dsl:      ./schemas/source/gfsGenericOut810FF.txt
+    source_dsl: ./schemas/source/gfsGenericOut810FF.txt
     compiled_output: ./schemas/compiled/gfs_ca_810_map.yaml
-    inbound_dir:     ./inbound/csv/gfs_ca
+    inbound_dir: ./inbound/csv/gfs_ca
     transaction_type: '810'
   bevager_810_control:
-    source_dsl:      ./testingData/Batch1/bevager810FF.txt
+    source_dsl: ./testingData/Batch1/bevager810FF.txt
     compiled_output: ./schemas/compiled/bevager810FF_map.yaml
-    inbound_dir:     ./testingData/Batch1/controlSample-FlatFile-Target
+    inbound_dir: ./testingData/Batch1/controlSample-FlatFile-Target
     transaction_type: '810'
   bevager_810_test:
-    source_dsl:      ./testingData/Batch1/bevager810FF.txt
+    source_dsl: ./testingData/Batch1/bevager810FF.txt
     compiled_output: ./schemas/compiled/bevager810FF_map.yaml
-    inbound_dir:     ./testingData/Batch1/testSample-FlatFile-Target
+    inbound_dir: ./testingData/Batch1/testSample-FlatFile-Target
     transaction_type: '810'
+  retalix_p_i_invo:
+    source_dsl: ./artifacts/RetalixPIInvoiceFileSchemaSacFF.ffSchema
+    compiled_output: ./schemas/compiled/RetalixPIInvoiceFileSchemaSacFF_map.yaml
+    inbound_dir: ''
+    transaction_type: RETALIXPIINVOICEFILESCHEMASACFF
+  retalix_silver_control:
+    source_dsl: ./artifacts/RetalixPIInvoiceFileSchemaSacFF.ffSchema
+    compiled_output: ./schemas/compiled/RetalixPIInvoiceFileSchemaSacFF_map.yaml
+    inbound_dir: ./artifacts/silver/ca-silver
+    transaction_type: RETALIXPIINVOICEFILESCHEMASACFF
+  retalix_silver_test:
+    source_dsl: ./artifacts/RetalixPIInvoiceFileSchemaSacFF.ffSchema
+    compiled_output: ./schemas/compiled/RetalixPIInvoiceFileSchemaSacFF_map.yaml
+    inbound_dir: ./artifacts/silver/na-silver
+    transaction_type: RETALIXPIINVOICEFILESCHEMASACFF

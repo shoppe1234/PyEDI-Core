@@ -1,0 +1,38 @@
+classification:
+  # Financial fields — hard, numeric
+  - segment: '*'
+    field: InvoiceTotal
+    severity: hard
+    numeric: true
+  - segment: '*'
+    field: UnitPrice
+    severity: hard
+    numeric: true
+  - segment: '*'
+    field: ChargeAmount
+    severity: hard
+    numeric: true
+  - segment: '*'
+    field: ItemTotal
+    severity: hard
+    numeric: true
+  # Description fields — soft
+  - segment: '*'
+    field: Description
+    severity: soft
+    ignore_case: true
+  - segment: '*'
+    field: SenderID
+    severity: soft
+    ignore_case: true
+  - segment: '*'
+    field: ReceiverID
+    severity: soft
+    ignore_case: true
+  # Catch-all
+  - segment: '*'
+    field: '*'
+    severity: hard
+    ignore_case: false
+    numeric: false
+ignore: []

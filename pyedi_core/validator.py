@@ -18,8 +18,10 @@ from .core.mapper import map_data
 from .core.schema_compiler import (
     _compile_to_yaml,
     _parse_dsl_record,
+    compile_xsd,
     compute_file_hash,
     parse_dsl_file,
+    parse_xsd_file,
 )
 from .drivers.csv_handler import CSVHandler
 
@@ -128,10 +130,10 @@ def compile_and_write(
     compiled_dir: str = "./schemas/compiled",
 ) -> Tuple[Dict[str, Any], str, List[Dict[str, Any]]]:
     """Parse DSL, compile to YAML, write to disk, return (yaml_dict, yaml_path, record_defs)."""
-    record_defs, delimiter, format_type = parse_dsl_file(dsl_path)
+    record_defs, delimiter, format_type, dsl_content = parse_dsl_file(dsl_path)
 
     source_path = Path(dsl_path)
-    compiled_yaml = _compile_to_yaml(record_defs, source_path.name, delimiter, format_type)
+    compiled_yaml = _compile_to_yaml(record_defs, source_path.name, delimiter, format_type, dsl_content)
 
     compiled_path = Path(compiled_dir)
     compiled_path.mkdir(parents=True, exist_ok=True)
@@ -299,6 +301,82 @@ def compute_field_traces(
                     ))
         traces.append(row_traces)
     return traces
+
+
+def validate_xsd(
+    xsd_path: str,
+    sample_path: Optional[str] = None,
+    compiled_dir: str = "./schemas/compiled",
+) -> ValidationResult:
+    """
+    Validate an XSD schema: compile, inspect, optionally trace a sample XML.
+
+    Args:
+        xsd_path: Path to the XSD schema file
+        sample_path: Optional path to sample XML file for field tracing
+        compiled_dir: Output directory for compiled YAML
+
+    Returns:
+        ValidationResult with XSD metadata
+    """
+    from pathlib import Path as _Path
+
+    compiled_yaml = compile_xsd(
+        source_file=xsd_path,
+        compiled_dir=compiled_dir,
+    )
+
+    # Determine compiled YAML path from compile_xsd output convention
+    xsd_stem = _Path(xsd_path).stem
+    compiled_yaml_path = str(_Path(compiled_dir) / f"{xsd_stem}_map.yaml")
+
+    record_defs, _ = parse_xsd_file(xsd_path)
+
+    columns: List[ColumnInfo] = []
+    seen_cols: set = set()
+    for rec in record_defs:
+        for fld in rec.get("fields", []):
+            name = fld["name"]
+            if name in seen_cols:
+                continue
+            seen_cols.add(name)
+            columns.append(ColumnInfo(
+                name=name,
+                compiled_type=fld["type"],
+                dsl_type=None,
+                record_name=rec["name"],
+                type_preserved=True,
+                width=None,
+            ))
+
+    records = compiled_yaml.get("schema", {}).get("records", {})
+
+    result = ValidationResult(
+        dsl_path=xsd_path,
+        compiled_yaml=compiled_yaml,
+        compiled_yaml_path=compiled_yaml_path,
+        columns=columns,
+        records=records,
+        type_warnings=[],
+        compilation_warnings=[],
+    )
+
+    if sample_path is not None:
+        sample_errors: List[str] = []
+        try:
+            from .drivers.xml_handler import XMLHandler
+            handler = XMLHandler()
+            handler.set_compiled_yaml_path(compiled_yaml_path)
+            raw_data = handler.read(sample_path)
+            mapped_data = map_data(raw_data, compiled_yaml)
+            result.sample_row_count = len(raw_data.get("lines", []))
+            result.coverage = compute_coverage(raw_data, mapped_data, compiled_yaml)
+            result.field_traces = compute_field_traces(raw_data, mapped_data, compiled_yaml)
+        except (FileNotFoundError, ValueError, KeyError) as exc:
+            sample_errors.append(str(exc))
+        result.sample_errors = sample_errors
+
+    return result
 
 
 # ---------------------------------------------------------------------------

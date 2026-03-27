@@ -15,7 +15,7 @@ from typing import Any, Dict, List, Optional, Union
 import yaml
 from pydantic import BaseModel, Field
 
-from .config import AppConfig, CsvSchemaEntry
+from .config import AppConfig, CsvSchemaEntry, XmlSchemaEntry
 from .core import error_handler
 from .core import logger as core_logger
 from .core import manifest
@@ -67,6 +67,7 @@ class Pipeline:
         # Store registry for quick access
         self._transaction_registry = self._config.transaction_registry
         self._csv_schema_registry = self._config.csv_schema_registry
+        self._xml_schema_registry = self._config.xml_schema_registry
         
         # Configure logger
         core_logger.configure(self._config.observability.model_dump())
@@ -112,6 +113,28 @@ class Pipeline:
             f"No csv_schema_registry entry found for inbound directory: {inbound_dir}"
         )
     
+    def _resolve_xml_schema(self, file_path: Path) -> XmlSchemaEntry:
+        """
+        Match an XML file to its registry entry via inbound_dir.
+
+        Args:
+            file_path: Path to the XML file
+
+        Returns:
+            XmlSchemaEntry from the registry
+
+        Raises:
+            SchemaLookupError: If no matching entry found
+        """
+        inbound_dir = str(file_path.parent.resolve())
+        for entry_name, entry in self._xml_schema_registry.items():
+            registry_inbound_dir = str(Path(entry.inbound_dir).resolve())
+            if registry_inbound_dir == inbound_dir:
+                return entry
+        raise error_handler.SchemaLookupError(
+            f"No xml_schema_registry entry found for inbound directory: {inbound_dir}"
+        )
+
     def run(
         self,
         file: Optional[str] = None,
@@ -286,6 +309,29 @@ class Pipeline:
                 # Pass compiled_yaml_path to CSV handler
                 if hasattr(driver, 'set_compiled_yaml_path'):
                     driver.set_compiled_yaml_path(compiled_yaml_path)
+            elif Path(file_path).suffix.lower() in (".xml", ".cxml"):
+                try:
+                    xml_entry = self._resolve_xml_schema(Path(file_path))
+                    compiled_yaml_path = xml_entry.compiled_output
+
+                    schema_compiler.compile_xsd(
+                        xml_entry.source_xsd,
+                        compiled_dir=str(Path(compiled_yaml_path).parent),
+                        correlation_id=correlation_id,
+                        target_yaml_path=compiled_yaml_path,
+                        namespace=xml_entry.namespace,
+                    )
+
+                    from .core import mapper
+                    map_yaml = mapper.load_map(compiled_yaml_path)
+                    transaction_type = xml_entry.transaction_type
+
+                    if hasattr(driver, "set_compiled_yaml_path"):
+                        driver.set_compiled_yaml_path(compiled_yaml_path)
+                except error_handler.SchemaLookupError:
+                    map_yaml = self._get_mapping_rules(file_path, driver)
+                    if map_yaml:
+                        transaction_type = map_yaml.get("transaction_type", "unknown")
             else:
                 # Non-CSV files use traditional mapping
                 map_yaml = self._get_mapping_rules(file_path, driver)

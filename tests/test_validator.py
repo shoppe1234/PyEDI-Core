@@ -11,6 +11,7 @@ from pyedi_core.validator import (
     check_type_preservation,
     compile_and_write,
     validate,
+    validate_xsd,
 )
 
 
@@ -64,7 +65,7 @@ class TestFieldIdentifierCollision:
 class TestCompilationWarnings:
     def test_check_compilation_warnings_collision(self):
         from pyedi_core.core.schema_compiler import parse_dsl_file
-        record_defs, _, _ = parse_dsl_file("schemas/source/gfsGenericOut810FF.txt")
+        record_defs, _, _, _ = parse_dsl_file("schemas/source/gfsGenericOut810FF.txt")
         warnings = check_compilation_warnings(record_defs)
         assert any("collision" in w for w in warnings)
 
@@ -85,6 +86,38 @@ class TestValidateErrors:
 # ---------------------------------------------------------------------------
 # Integration tests
 # ---------------------------------------------------------------------------
+
+
+@pytest.mark.unit
+class TestValidateXsd:
+    XSD_PATH = "artifacts/darden/DardenInvoiceASBN.xsd"
+    CA_XML = "artifacts/darden/ca-source/ASBN20260322T233555600_HS00.XML"
+
+    def test_validate_xsd_field_record_counts(self, tmp_path):
+        result = validate_xsd(
+            xsd_path=self.XSD_PATH,
+            compiled_dir=str(tmp_path),
+        )
+        assert isinstance(result, ValidationResult)
+        assert len(result.records) == 3
+        assert "ASBNHeader" in result.records
+        assert "ASBNItem" in result.records
+        assert len(result.columns) == 30
+        assert result.type_warnings == []
+
+    def test_validate_xsd_with_sample(self, tmp_path):
+        result = validate_xsd(
+            xsd_path=self.XSD_PATH,
+            sample_path=self.CA_XML,
+            compiled_dir=str(tmp_path),
+        )
+        assert result.sample_row_count == 1
+        assert result.field_traces is not None
+        assert len(result.field_traces) == 1
+        invoice_trace = next(
+            t for t in result.field_traces[0] if t.target_field == "ItemID"
+        )
+        assert invoice_trace.value == "6950100"
 
 
 @pytest.mark.integration

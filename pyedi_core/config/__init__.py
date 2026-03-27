@@ -20,6 +20,15 @@ class CsvSchemaEntry(BaseModel):
     split_key: Optional[str] = Field(None, description="Field to split batch files by (e.g., invoiceNumber)")
 
 
+class XmlSchemaEntry(BaseModel):
+    """Configuration entry for XML schema registry."""
+    source_xsd: str = Field(..., description="Path to source XSD schema file")
+    compiled_output: str = Field(..., description="Path to compiled YAML map")
+    inbound_dir: str = Field(..., description="Inbound directory for XML files")
+    transaction_type: str = Field(..., description="Transaction type (e.g., DARDEN_ASBN)")
+    namespace: Optional[str] = Field(None, description="XML namespace URI to strip")
+
+
 class SystemConfig(BaseModel):
     """System configuration."""
     max_workers: int = Field(8, description="ThreadPoolExecutor max workers")
@@ -55,6 +64,10 @@ class AppConfig(BaseModel):
     csv_schema_registry: Dict[str, CsvSchemaEntry] = Field(
         default_factory=dict,
         description="CSV schema registry entries"
+    )
+    xml_schema_registry: Dict[str, XmlSchemaEntry] = Field(
+        default_factory=dict,
+        description="XML schema registry entries"
     )
     directories: DirectoriesConfig = Field(default_factory=DirectoriesConfig)
     observability: ObservabilityConfig = Field(default_factory=ObservabilityConfig)

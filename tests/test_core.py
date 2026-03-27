@@ -627,10 +627,10 @@ class TestFixedWidth:
         """Compile delimited DSL and verify no width/record_layouts appear."""
         from pyedi_core.core.schema_compiler import parse_dsl_file, _compile_to_yaml
 
-        record_defs, delimiter, format_type = parse_dsl_file(
+        record_defs, delimiter, format_type, dsl_content = parse_dsl_file(
             "schemas/source/gfsGenericOut810FF.txt"
         )
-        result = _compile_to_yaml(record_defs, "gfsGenericOut810FF.txt", delimiter, format_type)
+        result = _compile_to_yaml(record_defs, "gfsGenericOut810FF.txt", delimiter, format_type, dsl_content)
 
         assert result["input_format"] == "CSV"
         assert "delimiter" in result["schema"]
@@ -787,6 +787,99 @@ class TestFixedWidth:
         finally:
             os.unlink(data_file.name)
             os.unlink(schema_file.name)
+
+
+@pytest.mark.unit
+class TestXsdCompiler:
+    """Tests for XSD schema compiler functions."""
+
+    XSD_PATH = "artifacts/darden/DardenInvoiceASBN.xsd"
+    CA_XML = "artifacts/darden/ca-source/ASBN20260322T233555600_HS00.XML"
+
+    def test_parse_xsd_file(self):
+        from pyedi_core.core.schema_compiler import parse_xsd_file
+        record_defs, hierarchy = parse_xsd_file(self.XSD_PATH)
+        assert len(record_defs) == 3
+        record_names = [r["name"] for r in record_defs]
+        assert "ASBNHeader" in record_names
+        assert "ASBNTransmissionHeader" in record_names
+        assert "ASBNItem" in record_names
+        header_rec = next(r for r in record_defs if r["name"] == "ASBNHeader")
+        field_names = [f["name"] for f in header_rec["fields"]]
+        assert "InvoiceNumber" in field_names
+        invoice_total = next(f for f in header_rec["fields"] if f["name"] == "InvoiceTotal")
+        assert invoice_total["type"] == "float"
+        assert hierarchy["root_element"] == "ASBNS"
+        assert hierarchy["transaction_element"] == "ASBN"
+        assert hierarchy["line_element"] == "ASBNItem"
+
+    def test_compile_xsd_to_yaml(self, tmp_path):
+        from pyedi_core.core.schema_compiler import compile_xsd
+        result = compile_xsd(
+            source_file=self.XSD_PATH,
+            compiled_dir=str(tmp_path),
+        )
+        assert result["input_format"] == "XML"
+        assert "xml_config" in result
+        assert result["xml_config"]["line_element"] == "ASBNItem"
+        assert result["xml_config"]["root_element"] == "ASBNS"
+        col_names = [c["name"] for c in result["schema"]["columns"]]
+        assert "InvoiceNumber" in col_names
+        assert "SpecialCharges.SpecialCharge.ChargeType" in col_names
+        assert "ShipDetail.ShipDetailItem.ShipUOM" in col_names
+        assert "ASBNHeader" in result["schema"]["records"]
+        assert "ASBNItem" in result["schema"]["records"]
+
+    def test_compile_xsd_idempotent(self, tmp_path):
+        from pyedi_core.core.schema_compiler import compile_xsd
+        result1 = compile_xsd(source_file=self.XSD_PATH, compiled_dir=str(tmp_path))
+        result2 = compile_xsd(source_file=self.XSD_PATH, compiled_dir=str(tmp_path))
+        assert result1["input_format"] == result2["input_format"]
+        assert len(result1["schema"]["columns"]) == len(result2["schema"]["columns"])
+
+
+@pytest.mark.unit
+class TestXmlHandler:
+    """Tests for XML handler schema-aware parsing."""
+
+    XSD_PATH = "artifacts/darden/DardenInvoiceASBN.xsd"
+    CA_XML = "artifacts/darden/ca-source/ASBN20260322T233555600_HS00.XML"
+    NA_XML_MULTI = "artifacts/darden/na-source/ASBN20260322T233606247_HS00.XML"
+
+    def test_xml_namespace_stripping(self, tmp_path):
+        from pyedi_core.core.schema_compiler import compile_xsd
+        from pyedi_core.drivers.xml_handler import XMLHandler
+        compile_xsd(source_file=self.XSD_PATH, compiled_dir=str(tmp_path))
+        compiled_path = str(tmp_path / "DardenInvoiceASBN_map.yaml")
+        handler = XMLHandler()
+        handler.set_compiled_yaml_path(compiled_path)
+        result = handler.read(self.CA_XML)
+        # If namespace stripping failed, InvoiceNumber would not be found
+        assert "InvoiceNumber" in result["header"]
+
+    def test_xml_schema_aware_parse(self, tmp_path):
+        from pyedi_core.core.schema_compiler import compile_xsd
+        from pyedi_core.drivers.xml_handler import XMLHandler
+        compile_xsd(source_file=self.XSD_PATH, compiled_dir=str(tmp_path))
+        compiled_path = str(tmp_path / "DardenInvoiceASBN_map.yaml")
+        handler = XMLHandler()
+        handler.set_compiled_yaml_path(compiled_path)
+        result = handler.read(self.CA_XML)
+        assert result["header"]["InvoiceNumber"] == "12006852"
+        assert result["header"]["InvoiceTotal"] == "257.56"
+        assert len(result["lines"]) == 1
+        assert result["lines"][0]["ItemID"] == "6950100"
+
+    def test_xml_multi_asbn_line_count(self, tmp_path):
+        from pyedi_core.core.schema_compiler import compile_xsd
+        from pyedi_core.drivers.xml_handler import XMLHandler
+        compile_xsd(source_file=self.XSD_PATH, compiled_dir=str(tmp_path))
+        compiled_path = str(tmp_path / "DardenInvoiceASBN_map.yaml")
+        handler = XMLHandler()
+        handler.set_compiled_yaml_path(compiled_path)
+        # na-source file 3 has 13 line items (12 original + 1 test diff)
+        result = handler.read(self.NA_XML_MULTI)
+        assert len(result["lines"]) == 13
 
 
 if __name__ == "__main__":

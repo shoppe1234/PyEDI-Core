@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ns0:ASBNS xmlns:ns0="http://DRI.iKitchen.BTS.Shared.Schemas.AdvancedShippingNotification.InBoundASN">
+    <ASBNTransmissionHeader>
+        <ASBNCount>1</ASBNCount>
+        <TransmissionID>23518</TransmissionID>
+        <SenderID>HALPERNS STEAK AND SEAFOOD</SenderID>
+        <ReceiverID>DARDEN RESTAURANTS</ReceiverID>
+        <TimeStamp>03/22/2026 23:35:56 PM</TimeStamp>
+    </ASBNTransmissionHeader>
+    <ASBN>
+        <ASBNHeader>
+            <Concept>013</Concept>
+            <Restaurant>8046</Restaurant>
+            <PONumber/>
+            <OrderDate>03172026</OrderDate>
+            <ShipDate>03212026</ShipDate>
+            <InvoiceDate>03202026</InvoiceDate>
+            <InvoiceNumber>12013475</InvoiceNumber>
+            <InvoiceTotal>371.98</InvoiceTotal>
+            <InvoiceType>DEBIT</InvoiceType>
+            <DeliveryDate>03212026</DeliveryDate>
+            <TotalQtyShipped>17.4</TotalQtyShipped>
+            <CenterID>HSS00</CenterID>
+            <SpecialCharges>
+                <SpecialCharge>
+                    <ChargeType>9983</ChargeType>
+                    <ChargeAmount>42.95</ChargeAmount>
+                </SpecialCharge>
+            </SpecialCharges>
+            <ASBNTotalLines>1</ASBNTotalLines>
+        </ASBNHeader>
+        <ASBNItems>
+            <ASBNItem>
+                <LineNumber>1</LineNumber>
+                <ItemID>6950100</ItemID>
+                <UnitPrice>18.91</UnitPrice>
+                <Description>LOBSTER, LIVE CHIX 1# HARD SHELL</Description>
+                <OrderUOM>PC</OrderUOM>
+                <OrderQty>16</OrderQty>
+                <ShipDetail>
+                    <ShipDetailItem>
+                        <ShipUOM>LB</ShipUOM>
+                        <ShipQty>17.4</ShipQty>
+                        <ItemTotal>329.03</ItemTotal>
+                    </ShipDetailItem>
+                </ShipDetail>
+            </ASBNItem>
+        </ASBNItems>
+    </ASBN>
+</ns0:ASBNS>

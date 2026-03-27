@@ -74,7 +74,10 @@ def main(args: Optional[List[str]] = None) -> int:
     # --- "validate" subcommand ---
     validate_parser = subparsers.add_parser("validate", help="Validate a DSL schema")
     validate_parser.add_argument(
-        "--dsl", required=True, help="Path to DSL .txt file"
+        "--dsl", required=False, default=None, help="Path to DSL .txt file"
+    )
+    validate_parser.add_argument(
+        "--xsd", default=None, help="Path to XSD schema file"
     )
     validate_parser.add_argument(
         "--sample", default=None, help="Path to sample data file"
@@ -370,17 +373,35 @@ def _watch_tests(parsed: argparse.Namespace) -> int:
 
 def _handle_validate(parsed: argparse.Namespace) -> int:
     """Dispatch validate subcommand."""
-    from .validator import validate
+    has_dsl = bool(getattr(parsed, "dsl", None))
+    has_xsd = bool(getattr(parsed, "xsd", None))
 
-    try:
-        result = validate(
-            dsl_path=parsed.dsl,
-            sample_path=parsed.sample,
-            compiled_dir=parsed.output_dir,
-        )
-    except (FileNotFoundError, ValueError) as exc:
-        print(f"Error: {exc}", file=sys.stderr)
+    if has_dsl == has_xsd:
+        print("Error: exactly one of --dsl or --xsd is required", file=sys.stderr)
         return 1
+
+    if has_xsd:
+        from .validator import validate_xsd
+        try:
+            result = validate_xsd(
+                xsd_path=parsed.xsd,
+                sample_path=parsed.sample,
+                compiled_dir=parsed.output_dir,
+            )
+        except (FileNotFoundError, ValueError) as exc:
+            print(f"Error: {exc}", file=sys.stderr)
+            return 1
+    else:
+        from .validator import validate
+        try:
+            result = validate(
+                dsl_path=parsed.dsl,
+                sample_path=parsed.sample,
+                compiled_dir=parsed.output_dir,
+            )
+        except (FileNotFoundError, ValueError) as exc:
+            print(f"Error: {exc}", file=sys.stderr)
+            return 1
 
     if parsed.json_output:
         _print_validate_json(result)
@@ -408,7 +429,7 @@ def _print_validate_report(result: "object", verbose: bool = False) -> None:
     limit = len(result.columns) if verbose else min(20, len(result.columns))
     for col in result.columns[:limit]:
         ok = "YES" if col.type_preserved else "NO"
-        dsl = col.dsl_type or "—"
+        dsl = col.dsl_type or "N/A"
         print(f"  {col.name:<30} {col.compiled_type:<10} {dsl:<12} {ok}")
     if not verbose and len(result.columns) > 20:
         print(f"  ... and {len(result.columns) - 20} more (use --verbose to see all)")
@@ -461,8 +482,8 @@ def _print_validate_report(result: "object", verbose: bool = False) -> None:
                 traces = result.field_traces[row_idx]
                 shown = traces if verbose else traces[:10]
                 for ft in shown:
-                    marker = "=" if ft.mapped else "∅"
-                    val = repr(ft.value) if ft.mapped else "—"
+                    marker = "=" if ft.mapped else "-"
+                    val = repr(ft.value) if ft.mapped else "N/A"
                     print(f"    {ft.target_field:<30} <- {ft.source_path:<30} {marker} {val}")
                 if not verbose and len(traces) > 10:
                     print(f"    ... and {len(traces) - 10} more fields")

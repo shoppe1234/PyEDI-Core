@@ -44,6 +44,122 @@ class XMLHandler(TransactionProcessor):
         super().__init__(correlation_id, config)
         self._rules_dir = rules_dir or "./rules"
     
+    def set_compiled_yaml_path(self, compiled_yaml_path: str) -> None:
+        """
+        Store compiled YAML path for schema-aware parsing.
+
+        Args:
+            compiled_yaml_path: Path to the compiled YAML map file
+        """
+        self._compiled_yaml_path = compiled_yaml_path
+
+    def _strip_namespace(self, element: Element) -> None:
+        """
+        Recursively strip XML namespace from all element tags.
+
+        Handles both Clark notation {uri}Tag and prefix:Tag patterns.
+
+        Args:
+            element: Root element to strip namespaces from
+        """
+        import re as _re
+        # Clark notation: {http://...}TagName -> TagName
+        if element.tag and element.tag.startswith("{"):
+            element.tag = element.tag.split("}", 1)[1]
+        elif ":" in element.tag:
+            # prefix:TagName -> TagName
+            element.tag = element.tag.split(":", 1)[1]
+        for child in element:
+            self._strip_namespace(child)
+
+    def _elem_to_dict(self, element: Element) -> Any:
+        """
+        Convert an XML element to a dict (nested) or string (leaf).
+
+        Args:
+            element: XML element
+
+        Returns:
+            String for leaf elements, dict for complex elements
+        """
+        children = list(element)
+        if not children:
+            text = element.text or ""
+            return text.strip()
+        result: Dict[str, Any] = {}
+        for child in children:
+            value = self._elem_to_dict(child)
+            if child.tag in result:
+                existing = result[child.tag]
+                if not isinstance(existing, list):
+                    result[child.tag] = [existing]
+                result[child.tag].append(value)
+            else:
+                result[child.tag] = value
+        return result
+
+    def _parse_schema_aware_xml(
+        self, content: bytes, xml_config: Dict[str, Any]
+    ) -> Dict[str, Any]:
+        """
+        Parse XML using compiled XSD xml_config for structured extraction.
+
+        Args:
+            content: Raw XML bytes
+            xml_config: xml_config section from compiled YAML
+
+        Returns:
+            {"header": {...}, "lines": [...], "summary": {}}
+        """
+        try:
+            root = ET.fromstring(content)
+        except ET.ParseError as exc:
+            raise ValueError(f"Failed to parse XML: {exc}") from exc
+
+        self._strip_namespace(root)
+
+        result: Dict[str, Any] = {"header": {}, "lines": [], "summary": {}}
+
+        # Extract transmission header fields (prefixed with transmission_)
+        trans_path = xml_config.get("transmission_header_path")
+        if trans_path:
+            trans_elem = root.find(trans_path)
+            if trans_elem is not None:
+                for child in trans_elem:
+                    result["header"][child.tag] = (child.text or "").strip()
+
+        # Navigate to header element
+        header_path = xml_config.get("header_path")
+        transaction_element = xml_config.get("transaction_element")
+        if header_path and transaction_element:
+            # header_path is relative to root, e.g. "ASBN/ASBNHeader"
+            # strip the transaction_element prefix to get path under it
+            txn_elems = root.findall(transaction_element)
+            for txn_elem in txn_elems:
+                # Extract the sub-path after transaction_element
+                sub_path = header_path[len(transaction_element):].lstrip("/")
+                header_elem = txn_elem.find(sub_path) if sub_path else txn_elem
+                if header_elem is not None:
+                    for child in header_elem:
+                        value = self._elem_to_dict(child)
+                        result["header"][child.tag] = value
+
+                # Extract line items
+                line_container_path = xml_config.get("line_container_path")
+                line_element = xml_config.get("line_element")
+                if line_container_path and line_element:
+                    lc_sub = line_container_path[len(transaction_element):].lstrip("/")
+                    container_elem = txn_elem.find(lc_sub) if lc_sub else txn_elem
+                    if container_elem is not None:
+                        for item_elem in container_elem.findall(line_element):
+                            line: Dict[str, Any] = {}
+                            for child in item_elem:
+                                line[child.tag] = self._elem_to_dict(child)
+                            if line:
+                                result["lines"].append(line)
+
+        return result
+
     def read(self, file_path: str) -> Dict[str, Any]:
         """
         Read and parse an XML file.
@@ -68,20 +184,31 @@ class XMLHandler(TransactionProcessor):
         with open(file_path, "rb") as f:
             content = f.read()
 
+        # Schema-aware parsing (when compiled YAML is available)
+        if getattr(self, "_compiled_yaml_path", None):
+            import yaml as _yaml
+            with open(self._compiled_yaml_path, "r", encoding="utf-8") as f:
+                compiled = _yaml.safe_load(f)
+            xml_config = compiled.get("xml_config")
+            if xml_config:
+                parsed = self._parse_schema_aware_xml(content, xml_config)
+                parsed["_source_file"] = path.name
+                return parsed
+
         # Detect cXML (decode first 500 bytes for detection)
         is_cxml = self._detect_cxml(content[:500].decode("utf-8", errors="replace"))
-        
+
         if is_cxml:
             self.logger.info("Detected cXML format")
             parsed = self._parse_cxml(content)
         else:
             self.logger.info("Detected generic XML format")
             parsed = self._parse_generic_xml(content)
-        
+
         # Add metadata
         parsed["_is_cxml"] = is_cxml
         parsed["_source_file"] = path.name
-        
+
         return parsed
     
     def _detect_cxml(self, content: str) -> bool:
@@ -307,6 +434,34 @@ class XMLHandler(TransactionProcessor):
         
         return transformed
     
+    def write_split(
+        self,
+        payload: Dict[str, Any],
+        output_dir: str,
+        split_key: str,
+    ) -> List[str]:
+        """
+        Write XML payload as a single JSON file named by the split_key value.
+
+        For XML, each file is typically a single transaction, so write_split
+        reads the split_key from header and names the output file accordingly.
+
+        Args:
+            payload: Transformed data with {header, lines, summary}
+            output_dir: Output directory
+            split_key: Field name in header to use for filename (e.g., "InvoiceNumber")
+
+        Returns:
+            List of output file paths written
+        """
+        out_dir = Path(output_dir)
+        out_dir.mkdir(parents=True, exist_ok=True)
+
+        key_val = str(payload.get("header", {}).get(split_key, "unknown"))
+        out_path = str(out_dir / f"{split_key}_{key_val}.json")
+        self.write(payload, out_path)
+        return [out_path]
+
     def write(self, payload: Dict[str, Any], output_path: str) -> None:
         """
         Write transformed data to JSON file.

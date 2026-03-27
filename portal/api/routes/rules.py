@@ -208,8 +208,13 @@ def get_effective(profile_name: str) -> EffectiveRulesResponse:
     except ValueError as exc:
         raise HTTPException(status_code=404, detail=str(exc)) from exc
 
-    rules_dir = os.path.dirname(profile.rules_file) if profile.rules_file else _RULES_DIR
-    tiered = load_tiered_rules(rules_dir, profile.transaction_type, profile.rules_file)
+    if profile.rules_file:
+        abs_rules_file = str(Path(profile.rules_file) if Path(profile.rules_file).is_absolute() else _PROJECT_ROOT / profile.rules_file)
+        rules_dir = os.path.dirname(abs_rules_file)
+    else:
+        abs_rules_file = ""
+        rules_dir = _RULES_DIR
+    tiered = load_tiered_rules(rules_dir, profile.transaction_type, abs_rules_file)
 
     # Collect all unique (segment, field) keys across all 3 tiers
     all_keys: set[tuple[str, str]] = set()

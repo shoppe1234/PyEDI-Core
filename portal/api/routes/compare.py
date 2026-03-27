@@ -45,6 +45,14 @@ _PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent.parent
 _CONFIG_PATH = str(_PROJECT_ROOT / "config" / "config.yaml")
 
 
+def _resolve_rules_path(relative_path: str) -> str:
+    """Resolve a relative rules_file path against the project root."""
+    p = Path(relative_path)
+    if p.is_absolute():
+        return str(p)
+    return str(_PROJECT_ROOT / p)
+
+
 def _get_db_path() -> str:
     """Resolve the SQLite DB path from config."""
     with open(_CONFIG_PATH, "r", encoding="utf-8") as f:
@@ -239,7 +247,7 @@ def get_rules(name: str) -> CompareRulesResponse:
         raise HTTPException(status_code=404, detail=str(exc))
 
     try:
-        rules = load_rules(profile.rules_file)
+        rules = load_rules(_resolve_rules_path(profile.rules_file))
     except FileNotFoundError as exc:
         raise HTTPException(status_code=404, detail=str(exc))
 
@@ -251,6 +259,7 @@ def get_rules(name: str) -> CompareRulesResponse:
             "ignore_case": r.ignore_case,
             "numeric": r.numeric,
             "conditional_qualifier": r.conditional_qualifier,
+            "amount_variance": r.amount_variance,
         }
         for r in rules.classification
     ]
@@ -270,7 +279,7 @@ def update_rules(name: str, req: CompareRulesUpdateRequest) -> CompareRulesRespo
         "ignore": req.ignore,
     }
     try:
-        with open(profile.rules_file, "w", encoding="utf-8") as f:
+        with open(_resolve_rules_path(profile.rules_file), "w", encoding="utf-8") as f:
             yaml.dump(data, f, default_flow_style=False, sort_keys=False)
     except OSError as exc:
         raise HTTPException(status_code=500, detail=str(exc))

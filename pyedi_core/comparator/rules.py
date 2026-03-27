@@ -39,6 +39,7 @@ def load_rules(rules_path: str) -> CompareRules:
             ignore_case=entry.get("ignore_case", False),
             numeric=entry.get("numeric", False),
             conditional_qualifier=entry.get("conditional_qualifier"),
+            amount_variance=entry.get("amount_variance"),
         ))
 
     ignore: list[dict[str, str]] = data.get("ignore", [])

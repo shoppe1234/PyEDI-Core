@@ -1,1 +1,70 @@
 @import "tailwindcss";
+
+/* Infographic theme utilities */
+
+/* Whiteboard dot-grid background */
+.sketch-bg {
+  background-image: radial-gradient(circle, #d1d5db 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+/* Blueprint grid background */
+.blueprint-bg {
+  background-image:
+    linear-gradient(rgba(103, 232, 249, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(103, 232, 249, 0.1) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Cork texture background */
+.cork-bg {
+  background-image:
+    radial-gradient(ellipse at 20% 50%, rgba(180, 140, 100, 0.15) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(160, 120, 80, 0.1) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 80%, rgba(170, 130, 90, 0.12) 0%, transparent 50%);
+  background-color: #f5e6d3;
+}
+
+/* Terminal scanline overlay */
+.scanline::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.03) 2px,
+    rgba(0, 0, 0, 0.03) 4px
+  );
+  pointer-events: none;
+}
+
+/* SVG draw-on animation */
+@keyframes sketch-draw {
+  from { stroke-dashoffset: 1000; }
+  to { stroke-dashoffset: 0; }
+}
+
+.animate-draw {
+  animation: sketch-draw 1.5s ease-out forwards;
+}
+
+/* Typing cursor animation */
+@keyframes blink-cursor {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.animate-cursor {
+  animation: blink-cursor 1s step-end infinite;
+}
+
+/* Gentle float for sticky notes */
+@keyframes gentle-float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-3px); }
+}
+
+.animate-float {
+  animation: gentle-float 3s ease-in-out infinite;
+}

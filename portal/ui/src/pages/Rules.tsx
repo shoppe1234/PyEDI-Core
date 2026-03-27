@@ -33,12 +33,13 @@ interface EffectiveRule extends ClassificationRule {
   tier: string
 }
 
-type Tab = 'overview' | 'universal' | 'transaction' | 'effective'
+type Tab = 'overview' | 'universal' | 'transaction' | 'partner' | 'effective'
 
 const TABS: { key: Tab; label: string }[] = [
   { key: 'overview', label: 'Overview' },
   { key: 'universal', label: 'Universal' },
   { key: 'transaction', label: 'Transaction' },
+  { key: 'partner', label: 'Partner' },
   { key: 'effective', label: 'Effective View' },
 ]
 
@@ -283,7 +284,7 @@ function RulesGrid({
    MAIN PAGE
    ═══════════════════════════════════════════════════════════════════════════ */
 
-export default function RulesPage() {
+export default function RulesPage({ onNavigate }: { onNavigate?: (page: string) => void }) {
   const [tab, setTab] = useState<Tab>('overview')
   const [tiers, setTiers] = useState<TierInfo[]>([])
   const [loading, setLoading] = useState(false)
@@ -306,6 +307,13 @@ export default function RulesPage() {
   const [txnSuccess, setTxnSuccess] = useState(false)
   const [txnDeleting, setTxnDeleting] = useState(false)
   const [txnConfirmDelete, setTxnConfirmDelete] = useState(false)
+
+  // Partner editor state
+  const [selectedPartner, setSelectedPartner] = useState('')
+  const [partnerRules, setPartnerRules] = useState<ClassificationRule[]>([])
+  const [partnerIgnores, setPartnerIgnores] = useState<IgnoreEntry[]>([])
+  const [partnerSaving, setPartnerSaving] = useState(false)
+  const [partnerSuccess, setPartnerSuccess] = useState(false)
 
   // Effective view state
   const [profiles, setProfiles] = useState<any[]>([])
@@ -356,6 +364,19 @@ export default function RulesPage() {
       })
     }
   }, [selectedTxn, tab])
+
+  // Load partner rules when selection changes
+  useEffect(() => {
+    if (selectedPartner && tab === 'partner') {
+      api.compareRules(selectedPartner).then(d => {
+        setPartnerRules((d.classification || []).map(normRule))
+        setPartnerIgnores((d.ignore || []).map(normIgnore))
+      }).catch(e => {
+        setPartnerRules([])
+        setPartnerIgnores([])
+      })
+    }
+  }, [selectedPartner, tab])
 
   // Load effective rules when profile changes
   useEffect(() => {
@@ -435,6 +456,16 @@ export default function RulesPage() {
       })
       .catch(e => setError(e.message))
       .finally(() => setTxnDeleting(false))
+  }
+
+  const savePartner = () => {
+    if (!selectedPartner) return
+    setPartnerSaving(true)
+    setPartnerSuccess(false)
+    api.compareUpdateRules(selectedPartner, { classification: partnerRules, ignore: partnerIgnores })
+      .then(() => { setPartnerSuccess(true); loadTiers(); setTimeout(() => setPartnerSuccess(false), 3000) })
+      .catch(e => setError(e.message))
+      .finally(() => setPartnerSaving(false))
   }
 
   /* ── Computed ── */
@@ -578,6 +609,7 @@ export default function RulesPage() {
                       <th className="px-4 py-2.5 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Rules</th>
                       <th className="px-4 py-2.5 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Ignores</th>
                       <th className="px-4 py-2.5 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Inherits</th>
+                      <th className="px-4 py-2.5 w-20"></th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-100">
@@ -587,7 +619,12 @@ export default function RulesPage() {
                       return (
                         <tr key={t.file} className="hover:bg-blue-50/40 transition-colors">
                           <td className="px-4 py-2.5">
-                            <div className="font-medium text-gray-900">{t.name}</div>
+                            <button
+                              onClick={() => { setSelectedPartner(t.name); setTab('partner') }}
+                              className="font-medium text-blue-600 hover:text-blue-800 hover:underline transition-colors text-left"
+                            >
+                              {t.name}
+                            </button>
                             {profile?.trading_partner && (
                               <div className="text-xs text-gray-400">{profile.trading_partner}</div>
                             )}
@@ -596,6 +633,14 @@ export default function RulesPage() {
                           <td className="px-4 py-2.5"><CountBadge count={t.ignore_count} label="" color="bg-gray-100 text-gray-600" /></td>
                           <td className="px-4 py-2.5 text-xs text-gray-500">
                             Universal{txnType ? ` + ${txnType}` : ''}
+                          </td>
+                          <td className="px-4 py-2.5 text-right">
+                            <button
+                              onClick={() => { setSelectedPartner(t.name); setTab('partner') }}
+                              className="text-xs font-medium text-blue-600 hover:text-blue-800"
+                            >
+                              Edit
+                            </button>
                           </td>
                         </tr>
                       )
@@ -719,6 +764,67 @@ export default function RulesPage() {
             </>
           ) : (
             <p className="text-sm text-gray-400 italic mt-2">Select a transaction type above, or create a new one</p>
+          )}
+        </div>
+      )}
+
+      {tab === 'partner' && (
+        <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-6">
+          <h2 className="text-lg font-semibold text-gray-900 mb-4">Partner Rules</h2>
+          <p className="text-sm text-gray-500 mb-4">
+            Profile-specific overrides — most specific tier. These rules take priority over Universal and Transaction-type rules.
+          </p>
+
+          {/* Profile selector */}
+          <div className="flex items-center gap-3 mb-5">
+            <select
+              value={selectedPartner}
+              onChange={e => setSelectedPartner(e.target.value)}
+              className="px-3 py-2 border border-gray-200 rounded-lg text-sm focus:ring-1 focus:ring-blue-400 focus:border-blue-400 outline-none"
+            >
+              <option value="">Select profile...</option>
+              {profiles.map((p: any) => (
+                <option key={p.name} value={p.name}>
+                  {p.name}{p.trading_partner ? ` (${p.trading_partner})` : ''}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {selectedPartner ? (
+            <>
+              {partnerSuccess && (
+                <div className="mb-4 px-4 py-2.5 bg-emerald-50 border border-emerald-200 rounded-lg text-sm text-emerald-700 font-medium">
+                  Partner rules saved successfully
+                </div>
+              )}
+
+              {/* Tier inheritance info */}
+              <div className="mb-5 px-4 py-3 bg-blue-50 border border-blue-100 rounded-lg text-sm text-blue-700">
+                These rules override Universal{(() => {
+                  const profile = profiles.find((p: any) => p.name === selectedPartner)
+                  return profile?.transaction_type ? ` and ${profile.transaction_type} Transaction-type` : ''
+                })()} rules for this profile.
+              </div>
+
+              <RulesGrid
+                rules={partnerRules}
+                ignores={partnerIgnores}
+                onChange={setPartnerRules}
+                onIgnoreChange={setPartnerIgnores}
+              />
+              <div className="flex justify-end mt-6 pt-4 border-t border-gray-100">
+                <button
+                  onClick={savePartner}
+                  disabled={partnerSaving}
+                  className="px-5 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-colors"
+                >
+                  {partnerSaving ? 'Saving...' : 'Save'}
+                </button>
+              </div>
+            </>
+          ) : (
+            <p className="text-sm text-gray-400 italic mt-2">Select a profile above to edit its partner-specific rules</p>
           )}
         </div>
       )}

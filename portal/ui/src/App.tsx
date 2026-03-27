@@ -60,7 +60,7 @@ function App() {
         {page === 'pipeline' && <PipelinePage />}
         {page === 'tests' && <TestsPage />}
         {page === 'compare' && <ComparePage onNavigate={(p) => setPage(p as Page)} />}
-        {page === 'rules' && <RulesPage />}
+        {page === 'rules' && <RulesPage onNavigate={(p) => setPage(p as Page)} />}
         {page === 'onboard' && <OnboardPage onNavigate={(p) => setPage(p as Page)} />}
         {page === 'config' && <ConfigPage />}
       </main>

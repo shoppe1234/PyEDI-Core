@@ -10,7 +10,7 @@ import os
 
 import yaml
 
-from pyedi_core.comparator.models import CompareRules, FieldRule, TieredRules
+from pyedi_core.comparator.models import CompareRules, FieldRule, ResolvedFieldRule, TieredRules
 
 
 def load_rules(rules_path: str) -> CompareRules:
@@ -140,6 +140,40 @@ def get_field_rule(rules: CompareRules, segment: str, field: str) -> FieldRule:
 
     # Default: hard severity, exact match
     return FieldRule(segment=segment, field=field, severity="hard")
+
+
+def get_resolved_field_rule(
+    tiered: TieredRules, segment: str, field: str
+) -> ResolvedFieldRule:
+    """Resolve rule for (segment, field) across tiers, annotating which tier it came from.
+
+    Resolution order: partner → transaction → universal → default.
+    Within each tier, uses the same wildcard chain as get_field_rule().
+    """
+    for tier_name, tier_rules in [
+        ("partner", tiered.partner),
+        ("transaction", tiered.transaction),
+        ("universal", tiered.universal),
+    ]:
+        if not tier_rules.classification:
+            continue
+        lookup = {(r.segment, r.field): r for r in tier_rules.classification}
+
+        # Same priority chain as get_field_rule()
+        for key in [
+            (segment, field),
+            (segment, "*"),
+            ("*", field),
+            ("*", "*"),
+        ]:
+            if key in lookup:
+                return ResolvedFieldRule(rule=lookup[key], tier=tier_name)
+
+    # No rule in any tier — hardcoded default
+    return ResolvedFieldRule(
+        rule=FieldRule(segment=segment, field=field, severity="hard"),
+        tier="default",
+    )
 
 
 def is_wildcard_match(rules: CompareRules, segment: str, field: str) -> bool:

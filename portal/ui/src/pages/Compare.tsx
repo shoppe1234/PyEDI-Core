@@ -379,6 +379,14 @@ export default function ComparePage({ onNavigate }: { onNavigate?: (page: string
           >
             {rulesSaving ? 'Saving...' : 'Save Rules'}
           </button>
+          {onNavigate && (
+            <button
+              onClick={() => onNavigate('rules')}
+              className="mt-2 ml-2 border border-gray-300 text-gray-600 px-4 py-1.5 rounded text-sm hover:bg-gray-50"
+            >
+              Open Rules Manager &rarr;
+            </button>
+          )}
         </div>
       )}
 

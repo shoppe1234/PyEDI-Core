@@ -673,6 +673,11 @@ function StepRules({
       <Card>
         <CardHeader title="Compare Rules" badge={`${rules.length} rules`} badgeColor="indigo" />
 
+        <div className="mb-4 px-4 py-2.5 bg-blue-50 border border-blue-100 rounded-lg text-sm text-blue-700">
+          These are partner-specific rules. Universal and transaction-type rules (if configured)
+          will also apply automatically. Manage rule tiers in the Rules page.
+        </div>
+
         <div className="overflow-auto max-h-[28rem] rounded-lg border border-gray-100">
           <table className="w-full text-sm text-left">
             <thead className="bg-gray-50 sticky top-0 z-10">

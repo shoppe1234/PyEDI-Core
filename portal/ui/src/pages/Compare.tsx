@@ -382,7 +382,7 @@ export default function ComparePage({ onNavigate }: { onNavigate?: (page: string
           {onNavigate && (
             <button
               onClick={() => onNavigate('rules')}
-              className="mt-2 ml-2 border border-gray-300 text-gray-600 px-4 py-1.5 rounded text-sm hover:bg-gray-50"
+              className="mt-2 ml-2 text-blue-600 hover:text-blue-800 hover:underline px-4 py-1.5 text-sm cursor-pointer transition-colors"
             >
               Open Rules Manager &rarr;
             </button>
@@ -423,7 +423,8 @@ export default function ComparePage({ onNavigate }: { onNavigate?: (page: string
                 <tr
                   key={r.run_id}
                   onClick={() => selectRun(r)}
-                  className={`cursor-pointer hover:bg-blue-50 ${selectedRun?.run_id === r.run_id ? 'bg-blue-50' : ''}`}
+                  className={`cursor-pointer hover:bg-blue-50 hover:underline-offset-2 transition-colors ${selectedRun?.run_id === r.run_id ? 'bg-blue-100 font-medium' : ''}`}
+                  title="Click to view run details"
                 >
                   <td className="py-1 pr-2" onClick={e => e.stopPropagation()}>
                     <input
@@ -434,7 +435,7 @@ export default function ComparePage({ onNavigate }: { onNavigate?: (page: string
                       className="rounded"
                     />
                   </td>
-                  <td className="py-1 pr-2 font-mono">
+                  <td className="py-1 pr-2 font-mono text-blue-600 hover:text-blue-800">
                     {r.run_id}
                     {r.reclassified_from && (
                       <span className="ml-1 px-1.5 py-0.5 bg-purple-100 text-purple-700 rounded text-xs">
@@ -442,7 +443,7 @@ export default function ComparePage({ onNavigate }: { onNavigate?: (page: string
                       </span>
                     )}
                   </td>
-                  <td className="py-1 pr-2">{r.started_at?.slice(0, 19)}</td>
+                  <td className="py-1 pr-2">{r.started_at ? new Date(r.started_at).toLocaleString() : ''}</td>
                   <td className="py-1 pr-2">{r.profile}</td>
                   <td className="py-1 pr-2">{r.total_pairs}</td>
                   <td className="py-1 pr-2 text-green-600">{r.matched}</td>
@@ -617,7 +618,8 @@ export default function ComparePage({ onNavigate }: { onNavigate?: (page: string
                   <tr
                     key={p.id}
                     onClick={() => p.status !== 'MATCH' && selectPair(p)}
-                    className={`${p.status !== 'MATCH' ? 'cursor-pointer hover:bg-blue-50' : ''} ${selectedPair?.id === p.id ? 'bg-blue-50' : ''}`}
+                    className={`${p.status !== 'MATCH' ? 'cursor-pointer hover:bg-blue-50 transition-colors' : ''} ${selectedPair?.id === p.id ? 'bg-blue-100 font-medium' : ''}`}
+                    title={p.status !== 'MATCH' ? 'Click to view diffs' : undefined}
                   >
                     <td className="py-1 pr-2 font-mono text-xs truncate max-w-48">{p.source_file?.split(/[/\\]/).pop()}</td>
                     <td className="py-1 pr-2 font-mono text-xs truncate max-w-48">{p.target_file?.split(/[/\\]/).pop() || '—'}</td>

@@ -1,6 +1,7 @@
 # Root-Level Utility Scripts — Summary & Recommendations
 
 **Date:** 2026-03-17
+**Updated:** 2026-03-27
 
 ---
 
@@ -73,7 +74,7 @@
 
 **Issues:**
 - Package list is manually maintained — can drift from `pyproject.toml`
-- Includes `fastapi`/`uvicorn` (Phase 3, not yet implemented)
+- Includes `fastapi`/`uvicorn` (now active — portal runs on FastAPI :8000 with React UI :5173)
 - **Recommendation:** Consolidate with `verify_structure.py` into a single `verify.py` or fold into `pyedi test --verify-env`
 
 **Dependencies:** `sys`, `importlib` (stdlib only, by design)
@@ -112,3 +113,19 @@ ABSORB INTO TEST HARNESS (1 file):
 ```
 
 Net result: 6 root scripts → 0-1 root scripts (functionality moves into `pyedi` CLI)
+
+---
+
+## Recent Feature Additions (since 2026-03-17)
+
+The following major features have been added and are **not covered** by the scripts above — they are implemented in the core engine, API, and portal UI:
+
+| Feature | Components | Commits |
+|---------|-----------|---------|
+| **Fixed-width file support** | `csv_handler` positional reader, compiler width metadata, wizard UI | `b73f658`, `759fd1c`, `ad88467` |
+| **Onboarding wizard** | 3-step UI (compile, register, rules), API endpoints | `308526b`, `99b4145` |
+| **Tiered compare rules** | 3-tier loading (universal/transaction/partner), merge + resolution | `6f80b55` → `c0e5189` |
+| **Rules Manager UI** | 4-tab layout, CRUD, searchable field/segment dropdowns, clickable profiles | `e85cd0b` → `194b402` |
+| **Rules API** | Tier CRUD endpoints, effective-rules view | `f89cebe` |
+| **Compare engine enhancements** | Reclassify, run-diff, error discovery, CSV export | Ported from json810Compare |
+| **Portal UI polish** | Link hover/cursor affordances, localized date/time display | Pending commit |

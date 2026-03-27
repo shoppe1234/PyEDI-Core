@@ -41,7 +41,7 @@ function App() {
             <button
               key={n.key}
               onClick={() => setPage(n.key)}
-              className={`block w-full text-left px-4 py-2 text-sm hover:bg-gray-800 ${
+              className={`block w-full text-left px-4 py-2 text-sm cursor-pointer hover:bg-gray-800 hover:text-white transition-colors ${
                 page === n.key ? 'bg-gray-800 text-white font-medium' : ''
               }`}
             >

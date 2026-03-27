@@ -1,0 +1,21 @@
+# Universal rules — apply to ALL compare profiles.
+# Partner and transaction-type rules override these.
+
+classification: []
+
+ignore:
+  - segment: "ISA"
+    field: "*"
+    reason: "Envelope-level fields — not business data"
+  - segment: "GS"
+    field: "*"
+    reason: "Functional group envelope — not business data"
+  - segment: "SE"
+    field: "SE01"
+    reason: "Segment count varies by implementation"
+  - segment: "GE"
+    field: "*"
+    reason: "Functional group trailer — not business data"
+  - segment: "IEA"
+    field: "*"
+    reason: "Interchange trailer — not business data"

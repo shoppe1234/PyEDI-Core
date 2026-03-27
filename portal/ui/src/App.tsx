@@ -32,8 +32,8 @@ function App() {
 
   return (
     <div className="flex h-screen bg-gray-50 text-gray-900">
-      <nav className="w-56 bg-gray-900 text-gray-200 flex flex-col">
-        <div className="px-4 py-4 text-lg font-bold tracking-tight text-white">
+      <nav className="w-56 bg-white border-r border-gray-200 text-gray-600 flex flex-col">
+        <div className="px-4 py-4 text-lg font-bold tracking-tight text-gray-900">
           PyEDI Portal
         </div>
         <div className="flex-1">
@@ -41,16 +41,18 @@ function App() {
             <button
               key={n.key}
               onClick={() => setPage(n.key)}
-              className={`block w-full text-left px-4 py-2 text-sm cursor-pointer hover:bg-gray-800 hover:text-white transition-colors ${
-                page === n.key ? 'bg-gray-800 text-white font-medium' : ''
+              className={`block w-full text-left px-4 py-2 text-sm cursor-pointer transition-colors ${
+                page === n.key
+                  ? 'bg-blue-50 text-blue-700 font-medium border-l-[3px] border-blue-500'
+                  : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
               }`}
             >
               {n.label}
             </button>
           ))}
         </div>
-        <div className="px-4 py-3 text-xs text-gray-500">
-          API: <span className={health === 'ok' ? 'text-green-400' : 'text-red-400'}>{health}</span>
+        <div className="px-4 py-3 text-xs text-gray-400">
+          API: <span className={health === 'ok' ? 'text-green-500' : 'text-red-500'}>{health}</span>
         </div>
       </nav>
 

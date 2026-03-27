@@ -1,4 +1,5 @@
-import { InfographicThemeProps, WORKFLOW_STEPS, CLI_COMMANDS, QUICK_TIPS } from './types'
+import type { InfographicThemeProps } from './types'
+import { WORKFLOW_STEPS, CLI_COMMANDS, QUICK_TIPS } from './types'
 
 function CopyIcon() {
   return (

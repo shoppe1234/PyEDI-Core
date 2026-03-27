@@ -1,4 +1,5 @@
-import { InfographicThemeProps, WORKFLOW_STEPS, CLI_COMMANDS, QUICK_TIPS } from './types'
+import type { InfographicThemeProps } from './types'
+import { WORKFLOW_STEPS, CLI_COMMANDS, QUICK_TIPS } from './types'
 
 const NOTE_COLORS = ['bg-yellow-200', 'bg-blue-200', 'bg-green-200', 'bg-orange-200', 'bg-pink-200']
 const NOTE_ROTATIONS = ['-rotate-2', 'rotate-[2.5deg]', '-rotate-[1.5deg]', 'rotate-3', '-rotate-[2.8deg]']

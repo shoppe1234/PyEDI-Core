@@ -1,4 +1,5 @@
-import { InfographicThemeProps, WORKFLOW_STEPS, CLI_COMMANDS, QUICK_TIPS } from './types'
+import type { InfographicThemeProps } from './types'
+import { WORKFLOW_STEPS, CLI_COMMANDS, QUICK_TIPS } from './types'
 
 function BlueprintIcon({ step }: { step: number }) {
   const common = { fill: 'none', stroke: '#22d3ee', strokeWidth: 1.5, strokeLinecap: 'round' as const, strokeLinejoin: 'round' as const }

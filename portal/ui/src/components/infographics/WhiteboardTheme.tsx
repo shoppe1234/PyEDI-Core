@@ -1,4 +1,5 @@
-import { InfographicThemeProps, WORKFLOW_STEPS, CLI_COMMANDS, QUICK_TIPS } from './types'
+import type { InfographicThemeProps } from './types'
+import { WORKFLOW_STEPS, CLI_COMMANDS, QUICK_TIPS } from './types'
 
 const STEP_COLORS = [
   { border: 'border-blue-500', text: 'text-blue-500', bg: 'bg-blue-500', stroke: '#3b82f6', hoverBorder: 'hover:border-blue-500' },

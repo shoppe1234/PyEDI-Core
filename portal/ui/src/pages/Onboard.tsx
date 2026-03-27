@@ -17,6 +17,7 @@ interface RuleRow {
   ignore_case: boolean
   numeric: boolean
   dsl_type?: string
+  record_name?: string
 }
 
 interface WizardState {
@@ -626,6 +627,8 @@ function StepRules({
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
   const [saved, setSaved] = useState(false)
+  const [ruleSearch, setRuleSearch] = useState('')
+  const [collapsedRuleRecords, setCollapsedRuleRecords] = useState<Set<string>>(new Set())
 
   // Load template on mount
   useEffect(() => {
@@ -633,9 +636,9 @@ function StepRules({
     setLoading(true)
     api.onboardRulesTemplate(wizard.compiledYamlPath)
       .then(data => {
-        const rows: RuleRow[] = data.classification.map(r => {
+        const rows: RuleRow[] = data.classification.map((r: any) => {
           const col = wizard.columns.find(c => c.name === r.field)
-          return { ...r, dsl_type: col?.dsl_type || col?.compiled_type || '' }
+          return { ...r, dsl_type: col?.dsl_type || col?.compiled_type || '', record_name: r.record_name || col?.record_name || '' }
         })
         setRules(rows)
       })
@@ -647,12 +650,52 @@ function StepRules({
     setRules(prev => prev.map((r, i) => i === idx ? { ...r, ...patch } : r))
   }
 
+  const groupedRules: {
+    groups: Map<string, { rules: RuleRow[]; indices: number[] }>
+    catchAll: { rule: RuleRow; index: number } | null
+  } = useMemo(() => {
+    const groups = new Map<string, { rules: RuleRow[]; indices: number[] }>()
+    const search = ruleSearch.toLowerCase()
+    let catchAll: { rule: RuleRow; index: number } | null = null
+
+    rules.forEach((r, i) => {
+      if (r.segment === '*' && r.field === '*') {
+        catchAll = { rule: r, index: i }
+        return
+      }
+      if (search && !r.field.toLowerCase().includes(search)) return
+
+      const key = r.record_name || '(ungrouped)'
+      if (!groups.has(key)) groups.set(key, { rules: [], indices: [] })
+      const g = groups.get(key)!
+      g.rules.push(r)
+      g.indices.push(i)
+    })
+    return { groups, catchAll }
+  }, [rules, ruleSearch])
+
+  const setRecordSeverity = (recordName: string, severity: string) => {
+    setRules(prev => prev.map(r =>
+      r.record_name === recordName && !(r.segment === '*' && r.field === '*')
+        ? { ...r, severity }
+        : r
+    ))
+  }
+
+  const toggleRuleRecord = (name: string) => {
+    setCollapsedRuleRecords(prev => {
+      const next = new Set(prev)
+      next.has(name) ? next.delete(name) : next.add(name)
+      return next
+    })
+  }
+
   const saveRules = async () => {
     setError('')
     setSaving(true)
     try {
       const payload = {
-        classification: rules.map(({ dsl_type, ...r }) => r),
+        classification: rules.map(({ dsl_type, record_name, ...r }) => r),
         ignore: [],
       }
       await api.compareUpdateRules(wizard.profileName, payload)
@@ -731,70 +774,119 @@ function StepRules({
           will also apply automatically. Manage rule tiers in the Rules page.
         </div>
 
+        <input
+          type="text"
+          placeholder="Search rules..."
+          value={ruleSearch}
+          onChange={e => setRuleSearch(e.target.value)}
+          className="w-full px-3 py-1.5 border border-gray-200 rounded text-sm mb-3"
+        />
+
         <div className="overflow-auto max-h-[28rem] rounded-lg border border-gray-100">
-          <table className="w-full text-sm text-left">
-            <thead className="bg-gray-50 sticky top-0 z-10">
-              <tr>
-                <Th>Field</Th>
-                <Th>DSL Type</Th>
-                <Th>Severity</Th>
-                <Th align="center">Numeric</Th>
-                <Th align="center">Ignore Case</Th>
-              </tr>
-            </thead>
-            <tbody>
-              {rules.map((r, i) => {
-                const isCatchAll = r.segment === '*' && r.field === '*'
-                return (
-                  <tr
-                    key={i}
-                    className={`border-t border-gray-50 transition-colors hover:bg-indigo-50/40
-                      ${i % 2 === 0 ? 'bg-white' : 'bg-gray-50/50'}
-                      ${isCatchAll ? 'bg-gray-100/60' : ''}
-                    `}
+          {Array.from(groupedRules.groups.entries()).map(([recordName, { rules: recordRules, indices }]) => (
+            <div key={recordName} className="mb-2">
+              {groupedRules.groups.size > 1 && (
+                <div className="flex items-center justify-between px-3 py-2 bg-indigo-50 rounded-t">
+                  <button
+                    onClick={() => toggleRuleRecord(recordName)}
+                    className="flex items-center gap-2 text-sm font-semibold text-indigo-800 hover:text-indigo-900"
                   >
-                    <td className="px-3 py-1.5 font-mono text-xs font-medium text-gray-800">
-                      {isCatchAll ? (
-                        <span className="text-gray-400 italic">* / * (catch-all)</span>
-                      ) : r.field}
-                    </td>
-                    <td className="px-3 py-1.5 text-gray-500 text-xs">{isCatchAll ? '' : r.dsl_type}</td>
+                    <span>{collapsedRuleRecords.has(recordName) ? '\u25B6' : '\u25BC'}</span>
+                    <span>{recordName} <span className="font-normal text-indigo-500">({recordRules.length} rules)</span></span>
+                  </button>
+                  <select
+                    className="text-xs border border-indigo-200 rounded px-2 py-1 bg-white text-indigo-700"
+                    value=""
+                    onChange={e => { if (e.target.value) setRecordSeverity(recordName, e.target.value) }}
+                  >
+                    <option value="">Set all...</option>
+                    <option value="hard">hard</option>
+                    <option value="soft">soft</option>
+                    <option value="ignore">ignore</option>
+                  </select>
+                </div>
+              )}
+              {!collapsedRuleRecords.has(recordName) && (
+                <table className="w-full text-sm text-left">
+                  <thead className="bg-gray-50 sticky top-0 z-10">
+                    <tr>
+                      <Th>Field</Th>
+                      <Th>DSL Type</Th>
+                      <Th>Severity</Th>
+                      <Th align="center">Numeric</Th>
+                      <Th align="center">Ignore Case</Th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {recordRules.map((r, j) => {
+                      const idx = indices[j]
+                      return (
+                        <tr key={idx} className={j % 2 === 0 ? 'bg-white' : 'bg-gray-50/50'}>
+                          <td className="px-3 py-1.5 font-mono text-xs font-medium text-gray-800">{r.field}</td>
+                          <td className="px-3 py-1.5 text-gray-500 text-xs">{r.dsl_type}</td>
+                          <td className="px-3 py-1.5">
+                            <select
+                              value={r.severity}
+                              onChange={e => updateRule(idx, { severity: e.target.value })}
+                              className={`text-xs border rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-indigo-200
+                                ${r.severity === 'hard' ? 'border-red-200 bg-red-50 text-red-700'
+                                  : r.severity === 'soft' ? 'border-amber-200 bg-amber-50 text-amber-700'
+                                  : 'border-gray-200 bg-gray-50 text-gray-500'
+                                }`}
+                            >
+                              <option value="hard">hard</option>
+                              <option value="soft">soft</option>
+                              <option value="ignore">ignore</option>
+                            </select>
+                          </td>
+                          <td className="px-3 py-1.5 text-center">
+                            <input type="checkbox" checked={r.numeric} onChange={e => updateRule(idx, { numeric: e.target.checked })}
+                              className="w-4 h-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500" />
+                          </td>
+                          <td className="px-3 py-1.5 text-center">
+                            <input type="checkbox" checked={r.ignore_case} onChange={e => updateRule(idx, { ignore_case: e.target.checked })}
+                              className="w-4 h-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500" />
+                          </td>
+                        </tr>
+                      )
+                    })}
+                  </tbody>
+                </table>
+              )}
+            </div>
+          ))}
+
+          {/* Catch-all rule */}
+          {groupedRules.catchAll && (
+            <div className="mt-4 border-t border-gray-200 pt-3">
+              <table className="w-full text-sm text-left">
+                <tbody>
+                  <tr className="bg-gray-50/50">
+                    <td className="px-3 py-1.5 font-mono text-xs text-gray-400 italic">* / * (catch-all)</td>
+                    <td className="px-3 py-1.5"></td>
                     <td className="px-3 py-1.5">
-                      <select
-                        value={r.severity}
-                        onChange={e => updateRule(i, { severity: e.target.value })}
-                        className={`text-xs border rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-indigo-200
-                          ${r.severity === 'hard' ? 'border-red-200 bg-red-50 text-red-700'
-                            : r.severity === 'soft' ? 'border-amber-200 bg-amber-50 text-amber-700'
-                            : 'border-gray-200 bg-gray-50 text-gray-500'
-                          }`}
-                      >
+                      <select value={groupedRules.catchAll.rule.severity}
+                        onChange={e => updateRule(groupedRules.catchAll!.index, { severity: e.target.value })}
+                        className="text-xs border border-gray-200 rounded px-2 py-1">
                         <option value="hard">hard</option>
                         <option value="soft">soft</option>
                         <option value="ignore">ignore</option>
                       </select>
                     </td>
                     <td className="px-3 py-1.5 text-center">
-                      <input
-                        type="checkbox"
-                        checked={r.numeric}
-                        onChange={e => updateRule(i, { numeric: e.target.checked })}
-                        className="w-4 h-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                      />
+                      <input type="checkbox" checked={groupedRules.catchAll.rule.numeric}
+                        onChange={e => updateRule(groupedRules.catchAll!.index, { numeric: e.target.checked })} />
                     </td>
                     <td className="px-3 py-1.5 text-center">
-                      <input
-                        type="checkbox"
-                        checked={r.ignore_case}
-                        onChange={e => updateRule(i, { ignore_case: e.target.checked })}
-                        className="w-4 h-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                      />
+                      <input type="checkbox" checked={groupedRules.catchAll.rule.ignore_case}
+                        onChange={e => updateRule(groupedRules.catchAll!.index, { ignore_case: e.target.checked })} />
                     </td>
                   </tr>
-                )
-              })}
-            </tbody>
-          </table>
+                </tbody>
+              </table>
+              <p className="text-xs text-gray-400 mt-1 px-3">Applies to any field not matched by a specific rule above.</p>
+            </div>
+          )}
         </div>
 
         <div className="mt-4">

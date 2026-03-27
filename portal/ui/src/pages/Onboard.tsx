@@ -407,7 +407,7 @@ function StepRegister({
     setError('')
     setLoading(true)
     try {
-      const matchKey = matchKeyType === 'json'
+      const matchKey: Record<string, string> = matchKeyType === 'json'
         ? { json_path: `header.${jsonField}` }
         : { segment: x12Segment, field: x12Field }
 
@@ -440,19 +440,20 @@ function StepRegister({
       <Card>
         <CardHeader title="Register Trading Partner" />
 
+        <p className="text-xs text-gray-400 mb-3"><span className="text-red-500">*</span> Required</p>
         <div className="grid grid-cols-2 gap-4">
           <div>
             <Input label="Profile Name" value={profileName}
               onChange={v => setProfileName(v.toLowerCase().replace(/[^a-z0-9_]/g, ''))}
-              placeholder="bevager_810" />
+              placeholder="bevager_810" required />
             {profileName && !profileNameValid && (
               <p className="text-xs text-red-500 mt-1">Lowercase letters, numbers, underscores only</p>
             )}
           </div>
           <Input label="Trading Partner" value={tradingPartner} onChange={setTradingPartner}
-            placeholder="Bevager" />
+            placeholder="Bevager" required />
           <Input label="Transaction Type" value={transactionType} onChange={setTransactionType}
-            placeholder="810" />
+            placeholder="810" required />
           <Input label="Description" value={description} onChange={setDescription}
             placeholder="Bevager 810 Invoice flat file comparison" />
           <div className="col-span-2">
@@ -545,6 +546,9 @@ function StepRegister({
             <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
           </svg>
         </button>
+        {!success && (
+          <p className="text-xs text-gray-400 mt-1 text-right">Register your partner above before proceeding</p>
+        )}
       </div>
     </div>
   )
@@ -803,12 +807,14 @@ function CardHeader({ title, badge, badgeColor }: { title: string; badge?: strin
   )
 }
 
-function Input({ label, value, onChange, placeholder }: {
-  label: string; value: string; onChange: (v: string) => void; placeholder?: string
+function Input({ label, value, onChange, placeholder, required }: {
+  label: string; value: string; onChange: (v: string) => void; placeholder?: string; required?: boolean
 }) {
   return (
     <div>
-      <label className="block text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">{label}</label>
+      <label className="block text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">
+        {label}{required && <span className="text-red-500 ml-0.5">*</span>}
+      </label>
       <input
         value={value}
         onChange={e => onChange(e.target.value)}

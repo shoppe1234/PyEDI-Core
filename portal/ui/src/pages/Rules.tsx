@@ -1,4 +1,5 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
+import { createPortal } from 'react-dom'
 import { api } from '../api'
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -108,6 +109,19 @@ function FieldCombobox({
   const [open, setOpen] = useState(false)
   const [search, setSearch] = useState('')
   const ref = useRef<HTMLDivElement>(null)
+  const inputRef = useRef<HTMLInputElement>(null)
+  const previousValue = useRef(value)
+  const [dropdownPos, setDropdownPos] = useState<{ top: number; left: number; width: number } | null>(null)
+
+  const updatePosition = useCallback(() => {
+    if (!inputRef.current) return
+    const rect = inputRef.current.getBoundingClientRect()
+    setDropdownPos({
+      top: rect.bottom + 4,
+      left: rect.left,
+      width: rect.width,
+    })
+  }, [])
 
   useEffect(() => {
     const handler = (e: MouseEvent) => {
@@ -117,23 +131,50 @@ function FieldCombobox({
     return () => document.removeEventListener('mousedown', handler)
   }, [])
 
+  useEffect(() => {
+    if (!open) return
+    updatePosition()
+    const onScrollOrResize = () => updatePosition()
+    window.addEventListener('scroll', onScrollOrResize, true)
+    window.addEventListener('resize', onScrollOrResize)
+    return () => {
+      window.removeEventListener('scroll', onScrollOrResize, true)
+      window.removeEventListener('resize', onScrollOrResize)
+    }
+  }, [open, updatePosition])
+
   const filtered = options.filter(o =>
     o.toLowerCase().includes((search || value).toLowerCase())
   )
 
   const hasOptions = options.length > 0
 
+  const handleBlur = () => {
+    setTimeout(() => {
+      setOpen(false)
+      // Revert to previous value if field was cleared
+      if (!value && previousValue.current) {
+        onChange(previousValue.current)
+      }
+    }, 150)
+  }
+
   return (
     <div ref={ref} className="relative">
       <input
+        ref={inputRef}
         value={open ? search : value}
         onChange={e => {
           setSearch(e.target.value)
           onChange(e.target.value)
           if (!open && hasOptions) setOpen(true)
         }}
-        onFocus={() => { setSearch(value); if (hasOptions) setOpen(true) }}
-        onBlur={() => setTimeout(() => setOpen(false), 150)}
+        onFocus={() => {
+          previousValue.current = value
+          setSearch(value)
+          if (hasOptions) setOpen(true)
+        }}
+        onBlur={handleBlur}
         placeholder={placeholder}
         className="w-full px-2 py-1 border border-gray-200 rounded text-xs font-mono focus:ring-1 focus:ring-blue-400 focus:border-blue-400 outline-none pr-6"
       />
@@ -149,8 +190,11 @@ function FieldCombobox({
           </svg>
         </button>
       )}
-      {open && filtered.length > 0 && (
-        <div className="absolute z-50 mt-1 w-full max-h-48 overflow-auto bg-white border border-gray-200 rounded-lg shadow-lg">
+      {open && filtered.length > 0 && dropdownPos && createPortal(
+        <div
+          style={{ position: 'fixed', top: dropdownPos.top, left: dropdownPos.left, width: dropdownPos.width, zIndex: 9999 }}
+          className="max-h-48 overflow-auto bg-white border border-gray-200 rounded-lg shadow-lg"
+        >
           {filtered.map(o => (
             <button
               key={o}
@@ -159,6 +203,7 @@ function FieldCombobox({
                 e.preventDefault()
                 onChange(o)
                 setSearch(o)
+                previousValue.current = o
                 setOpen(false)
               }}
               className={`w-full text-left px-2 py-1.5 text-xs font-mono hover:bg-blue-50 transition-colors ${
@@ -168,7 +213,8 @@ function FieldCombobox({
               {o}
             </button>
           ))}
-        </div>
+        </div>,
+        document.body,
       )}
     </div>
   )
@@ -246,12 +292,14 @@ function RulesGrid({
                 <th className="px-3 py-2.5 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Severity</th>
                 <th className="px-3 py-2.5 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">Numeric</th>
                 <th className="px-3 py-2.5 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">Ignore Case</th>
+                <th className="px-3 py-2.5 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Cond. Qualifier</th>
+                <th className="px-3 py-2.5 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Amt Variance</th>
                 {!readOnly && <th className="px-3 py-2.5 w-10"></th>}
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
               {rules.length === 0 && (
-                <tr><td colSpan={readOnly ? 5 : 6} className="px-3 py-6 text-center text-gray-400 text-sm italic">No classification rules</td></tr>
+                <tr><td colSpan={readOnly ? 7 : 8} className="px-3 py-6 text-center text-gray-400 text-sm italic">No classification rules</td></tr>
               )}
               {rules.map((r, i) => {
                 const segmentNames = fieldOptions.map(s => s.name)
@@ -305,6 +353,33 @@ function RulesGrid({
                     {readOnly ? (r.ignore_case ? <span className="text-emerald-600 text-xs font-medium">Yes</span> : <span className="text-gray-300 text-xs">-</span>) : (
                       <input type="checkbox" checked={r.ignore_case} onChange={e => updateRule(i, { ignore_case: e.target.checked })}
                         className="rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
+                    )}
+                  </td>
+                  <td className="px-3 py-2">
+                    {readOnly ? (
+                      <span className="font-mono text-xs">{r.conditional_qualifier || '-'}</span>
+                    ) : (
+                      <FieldCombobox
+                        value={r.conditional_qualifier || ''}
+                        options={fieldNames}
+                        onChange={v => updateRule(i, { conditional_qualifier: v || null })}
+                        placeholder="e.g. IT108"
+                      />
+                    )}
+                  </td>
+                  <td className="px-3 py-2">
+                    {readOnly ? (
+                      <span className="font-mono text-xs">{r.amount_variance != null ? r.amount_variance : '-'}</span>
+                    ) : (
+                      <input
+                        type="number"
+                        step="0.01"
+                        min="0"
+                        value={r.amount_variance ?? ''}
+                        onChange={e => updateRule(i, { amount_variance: e.target.value ? parseFloat(e.target.value) : null })}
+                        className="w-20 px-2 py-1 border border-gray-200 rounded text-xs font-mono focus:ring-1 focus:ring-blue-400 focus:border-blue-400 outline-none"
+                        placeholder="0.00"
+                      />
                     )}
                   </td>
                   {!readOnly && (
@@ -404,10 +479,10 @@ function RulesGrid({
    MAIN PAGE
    ═══════════════════════════════════════════════════════════════════════════ */
 
-export default function RulesPage({ onNavigate }: { onNavigate?: (page: string) => void }) {
+export default function RulesPage({ onNavigate: _onNavigate }: { onNavigate?: (page: string) => void }) {
   const [tab, setTab] = useState<Tab>('overview')
   const [tiers, setTiers] = useState<TierInfo[]>([])
-  const [loading, setLoading] = useState(false)
+  const [_loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
   // Universal editor state
@@ -487,6 +562,7 @@ export default function RulesPage({ onNavigate }: { onNavigate?: (page: string) 
       }).catch(e => {
         setTxnRules([])
         setTxnIgnores([])
+        setError(e.message)
       })
     }
   }, [selectedTxn, tab])
@@ -500,6 +576,7 @@ export default function RulesPage({ onNavigate }: { onNavigate?: (page: string) 
       }).catch(e => {
         setPartnerRules([])
         setPartnerIgnores([])
+        setError(e.message)
       })
     }
   }, [selectedPartner, tab])
@@ -619,6 +696,39 @@ export default function RulesPage({ onNavigate }: { onNavigate?: (page: string) 
       .then(() => { setPartnerSuccess(true); loadTiers(); setTimeout(() => setPartnerSuccess(false), 3000) })
       .catch(e => setError(e.message))
       .finally(() => setPartnerSaving(false))
+  }
+
+  /* ── Cancel (revert) handlers ── */
+
+  const cancelUniversal = () => {
+    api.ruleUniversal().then(d => {
+      setUniRules((d.classification || []).map(normRule))
+      setUniIgnores((d.ignore || []).map(normIgnore))
+    }).catch(e => setError(e.message))
+  }
+
+  const cancelTransaction = () => {
+    if (!selectedTxn) return
+    api.ruleTransaction(selectedTxn).then(d => {
+      setTxnRules((d.classification || []).map(normRule))
+      setTxnIgnores((d.ignore || []).map(normIgnore))
+    }).catch(e => {
+      setTxnRules([])
+      setTxnIgnores([])
+      setError(e.message)
+    })
+  }
+
+  const cancelPartner = () => {
+    if (!selectedPartner) return
+    api.compareRules(selectedPartner).then(d => {
+      setPartnerRules((d.classification || []).map(normRule))
+      setPartnerIgnores((d.ignore || []).map(normIgnore))
+    }).catch(e => {
+      setPartnerRules([])
+      setPartnerIgnores([])
+      setError(e.message)
+    })
   }
 
   /* ── Computed ── */
@@ -810,13 +920,21 @@ export default function RulesPage({ onNavigate }: { onNavigate?: (page: string) 
         <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-6">
           <div className="flex items-center justify-between mb-5">
             <h2 className="text-lg font-semibold text-gray-900">Universal Rules</h2>
-            <button
-              onClick={saveUniversal}
-              disabled={uniSaving}
-              className="px-5 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-colors"
-            >
-              {uniSaving ? 'Saving...' : 'Save'}
-            </button>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={cancelUniversal}
+                className="px-4 py-2 text-sm font-medium text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={saveUniversal}
+                disabled={uniSaving}
+                className="px-5 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-colors"
+              >
+                {uniSaving ? 'Saving...' : 'Save'}
+              </button>
+            </div>
           </div>
           {uniSuccess && (
             <div className="mb-4 px-4 py-2.5 bg-emerald-50 border border-emerald-200 rounded-lg text-sm text-emerald-700 font-medium">
@@ -927,13 +1045,21 @@ export default function RulesPage({ onNavigate }: { onNavigate?: (page: string) 
                     </button>
                   )}
                 </div>
-                <button
-                  onClick={saveTransaction}
-                  disabled={txnSaving}
-                  className="px-5 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-colors"
-                >
-                  {txnSaving ? 'Saving...' : 'Save'}
-                </button>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={cancelTransaction}
+                    className="px-4 py-2 text-sm font-medium text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={saveTransaction}
+                    disabled={txnSaving}
+                    className="px-5 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-colors"
+                  >
+                    {txnSaving ? 'Saving...' : 'Save'}
+                  </button>
+                </div>
               </div>
             </>
           ) : (
@@ -965,6 +1091,12 @@ export default function RulesPage({ onNavigate }: { onNavigate?: (page: string) 
             </select>
           </div>
 
+          {profiles.length === 0 && (
+            <p className="text-sm text-amber-600 mt-2">
+              No profiles loaded — verify the API is running and check the error banner above.
+            </p>
+          )}
+
           {selectedPartner ? (
             <>
               {partnerSuccess && (
@@ -988,7 +1120,13 @@ export default function RulesPage({ onNavigate }: { onNavigate?: (page: string) 
                 onIgnoreChange={setPartnerIgnores}
                 fieldOptions={partnerFieldOpts}
               />
-              <div className="flex justify-end mt-6 pt-4 border-t border-gray-100">
+              <div className="flex justify-end gap-2 mt-6 pt-4 border-t border-gray-100">
+                <button
+                  onClick={cancelPartner}
+                  className="px-4 py-2 text-sm font-medium text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
+                >
+                  Cancel
+                </button>
                 <button
                   onClick={savePartner}
                   disabled={partnerSaving}
@@ -1048,6 +1186,8 @@ export default function RulesPage({ onNavigate }: { onNavigate?: (page: string) 
                       <th className="px-3 py-2.5 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Severity</th>
                       <th className="px-3 py-2.5 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">Numeric</th>
                       <th className="px-3 py-2.5 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">Ignore Case</th>
+                      <th className="px-3 py-2.5 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Cond. Qualifier</th>
+                      <th className="px-3 py-2.5 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Amt Variance</th>
                       <th className="px-3 py-2.5 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Tier</th>
                     </tr>
                   </thead>
@@ -1063,6 +1203,8 @@ export default function RulesPage({ onNavigate }: { onNavigate?: (page: string) 
                         <td className="px-3 py-2 text-center">
                           {r.ignore_case ? <span className="text-emerald-600 text-xs font-medium">Yes</span> : <span className="text-gray-300 text-xs">-</span>}
                         </td>
+                        <td className="px-3 py-2 font-mono text-xs">{r.conditional_qualifier || '-'}</td>
+                        <td className="px-3 py-2 font-mono text-xs">{r.amount_variance != null ? r.amount_variance : '-'}</td>
                         <td className="px-3 py-2"><TierBadge tier={r.tier} /></td>
                       </tr>
                     ))}

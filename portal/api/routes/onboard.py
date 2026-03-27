@@ -139,6 +139,15 @@ def rules_template(
             detail="No columns found in compiled schema",
         )
 
+    # Build reverse map: field_name -> record_name from schema.records
+    records: Dict[str, List[str]] = schema_data.get("schema", {}).get("records", {})
+    field_to_record: Dict[str, str] = {}
+    for record_key, field_list in records.items():
+        if isinstance(field_list, list):
+            for fname in field_list:
+                if fname not in field_to_record:
+                    field_to_record[fname] = record_key
+
     classification: List[Dict[str, Any]] = []
     for col in columns:
         col_name: str = col.get("name", "")
@@ -160,6 +169,7 @@ def rules_template(
             "severity": severity,
             "ignore_case": ignore_case,
             "numeric": is_numeric,
+            "record_name": field_to_record.get(col_name, ""),
         })
 
     # Catch-all rule
@@ -169,6 +179,7 @@ def rules_template(
         "severity": "hard",
         "ignore_case": False,
         "numeric": False,
+        "record_name": "",
     })
 
     return RulesTemplateResponse(classification=classification, ignore=[])

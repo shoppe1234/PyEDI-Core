@@ -55,7 +55,7 @@ function App() {
       </nav>
 
       <main className="flex-1 overflow-auto p-6">
-        {page === 'dashboard' && <DashboardPage />}
+        {page === 'dashboard' && <DashboardPage onNavigate={(p) => setPage(p as Page)} />}
         {page === 'validate' && <ValidatePage />}
         {page === 'pipeline' && <PipelinePage />}
         {page === 'tests' && <TestsPage />}

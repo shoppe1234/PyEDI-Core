@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { api } from '../api'
+import { useRandomTheme } from '../components/infographics'
 
 function StatCard({ label, value, color }: { label: string; value: number; color?: string }) {
   return (
@@ -10,7 +11,8 @@ function StatCard({ label, value, color }: { label: string; value: number; color
   )
 }
 
-export default function DashboardPage() {
+export default function DashboardPage({ onNavigate }: { onNavigate?: (page: string) => void }) {
+  const { Theme, themeName } = useRandomTheme()
   const [stats, setStats] = useState<any>(null)
   const [recent, setRecent] = useState<any[]>([])
 
@@ -43,6 +45,15 @@ export default function DashboardPage() {
           ))}
         </div>
       )}
+
+      {/* Infographic — randomly selected theme */}
+      <div className="mt-8">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-lg font-bold text-gray-700">How PyEDI Works</h2>
+          <span className="text-xs text-gray-400 italic">Theme: {themeName}</span>
+        </div>
+        <Theme onNavigate={onNavigate} />
+      </div>
     </div>
   )
 }

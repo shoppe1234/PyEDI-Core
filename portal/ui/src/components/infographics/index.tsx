@@ -2,20 +2,20 @@ import { useMemo } from 'react'
 import type React from 'react'
 import type { InfographicThemeProps } from './types'
 import WhiteboardTheme from './WhiteboardTheme'
-import BlueprintTheme from './BlueprintTheme'
+import WatercolorTheme from './WatercolorTheme'
 import StickyNotesTheme from './StickyNotesTheme'
-import TerminalTheme from './TerminalTheme'
+import RetroArcadeTheme from './RetroArcadeTheme'
 
 export type { InfographicThemeProps } from './types'
 
 const THEMES: React.ComponentType<InfographicThemeProps>[] = [
   WhiteboardTheme,
-  BlueprintTheme,
+  WatercolorTheme,
   StickyNotesTheme,
-  TerminalTheme,
+  RetroArcadeTheme,
 ]
 
-export const THEME_NAMES = ['Whiteboard Sketch', 'Blueprint', 'Sticky Notes & Yarn', 'Terminal'] as const
+export const THEME_NAMES = ['Whiteboard Sketch', 'Watercolor', 'Sticky Notes & Yarn', 'Retro Arcade'] as const
 
 /**
  * Returns a random infographic theme component, stable for the lifetime of the component.
@@ -35,4 +35,4 @@ export function useRandomTheme(): {
   }, [])
 }
 
-export { WhiteboardTheme, BlueprintTheme, StickyNotesTheme, TerminalTheme }
+export { WhiteboardTheme, WatercolorTheme, StickyNotesTheme, RetroArcadeTheme }

@@ -8,12 +8,21 @@
   background-size: 20px 20px;
 }
 
-/* Blueprint grid background */
-.blueprint-bg {
+/* Watercolor wash background */
+.watercolor-bg {
+  background-color: #fefcf8;
   background-image:
-    linear-gradient(rgba(103, 232, 249, 0.1) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(103, 232, 249, 0.1) 1px, transparent 1px);
-  background-size: 24px 24px;
+    radial-gradient(ellipse at 15% 30%, rgba(244, 114, 182, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 75% 20%, rgba(45, 212, 191, 0.07) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 75%, rgba(251, 191, 36, 0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 85% 70%, rgba(167, 139, 250, 0.06) 0%, transparent 40%);
+}
+
+/* Retro arcade pixel-grid background */
+.arcade-bg {
+  background-color: #fffbf0;
+  background-image: radial-gradient(circle, rgba(139, 92, 246, 0.12) 1px, transparent 1px);
+  background-size: 16px 16px;
 }
 
 /* Cork texture background */
@@ -25,20 +34,6 @@
   background-color: #f5e6d3;
 }
 
-/* Terminal scanline overlay */
-.scanline::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: repeating-linear-gradient(
-    transparent,
-    transparent 2px,
-    rgba(0, 0, 0, 0.03) 2px,
-    rgba(0, 0, 0, 0.03) 4px
-  );
-  pointer-events: none;
-}
-
 /* SVG draw-on animation */
 @keyframes sketch-draw {
   from { stroke-dashoffset: 1000; }
@@ -47,16 +42,6 @@
 
 .animate-draw {
   animation: sketch-draw 1.5s ease-out forwards;
-}
-
-/* Typing cursor animation */
-@keyframes blink-cursor {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
-}
-
-.animate-cursor {
-  animation: blink-cursor 1s step-end infinite;
 }
 
 /* Gentle float for sticky notes */

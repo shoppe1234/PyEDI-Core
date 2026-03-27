@@ -1,5 +1,20 @@
 # TODO
 
+## Completed (2026-03-27)
+
+### XSD-Driven XML Import Pipeline (`364c66d`)
+
+- [x] **XmlSchemaEntry config model** — `pyedi_core/config/__init__.py`. Mirrors `CsvSchemaEntry`. Fields: `source_xsd`, `compiled_output`, `inbound_dir`, `transaction_type`, `namespace`.
+- [x] **XSD Compiler** — `parse_xsd_file()`, `_compile_xsd_to_yaml()`, `compile_xsd()` added to `schema_compiler.py`. Recursively walks xs:element tree, identifies transmission/header/line hierarchy, flattens nested elements to dot-notation paths. Same SHA-256 hash/archive/cache pattern as `compile_dsl()`.
+- [x] **XMLHandler schema-aware parsing** — `set_compiled_yaml_path()`, `_strip_namespace()` (handles both Clark `{uri}Tag` and `prefix:Tag` notation), `_parse_schema_aware_xml()` (navigates xml_config paths, returns `{header, lines, summary}`), `write_split()` (writes one JSON per transaction keyed by header field).
+- [x] **Pipeline XML registry routing** — `_resolve_xml_schema()` mirrors `_resolve_csv_schema()`. `.xml`/`.cxml` branch in `_process_single()` calls `compile_xsd()`, loads compiled map, sets compiled path on driver.
+- [x] **`pyedi validate --xsd` command** — `--dsl` made optional, `--xsd` added. `validate_xsd()` in `validator.py` compiles XSD, returns `ValidationResult` with optional sample XML field tracing.
+- [x] **Config: `xml_schema_registry`** — Two entries (darden_asbn_control, darden_asbn_test) in `config/config.yaml`.
+- [x] **Config: `darden_asbn` compare profile** — `json_path: header.InvoiceNumber` match key, `config/compare_rules/darden_asbn.yaml` rules.
+- [x] **Darden ASBN test artifacts** — `artifacts/darden/DardenInvoiceASBN.xsd` + 3 ca-source (control) + 3 na-source (test) XML invoices. na-source diffs: File 1 financial (InvoiceTotal/UnitPrice), File 2 case-only Description, File 3 extra line item.
+- [x] **8 new tests** — `TestXsdCompiler` (3), `TestXmlHandler` (3), `TestValidateXsd` (2). Total: 205 passing.
+- [x] **End-to-end compare verified** — 3 pairs matched by InvoiceNumber, correct hard/structural diffs detected, CSV exported to `reports/compare/compare_run_85.csv`.
+
 ## Completed (2026-03-26)
 
 ### SQLite Comparator Parity (from sqlLiteReport.md)

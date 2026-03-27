@@ -195,11 +195,14 @@ csv_schema_registry:
     compiled_output: ./schemas/compiled/margin_edge_810_map.yaml
     inbound_dir: ./inbound/csv/margin_edge
     transaction_type: '810'
-  gfs_ca_810:
-    source_dsl: ./schemas/source/gfsGenericOut810FF.txt
-    compiled_output: ./schemas/compiled/gfs_ca_810_map.yaml
-    inbound_dir: ./inbound/csv/gfs_ca
-    transaction_type: '810'
+
+xml_schema_registry:
+  darden_asbn_control:
+    source_xsd: ./artifacts/darden/DardenInvoiceASBN.xsd
+    compiled_output: ./schemas/compiled/DardenInvoiceASBN_map.yaml
+    inbound_dir: ./artifacts/darden/ca-source
+    transaction_type: DARDEN_ASBN
+    namespace: "http://DRI.iKitchen.BTS.Shared.Schemas.AdvancedShippingNotification.InBoundASN"
 ```
 
 ### Run
@@ -218,22 +221,27 @@ pyedi --dry-run --file data/input.csv
 pyedi --verbose --file data/input.csv
 ```
 
-### Validate DSL Schemas
+### Validate DSL and XSD Schemas
 
-The `validate` subcommand compiles a DSL schema, inspects the output, and optionally traces mappings against a sample file:
+The `validate` subcommand compiles a DSL or XSD schema, inspects the output, and optionally traces mappings against a sample file:
 
 ```bash
-# Compile and inspect a DSL file
+# Compile and inspect a DSL flat-file schema
 pyedi validate --dsl tpm810SourceFF.txt
 
-# Validate with a sample data file (shows mapping coverage + field traces)
+# Compile and inspect an XSD schema
+pyedi validate --xsd artifacts/darden/DardenInvoiceASBN.xsd
+
+# Validate XSD with a sample XML (shows mapping coverage + field traces)
+pyedi validate --xsd artifacts/darden/DardenInvoiceASBN.xsd \
+               --sample artifacts/darden/ca-source/ASBN20260322T233555600_HS00.XML \
+               --verbose
+
+# DSL: validate with a sample data file
 pyedi validate --dsl tpm810SourceFF.txt --sample data/sample.txt
 
 # Machine-readable JSON output
 pyedi validate --dsl tpm810SourceFF.txt --json
-
-# Verbose mode (all columns + all field traces)
-pyedi validate --dsl tpm810SourceFF.txt --sample data/sample.txt --verbose
 ```
 
 ### Web Portal
@@ -271,9 +279,11 @@ pyedi compare --profile 810_invoice --source-dir src/ --target-dir tgt/ --export
 
 Profiles are defined in `config/config.yaml` under `compare.profiles`. Each profile specifies a match key (e.g., `BIG:BIG02` for 810 invoices), segment qualifiers, and a rules YAML file. Adding a new transaction type is a config change — no code changes required.
 
-Built-in profiles: `810_invoice`, `850_purchase_order`, `855_po_ack`, `856_asn`, `860_po_change`, `820_payment`, `csv_generic`, `cxml_generic`, `bevager_810`.
+Built-in profiles: `810_invoice`, `850_purchase_order`, `855_po_ack`, `856_asn`, `860_po_change`, `820_payment`, `csv_generic`, `cxml_generic`, `bevager_810`, `darden_asbn`.
 
 Flat file compare mode (`_compare_flat_dict`) handles structured JSON with `{header, lines, summary}` by matching lines positionally. The `scaffold-rules` CLI command auto-generates compare rules YAML from compiled schemas. Runtime severity overrides are stored in the `field_crosswalk` SQLite table with `amount_variance` support for numeric tolerance.
+
+XML compare uses `json_path` match keys (e.g., `header.InvoiceNumber`) against structured JSON produced by the XSD pipeline, with the same profile/rules/SQLite flow as CSV and X12 compare.
 
 Results are stored in SQLite (`data/compare.db`) and queryable from both CLI and portal.
 
@@ -281,12 +291,13 @@ Results are stored in SQLite (`data/compare.db`) and queryable from both CLI and
 
 ## Supported Formats
 
-| Format | Extension | Driver |
-|--------|-----------|--------|
-| CSV | .csv | CSVHandler |
-| X12 EDI | .x12, .edi | X12Handler |
-| XML | .xml | XMLHandler |
-| cXML | .cxml | XMLHandler |
+| Format | Extension | Driver | Schema Source |
+|--------|-----------|--------|---------------|
+| CSV / Flat-file | .csv, .txt | CSVHandler | Proprietary DSL (.txt) compiled to YAML |
+| X12 EDI | .x12, .edi | X12Handler | YAML mapping rules |
+| XML (XSD-driven) | .xml | XMLHandler | XSD compiled to YAML via `xml_schema_registry` |
+| XML (generic) | .xml | XMLHandler | YAML mapping rules (fallback) |
+| cXML | .cxml | XMLHandler | YAML mapping rules |
 
 ---
 
@@ -308,14 +319,14 @@ pyedi_core/
 │   ├── engine.py        # Segment matching + field comparison
 │   └── store.py         # SQLite CRUD for runs/pairs/diffs + field_crosswalk
 ├── config/
-│   └── __init__.py      # Pydantic config models
+│   └── __init__.py      # Pydantic config models (AppConfig, CsvSchemaEntry, XmlSchemaEntry)
 ├── core/                # Core processing modules
 │   ├── __init__.py
 │   ├── error_handler.py # Dead-letter queue + typed exceptions
 │   ├── logger.py        # Structured logging (structlog)
 │   ├── manifest.py      # SHA-256 deduplication
 │   ├── mapper.py        # Data transformation engine
-│   └── schema_compiler.py # DSL → YAML compiler (parse_dsl_file, compile_dsl)
+│   └── schema_compiler.py # DSL → YAML compiler + XSD → YAML compiler
 ├── drivers/             # Format-specific handlers
 │   ├── __init__.py
 │   ├── base.py          # Driver registry & abstract base
@@ -345,7 +356,7 @@ portal/                  # Web portal (FastAPI + React)
 ├── dev.sh               # Dev startup script (API + Vite)
 └── pyproject.toml
 config/
-├── config.yaml          # Runtime configuration (incl. compare profiles)
+├── config.yaml          # Runtime configuration (incl. compare profiles + xml_schema_registry)
 └── compare_rules/       # Per-profile comparison rules YAMLs
     ├── 810_invoice.yaml
     ├── 850_po.yaml
@@ -355,7 +366,13 @@ config/
     ├── 820_payment.yaml
     ├── csv_generic.yaml
     ├── cxml_generic.yaml
-    └── bevager_810.yaml
+    ├── bevager_810.yaml
+    └── darden_asbn.yaml
+artifacts/
+├── darden/              # Darden ASBN trading partner data
+│   ├── DardenInvoiceASBN.xsd        # XSD schema
+│   ├── ca-source/                   # Control XML invoices (3 files)
+│   └── na-source/                   # Test XML invoices (3 files, intentional diffs)
 data/
 └── compare.db           # SQLite database (compare run history)
 schemas/
@@ -379,11 +396,11 @@ tests/
 
 ## Testing
 
-**221 tests** (110+ unit, 80+ integration, 29 E2E browser), 0 failures.
+**205 tests** (unit + integration, 0 failures). 29 additional Playwright E2E browser tests in `portal/tests/e2e/`.
 
 ```bash
 # Run all unit + integration tests
-pytest tests/ -v --tb=short              # 187 engine tests
+pytest tests/ -v --tb=short              # 205 engine tests
 pytest portal/tests/test_compare_api.py  # 5 portal API tests
 
 # Unit tests only (fast, no I/O)
@@ -454,7 +471,7 @@ A candid evaluation of PyEDI-Core's maturity, measured against its own success c
 
 The configuration-over-code philosophy has held across 69 commits. The codebase has not accumulated hardcoded transaction logic — this is the project's strongest quality and its core design bet.
 
-The driver/strategy pattern is proven: XML and cXML were added as a third driver without modifying existing CSV or X12 code, validating the extension model. The compare engine was built as a complete subsystem (models, rules, matcher, engine, store, CLI, portal) on the same config-driven philosophy — it did not introduce architectural inconsistency.
+The driver/strategy pattern is proven: XML and cXML were added as a third driver without modifying existing CSV or X12 code, validating the extension model. XSD-driven XML processing (Darden ASBN) was added to that driver with schema-aware parsing, namespace stripping, and compare integration — again without touching CSV or X12 paths. The compare engine was built as a complete subsystem (models, rules, matcher, engine, store, CLI, portal) on the same config-driven philosophy — it did not introduce architectural inconsistency.
 
 All 9 critical issues from the code review were resolved before any feature work continued. The test pyramid (unit, integration, E2E browser) is real and functional, not ceremonial — 221 tests run in under 10 seconds (engine) plus browser tests.
 

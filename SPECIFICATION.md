@@ -109,16 +109,18 @@ log_file	Any path	./logs/pyedi.log default
 
 Every log event carries: correlation_id, file_name, stage, transaction_type, processing_time_ms. When format: json is enabled, output is ready for direct ingest by Datadog, Splunk, CloudWatch, or any structured log aggregator with zero additional configuration.
 
-3.4 schema_compiler.py — Version-Aware DSL Parser
-Parses proprietary .txt DSL files (def record Header { ... } blocks) into standard PyEDI YAML map format. Designed to be idempotent and version-aware.
+3.4 schema_compiler.py — Version-Aware Schema Compiler
+Compiles two schema source types to standard PyEDI YAML map format. Both are idempotent and version-aware (SHA-256 hash check → archive on change → skip if unchanged).
 
-•	On every CSV file detection, check if a compiled YAML exists in ./schemas/compiled/
-•	If it exists, compare SHA-256 hash of source .txt against the stored *.meta.json sidecar
-•	If hashes match: load existing YAML and proceed
-•	If hashes differ: recompile, archive previous version to ./schemas/compiled/archive/ with datestamp suffix, update meta.json
-•	If no compiled YAML exists: compile and write fresh
+DSL Compiler (compile_dsl):
+•	Parses proprietary .txt DSL files (def record Header { ... } blocks)
+•	Maps types (String→string, Decimal→float, Integer→integer), identifies Header/Detail/Summary structure
+•	Output: standard _map.yaml + _map.meta.json sidecar
 
-Parsing rules: extract field names, map types (String→string, Decimal→float, Integer→integer), identify structure (Header / Details / Summary). Output is a standards-compliant gfs_810_map.yaml.
+XSD Compiler (compile_xsd) — added 2026-03-27:
+•	parse_xsd_file(): recursively walks xs:element/xs:complexType/xs:sequence tree, identifies transaction/header/line element hierarchy, maps XSD types (xs:float→float, xs:string→string, etc.), flattens nested elements to dot-notation paths
+•	_compile_xsd_to_yaml(): emits xml_config section (root_element, transaction_element, header_path, line_container_path, line_element) plus schema.columns, schema.records, mapping sections
+•	compile_xsd(): identical hash/archive/cache pattern as compile_dsl
 
  
 4. Driver Specifications
@@ -153,10 +155,11 @@ The transaction_registry in config.yaml is the only place transaction types are 
 4.4 Driver C — XML Handler (xml_handler.py)
 •	Detection: file extension .xml or .cxml
 •	Auto-detect cXML: check root element or DOCTYPE declaration on file peek
-•	Generic XML: uses Python built-in xml.etree.ElementTree
-•	cXML: adds XPath-style source path awareness for cXML-specific hierarchy
-•	map.yaml source paths use XPath notation for XML (e.g., source: './/OrderRequest/OrderRequestHeader/@orderID')
-•	Fully parallel to X12 handler — same map.yaml structure, different source path syntax
+•	Schema-aware (XSD-driven): when compiled_yaml_path is set via xml_schema_registry, uses _parse_schema_aware_xml() — namespace stripping, hierarchy-aware extraction, nested element support with dot-notation paths
+•	Generic XML: uses Python built-in xml.etree.ElementTree (fallback when no registry entry)
+•	cXML: adds XPath-style source path awareness for cXML-specific hierarchy (fallback)
+•	write_split(): writes one JSON per transaction keyed by header field (e.g., InvoiceNumber) — enables per-transaction compare workflow
+•	Fully parallel to X12 and CSV handlers — same map.yaml structure, config-driven routing
 
  
 5. Configuration Specification
@@ -381,6 +384,7 @@ Private PyPI Publishing	MEDIUM — v1.2	Publish pyedi_core as an installable pac
 MCP Server Wrapper	MEDIUM — v1.2	Expose pipeline as a Model Context Protocol server for native integration with MCP-compatible LLM clients
 Webhook / Event Triggers	MEDIUM — v2.0	Optional event-driven trigger layer (S3 events, message queue) as an alternative to on-demand CLI/API invocation
 Web Operator Dashboard	DONE — v1.0	PyEDI Portal: FastAPI backend + React frontend. Dashboard, Validate, Pipeline, Tests, Compare, Config pages. `bash portal/dev.sh` for dev mode
+XSD-Driven XML Processing	DONE — v1.2	`parse_xsd_file` + `compile_xsd` in schema_compiler.py. XMLHandler schema-aware path with namespace stripping. `xml_schema_registry` config block mirrors csv_schema_registry. `pyedi validate --xsd`. First trading partner: Darden ASBN (2026-03-27, commit 364c66d).
 Additional XML Dialects	LOW — v2.0	Extend xml_handler.py to support UBL, EDIFACT, or other dialects via additional driver sub-classes
 Streaming Large Files	LOW — v2.0	Chunked processing for CSV files exceeding memory limits (>1M rows)
 

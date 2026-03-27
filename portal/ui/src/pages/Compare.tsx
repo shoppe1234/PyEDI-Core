@@ -17,7 +17,7 @@ function StatusBadge({ status }: { status: string }) {
   )
 }
 
-export default function ComparePage() {
+export default function ComparePage({ onNavigate }: { onNavigate?: (page: string) => void }) {
   // Profiles
   const [profiles, setProfiles] = useState<any[]>([])
   const [selectedProfile, setSelectedProfile] = useState('')

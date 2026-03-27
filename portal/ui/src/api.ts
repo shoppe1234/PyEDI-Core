@@ -133,6 +133,64 @@ export const api = {
       ignore: any[];
     }>(`/onboard/rules-template?compiled_yaml=${encodeURIComponent(compiledYaml)}`),
 
+  // Rules tier API
+  ruleTiers: () =>
+    request<{
+      tiers: Array<{
+        tier: string;
+        name: string;
+        file: string;
+        rule_count: number;
+        ignore_count: number;
+      }>;
+    }>('/rules/tiers'),
+
+  ruleUniversal: () =>
+    request<{
+      classification: Array<Record<string, any>>;
+      ignore: Array<Record<string, any>>;
+    }>('/rules/universal'),
+
+  ruleUpdateUniversal: (rules: { classification: any[]; ignore: any[] }) =>
+    request<any>('/rules/universal', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(rules),
+    }),
+
+  ruleTransaction: (txnType: string) =>
+    request<{
+      classification: Array<Record<string, any>>;
+      ignore: Array<Record<string, any>>;
+    }>(`/rules/transaction/${encodeURIComponent(txnType)}`),
+
+  ruleUpdateTransaction: (txnType: string, rules: { classification: any[]; ignore: any[] }) =>
+    request<any>(`/rules/transaction/${encodeURIComponent(txnType)}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(rules),
+    }),
+
+  ruleDeleteTransaction: (txnType: string) =>
+    request<any>(`/rules/transaction/${encodeURIComponent(txnType)}`, {
+      method: 'DELETE',
+    }),
+
+  ruleEffective: (profileName: string) =>
+    request<{
+      rules: Array<{
+        segment: string;
+        field: string;
+        severity: string;
+        ignore_case: boolean;
+        numeric: boolean;
+        conditional_qualifier: string | null;
+        amount_variance: number | null;
+        tier: string;
+      }>;
+      ignore: Array<Record<string, any>>;
+    }>(`/rules/effective/${encodeURIComponent(profileName)}`),
+
   // Discoveries: list unclassified field combos
   compareDiscoveries: (profile: string, applied?: boolean) => {
     const params = new URLSearchParams({ profile });

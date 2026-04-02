@@ -1,0 +1,1644 @@
+transaction_type: RETALIXPIINVOICEFILESCHEMASACFF
+input_format: FIXED_WIDTH
+schema:
+  columns:
+  - name: recordID
+    type: string
+    required: true
+    width: 10
+    read_empty_as_null: true
+  - name: allowChargeIndicator
+    type: string
+    required: true
+    width: 1
+    read_empty_as_null: true
+  - name: allowChargeCode
+    type: string
+    required: true
+    width: 4
+    read_empty_as_null: true
+  - name: percentQualifier
+    type: string
+    required: true
+    width: 1
+    read_empty_as_null: true
+  - name: percent
+    type: integer
+    required: true
+    width: 6
+    read_empty_as_null: true
+  - name: ignore
+    type: string
+    required: true
+    width: 30
+    read_empty_as_null: true
+  - name: allowChargeHandlingCode
+    type: string
+    required: true
+    width: 2
+    read_empty_as_null: true
+  - name: referenceID
+    type: string
+    required: true
+    width: 30
+    read_empty_as_null: true
+  - name: orderGuideCategory
+    type: string
+    required: true
+    width: 5
+    read_empty_as_null: true
+  - name: orderGuideCategoryDes
+    type: string
+    required: true
+    width: 25
+    read_empty_as_null: true
+  - name: allowChargeDesc
+    type: string
+    required: true
+    width: 80
+    read_empty_as_null: true
+  - name: tPCode
+    type: string
+    required: true
+    width: 10
+    read_empty_as_null: true
+  - name: functionalGroupCode
+    type: string
+    required: true
+    width: 10
+    read_empty_as_null: true
+  - name: messageID
+    type: string
+    required: true
+    width: 10
+    read_empty_as_null: true
+  - name: messageClass
+    type: string
+    required: true
+    width: 10
+    read_empty_as_null: true
+  - name: companyNumber
+    type: float
+    required: true
+    width: 3
+    read_empty_as_null: true
+  - name: divisionNumber
+    type: float
+    required: true
+    width: 3
+    read_empty_as_null: true
+  - name: departmentNumber
+    type: float
+    required: true
+    width: 3
+    read_empty_as_null: true
+  - name: warehouseNumber
+    type: float
+    required: true
+    width: 3
+    read_empty_as_null: true
+  - name: customerNumber
+    type: float
+    required: true
+    width: 10
+    read_empty_as_null: true
+  - name: referenceQualifier
+    type: string
+    required: true
+    width: 3
+    read_empty_as_null: true
+  - name: termsTypeCode
+    type: string
+    required: true
+    width: 2
+    read_empty_as_null: true
+  - name: termsDiscountPercent
+    type: float
+    required: true
+    width: 5
+    read_empty_as_null: true
+  - name: termsDiscountDueDate
+    type: float
+    required: true
+    width: 8
+    read_empty_as_null: true
+  - name: termsDiscountDays
+    type: float
+    required: true
+    width: 3
+    read_empty_as_null: true
+  - name: termsDiscountAmount
+    type: string
+    required: true
+    width: 9
+    read_empty_as_null: true
+  - name: termsNetDueDate
+    type: string
+    required: true
+    width: 8
+    read_empty_as_null: true
+  - name: termsNetDays
+    type: string
+    required: true
+    width: 3
+    read_empty_as_null: true
+  - name: termsDescription
+    type: string
+    required: true
+    width: 25
+    read_empty_as_null: true
+  - name: shipMethodOfPayment
+    type: string
+    required: true
+    width: 2
+    read_empty_as_null: true
+  - name: transportationType
+    type: string
+    required: true
+    width: 1
+    read_empty_as_null: true
+  - name: orderContractNumber
+    type: string
+    required: true
+    width: 20
+    read_empty_as_null: true
+  - name: contractNumber
+    type: string
+    required: true
+    width: 20
+    read_empty_as_null: true
+  - name: manifestNumber
+    type: string
+    required: true
+    width: 20
+    read_empty_as_null: true
+  - name: orderNumber
+    type: float
+    required: true
+    width: 7
+    read_empty_as_null: true
+  - name: invoiceNumber
+    type: float
+    required: true
+    width: 7
+    read_empty_as_null: true
+  - name: orderDate
+    type: string
+    required: true
+    width: 8
+    read_empty_as_null: true
+  - name: invoiceDate
+    type: string
+    required: true
+    width: 8
+    read_empty_as_null: true
+  - name: shipDate
+    type: string
+    required: true
+    width: 8
+    read_empty_as_null: true
+  - name: pONumber
+    type: string
+    required: true
+    width: 20
+    read_empty_as_null: true
+  - name: billOfLadingNumber
+    type: string
+    required: true
+    width: 30
+    read_empty_as_null: true
+  - name: aPVendorNumber
+    type: string
+    required: true
+    width: 15
+    read_empty_as_null: true
+  - name: marketingVendorNumber
+    type: string
+    required: true
+    width: 10
+    read_empty_as_null: true
+  - name: creditDebitCode
+    type: string
+    required: true
+    width: 2
+    read_empty_as_null: true
+  - name: originalInvoiceNumber
+    type: float
+    required: true
+    width: 7
+    read_empty_as_null: true
+  - name: shipToName
+    type: string
+    required: true
+    width: 25
+    read_empty_as_null: true
+  - name: shipToIDQualifier
+    type: string
+    required: true
+    width: 2
+    read_empty_as_null: true
+  - name: shiptoID
+    type: string
+    required: true
+    width: 15
+    read_empty_as_null: true
+  - name: shipToStoreNumber
+    type: string
+    required: true
+    width: 20
+    read_empty_as_null: true
+  - name: shipToCustomerNumber
+    type: float
+    required: true
+    width: 10
+    read_empty_as_null: true
+  - name: customerLangPref
+    type: string
+    required: true
+    width: 3
+  - name: chainDescription
+    type: string
+    required: true
+    width: 25
+  - name: shipToCity
+    type: string
+    required: true
+    width: 15
+    read_empty_as_null: true
+  - name: shipToProvince
+    type: string
+    required: true
+    width: 2
+    read_empty_as_null: true
+  - name: shipToPostalCode
+    type: string
+    required: true
+    width: 10
+    read_empty_as_null: true
+  - name: billToName
+    type: string
+    required: true
+    width: 25
+    read_empty_as_null: true
+  - name: billToIDQualifier
+    type: string
+    required: true
+    width: 2
+    read_empty_as_null: true
+  - name: billToID
+    type: string
+    required: true
+    width: 15
+    read_empty_as_null: true
+  - name: remitToName
+    type: string
+    required: true
+    width: 25
+    read_empty_as_null: true
+  - name: remitToIDQualifier
+    type: float
+    required: true
+    width: 2
+    read_empty_as_null: true
+  - name: remitToID
+    type: float
+    required: true
+    width: 15
+    read_empty_as_null: true
+  - name: shiptoAddress1
+    type: string
+    required: true
+    width: 25
+    read_empty_as_null: true
+  - name: shiptoAddress2
+    type: string
+    required: true
+    width: 25
+    read_empty_as_null: true
+  - name: billToAddress1
+    type: string
+    required: true
+    width: 25
+    read_empty_as_null: true
+  - name: billToCareOf
+    type: string
+    required: true
+    width: 30
+    read_empty_as_null: true
+  - name: billToCity
+    type: string
+    required: true
+    width: 15
+    read_empty_as_null: true
+  - name: billToProvince
+    type: string
+    required: true
+    width: 2
+    read_empty_as_null: true
+  - name: billToPostalCode
+    type: string
+    required: true
+    width: 10
+    read_empty_as_null: true
+  - name: remitToCity
+    type: string
+    required: true
+    width: 15
+    read_empty_as_null: true
+  - name: remitToProvince
+    type: string
+    required: true
+    width: 2
+    read_empty_as_null: true
+  - name: remitToPostalCode
+    type: string
+    required: true
+    width: 10
+    read_empty_as_null: true
+  - name: itemDescription
+    type: string
+    required: true
+    width: 80
+    read_empty_as_null: true
+  - name: lineNumber
+    type: float
+    required: true
+    width: 5
+    read_empty_as_null: true
+  - name: distributorItemNumber
+    type: float
+    required: true
+    width: 10
+    read_empty_as_null: true
+  - name: uPCQualifier
+    type: string
+    required: true
+    width: 2
+    read_empty_as_null: true
+  - name: uPCEANNumber
+    type: string
+    required: true
+    width: 14
+    read_empty_as_null: true
+  - name: customerItemNumber
+    type: string
+    required: true
+    width: 15
+    read_empty_as_null: true
+  - name: unitOfMeasure
+    type: string
+    required: true
+    width: 2
+    read_empty_as_null: true
+  - name: itemsPerUnit
+    type: string
+    required: true
+    width: 4
+    read_empty_as_null: true
+  - name: taxes
+    type: string
+    required: true
+    width: 6
+    read_empty_as_null: true
+  - name: catchWeightFlag
+    type: string
+    required: true
+    width: 1
+    read_empty_as_null: true
+  - name: BrokenCaseCode
+    type: string
+    required: true
+    width: 1
+  - name: itemNonStockIndicator
+    type: string
+    required: true
+    width: 1
+  - name: quantityOrdered
+    type: float
+    required: true
+    width: 7
+    read_empty_as_null: true
+  - name: quantityShipped
+    type: float
+    required: true
+    width: 7
+    read_empty_as_null: true
+  - name: quantityDifference
+    type: string
+    required: true
+    width: 7
+    read_empty_as_null: true
+  - name: lotNumber
+    type: string
+    required: true
+    width: 15
+    read_empty_as_null: true
+  - name: productionDayCodeSubCode
+    type: string
+    required: true
+    width: 14
+    read_empty_as_null: true
+  - name: priceQuantity
+    type: string
+    required: true
+    width: 11
+    read_empty_as_null: true
+  - name: priceUnitOfMeasure
+    type: float
+    required: true
+    width: 2
+    read_empty_as_null: true
+  - name: unitGrossWeight
+    type: float
+    required: true
+    width: 15
+  - name: unitNetWeight
+    type: float
+    required: true
+    width: 15
+  - name: remitToAddress
+    type: string
+    required: true
+    width: 25
+    read_empty_as_null: true
+  - name: remitToCareOf
+    type: string
+    required: true
+    width: 30
+    read_empty_as_null: true
+  - name: vendorNumber
+    type: float
+    required: true
+    width: 10
+    read_empty_as_null: true
+  - name: vendorName
+    type: string
+    required: true
+    width: 25
+    read_empty_as_null: true
+  - name: vendorItemNumber
+    type: string
+    required: true
+    width: 10
+    read_empty_as_null: true
+  - name: classNumber
+    type: float
+    required: true
+    width: 3
+    read_empty_as_null: true
+  - name: classDescription
+    type: string
+    required: true
+    width: 25
+    read_empty_as_null: true
+  - name: priceBookHeading
+    type: string
+    required: true
+    width: 5
+    read_empty_as_null: true
+  - name: pricebookHeadingDescription
+    type: string
+    required: true
+    width: 25
+    read_empty_as_null: true
+  - name: priceBookFamilyNumber
+    type: string
+    required: true
+    width: 7
+    read_empty_as_null: true
+  - name: priceBookFamilyDescription
+    type: string
+    required: true
+    width: 25
+    read_empty_as_null: true
+  - name: brand
+    type: string
+    required: true
+    width: 15
+    read_empty_as_null: true
+  - name: pack
+    type: float
+    required: true
+    width: 4
+    read_empty_as_null: true
+  - name: size
+    type: string
+    required: true
+    width: 7
+    read_empty_as_null: true
+  - name: servingsPerCase
+    type: float
+    required: true
+    width: 5
+    read_empty_as_null: true
+  - name: servingsPerCaseUOM
+    type: string
+    required: true
+    width: 2
+    read_empty_as_null: true
+  - name: caseUPCNumber
+    type: float
+    required: true
+    width: 14
+    read_empty_as_null: true
+  - name: vendorUPCNumber
+    type: string
+    required: true
+    width: 14
+    read_empty_as_null: true
+  - name: unitUPCNumber
+    type: string
+    required: true
+    width: 14
+    read_empty_as_null: true
+  - name: lineCount
+    type: float
+    required: true
+    width: 5
+    read_empty_as_null: true
+  - name: itemCount
+    type: float
+    required: true
+    width: 7
+    read_empty_as_null: true
+  - name: totalWeight
+    type: float
+    required: true
+    width: 7
+    read_empty_as_null: true
+  - name: extendedFeeAmount
+    type: float
+    required: true
+    width: 9
+    read_empty_as_null: true
+  - name: extendedDiscountAmount
+    type: float
+    required: true
+    width: 7
+    read_empty_as_null: true
+  - name: extendedInventoryTax
+    type: float
+    required: true
+    width: 8
+    read_empty_as_null: true
+  - name: bottleDeposit
+    type: float
+    required: true
+    width: 7
+    read_empty_as_null: true
+  - name: netInvoiceAmout
+    type: string
+    required: true
+    width: 11
+  - name: originalOrderDate
+    type: string
+    required: true
+    width: 8
+  - name: originalOrderNumber
+    type: string
+    required: true
+    width: 7
+  - name: originalInvoiceDate
+    type: string
+    required: true
+    width: 8
+  - name: extraItemDescription2
+    type: string
+    required: true
+    width: 40
+  - name: extraItemDescription3
+    type: string
+    required: true
+    width: 40
+  - name: vendorPhoneNumber
+    type: string
+    required: true
+    width: 10
+  - name: taxPercntCode
+    type: string
+    required: true
+    width: 2
+    read_empty_as_null: true
+  - name: taxPercntage
+    type: float
+    required: true
+    width: 5
+    read_empty_as_null: true
+  - name: taxPrcentCode
+    type: string
+    required: true
+    width: 2
+    read_empty_as_null: true
+  - name: taxPrcntage
+    type: float
+    required: true
+    width: 5
+    read_empty_as_null: true
+  - name: taxPercentCode
+    type: string
+    required: true
+    width: 2
+    read_empty_as_null: true
+  - name: taxPercentage
+    type: float
+    required: true
+    width: 5
+    read_empty_as_null: true
+  - name: SAPWarehouseNumber
+    type: string
+    required: true
+    width: 10
+  - name: creditCode
+    type: string
+    required: true
+    width: 3
+  - name: creditCodeDescription
+    type: string
+    required: true
+    width: 25
+  records:
+    OIN_SACD1:
+    - recordID
+    - allowChargeIndicator
+    - allowChargeCode
+    - percentQualifier
+    - percent
+    - ignore
+    - allowChargeHandlingCode
+    - referenceID
+    OIN_DTL9:
+    - recordID
+    OIN_SACS1:
+    - recordID
+    - allowChargeIndicator
+    - allowChargeCode
+    - percentQualifier
+    - percent
+    - ignore
+    - allowChargeHandlingCode
+    - referenceID
+    OIN_DTL6:
+    - recordID
+    - orderGuideCategory
+    - orderGuideCategoryDes
+    OIN_SACD2:
+    - recordID
+    - allowChargeDesc
+    O_TPID:
+    - recordID
+    - tPCode
+    - functionalGroupCode
+    - messageID
+    - messageClass
+    OIN_DSTID:
+    - recordID
+    OIN_HDRA:
+    - recordID
+    - companyNumber
+    - divisionNumber
+    - departmentNumber
+    - warehouseNumber
+    - customerNumber
+    OIN_REFH1:
+    - recordID
+    - referenceQualifier
+    - referenceID
+    OIN_TRM1:
+    - recordID
+    - termsTypeCode
+    - termsDiscountPercent
+    - termsDiscountDueDate
+    - termsDiscountDays
+    - termsDiscountAmount
+    - termsNetDueDate
+    - termsNetDays
+    - termsDescription
+    OIN_HDR4:
+    - recordID
+    - shipMethodOfPayment
+    - transportationType
+    OIN_HDR3:
+    - recordID
+    - orderContractNumber
+    - contractNumber
+    - manifestNumber
+    OIN_HDR1:
+    - recordID
+    - orderNumber
+    - invoiceNumber
+    - orderDate
+    - invoiceDate
+    - shipDate
+    - pONumber
+    OIN_HDR2:
+    - recordID
+    - billOfLadingNumber
+    - aPVendorNumber
+    - marketingVendorNumber
+    - creditDebitCode
+    - originalInvoiceNumber
+    OIN_ST1:
+    - recordID
+    - shipToName
+    - shipToIDQualifier
+    - shiptoID
+    - shipToStoreNumber
+    - shipToCustomerNumber
+    - customerLangPref
+    - chainDescription
+    OIN_ST3:
+    - recordID
+    - shipToCity
+    - shipToProvince
+    - shipToPostalCode
+    OIN_BT1:
+    - recordID
+    - billToName
+    - billToIDQualifier
+    - billToID
+    OIN_RE1:
+    - recordID
+    - remitToName
+    - remitToIDQualifier
+    - remitToID
+    OIN_ST2:
+    - recordID
+    - shiptoAddress1
+    - shiptoAddress2
+    OIN_BT2:
+    - recordID
+    - billToAddress1
+    - billToCareOf
+    OIN_BT3:
+    - recordID
+    - billToCity
+    - billToProvince
+    - billToPostalCode
+    OIN_RE3:
+    - recordID
+    - remitToCity
+    - remitToProvince
+    - remitToPostalCode
+    OIN_DTL2:
+    - recordID
+    - itemDescription
+    OIN_DTL1:
+    - recordID
+    - lineNumber
+    - distributorItemNumber
+    - uPCQualifier
+    - uPCEANNumber
+    - customerItemNumber
+    - unitOfMeasure
+    - itemsPerUnit
+    - taxes
+    - catchWeightFlag
+    - BrokenCaseCode
+    - itemNonStockIndicator
+    OIN_DTL3:
+    - recordID
+    - quantityOrdered
+    - quantityShipped
+    - quantityDifference
+    - lotNumber
+    - productionDayCodeSubCode
+    - priceQuantity
+    - priceUnitOfMeasure
+    - unitGrossWeight
+    - unitNetWeight
+    OIN_RE2:
+    - recordID
+    - remitToAddress
+    - remitToCareOf
+    OIN_DTL4:
+    - recordID
+    - vendorNumber
+    - vendorName
+    - vendorItemNumber
+    - classNumber
+    - classDescription
+    - priceBookHeading
+    - pricebookHeadingDescription
+    OIN_DTL5:
+    - recordID
+    - priceBookFamilyNumber
+    - priceBookFamilyDescription
+    - brand
+    - pack
+    - size
+    - servingsPerCase
+    - servingsPerCaseUOM
+    - caseUPCNumber
+    - vendorUPCNumber
+    - unitUPCNumber
+    OIN_TTL1:
+    - recordID
+    - lineCount
+    - itemCount
+    - totalWeight
+    - extendedFeeAmount
+    - extendedDiscountAmount
+    - extendedInventoryTax
+    - bottleDeposit
+    OIN_SACS2:
+    - recordID
+    - allowChargeDesc
+    OIN_HDR5:
+    - recordID
+    - netInvoiceAmout
+    - originalOrderDate
+    - originalOrderNumber
+    - originalInvoiceDate
+    OIN_DTL7:
+    - recordID
+    - extraItemDescription2
+    - extraItemDescription3
+    - vendorPhoneNumber
+    OIN_DTL8:
+    - recordID
+    OIN_TAXS1:
+    - recordID
+    - taxPercntCode
+    - taxPercntage
+    OinTxS2:
+    - recordID
+    - taxPrcentCode
+    - taxPrcntage
+    OIN_TAXD1:
+    - recordID
+    - taxPercentCode
+    - taxPercentage
+    OIN_DTL4Z:
+    - recordID
+    TPM_HDR:
+    - recordID
+    - invoiceNumber
+    - originalInvoiceNumber
+    - orderNumber
+    - originalOrderNumber
+    - SAPWarehouseNumber
+    OIN_DTL11:
+    - recordID
+    - creditCode
+    - creditCodeDescription
+  record_layouts:
+    OIN_SACD1:
+    - name: recordID
+      width: 10
+    - name: allowChargeIndicator
+      width: 1
+    - name: allowChargeCode
+      width: 4
+    - name: percentQualifier
+      width: 1
+    - name: percent
+      width: 6
+    - name: ignore
+      width: 30
+    - name: allowChargeHandlingCode
+      width: 2
+    - name: referenceID
+      width: 30
+    OIN_DTL9:
+    - name: recordID
+      width: 10
+    OIN_SACS1:
+    - name: recordID
+      width: 10
+    - name: allowChargeIndicator
+      width: 1
+    - name: allowChargeCode
+      width: 4
+    - name: percentQualifier
+      width: 1
+    - name: percent
+      width: 6
+    - name: ignore
+      width: 30
+    - name: allowChargeHandlingCode
+      width: 2
+    - name: referenceID
+      width: 30
+    OIN_DTL6:
+    - name: recordID
+      width: 10
+    - name: orderGuideCategory
+      width: 5
+    - name: orderGuideCategoryDes
+      width: 25
+    OIN_SACD2:
+    - name: recordID
+      width: 10
+    - name: allowChargeDesc
+      width: 80
+    O_TPID:
+    - name: recordID
+      width: 10
+    - name: tPCode
+      width: 10
+    - name: functionalGroupCode
+      width: 10
+    - name: messageID
+      width: 10
+    - name: messageClass
+      width: 10
+    OIN_DSTID:
+    - name: recordID
+      width: 10
+    OIN_HDRA:
+    - name: recordID
+      width: 10
+    - name: companyNumber
+      width: 3
+    - name: divisionNumber
+      width: 3
+    - name: departmentNumber
+      width: 3
+    - name: warehouseNumber
+      width: 3
+    - name: customerNumber
+      width: 10
+    OIN_REFH1:
+    - name: recordID
+      width: 10
+    - name: referenceQualifier
+      width: 3
+    - name: referenceID
+      width: 30
+    OIN_TRM1:
+    - name: recordID
+      width: 10
+    - name: termsTypeCode
+      width: 2
+    - name: termsDiscountPercent
+      width: 5
+    - name: termsDiscountDueDate
+      width: 8
+    - name: termsDiscountDays
+      width: 3
+    - name: termsDiscountAmount
+      width: 9
+    - name: termsNetDueDate
+      width: 8
+    - name: termsNetDays
+      width: 3
+    - name: termsDescription
+      width: 25
+    OIN_HDR4:
+    - name: recordID
+      width: 10
+    - name: shipMethodOfPayment
+      width: 2
+    - name: transportationType
+      width: 1
+    OIN_HDR3:
+    - name: recordID
+      width: 10
+    - name: orderContractNumber
+      width: 20
+    - name: contractNumber
+      width: 20
+    - name: manifestNumber
+      width: 20
+    OIN_HDR1:
+    - name: recordID
+      width: 10
+    - name: orderNumber
+      width: 7
+    - name: invoiceNumber
+      width: 7
+    - name: orderDate
+      width: 8
+    - name: invoiceDate
+      width: 8
+    - name: shipDate
+      width: 8
+    - name: pONumber
+      width: 20
+    OIN_HDR2:
+    - name: recordID
+      width: 10
+    - name: billOfLadingNumber
+      width: 30
+    - name: aPVendorNumber
+      width: 15
+    - name: marketingVendorNumber
+      width: 10
+    - name: creditDebitCode
+      width: 2
+    - name: originalInvoiceNumber
+      width: 7
+    OIN_ST1:
+    - name: recordID
+      width: 10
+    - name: shipToName
+      width: 25
+    - name: shipToIDQualifier
+      width: 2
+    - name: shiptoID
+      width: 15
+    - name: shipToStoreNumber
+      width: 20
+    - name: shipToCustomerNumber
+      width: 10
+    - name: customerLangPref
+      width: 3
+    - name: chainDescription
+      width: 25
+    OIN_ST3:
+    - name: recordID
+      width: 10
+    - name: shipToCity
+      width: 15
+    - name: shipToProvince
+      width: 2
+    - name: shipToPostalCode
+      width: 10
+    OIN_BT1:
+    - name: recordID
+      width: 10
+    - name: billToName
+      width: 25
+    - name: billToIDQualifier
+      width: 2
+    - name: billToID
+      width: 15
+    OIN_RE1:
+    - name: recordID
+      width: 10
+    - name: remitToName
+      width: 25
+    - name: remitToIDQualifier
+      width: 2
+    - name: remitToID
+      width: 15
+    OIN_ST2:
+    - name: recordID
+      width: 10
+    - name: shiptoAddress1
+      width: 25
+    - name: shiptoAddress2
+      width: 25
+    OIN_BT2:
+    - name: recordID
+      width: 10
+    - name: billToAddress1
+      width: 25
+    - name: billToCareOf
+      width: 30
+    OIN_BT3:
+    - name: recordID
+      width: 10
+    - name: billToCity
+      width: 15
+    - name: billToProvince
+      width: 2
+    - name: billToPostalCode
+      width: 10
+    OIN_RE3:
+    - name: recordID
+      width: 10
+    - name: remitToCity
+      width: 15
+    - name: remitToProvince
+      width: 2
+    - name: remitToPostalCode
+      width: 10
+    OIN_DTL2:
+    - name: recordID
+      width: 10
+    - name: itemDescription
+      width: 80
+    OIN_DTL1:
+    - name: recordID
+      width: 10
+    - name: lineNumber
+      width: 5
+    - name: distributorItemNumber
+      width: 10
+    - name: uPCQualifier
+      width: 2
+    - name: uPCEANNumber
+      width: 14
+    - name: customerItemNumber
+      width: 15
+    - name: unitOfMeasure
+      width: 2
+    - name: itemsPerUnit
+      width: 4
+    - name: taxes
+      width: 6
+    - name: catchWeightFlag
+      width: 1
+    - name: BrokenCaseCode
+      width: 1
+    - name: itemNonStockIndicator
+      width: 1
+    OIN_DTL3:
+    - name: recordID
+      width: 10
+    - name: quantityOrdered
+      width: 7
+    - name: quantityShipped
+      width: 7
+    - name: quantityDifference
+      width: 7
+    - name: lotNumber
+      width: 15
+    - name: productionDayCodeSubCode
+      width: 14
+    - name: priceQuantity
+      width: 11
+    - name: priceUnitOfMeasure
+      width: 2
+    - name: unitGrossWeight
+      width: 15
+    - name: unitNetWeight
+      width: 15
+    OIN_RE2:
+    - name: recordID
+      width: 10
+    - name: remitToAddress
+      width: 25
+    - name: remitToCareOf
+      width: 30
+    OIN_DTL4:
+    - name: recordID
+      width: 10
+    - name: vendorNumber
+      width: 10
+    - name: vendorName
+      width: 25
+    - name: vendorItemNumber
+      width: 10
+    - name: classNumber
+      width: 3
+    - name: classDescription
+      width: 25
+    - name: priceBookHeading
+      width: 5
+    - name: pricebookHeadingDescription
+      width: 25
+    OIN_DTL5:
+    - name: recordID
+      width: 10
+    - name: priceBookFamilyNumber
+      width: 7
+    - name: priceBookFamilyDescription
+      width: 25
+    - name: brand
+      width: 15
+    - name: pack
+      width: 4
+    - name: size
+      width: 7
+    - name: servingsPerCase
+      width: 5
+    - name: servingsPerCaseUOM
+      width: 2
+    - name: caseUPCNumber
+      width: 14
+    - name: vendorUPCNumber
+      width: 14
+    - name: unitUPCNumber
+      width: 14
+    OIN_TTL1:
+    - name: recordID
+      width: 10
+    - name: lineCount
+      width: 5
+    - name: itemCount
+      width: 7
+    - name: totalWeight
+      width: 7
+    - name: extendedFeeAmount
+      width: 9
+    - name: extendedDiscountAmount
+      width: 7
+    - name: extendedInventoryTax
+      width: 8
+    - name: bottleDeposit
+      width: 7
+    OIN_SACS2:
+    - name: recordID
+      width: 10
+    - name: allowChargeDesc
+      width: 80
+    OIN_HDR5:
+    - name: recordID
+      width: 10
+    - name: netInvoiceAmout
+      width: 11
+    - name: originalOrderDate
+      width: 8
+    - name: originalOrderNumber
+      width: 7
+    - name: originalInvoiceDate
+      width: 8
+    OIN_DTL7:
+    - name: recordID
+      width: 10
+    - name: extraItemDescription2
+      width: 40
+    - name: extraItemDescription3
+      width: 40
+    - name: vendorPhoneNumber
+      width: 10
+    OIN_DTL8:
+    - name: recordID
+      width: 10
+    OIN_TAXS1:
+    - name: recordID
+      width: 10
+    - name: taxPercntCode
+      width: 2
+    - name: taxPercntage
+      width: 5
+    OinTxS2:
+    - name: recordID
+      width: 10
+    - name: taxPrcentCode
+      width: 2
+    - name: taxPrcntage
+      width: 5
+    OIN_TAXD1:
+    - name: recordID
+      width: 10
+    - name: taxPercentCode
+      width: 2
+    - name: taxPercentage
+      width: 5
+    OIN_DTL4Z:
+    - name: recordID
+      width: 10
+    TPM_HDR:
+    - name: recordID
+      width: 10
+    - name: invoiceNumber
+      width: 10
+    - name: originalInvoiceNumber
+      width: 10
+    - name: orderNumber
+      width: 10
+    - name: originalOrderNumber
+      width: 10
+    - name: SAPWarehouseNumber
+      width: 10
+    OIN_DTL11:
+    - name: recordID
+      width: 10
+    - name: creditCode
+      width: 3
+    - name: creditCodeDescription
+      width: 25
+  record_inventory:
+  - fieldIdentifier: OIN_SACD1
+    field_count: 8
+  - fieldIdentifier: OIN_DTL9
+    field_count: 1
+  - fieldIdentifier: OIN_SACS1
+    field_count: 8
+  - fieldIdentifier: OIN_DTL6
+    field_count: 3
+  - fieldIdentifier: OIN_SACD2
+    field_count: 2
+  - fieldIdentifier: O_TPID
+    field_count: 5
+  - fieldIdentifier: OIN_DSTID
+    field_count: 1
+  - fieldIdentifier: OIN_HDRA
+    field_count: 6
+  - fieldIdentifier: OIN_REFH1
+    field_count: 3
+  - fieldIdentifier: OIN_TRM1
+    field_count: 9
+  - fieldIdentifier: OIN_HDR4
+    field_count: 3
+  - fieldIdentifier: OIN_HDR3
+    field_count: 4
+  - fieldIdentifier: OIN_HDR1
+    field_count: 7
+  - fieldIdentifier: OIN_HDR2
+    field_count: 6
+  - fieldIdentifier: OIN_ST1
+    field_count: 8
+  - fieldIdentifier: OIN_ST3
+    field_count: 4
+  - fieldIdentifier: OIN_BT1
+    field_count: 4
+  - fieldIdentifier: OIN_RE1
+    field_count: 4
+  - fieldIdentifier: OIN_ST2
+    field_count: 3
+  - fieldIdentifier: OIN_BT2
+    field_count: 3
+  - fieldIdentifier: OIN_BT3
+    field_count: 4
+  - fieldIdentifier: OIN_RE3
+    field_count: 4
+  - fieldIdentifier: OIN_DTL2
+    field_count: 2
+  - fieldIdentifier: OIN_DTL1
+    field_count: 12
+  - fieldIdentifier: OIN_DTL3
+    field_count: 10
+  - fieldIdentifier: OIN_RE2
+    field_count: 3
+  - fieldIdentifier: OIN_DTL4
+    field_count: 8
+  - fieldIdentifier: OIN_DTL5
+    field_count: 11
+  - fieldIdentifier: OIN_TTL1
+    field_count: 8
+  - fieldIdentifier: OIN_SACS2
+    field_count: 2
+  - fieldIdentifier: OIN_HDR5
+    field_count: 5
+  - fieldIdentifier: OIN_DTL7
+    field_count: 4
+  - fieldIdentifier: OIN_DTL8
+    field_count: 1
+  - fieldIdentifier: OIN_TAXS1
+    field_count: 3
+  - fieldIdentifier: OinTxS2
+    field_count: 3
+  - fieldIdentifier: OIN_TAXD1
+    field_count: 3
+  - fieldIdentifier: OIN_DTL4Z
+    field_count: 1
+  - fieldIdentifier: TPM_HDR
+    field_count: 6
+  - fieldIdentifier: OIN_DTL11
+    field_count: 3
+mapping:
+  header: {}
+  lines:
+  - recordID:
+      source: recordID
+  - allowChargeIndicator:
+      source: allowChargeIndicator
+  - allowChargeCode:
+      source: allowChargeCode
+  - percentQualifier:
+      source: percentQualifier
+  - percent:
+      source: percent
+  - ignore:
+      source: ignore
+  - allowChargeHandlingCode:
+      source: allowChargeHandlingCode
+  - referenceID:
+      source: referenceID
+  - orderGuideCategory:
+      source: orderGuideCategory
+  - orderGuideCategoryDes:
+      source: orderGuideCategoryDes
+  - allowChargeDesc:
+      source: allowChargeDesc
+  - tPCode:
+      source: tPCode
+  - functionalGroupCode:
+      source: functionalGroupCode
+  - messageID:
+      source: messageID
+  - messageClass:
+      source: messageClass
+  - companyNumber:
+      source: companyNumber
+  - divisionNumber:
+      source: divisionNumber
+  - departmentNumber:
+      source: departmentNumber
+  - warehouseNumber:
+      source: warehouseNumber
+  - customerNumber:
+      source: customerNumber
+  - referenceQualifier:
+      source: referenceQualifier
+  - termsTypeCode:
+      source: termsTypeCode
+  - termsDiscountPercent:
+      source: termsDiscountPercent
+  - termsDiscountDueDate:
+      source: termsDiscountDueDate
+  - termsDiscountDays:
+      source: termsDiscountDays
+  - termsDiscountAmount:
+      source: termsDiscountAmount
+  - termsNetDueDate:
+      source: termsNetDueDate
+  - termsNetDays:
+      source: termsNetDays
+  - termsDescription:
+      source: termsDescription
+  - shipMethodOfPayment:
+      source: shipMethodOfPayment
+  - transportationType:
+      source: transportationType
+  - orderContractNumber:
+      source: orderContractNumber
+  - contractNumber:
+      source: contractNumber
+  - manifestNumber:
+      source: manifestNumber
+  - orderNumber:
+      source: orderNumber
+  - invoiceNumber:
+      source: invoiceNumber
+  - orderDate:
+      source: orderDate
+  - invoiceDate:
+      source: invoiceDate
+  - shipDate:
+      source: shipDate
+  - pONumber:
+      source: pONumber
+  - billOfLadingNumber:
+      source: billOfLadingNumber
+  - aPVendorNumber:
+      source: aPVendorNumber
+  - marketingVendorNumber:
+      source: marketingVendorNumber
+  - creditDebitCode:
+      source: creditDebitCode
+  - originalInvoiceNumber:
+      source: originalInvoiceNumber
+  - shipToName:
+      source: shipToName
+  - shipToIDQualifier:
+      source: shipToIDQualifier
+  - shiptoID:
+      source: shiptoID
+  - shipToStoreNumber:
+      source: shipToStoreNumber
+  - shipToCustomerNumber:
+      source: shipToCustomerNumber
+  - customerLangPref:
+      source: customerLangPref
+  - chainDescription:
+      source: chainDescription
+  - shipToCity:
+      source: shipToCity
+  - shipToProvince:
+      source: shipToProvince
+  - shipToPostalCode:
+      source: shipToPostalCode
+  - billToName:
+      source: billToName
+  - billToIDQualifier:
+      source: billToIDQualifier
+  - billToID:
+      source: billToID
+  - remitToName:
+      source: remitToName
+  - remitToIDQualifier:
+      source: remitToIDQualifier
+  - remitToID:
+      source: remitToID
+  - shiptoAddress1:
+      source: shiptoAddress1
+  - shiptoAddress2:
+      source: shiptoAddress2
+  - billToAddress1:
+      source: billToAddress1
+  - billToCareOf:
+      source: billToCareOf
+  - billToCity:
+      source: billToCity
+  - billToProvince:
+      source: billToProvince
+  - billToPostalCode:
+      source: billToPostalCode
+  - remitToCity:
+      source: remitToCity
+  - remitToProvince:
+      source: remitToProvince
+  - remitToPostalCode:
+      source: remitToPostalCode
+  - itemDescription:
+      source: itemDescription
+  - lineNumber:
+      source: lineNumber
+  - distributorItemNumber:
+      source: distributorItemNumber
+  - uPCQualifier:
+      source: uPCQualifier
+  - uPCEANNumber:
+      source: uPCEANNumber
+  - customerItemNumber:
+      source: customerItemNumber
+  - unitOfMeasure:
+      source: unitOfMeasure
+  - itemsPerUnit:
+      source: itemsPerUnit
+  - taxes:
+      source: taxes
+  - catchWeightFlag:
+      source: catchWeightFlag
+  - BrokenCaseCode:
+      source: BrokenCaseCode
+  - itemNonStockIndicator:
+      source: itemNonStockIndicator
+  - quantityOrdered:
+      source: quantityOrdered
+  - quantityShipped:
+      source: quantityShipped
+  - quantityDifference:
+      source: quantityDifference
+  - lotNumber:
+      source: lotNumber
+  - productionDayCodeSubCode:
+      source: productionDayCodeSubCode
+  - priceQuantity:
+      source: priceQuantity
+  - priceUnitOfMeasure:
+      source: priceUnitOfMeasure
+  - unitGrossWeight:
+      source: unitGrossWeight
+  - unitNetWeight:
+      source: unitNetWeight
+  - remitToAddress:
+      source: remitToAddress
+  - remitToCareOf:
+      source: remitToCareOf
+  - vendorNumber:
+      source: vendorNumber
+  - vendorName:
+      source: vendorName
+  - vendorItemNumber:
+      source: vendorItemNumber
+  - classNumber:
+      source: classNumber
+  - classDescription:
+      source: classDescription
+  - priceBookHeading:
+      source: priceBookHeading
+  - pricebookHeadingDescription:
+      source: pricebookHeadingDescription
+  - priceBookFamilyNumber:
+      source: priceBookFamilyNumber
+  - priceBookFamilyDescription:
+      source: priceBookFamilyDescription
+  - brand:
+      source: brand
+  - pack:
+      source: pack
+  - size:
+      source: size
+  - servingsPerCase:
+      source: servingsPerCase
+  - servingsPerCaseUOM:
+      source: servingsPerCaseUOM
+  - caseUPCNumber:
+      source: caseUPCNumber
+  - vendorUPCNumber:
+      source: vendorUPCNumber
+  - unitUPCNumber:
+      source: unitUPCNumber
+  - lineCount:
+      source: lineCount
+  - itemCount:
+      source: itemCount
+  - totalWeight:
+      source: totalWeight
+  - extendedFeeAmount:
+      source: extendedFeeAmount
+  - extendedDiscountAmount:
+      source: extendedDiscountAmount
+  - extendedInventoryTax:
+      source: extendedInventoryTax
+  - bottleDeposit:
+      source: bottleDeposit
+  - netInvoiceAmout:
+      source: netInvoiceAmout
+  - originalOrderDate:
+      source: originalOrderDate
+  - originalOrderNumber:
+      source: originalOrderNumber
+  - originalInvoiceDate:
+      source: originalInvoiceDate
+  - extraItemDescription2:
+      source: extraItemDescription2
+  - extraItemDescription3:
+      source: extraItemDescription3
+  - vendorPhoneNumber:
+      source: vendorPhoneNumber
+  - taxPercntCode:
+      source: taxPercntCode
+  - taxPercntage:
+      source: taxPercntage
+  - taxPrcentCode:
+      source: taxPrcentCode
+  - taxPrcntage:
+      source: taxPrcntage
+  - taxPercentCode:
+      source: taxPercentCode
+  - taxPercentage:
+      source: taxPercentage
+  - SAPWarehouseNumber:
+      source: SAPWarehouseNumber
+  - creditCode:
+      source: creditCode
+  - creditCodeDescription:
+      source: creditCodeDescription
+  summary: {}

@@ -1,7 +1,6 @@
 transaction_type: 810_INVOICE
 input_format: CSV
 schema:
-  delimiter: '|'
   columns:
   - name: RecordId
     type: string
@@ -1089,6 +1088,26 @@ schema:
     - DADJAdjustmentFeeCodeOtherOrHSTTaxRate
     - DADJAdjustmentFeeCodeOtherOrHSTTaxAmount
     - DADJEdiChargeCode
+  delimiter: '|'
+  record_inventory:
+  - fieldIdentifier: HDR
+    field_count: 103
+  - fieldIdentifier: DTL
+    field_count: 98
+  - fieldIdentifier: TP
+    field_count: 11
+  - fieldIdentifier: D_HIST
+    field_count: 9
+  - fieldIdentifier: SUM
+    field_count: 16
+  - fieldIdentifier: INV_TR
+    field_count: 4
+  - fieldIdentifier: FILE_TR
+    field_count: 2
+  - fieldIdentifier: H_ADJ
+    field_count: 16
+  - fieldIdentifier: D_ADJ
+    field_count: 16
 mapping:
   header: {}
   lines:

@@ -101,6 +101,7 @@ export default function RetroArcadeTheme({ onNavigate }: InfographicThemeProps) 
         {WORKFLOW_STEPS.map((step, i) => (
           <div key={step.pageKey} className="flex items-center">
             <button
+              data-testid={`nav-${step.pageKey}`}
               onClick={() => onNavigate?.(step.pageKey)}
               className={`
                 relative bg-white border-4 ${STAGE_COLORS[i].border} rounded-lg
@@ -122,7 +123,7 @@ export default function RetroArcadeTheme({ onNavigate }: InfographicThemeProps) 
 
             {/* Chunky arrow connector */}
             {i < WORKFLOW_STEPS.length - 1 && (
-              <span className={`font-mono font-bold text-lg mx-1 ${STAGE_COLORS[i].text} opacity-50`}>
+              <span className={`font-mono font-bold text-lg mx-1 ${STAGE_COLORS[i].text} opacity-50 pointer-events-none`}>
                 &gt;&gt;
               </span>
             )}
@@ -175,6 +176,7 @@ export default function RetroArcadeTheme({ onNavigate }: InfographicThemeProps) 
           {QUICK_TIPS.map((tip, i) => (
             <button
               key={tip.pageKey}
+              data-testid={`tip-${tip.pageKey}`}
               onClick={() => onNavigate?.(tip.pageKey)}
               className={`
                 ${HINT_COLORS[i].bg} border-l-4 ${HINT_COLORS[i].border}

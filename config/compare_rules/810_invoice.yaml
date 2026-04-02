@@ -5,24 +5,28 @@ classification:
   ignore_case: true
   numeric: false
   conditional_qualifier: null
+  amount_variance: null
 - segment: IT1
   field: IT104
   severity: hard
   ignore_case: false
   numeric: true
   conditional_qualifier: null
+  amount_variance: null
 - segment: IT1
   field: IT109
   severity: soft
   ignore_case: false
   numeric: false
   conditional_qualifier: IT108
+  amount_variance: null
 - segment: '*'
   field: '*'
   severity: hard
   ignore_case: false
   numeric: false
   conditional_qualifier: null
+  amount_variance: null
 ignore:
 - segment: SE
   field: SE01

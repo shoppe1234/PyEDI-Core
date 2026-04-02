@@ -49,7 +49,8 @@ export default function ComparePage({ onNavigate }: { onNavigate?: (page: string
   const [matchValueFilter, setMatchValueFilter] = useState('')
 
   const [error, setError] = useState('')
-  const [loading, setLoading] = useState(false)
+  const [pairsLoading, setPairsLoading] = useState(false)
+  const [diffsLoading, setDiffsLoading] = useState(false)
 
   // Tab view
   const [view, setView] = useState<'runs' | 'discoveries'>('runs')
@@ -130,39 +131,43 @@ export default function ComparePage({ onNavigate }: { onNavigate?: (page: string
     setTargetFileFilter('')
     setMatchValueFilter('')
     setSummary(null)
-    setLoading(true)
+    setPairsLoading(true)
     try {
-      setPairs(await api.comparePairs(run.run_id))
-      setSummary(await api.compareRunSummary(run.run_id))
+      const [fetchedPairs, fetchedSummary] = await Promise.all([
+        api.comparePairs(run.run_id),
+        api.compareRunSummary(run.run_id),
+      ])
+      setPairs(fetchedPairs)
+      setSummary(fetchedSummary)
     } catch (e: any) {
       setError(e.message)
     } finally {
-      setLoading(false)
+      setPairsLoading(false)
     }
   }
 
   const filterPairs = async (status: string) => {
     setStatusFilter(status)
     if (!selectedRun) return
-    setLoading(true)
+    setPairsLoading(true)
     try {
       setPairs(await api.comparePairs(selectedRun.run_id, status || undefined))
     } catch (e: any) {
       setError(e.message)
     } finally {
-      setLoading(false)
+      setPairsLoading(false)
     }
   }
 
   const selectPair = async (pair: any) => {
     setSelectedPair(pair)
-    setLoading(true)
+    setDiffsLoading(true)
     try {
       setDiffs(await api.compareDiffs(pair.run_id, pair.id))
     } catch (e: any) {
       setError(e.message)
     } finally {
-      setLoading(false)
+      setDiffsLoading(false)
     }
   }
 
@@ -567,7 +572,7 @@ export default function ComparePage({ onNavigate }: { onNavigate?: (page: string
               ))}
             </div>
           </div>
-          {loading ? (
+          {pairsLoading ? (
             <p className="text-sm text-gray-400">Loading...</p>
           ) : pairs.length === 0 ? (
             <p className="text-sm text-gray-400">No pairs found.</p>
@@ -614,20 +619,28 @@ export default function ComparePage({ onNavigate }: { onNavigate?: (page: string
                 </tr>
               </thead>
               <tbody>
-                {filteredPairs.map(p => (
-                  <tr
-                    key={p.id}
-                    onClick={() => p.status !== 'MATCH' && selectPair(p)}
-                    className={`${p.status !== 'MATCH' ? 'cursor-pointer hover:bg-blue-50 transition-colors' : ''} ${selectedPair?.id === p.id ? 'bg-blue-100 font-medium' : ''}`}
-                    title={p.status !== 'MATCH' ? 'Click to view diffs' : undefined}
-                  >
-                    <td className="py-1 pr-2 font-mono text-xs truncate max-w-48">{p.source_file?.split(/[/\\]/).pop()}</td>
-                    <td className="py-1 pr-2 font-mono text-xs truncate max-w-48">{p.target_file?.split(/[/\\]/).pop() || '—'}</td>
-                    <td className="py-1 pr-2">{p.match_value}</td>
-                    <td className="py-1 pr-2"><StatusBadge status={p.status} /></td>
-                    <td className="py-1 pr-2">{p.diff_count}</td>
+                {filteredPairs.length === 0 ? (
+                  <tr>
+                    <td colSpan={5} className="py-3 text-center text-sm text-gray-400">
+                      No pairs match the current filter.
+                    </td>
                   </tr>
-                ))}
+                ) : (
+                  filteredPairs.map(p => (
+                    <tr
+                      key={p.id}
+                      onClick={() => p.status !== 'MATCH' && selectPair(p)}
+                      className={`${p.status !== 'MATCH' ? 'cursor-pointer hover:bg-blue-50 transition-colors' : ''} ${selectedPair?.id === p.id ? 'bg-blue-100 font-medium' : ''}`}
+                      title={p.status !== 'MATCH' ? 'Click to view diffs' : undefined}
+                    >
+                      <td className="py-1 pr-2 font-mono text-xs truncate max-w-48">{p.source_file?.split(/[/\\]/).pop()}</td>
+                      <td className="py-1 pr-2 font-mono text-xs truncate max-w-48">{p.target_file?.split(/[/\\]/).pop() || '—'}</td>
+                      <td className="py-1 pr-2">{p.match_value}</td>
+                      <td className="py-1 pr-2"><StatusBadge status={p.status} /></td>
+                      <td className="py-1 pr-2">{p.diff_count}</td>
+                    </tr>
+                  ))
+                )}
               </tbody>
             </table>
           )}
@@ -731,35 +744,41 @@ export default function ComparePage({ onNavigate }: { onNavigate?: (page: string
       )}
 
       {/* Pair Detail — Diffs */}
-      {selectedPair && diffs.length > 0 && (
+      {selectedPair && (
         <div className="bg-white rounded-lg shadow p-4 mb-4">
           <h2 className="font-semibold text-sm text-gray-500 uppercase mb-2">
-            Diffs — {selectedPair.match_value}
+            Diffs — Pair #{selectedPair.id}
           </h2>
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="text-left text-xs text-gray-500 border-b">
-                <th className="py-1 pr-2">Segment</th>
-                <th className="py-1 pr-2">Field</th>
-                <th className="py-1 pr-2">Severity</th>
-                <th className="py-1 pr-2">Source</th>
-                <th className="py-1 pr-2">Target</th>
-                <th className="py-1 pr-2">Description</th>
-              </tr>
-            </thead>
-            <tbody>
-              {diffs.map((d, i) => (
-                <tr key={i} className="border-b border-gray-50">
-                  <td className="py-1 pr-2 font-mono text-xs">{d.segment}</td>
-                  <td className="py-1 pr-2 font-mono text-xs">{d.field}</td>
-                  <td className="py-1 pr-2"><StatusBadge status={d.severity} /></td>
-                  <td className="py-1 pr-2 text-xs">{d.source_value ?? '—'}</td>
-                  <td className="py-1 pr-2 text-xs">{d.target_value ?? '—'}</td>
-                  <td className="py-1 pr-2 text-xs text-gray-500">{d.description}</td>
+          {diffsLoading ? (
+            <p className="text-sm text-gray-400">Loading diffs...</p>
+          ) : diffs.length === 0 ? (
+            <p className="text-sm text-gray-400">No diffs.</p>
+          ) : (
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="text-left text-xs text-gray-500 border-b">
+                  <th className="py-1 pr-2">Segment</th>
+                  <th className="py-1 pr-2">Field</th>
+                  <th className="py-1 pr-2">Severity</th>
+                  <th className="py-1 pr-2">Source</th>
+                  <th className="py-1 pr-2">Target</th>
+                  <th className="py-1 pr-2">Description</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {diffs.map((d, i) => (
+                  <tr key={i} className="border-b border-gray-50">
+                    <td className="py-1 pr-2 font-mono text-xs">{d.segment}</td>
+                    <td className="py-1 pr-2 font-mono text-xs">{d.field}</td>
+                    <td className="py-1 pr-2"><StatusBadge status={d.severity} /></td>
+                    <td className="py-1 pr-2 text-xs">{d.source_value ?? '—'}</td>
+                    <td className="py-1 pr-2 text-xs">{d.target_value ?? '—'}</td>
+                    <td className="py-1 pr-2 text-xs text-gray-500">{d.description}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
         </div>
       )}
       </>

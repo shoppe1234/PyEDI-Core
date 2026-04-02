@@ -1,64 +1,63 @@
-# Bevager 810 Invoice flat file comparison rules
-# Numeric fields use float comparison (tolerates precision differences)
-# ProductDescription is soft (warning-only, case-insensitive)
-# All other fields are hard (must match exactly)
-
 classification:
-  # --- Numeric fields (float comparison, hard severity) ---
-  - segment: "*"
-    field: "InvoiceAmount"
-    severity: hard
-    ignore_case: false
-    numeric: true
-
-  - segment: "*"
-    field: "WeightShipped"
-    severity: hard
-    ignore_case: false
-    numeric: true
-
-  - segment: "*"
-    field: "UnitPrice"
-    severity: hard
-    ignore_case: false
-    numeric: true
-
-  - segment: "*"
-    field: "QuantityShipped"
-    severity: hard
-    ignore_case: false
-    numeric: true
-
-  - segment: "*"
-    field: "Discount"
-    severity: hard
-    ignore_case: false
-    numeric: true
-
-  - segment: "*"
-    field: "Taxes"
-    severity: hard
-    ignore_case: false
-    numeric: true
-
-  - segment: "*"
-    field: "ExtendedPrice"
-    severity: hard
-    ignore_case: false
-    numeric: true
-
-  # --- Soft fields (warning only) ---
-  - segment: "*"
-    field: "ProductDescription"
-    severity: soft
-    ignore_case: true
-    numeric: false
-
-  # --- Default: all remaining fields hard match ---
-  - segment: "*"
-    field: "*"
-    severity: hard
-    ignore_case: false
-    numeric: false
-
+- segment: '*'
+  field: InvoiceAmount
+  severity: hard
+  ignore_case: false
+  numeric: true
+  conditional_qualifier: null
+  amount_variance: null
+- segment: '*'
+  field: WeightShipped
+  severity: hard
+  ignore_case: false
+  numeric: true
+  conditional_qualifier: null
+  amount_variance: null
+- segment: '*'
+  field: UnitPrice
+  severity: hard
+  ignore_case: false
+  numeric: true
+  conditional_qualifier: null
+  amount_variance: null
+- segment: '*'
+  field: QuantityShipped
+  severity: hard
+  ignore_case: false
+  numeric: true
+  conditional_qualifier: null
+  amount_variance: null
+- segment: '*'
+  field: Discount
+  severity: hard
+  ignore_case: false
+  numeric: true
+  conditional_qualifier: null
+  amount_variance: null
+- segment: '*'
+  field: Taxes
+  severity: hard
+  ignore_case: false
+  numeric: true
+  conditional_qualifier: null
+  amount_variance: null
+- segment: '*'
+  field: ExtendedPrice
+  severity: hard
+  ignore_case: false
+  numeric: true
+  conditional_qualifier: null
+  amount_variance: null
+- segment: '*'
+  field: ProductDescription
+  severity: soft
+  ignore_case: true
+  numeric: false
+  conditional_qualifier: null
+  amount_variance: null
+- segment: '*'
+  field: GTIN
+  severity: ignore
+  ignore_case: false
+  numeric: false
 ignore: []

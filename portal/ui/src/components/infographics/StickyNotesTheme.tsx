@@ -86,6 +86,7 @@ export default function StickyNotesTheme({ onNavigate }: InfographicThemeProps) 
           {WORKFLOW_STEPS.map((step, i) => (
             <button
               key={step.pageKey}
+              data-testid={`nav-${step.pageKey}`}
               onClick={() => onNavigate?.(step.pageKey)}
               className={`
                 relative ${NOTE_COLORS[i]} ${NOTE_ROTATIONS[i]}
@@ -158,6 +159,7 @@ export default function StickyNotesTheme({ onNavigate }: InfographicThemeProps) 
           {QUICK_TIPS.map((tip, i) => (
             <button
               key={tip.pageKey}
+              data-testid={`tip-${tip.pageKey}`}
               onClick={() => onNavigate?.(tip.pageKey)}
               className={`
                 relative ${TIP_COLORS[i]} ${TIP_ROTATIONS_LIST[i]}

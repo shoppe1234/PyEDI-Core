@@ -1,0 +1,1298 @@
+O_TPID    SILVR     
+OIN_DSTID 
+OIN_HDRA    1 73  2 71 722676254
+TPM_HDR   9032131825          1045204236          3071      
+OIN_HDR1  52042362131825202602092026021020260210                    
+OIN_HDR2                                                         DR0000000
+OIN_HDR3                                                              
+OIN_HDR4  
+OIN_HDR5     1236.29 00000000000000000000000
+OIN_TRM1    000000000000003000000000020260312030Net 30 Days              
+OIN_ST1   HOME 2 SUITES WEST EDM   ST722676254      208531               722676254ENGSILVERBIRCH HOTELS & RESO
+OIN_ST2   16675 109 AVE                                     
+OIN_ST3   EDMONTON       ABT5P 4K8   
+OIN_BT1   SILVERBIRCH HOTELS & RESOZZ722275074      
+OIN_BT2   1030 W. GEORGIA STE 1600 SILVERBIRCH HOTELS & RESO     
+OIN_BT3   VANCOUVER      BCV6E 2Y3   
+OIN_RE1   GFS                       1      243903713
+OIN_RE2   290212 Township Road 261 Gordon Food Service Canada Ltd
+OIN_RE3   Rocky View CityABT4A 0V6   
+OIN_DTL1     60   1062605UP00650746000569               CA0001000465800000465800000000NNN01773000000000
+OIN_DTL2  BANANA STAGE 4/5                                                                
+OIN_DTL3  000000100000010000000000000000000004658                                          000000000020.01000000000019.05
+OIN_DTL4   727789946KROWN Produce            14170      10Produce                  12010Fresh Bananas            
+OIN_DTL5                                  Packer Label   000140LB   00000  0065074600056914170                       
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  BANANA STAGE 4/5                                                                
+OIN_DTL11                             
+OIN_DTL1     20   1444920UP10620868213939               CA0024001212200001212200000000NNN00576000000000
+OIN_DTL2  CHEESE CHED MILD SLCD NAT COL 14G                                               
+OIN_DTL3  000000100000010000000000000000000012122                                          0000000000006.7000000000006.05
+OIN_DTL4   727796042Saputo ALB SADC 8D       420297      6Dairy                    11080Cheese Blocks Slc Port   
+OIN_DTL5                                  Brickman's     0024252G   00000  10620868213939420297                      
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  CHEESE CHED MILD SLCD NAT COL 14G       FROM CHED DOUX JAUNE TR 14G             
+OIN_DTL11                             
+OIN_DTL1    170   1279246UP00068100897630               CA0200000608600000608600000000NNN00352000000000
+OIN_DTL2  CHEESE CREAM PORT                                                               
+OIN_DTL3  000000100000010000000000000000000006086                                          000000000004.08000000000003.61
+OIN_DTL4   727784539Kraft Heinz Milton CLR   89763       6Dairy                    11050Cream Cheese             
+OIN_DTL5                                  Philadelphia   020018G    00000  0006810089763089763                       
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  CHEESE CREAM PORT                       FROM CREME PORT                         
+OIN_DTL11                             
+OIN_DTL1     40   1208560UP10620868163029               CA0006000252800000252800000000NNN00380000000000
+OIN_DTL2  EGG HARD CKD/PLD PILLOW KOSHER                                                  
+OIN_DTL3  000000200000020000000000000000000005056                                          000000000003.550000000000006.4
+OIN_DTL4   727797595Burnbrae Farms - FRSH    01204-5240  6Dairy                    11165Egg Products             
+OIN_DTL5                                  Gordon Choice  000612UN   00000  1062086816302901204-52401                 
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  EGG HARD CKD/PLD PILLOW KOSHER                                                  
+OIN_DTL11                             
+OIN_DTL1    160   1287689UP10056800092728               CA0048000230200000230200000000NNN00444000000000
+OIN_DTL2  YOGURT 0PCT ASST FF W/CHK                                                       
+OIN_DTL3  000000200000020000000000000000000004604                                          00000000004.753000000000008.64
+OIN_DTL4   727806867Danone Inc. VH1032C      109272      6Dairy                    11170Fresh Yogurt             
+OIN_DTL5                                  Danone         004890G    00000  10056800092728109272                      
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  YOGURT 0PCT ASST FF W/CHK               YOG ASST FRAI CER PECH/ABR VAN MCX 0PCT 
+OIN_DTL11                             
+OIN_DTL1     30   1172950UP10056800154365               CA0048000242500000242500000000NNN00482000000000
+OIN_DTL2  YOGURT VAR PK STRW/VAN/PEACH/BLU L/FAT                                          
+OIN_DTL3  000000200000020000000000000000000004850                                          00000000005.2330000000000009.6
+OIN_DTL4   727806867Danone Inc. VH1032C      15436       6Dairy                    11170Fresh Yogurt             
+OIN_DTL5                                  Danone         0048100G   00000  1005680015436515436                       
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  YOGURT VAR PK STRW/VAN/PEACH/BLU L/FAT  YOG ASST FRAI BLEUET PECH VAN MCX 1.5PCT
+OIN_DTL11                             
+OIN_DTL1    130   1258169UP10778463048033               CA0002000580800000580800000000NNN00346000000000
+OIN_DTL2  BREAD LEMON POPPYSEED LOAF SLCD 18 CUT                                          
+OIN_DTL3  000000100000010000000000000000000005808                                          000000000003.840000000000003.4
+OIN_DTL4   727807101Wow! Factor Desserts GFS 4803        2Frozen                   14080FZN Breakfast Breads     
+OIN_DTL5                                  WOW! Factor    00021.7KG  00000  107784630480334803                        
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  BREAD LEMON POPPYSEED LOAF SLCD 18 CUT  GAT QUATRE QUART CITRON PAVOT TR 18MCX  
+OIN_DTL11                             
+OIN_DTL1     50   1099923UP00620868104025               CA0230000463200000463200000000NNN00665000000000
+OIN_DTL2  BROWNIE TWO BITE                                                                
+OIN_DTL3  000000100000010000000000000000000004632                                          000000000004.63000000000004.37
+OIN_DTL4   727812327Give & Go Prepared Foods 09019       2Frozen                   14100FZN Bars Brownies Cupcake
+OIN_DTL5                                  Gordon Choice  023019G    00000  0062086810402509019                       
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  BROWNIE TWO BITE                        BISC TWO-BITE BROWNIE VRAC S/ARACHIDE   
+OIN_DTL11                             
+OIN_DTL1     70   1353550UP10620868196973               CA0072000881700000881700000000NNN00914000000000
+OIN_DTL2  EGG OMELETTE CHS COLBY                                                          
+OIN_DTL3  000000100000010000000000000000000008817                                          0000000000007.40000000000007.2
+OIN_DTL4   727793790Burnbrae Farms - FZN     00688-5240  6Dairy                    11165Egg Products             
+OIN_DTL5                                  Gordon Choice  0072100G   00000  1062086819697300688-52401                 
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  EGG OMELETTE CHS COLBY                  OMELETTE FROMAGE COLBY                  
+OIN_DTL11                             
+OIN_DTL1     80   1440511UP00665079304864               CA0048000611800000611800000000NNN00458000000000
+OIN_DTL2  EGG OMELETTE HMSTYLE WESTERN W/CHS                                              
+OIN_DTL3  000000300000030000000000000000000018354                                          000000000004.78000000000012.24
+OIN_DTL4   727793303Vanderpols Eggs-FZN      30486       6Dairy                    11165Egg Products             
+OIN_DTL5                                  Egg Solutions  004885G    00000  0066507930486430486                       
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  EGG OMELETTE HMSTYLE WESTERN W/CHS      OMELETTE WESTERN AVEC FROMAGE           
+OIN_DTL11                             
+OIN_DTL1    100   1125840UP10077900237123               CA0012000259200000259200000000NNN00271000000000
+OIN_DTL2  SANDWICH BRKFST BACON EGG CHS MUFFIN                                            
+OIN_DTL3  000000200000020000000000000000000005184                                          000000000001.960000000000002.5
+OIN_DTL4   727796300Tree Of Life - FZN       1000002371  2Frozen                   14070FZN Breakfast Entrees    
+OIN_DTL5                                  Jimmy Dean     0012104G   00000  1007790023712310000023712                 
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  SANDWICH BRKFST BACON EGG CHS MUFFIN    MET SANDW MUFF OEUF FROM BACON          
+OIN_DTL11                             
+OIN_DTL1    110   1127625UP10077900513678               CA0012000259200000259200000000NNN00271000000000
+OIN_DTL2  SANDWICH BRKFST SAUS EGG CHS MUFFIN TFC                                         
+OIN_DTL3  000000200000020000000000000000000005184                                          000000000001.960000000000002.5
+OIN_DTL4   727796300Tree Of Life - FZN       1000005136  2Frozen                   14070FZN Breakfast Entrees    
+OIN_DTL5                                  Jimmy Dean     0012141G   00000  1007790051367810000051367                 
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  SANDWICH BRKFST SAUS EGG CHS MUFFIN TFC MET SANDW MUFF OEUF FROM SAUCIS         
+OIN_DTL11                             
+OIN_DTL1     90   1329725UP10077900254564               CA0106000449700000449700000000NNN00593000000000
+OIN_DTL2  SAUSAGE PORK MILD PATTY 1.5Z CKD FZN                                            
+OIN_DTL3  000000200000020000000000000000000008994                                          000000000004.86000000000009.08
+OIN_DTL4   727796300Tree Of Life - FZN       1000002545  3Meat                     16500Breakfast Sausage        
+OIN_DTL5                                  Jimmy Dean     010643G    00000  1007790025456410000025456                 
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  SAUSAGE PORK MILD PATTY 1.5Z CKD FZN    SAUCIS PORC GALETTE DOUCE CUIT 1.5OZ SU 
+OIN_DTL11                             
+OIN_DTL1     10   1477007UP10620868219252               CA0002000227500000227500000000NNN00530000000000
+OIN_DTL2  STRAWBERRY WHL IQF                                                              
+OIN_DTL3  000000100000010000000000000000000002275                                          000000000000006000000000000005
+OIN_DTL4   727818002Limson FZN Fruit Tillsonb1477007     2Frozen                   14000FZN Fruits               
+OIN_DTL5                                  Kitchen Essenti00022.5KG  00000  106208682192521477007                     
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  STRAWBERRY WHL IQF                      FRAISE ENT IQF                          
+OIN_DTL11                             
+OIN_DTL1    180   1499088UP10065633147680               CA0004000508600000508600000000NNN01676000000000
+OIN_DTL2  CEREAL LUCKY CHARMS POUCH TFC                                                   
+OIN_DTL3  000000100000010000000000000000000005086                                          000000000004.65000000000003.97
+OIN_DTL4   727805054General Mills CA Retail  14768       1Grocery                  10350Cereals: Hot Or Cold     
+OIN_DTL5                                  General Mills  0004992G   00000  1006563314768014768                       
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  CEREAL LUCKY CHARMS POUCH TFC           CER LUCKY CHARMS                        
+OIN_DTL11                             
+OIN_DTL1    120   1369575UP00055000383103               CA0006001304100001304100000000NNN00920000000000
+OIN_DTL2  DRINK HOT CHOC MIX PORTION 25G                                                  
+OIN_DTL3  000000100000010000000000000000000013041                                          000000000008.840000000000007.5
+OIN_DTL4   727833088Nestle Canada Hopewell DR12366889    9Beverage                 13150Branded Cocoa & Tea      
+OIN_DTL5                                  Carnation      000650X25G 00009L 0005500038310312366889                    
+OIN_DTL6  99999                         
+OIN_DTL7  8005383545
+OIN_DTL8  
+OIN_DTL9  DRINK HOT CHOC MIX PORTION 25G          CHOCOLAT CHAUD PORTION 25G              
+OIN_DTL11                             
+OIN_DTL1    150   8319205UP10060731303891               CA0006000224900000224900000000NNN00205000000000
+OIN_DTL2  TEA HERBAL PEPPERMINT                                                           
+OIN_DTL3  000000100000010000000000000000000002249                                          000000000000.65000000000000.14
+OIN_DTL4   727794319Mother Parkers Tea & Coff3030389     9Beverage                 13150Branded Cocoa & Tea      
+OIN_DTL5                                  Higgins & Burke000620UN   00000  100607313038913030389                     
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  TEA HERBAL PEPPERMINT                   TISANE MENTHE POIVRE                    
+OIN_DTL11                             
+OIN_DTL1    140   1123278UP10050000461308               CA0180000263200000263200000000NNN00306000000000
+OIN_DTL2  WHITENER COFFEE ORIG                                                            
+OIN_DTL3  000000200000020000000000000000000005264                                          000000000002.39000000000000004
+OIN_DTL4   727833088Nestle Canada Hopewell DR12109163    9Beverage                 13211Coffee Beverage Flavoring
+OIN_DTL5                                  Coffee Mate    018011ML   00000  1005000046130812109163                    
+OIN_DTL6  99999                         
+OIN_DTL7  8005383545
+OIN_DTL8  
+OIN_DTL9  WHITENER COFFEE ORIG                    LAIT SUCCED ORIGINAL LIQ                
+OIN_DTL11                             
+OIN_TTL1     18000002701152500001222510001236290000013810000000000000000000000
+OIN_SACS1 CH740000000000000065 000000                              06SUMMARY TAX                   
+OIN_SACS2 Tax - Sales and Use                                                             
+OIN_SACS1 CD260000000000001300 000000                              06                              
+OIN_SACS2 Fuel Charge                                                                     
+OIN_SACS1 CD360000000000000065 000000                              06                              
+OIN_SACS2 GST                                                                             
+OIN_SACS1 CD360000000000000065 000000                              06SUMMARY TAX                   
+OIN_SACS2 GST                                                                             
+O_TPID    SILVR     
+OIN_DSTID 
+OIN_HDRA    1 73  2 71 722676242
+TPM_HDR   9032135371          1045239907          3071      
+OIN_HDR1  52399072135371202602092026021020260210                    
+OIN_HDR2                                                         DR0000000
+OIN_HDR3                                                              
+OIN_HDR4  
+OIN_HDR5    14880.22 00000000000000000000000
+OIN_TRM1    000000000000003000000000020260312030Net 30 Days              
+OIN_ST1   DOUBLE TREE HILTON W. EDMST722676242      207281               722676242ENGSILVERBIRCH HOTELS & RESO
+OIN_ST2   16615 109TH AVE                                   
+OIN_ST3   EDMONTON       ABT5P 4K8   
+OIN_BT1   SILVERBIRCH HOTELS & RESOZZ722275040      
+OIN_BT2   1030 W. GEORGIA STE 1600 SILVERBIRCH HOTELS & RESO     
+OIN_BT3   VANCOUVER      BCV6E 2Y3   
+OIN_RE1   GFS                       1      243903713
+OIN_RE2   290212 Township Road 261 Gordon Food Service Canada Ltd
+OIN_RE3   Rocky View CityABT4A 0V6   
+OIN_DTL1    430   1393435UP20611628914590               CA0001000637800000637800000000NNN00484000000000
+OIN_DTL2  AVOCADO HALVES FRSH 44-52CT                                                     
+OIN_DTL3  000000100000010000000000000000000006378                                          000000000002.54000000000002.04
+OIN_DTL4   727790029Markon Cooperative FGN   91459      10Produce                  12015Fresh Avocadoes/Guacamole
+OIN_DTL5                                  Ready-Set-Serve00014.5LB  00000  2061162891459091459                       
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  AVOCADO HALVES FRSH 44-52CT             FL AVOCAT PELE DEMI 44-52UN FR          
+OIN_DTL11                             
+OIN_DTL1    590   1062605UP00650746000569               CA0001000458900000458900000000NNN01773000000000
+OIN_DTL2  BANANA STAGE 4/5                                                                
+OIN_DTL3  000000200000020000000000000000000009178                                          000000000020.010000000000038.1
+OIN_DTL4   727789946KROWN Produce            14170      10Produce                  12010Fresh Bananas            
+OIN_DTL5                                  Packer Label   000140LB   00000  0065074600056914170                       
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  BANANA STAGE 4/5                                                                
+OIN_DTL11                             
+OIN_DTL1    250   1106966UP10620868495625               CA0006000192800000192800000000YNN01404000000000
+OIN_DTL2  BEEF PASTRAMI RND G/FREE TFC FRSH                                               
+OIN_DTL3  000000100000010000000000001750000033740                                          0000000000015.40000000000017.5
+OIN_DTL4   727800771Les Salaison Desco       97800       3Meat                     16550Deli Meats               
+OIN_DTL5                                  Gordon Choice  00062.5KGA 00000  1062086849562597800                       
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  BEEF PASTRAMI RND G/FREE TFC FRSH       BF PASTRAMI FUME FR                     
+OIN_DTL11                             
+OIN_DTL1    450   9249805UP10620868719165               CA0600000585100000585100000000NNN00589000000000
+OIN_DTL2  BUTTER WHIPPED RND CUP SALTED PORT                                              
+OIN_DTL3  000000100000010000000000000000000005851                                          00000000002.9980000000000002.7
+OIN_DTL4   727809291Lactalis Cheese          71916       6Dairy                    11140Butter                   
+OIN_DTL5                                  Gordon Choice  06004.5G   00000  1062086871916571916                       
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  BUTTER WHIPPED RND CUP SALTED PORT      BEURRE FOUETTE M/COUPE                  
+OIN_DTL11                             
+OIN_DTL1    300   1184111UP90059441181253               CA0001000228300000228300000000YNN00194000000000
+OIN_DTL2  CHEESE BLUE WHEEL DANISH HALAL                                                  
+OIN_DTL3  000000200000020000000000000588000013424                                          000000000003.25000000000005.88
+OIN_DTL4   727810977Arla Foods Inc           22450       6Dairy                    11010Blue-Veined Cheese       
+OIN_DTL5                                  Castello       00013KGA   00000  9005944118125322450                       
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  CHEESE BLUE WHEEL DANISH HALAL          FROM BLEU DANOIS HALAL                  
+OIN_DTL11                             
+OIN_DTL1    290   1464631UP00620868217336               CA0001000573200000573200000000NNN00375000000000
+OIN_DTL2  CHEESE BOCCONCINI LRG 100G                                                      
+OIN_DTL3  000000100000010000000000000000000005732                                          00000000005.477000000000000003
+OIN_DTL4   727784449Quality Cheese Inc.      10103       6Dairy                    11038Italian Cheese           
+OIN_DTL5                                  Tavolini - Prem00013KG    00000  0062086821733610103                       
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  CHEESE BOCCONCINI LRG 100G              FROM BOCCONCINI GRAND 100G              
+OIN_DTL11                             
+OIN_DTL1     50   1089151UP90059441508838               CA0001000270800000270800000000YNN00130000000000
+OIN_DTL2  CHEESE GORGONZOLA WHEEL WOC HALAL                                               
+OIN_DTL3  000000100000010000000000000159000004306                                          0000000000001.6000000000001.59
+OIN_DTL4   727810977Arla Foods Inc           20390       6Dairy                    11010Blue-Veined Cheese       
+OIN_DTL5                                  Castello       00011.5KGA 00000  9005944150883820390                       
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  CHEESE GORGONZOLA WHEEL WOC HALAL       FROM GORGONZOLA HALAL                   
+OIN_DTL11                             
+OIN_DTL1    270   1251221UP10620868217593               CA0004001467400001467400000000NNN01157000000000
+OIN_DTL2  CHEESE MOZZ PIZZA 21PCT SHRED HALAL                                             
+OIN_DTL3  000000100000010000000000000000000014674                                          00000000011.358000000000000010
+OIN_DTL4   727809291Lactalis Cheese          9158        6Dairy                    11090Cheese Shrd Dcd Grated   
+OIN_DTL5                                  Tavolini       00042.5KG  00000  106208682175939158                        
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  CHEESE MOZZ PIZZA 21PCT SHRED HALAL     FROM MOZZ PIZZA RAPE 21PCT HALAL        
+OIN_DTL11                             
+OIN_DTL1    280   1459822UP10620868216992               CA0004000586200000586200000000NNN00502000000000
+OIN_DTL2  CHEESE PARM SHRED 20PCT HALAL MF                                                
+OIN_DTL3  000000300000030000000000000000000017586                                          000000000004.48000000000000012
+OIN_DTL4   727796674Castle Cheese (West) Inc.6091KE      6Dairy                    11038Italian Cheese           
+OIN_DTL5                                  Tavolini       00041KG    00000  106208682169926091KE                      
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  CHEESE PARM SHRED 20PCT HALAL MF        FROM PARM RAPE                          
+OIN_DTL11                             
+OIN_DTL1    380   1254405UP10611628917600               CA0004000352400000352400000000NNN01114000000000
+OIN_DTL2  COLESLAW CABBAGE 1/8IN SHRED SEP BAG                                            
+OIN_DTL3  000000500000050000000000000000000017620                                          000000000009.53000000000045.35
+OIN_DTL4   727790029Markon Cooperative FGN   91760      10Produce                  12317Fresh Cut Veg-Cabbage    
+OIN_DTL5                                  Ready-Set-Serve00045LB    00000  1061162891760091760                       
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  COLESLAW CABBAGE 1/8IN SHRED SEP BAG    FL CHOU EMINCE 1/8                      
+OIN_DTL11                             
+OIN_DTL1    500   1243337UP00068700026096               CA0001000252000000252000000000NNN00278000000000
+OIN_DTL2  CREAM SOUR 14PCT                                                                
+OIN_DTL3  000000300000030000000000000000000007560                                          000000000004.28000000000000012
+OIN_DTL4   727796161Saputo ALB EDM WH 2D     165340      6Dairy                    11130Sour Cream               
+OIN_DTL5                                  Dairyland      00014L     00000  00068700026096165340                      
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  CREAM SOUR 14PCT                        CREME SURE 14PCT (CAISSON)              
+OIN_DTL11                             
+OIN_DTL1    490   1433950UP00068700103667               CA0016001022700001022700000000NNN01076000000000
+OIN_DTL2  CREAM WHIPPING 33PCT GABLE                                                      
+OIN_DTL3  000000200000020000000000000000000020454                                          000000000016.94000000000030.28
+OIN_DTL4   727796161Saputo ALB EDM WH 2D     130433      6Dairy                    11150Fluid Milk & Cream       
+OIN_DTL5                                  Dairyland      0016946ML  00000  00068700103667130433                      
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  CREAM WHIPPING 33PCT GABLE                                                      
+OIN_DTL11                             
+OIN_DTL1    550   1433948UP00068700103629               CA0016000615000000615000000000NNN01076000000000
+OIN_DTL2  CREAMO 10PCT HALF & HALF GABLE                                                  
+OIN_DTL3  000000400000040000000000000000000024600                                          000000000016.94000000000060.56
+OIN_DTL4   727796161Saputo ALB EDM WH 2D     130431      6Dairy                    11150Fluid Milk & Cream       
+OIN_DTL5                                  Dairyland      0016946ML  00000  00068700103629130431                      
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  CREAMO 10PCT HALF & HALF GABLE                                                  
+OIN_DTL11                             
+OIN_DTL1    260   1203024UP10620868141676               CA0002000465600000465600000000NNN00492000000000
+OIN_DTL2  DAIRY PRODUCT NACHO ECONO BLEND SHRED                                           
+OIN_DTL3  000000300000030000000000000000000013968                                          000000000004.86000000000013.62
+OIN_DTL4   727796674Castle Cheese (West) Inc.6055        6Dairy                    11195Dairy Alternatives       
+OIN_DTL5                                  Kitchen Essenti00022.27KG 00000  106208681416766055                        
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  DAIRY PRODUCT NACHO ECONO BLEND SHRED   FROM MEL NACHO ECONO                    
+OIN_DTL11                             
+OIN_DTL1     50   1188780UP10063350202644               CA0002000483700000483700000000NNN00458000000000
+OIN_DTL2  DRESSING COLESLAW CREAMY G/FREE                                                 
+OIN_DTL3  000000200000020000000000000000000009674                                          000000000008.37000000000015.44
+OIN_DTL4   727793435Unilever Food Solutions  69629467    1Grocery                  10170Salad Dressings          
+OIN_DTL5                                  Hellmann's     00023.78L  00000  1006335020264469629467                    
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  DRESSING COLESLAW CREAMY G/FREE         VIN SALADE CHOU CREMEUSE S/GLUTEN       
+OIN_DTL11                             
+OIN_DTL1    480   1349349UP10025293001005               CA0006000287300000287300000000NNN00639000000000
+OIN_DTL2  DRINK ALMOND ORIG ESL GABLE                                                     
+OIN_DTL3  000000100000010000000000000000000002873                                          00000000011.79700000000011.538
+OIN_DTL4   727816513Danone Plant Based       135121      6Dairy                    11195Dairy Alternatives       
+OIN_DTL5                                  Silk           00061.89L  00000  10025293001005135121                      
+OIN_DTL6  99999                         
+OIN_DTL7  9055649999-3597
+OIN_DTL8  
+OIN_DTL9  DRINK ALMOND ORIG ESL GABLE             BOISS AMANDE ORIG CART PIGNON           
+OIN_DTL11                             
+OIN_SACD1 AH740000000000000000 000000                              06                              
+OIN_SACD2 Tax - Sales and Use                                                             
+OIN_SACD1 CB570000000000000150 000522                              06                              
+OIN_SACD2 Bottle Deposits                                                                 
+OIN_SACD1 CC090000000000000060 000208                              06                              
+OIN_SACD2 Ecology Fees                                                                    
+OIN_SACD1 CD360000000000000003 000500                              06                              
+OIN_SACD2 GST                                                                             
+OIN_DTL1    530   9875405UP00620868179856               CA0001000607300000607300000000NNN01216000000000
+OIN_DTL2  EGG LARGE GRADE A FRSH                                                          
+OIN_DTL3  000000200000020000000000000000000012146                                          0000000000010.4000000000000020
+OIN_DTL4   727800207Sparks Farm Egg Supplies 17985       6Dairy                    11160Shell Eggs               
+OIN_DTL5                                  Gordon Choice  000115DZ   00000  0062086817985617985                       
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  EGG LARGE GRADE A FRSH                  OEUF GROS CAT A VRAC                    
+OIN_DTL11                             
+OIN_DTL1    440   9938805UP10620868359095               CA0012000701800000701800000000NNN00623000000000
+OIN_DTL2  EGG LIQ WHOLE FRESH ESL                                                         
+OIN_DTL3  000000400000040000000000000000000028072                                          000000000013.31000000000000048
+OIN_DTL4   727797595Burnbrae Farms - FRSH    01799-5240  6Dairy                    11165Egg Products             
+OIN_DTL5                                  Gordon Choice  00121KG    00000  1062086835909501799-52401                 
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  EGG LIQ WHOLE FRESH ESL                 OEUF ENT LIQUIDE                        
+OIN_DTL11                             
+OIN_DTL1    340   1282605UP10611628922703               CA0004000258800000258800000000NNN00825000000000
+OIN_DTL2  HERB PARSLEY CELLO WASHED TRIMMED                                               
+OIN_DTL3  000000100000010000000000000000000002588                                          000000000002.72000000000002.27
+OIN_DTL4   727790029Markon Cooperative FGN   92270      10Produce                  12160Fresh Herbs              
+OIN_DTL5                                  Ready-Set-Serve00041LB    00000  1061162892270392270                       
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  HERB PARSLEY CELLO WASHED TRIMMED       FL PERSIL LAVE/PREP                     
+OIN_DTL11                             
+OIN_DTL1    320   1424160UP00611628927404               CA0001000099600000099600000000NNN00126000000000
+OIN_DTL2  HERB THYME FRSH                                                                 
+OIN_DTL3  000000100000010000000000000000000000996                                          000000000000.24000000000000.22
+OIN_DTL4   727784557Evergreen Herbs Ltd.     92740      10Produce                  12160Fresh Herbs              
+OIN_DTL5                                  Markon First Cr00018OZ    00000  0061162892740492740                       
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  HERB THYME FRSH                                                                 
+OIN_DTL11                             
+OIN_DTL1    420   1274805UP10611628919024               CA0002000356800000356800000000NNN01090000000000
+OIN_DTL2  KALE PURPLE CELLO ICELESS WASHED TRIMMED                                        
+OIN_DTL3  000000100000010000000000000000000003568                                          000000000003.18000000000002.27
+OIN_DTL4   727790029Markon Cooperative FGN   91902      10Produce                  12060Fresh Cabbage            
+OIN_DTL5                                  Ready-Set-Serve00022.5LB  00000  1061162891902491902                       
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  KALE PURPLE CELLO ICELESS WASHED TRIMMEDFL KALE COULEUR LAVEE/PREP              
+OIN_DTL11                             
+OIN_DTL1    410   1567605UP00611628925707               CA0001000513000000513000000000NNN02836000000000
+OIN_DTL2  LETTUCE ROMAINE PREMIUM                                                         
+OIN_DTL3  000000200000020000000000000000000010260                                          000000000018.48000000000036.28
+OIN_DTL4   727790029Markon Cooperative FGN   87823      10Produce                  12050Fresh Lettuce            
+OIN_DTL5                                  Markon First Cr000124UN   00000  0061162892570787823                       
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  LETTUCE ROMAINE PREMIUM                 FL LAITUE ROMAINE PREM                  
+OIN_DTL11                             
+OIN_DTL1    570   1310822UP00063549103052               CA0001000520400000520400000000NNN01076000000000
+OIN_DTL2  MILK 2PCT                                                                       
+OIN_DTL3  000000500000050000000000000000000026020                                          000000000020.69000000000000100
+OIN_DTL4   727796161Saputo ALB EDM WH 2D     134014      6Dairy                    11150Fluid Milk & Cream       
+OIN_DTL5                                  Saputo         000120L    00000  00063549103052134014                      
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  MILK 2PCT                                                                       
+OIN_DTL11                             
+OIN_SACD1 AH740000000000000000 000000                              06                              
+OIN_SACD2 Tax - Sales and Use                                                             
+OIN_SACD1 CB570000000000000125 000048                              06                              
+OIN_SACD2 Bottle Deposits                                                                 
+OIN_SACD1 CC090000000000000050 000019                              06                              
+OIN_SACD2 Ecology Fees                                                                    
+OIN_SACD1 CD360000000000000003 000500                              06                              
+OIN_SACD2 GST                                                                             
+OIN_DTL1    560   9017205UP00068700102783               CA0009000440800000440800000000NNN01076000000000
+OIN_DTL2  MILK 2PCT P/S                                                                   
+OIN_DTL3  000000400000040000000000000000000017632                                          000000000020.48000000000000072
+OIN_DTL4   727796161Saputo ALB EDM WH 2D     130401      6Dairy                    11150Fluid Milk & Cream       
+OIN_DTL5                                  Dairyland      00092L     00000  00068700102783130401                      
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  MILK 2PCT P/S                                                                   
+OIN_DTL11                             
+OIN_SACD1 AH740000000000000000 000000                              06                              
+OIN_SACD2 Tax - Sales and Use                                                             
+OIN_SACD1 CB570000000000000900 000510                              06                              
+OIN_SACD2 Bottle Deposits                                                                 
+OIN_SACD1 CC090000000000000360 000204                              06                              
+OIN_SACD2 Ecology Fees                                                                    
+OIN_SACD1 CD360000000000000018 000500                              06                              
+OIN_SACD2 GST                                                                             
+OIN_DTL1    360   1408430UP00797514466032               CA0001000370800000370800000000NNN00420000000000
+OIN_DTL2  MUSHROOM MIX GOURMET WHL FRSH                                                   
+OIN_DTL3  000000100000010000000000000000000003708                                          000000000001.81000000000001.36
+OIN_DTL4   727795678Misty Mountain Industries421477 408 10Produce                  12100Fresh And Dried Mushrooms
+OIN_DTL5                                  Packer Label   00013LB    00000  00797514466032421477 408903               
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  MUSHROOM MIX GOURMET WHL FRSH                                                   
+OIN_DTL11                             
+OIN_DTL1     10   8661105UP90620868011944               CA0002000061100000061100000000YNN00886000000000
+OIN_DTL2  PORK LOIN BNLS LONG CRYO VCP FRSH                                               
+OIN_DTL3  000000100000010000000000001328000008114                                          000000000011.25000000000013.28
+OIN_DTL4   727834333Canada Packers FRSH      45832       3Meat                     16270Pork Fresh Boxed         
+OIN_DTL5                                  Gordon Choice  00025KGA   00000  9062086801194445832                       
+OIN_DTL6  99999                         
+OIN_DTL7  9052855000
+OIN_DTL8  
+OIN_DTL9  PORK LOIN BNLS LONG CRYO VCP FRSH       PORC LONGE DES LONGUE COV PCV FR        
+OIN_DTL11                             
+OIN_DTL1    400   1140494UP10062838115247               CA0001000285900000285900000000NNN00760000000000
+OIN_DTL2  POTATO PLD                                                                      
+OIN_DTL3  000001500000150000000000000000000042885                                          000000000011.790000000000170.1
+OIN_DTL4   727791634Fresh Start - Pre Cut    30624      10Produce                  12329Fresh Cut Veg-Pot/Yams   
+OIN_DTL5                                  Fresh Start    000125LB   00000  1006283811524730624                       
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  POTATO PLD                                                                      
+OIN_DTL11                             
+OIN_DTL1    310   1339647UP10069481040308               CA0006000539200000539200000000NNN00270000000000
+OIN_DTL2  SAUCE HOLLANDAISE LOW FAT G/FREE                                                
+OIN_DTL3  000000200000020000000000000000000010784                                          0000000000006.3000000000000012
+OIN_DTL4   727788600Vanderpols Eggs CLR      4030        1Grocery                  10140Sauce: Ready To Use      
+OIN_DTL5                                  Vanderpol's Egg00061KG    00000  100694810403084030                        
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  SAUCE HOLLANDAISE LOW FAT G/FREE                                                
+OIN_DTL11                             
+OIN_DTL1    390   1371716UP00620868204480               CA0001000385000000385000000000NNN00197000000000
+OIN_DTL2  TOMATO CHERRY                                                                   
+OIN_DTL3  000000100000010000000000000000000003850                                          000000000004.68000000000004.54
+OIN_DTL4   727791538Fresh Start - Tomatoes   51863      10Produce                  12140Fresh Tomatoes           
+OIN_DTL5                                  Fresh Start    000110LB   00000  0062086820448051863                       
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  TOMATO CHERRY                           TOMATE CERISE                           
+OIN_DTL11                             
+OIN_DTL1    240   1270805UP00790429222212               CA0001000469500000469500000000NNN00170000000000
+OIN_DTL2  TOMATO SUNDRD JULIENNE                                                          
+OIN_DTL3  000000100000010000000000000000000004695                                          000000000002.61000000000002.27
+OIN_DTL4   727790029Markon Cooperative FGN   25071       1Grocery                  10120Dehydrated Fruit & Veg   
+OIN_DTL5                                  Packer Label   00015LB    00000  0079042922221225071                       
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  TOMATO SUNDRD JULIENNE                  TOMATE SECHEE JULIENNE                  
+OIN_DTL11                             
+OIN_DTL1     30   1374562UP10069165003056               CA0001000897900000897900000000NNN00243000000000
+OIN_DTL2  APPETIZER BEEF WELLINGTON MINI FZN                                              
+OIN_DTL3  000000100000010000000000000000000008979                                          000000000003.15000000000002.65
+OIN_DTL4   727809897Brom Food Corp.          B00305      2Frozen                   14225FZN Hors Doeuvres        
+OIN_DTL5                                  Mise en Bouche 000160UN   00000  10069165003056B00305                      
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  APPETIZER BEEF WELLINGTON MINI FZN      AMUSE-G MINI BF WELLINGTON              
+OIN_DTL11                             
+OIN_DTL1    350   1463647UP10061853360892               CA0001000592100000592100000000NNN00393000000000
+OIN_DTL2  BACON 16-18CT SLCD LAYOUT FZN                                                   
+OIN_DTL3  000000500000050000000000000000000029605                                          000000000005.47000000000000025
+OIN_DTL4   727793968Olymel Boucherville FZN  36089       3Meat                     16410Raw Bacon #1             
+OIN_DTL5                                  HQB Bacon      00015KG    00000  1006185336089236089                       
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  BACON 16-18CT SLCD LAYOUT FZN           BACON TRANCHE DISPOSITION 16-18UN SU    
+OIN_DTL11                             
+OIN_DTL1    100   1455046UP00620868216391               CA0050000357200000357200000000NNN01082000000000
+OIN_DTL2  BAGEL CINN RAISIN SLCD 3.5Z FZN                                                 
+OIN_DTL3  000000100000010000000000000000000003572                                          000000000005.24000000000004.95
+OIN_DTL4   727805478Aspire Bakeries B.C. ULC.24359       2Frozen                   14080FZN Breakfast Breads     
+OIN_DTL5                                  Gordon Choice  00503.5OZ  00000  0062086821639124359                       
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  BAGEL CINN RAISIN SLCD 3.5Z FZN         BAGEL CANN/RAISIN 3.5OZ TR SU           
+OIN_DTL11                             
+OIN_DTL1    580   5869205UP10068983108622               CA0002000588900000588900000000NNN00602000000000
+OIN_DTL2  BAR BROWNIE NAKED UNICED 12X16IN                                                
+OIN_DTL3  000000300000030000000000000000000017667                                          000000000005.67000000000014.01
+OIN_DTL4   727805478Aspire Bakeries B.C. ULC.21496       2Frozen                   14100FZN Bars Brownies Cupcake
+OIN_DTL5                                  Gourmet Baker  00022.34KG 00000  1006898310862221496                       
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  BAR BROWNIE NAKED UNICED 12X16IN        GAT PLAQ BROWNIES S/GLACAGE             
+OIN_DTL11                             
+OIN_DTL1    330   1236459UP90627577043358               CA0006000149100000149100000000YNN01117000000000
+OIN_DTL2  BEEF BRISKET FZN                                                                
+OIN_DTL3  000000200000020000000000006396000095364                                          000000000030.95000000000063.96
+OIN_DTL4   727807854AB Intercity Packers FZN 11333       3Meat                     16010Boxed Beef               
+OIN_DTL5                                  Packer Label   00065.5KGA 00000  9062757704335811333                       
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  BEEF BRISKET FZN                        POITRINE DE BOEUF FZN                   
+OIN_DTL11                             
+OIN_DTL1     10   1119599UP10059635000616               CA0144000398100000398100000000NNN01511000000000
+OIN_DTL2  BREAD BREADSTICK 7 IN GARLIC P/BKD                                              
+OIN_DTL3  000000400000040000000000000000000015924                                          000000000006.25000000000000022
+OIN_DTL4   727802856Furlanis Food Corp       5100061624  2Frozen                   14121FZN Bread Rolls Parbaked 
+OIN_DTL5                                  Furlani        014435G    00000  100596350006165100061624                  
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  BREAD BREADSTICK 7 IN GARLIC P/BKD      PAIN AIL BAGUETTE MINI P/C 7PO          
+OIN_DTL11                             
+OIN_DTL1    130   1162263UP00068721712480               CA0010000349800000349800000000NNN02301000000000
+OIN_DTL2  BREAD LOAF M/GRAIN T/S                                                          
+OIN_DTL3  000000100000010000000000000000000003498                                          0000000000006.2000000000000006
+OIN_DTL4   727797725Bimbo Canada Bread       920974      2Frozen                   14125FZN Bread & Rolls T&S    
+OIN_DTL5                                  Dempster's     0010600G   00000  00068721712480920974                      
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  BREAD LOAF M/GRAIN T/S                                                          
+OIN_DTL11                             
+OIN_DTL1    520   1099042UP00620868092339               CA0016000628600000628600000000NNN02279000000000
+OIN_DTL2  BREAD LOAF TEXAS WHT 3/4IN 675G SLCD T/S                                        
+OIN_DTL3  000000200000020000000000000000000012572                                          0000000000011.30000000000020.6
+OIN_DTL4   727791379Wonder Brands Inc.       101468      2Frozen                   14125FZN Bread & Rolls T&S    
+OIN_DTL5                                  Gordon Choice  0016675G   00000  00620868092339101468                      
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  BREAD LOAF TEXAS WHT 3/4IN 675G SLCD T/SPAIN TR BL 3/4PO TEXAS P/A/S            
+OIN_DTL11                             
+OIN_DTL1     20   1455050UP00620868216438               CA0200000645100000645100000000NNN02498000000000
+OIN_DTL2  BREAD ROLL WHITE DIN P/BKD                                                      
+OIN_DTL3  000000200000020000000000000000000012902                                          000000000012.38000000000000018
+OIN_DTL4   727805478Aspire Bakeries B.C. ULC.24353       2Frozen                   14125FZN Bread & Rolls T&S    
+OIN_DTL5                                  Gordon Choice  020045G    00000  0062086821643824353                       
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  BREAD ROLL WHITE DIN P/BKD              PAIN PETIT BL P/C                       
+OIN_DTL11                             
+OIN_DTL1     70   1266236UP10770118300114               CA0002000661400000661400000000NNN00529000000000
+OIN_DTL2  CAKE STRAWB DREAMIN G/FREE 12X8IN                                               
+OIN_DTL3  000000300000030000000000000000000019842                                          000000000004.23000000000010.92
+OIN_DTL4   727795326The Original Cakerie Ltd 30011       2Frozen                   14140FZN Pies & Cakes         
+OIN_DTL5                                  Original Cakeri00021.82KG 00000  1077011830011430011                       
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  CAKE STRAWB DREAMIN G/FREE 12X8IN       GAT PLAQ FRAISE CHOCO BL S/GLUTEN       
+OIN_DTL11                             
+OIN_DTL1     30   1006118UP10028143022175               CA0002001146700001146700000000NNN00504000000000
+OIN_DTL2  CHEESECAKE CREME BRULEE FZN                                                     
+OIN_DTL3  000000600000060000000000000000000068802                                          000000000006.85000000000037.08
+OIN_DTL4   727795326The Original Cakerie Ltd 0245021748  2Frozen                   14141FZN Cheesecakes          
+OIN_DTL5                                  Lawler's Desser000248UN   00000  100281430221750245021748                  
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  CHEESECAKE CREME BRULEE FZN             GAT FROM CREME BRULE                    
+OIN_DTL11                             
+OIN_DTL1     20   3552277UP10069299114437               CA0002000640000000640000000000NNN00468000000000
+OIN_DTL2  CHICKEN FLT BRD CRUNCHY RUFFLED FZN                                             
+OIN_DTL3  000000200000020000000000000000000012800                                          000000000004.45000000000000008
+OIN_DTL4   727790497Janes Family Foods Ltd.  11443       5Poultry                  17165Chicken Tenders Breaded  
+OIN_DTL5                                  Janes          00022KG    00000  1006929911443711443                       
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  CHICKEN FLT BRD CRUNCHY RUFFLED FZN                                             
+OIN_DTL11                             
+OIN_DTL1    110   3145027UP00061951710554               CA0020000074500000074500000000YNN01439000000000
+OIN_DTL2  CHICKEN FRYER 9 CUT FZN                                                         
+OIN_DTL3  000000300000030000000000007392000055070                                          000000000023.05000000000073.92
+OIN_DTL4   727799382Limson Poultry Commodity 71055       5Poultry                  17085Chicken Raw Incl Breasts 
+OIN_DTL5                                  Commodity      00201.15KGA00000  0006195171055471055                       
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  CHICKEN FRYER 9 CUT FZN                                                         
+OIN_DTL11                             
+OIN_DTL1     40   1033084UP10013087532996               CA0160000816100000816100000000NNN00796000000000
+OIN_DTL2  COOKIE DGH VARIETY GOURM ZTF                                                    
+OIN_DTL3  000000500000050000000000000000000040805                                          000000000009.64000000000045.35
+OIN_DTL4   727805478Aspire Bakeries B.C. ULC.53299       2Frozen                   14110FZN Cookies Cookie Dough 
+OIN_DTL5                                  Otis Spunkmeyer01602OZ    00000  1001308753299653299                       
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  COOKIE DGH VARIETY GOURM ZTF            BISC A/C ASST GOURMET SGT               
+OIN_DTL11                             
+OIN_DTL1     50   2103405UP00700998805310               CA0120000563000000563000000000NNN00667000000000
+OIN_DTL2  DANISH MINI SELECTION                                                           
+OIN_DTL3  000000200000020000000000000000000011260                                          000000000005.490000000000010.4
+OIN_DTL4   727807410CDC Brant FZN            80531       2Frozen                   14090FZN Pastries             
+OIN_DTL5                                  Schulstad      01201.5OZ  00000  0070099880531080531                       
+OIN_DTL6  99999                         
+OIN_DTL7  5197521177
+OIN_DTL8  
+OIN_DTL9  DANISH MINI SELECTION                   DANOISE MINI ASST N/C                   
+OIN_DTL11                             
+OIN_DTL1    510   5600805UP10069481064083               CA0008000888100000888100000000NNN00820000000000
+OIN_DTL2  EGG SCRAMBLED MIX BOIL N BAG HALAL                                              
+OIN_DTL3  000000600000060000000000000000000053286                                          000000000018.47000000000000096
+OIN_DTL4   727793303Vanderpols Eggs-FZN      6412        6Dairy                    11165Egg Products             
+OIN_DTL5                                  Vanderpol's Egg00082KG    00000  100694810640836412                        
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  EGG SCRAMBLED MIX BOIL N BAG HALAL                                              
+OIN_DTL11                             
+OIN_DTL1     10   1455045UP10620868216381               CA0012000558100000558100000000NNN01423000000000
+OIN_DTL2  ENGLISH MUFFIN REG SLCD FZN                                                     
+OIN_DTL3  000000100000010000000000000000000005581                                          000000000008.86000000000008.16
+OIN_DTL4   727805478Aspire Bakeries B.C. ULC.24366       2Frozen                   14125FZN Bread & Rolls T&S    
+OIN_DTL5                                  Gordon Choice  001212UN   00000  1062086821638124366                       
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  ENGLISH MUFFIN REG SLCD FZN             MUFF ANGLAIS NAT TR SU                  
+OIN_DTL11                             
+OIN_DTL1    160   1087521UP10620868092602               CA0012000695900000695900000000NNN00362000000000
+OIN_DTL2  GUACAMOLE CALIF SUPREME POUCH FZN                                               
+OIN_DTL3  000000100000010000000000000000000006959                                          0000000000005.9000000000005.44
+OIN_DTL4   727804612Calavo Foods Inc.        60221       2Frozen                   14245FZN Mexican Food & Comp  
+OIN_DTL5                                  Gordon Choice  00121LB    00000  1062086809260260221                       
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  GUACAMOLE CALIF SUPREME POUCH FZN       GUACAMOLE CALIFORNIENNE                 
+OIN_DTL11                             
+OIN_DTL1    470   1190388UP10065031051121               CA0003001195200001195200000000NNN00665000000000
+OIN_DTL2  JUICE GRAPEFRUIT RUBY RED 30PCT 4+1 FZN                                         
+OIN_DTL3  000000100000010000000000000000000011952                                          000000000010.98000000000010.98
+OIN_DTL4   727833123Nestle Canada Milton FZN 10000699    9Beverage                 13030Branded Dispensed Juice  
+OIN_DTL5                                  Vitality       00033L     00000  1006503105112110000699                    
+OIN_DTL6  99999                         
+OIN_DTL7  5149773117
+OIN_DTL8  
+OIN_DTL9  JUICE GRAPEFRUIT RUBY RED 30PCT 4+1 FZN COCK JUS PAMPLEMOUSSE RUBY RED 30PCT 4+1
+OIN_DTL11                             
+OIN_DTL1    460   1324480UP00011100395446               CA0003001498900001498900000000NNN00644000000000
+OIN_DTL2  JUICE ORANGE BLND CONC 100PCT 4.5+1 FZN                                         
+OIN_DTL3  000000200000020000000000000000000029978                                          0000000000011.90000000000021.8
+OIN_DTL4   727833123Nestle Canada Milton FZN 12338783    2Frozen                   14235FZN Drinks & Beverages   
+OIN_DTL5                                  Sunsational    00033L     00000  0001110039544612338783                    
+OIN_DTL6  99999                         
+OIN_DTL7  5149773117
+OIN_DTL8  
+OIN_DTL9  JUICE ORANGE BLND CONC 100PCT 4.5+1 FZN JUS ORANGE 100PCT CONC 4.5+1 SU         
+OIN_DTL11                             
+OIN_DTL1     40   1222338UP00621237119237               CA0001002875900002875900000000NNN00614000000000
+OIN_DTL2  LOBSTER TAIL 5-6Z CDN FZN                                                       
+OIN_DTL3  000000100000010000000000000000000028759                                          000000000004.77000000000004.54
+OIN_DTL4   727806802Limson Seafood Commodity 103507      4Seafood                  15000Lobster                  
+OIN_DTL5                                  Commodity      00014.54KG 00000  00621237119237103507                      
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  LOBSTER TAIL 5-6Z CDN FZN                                                       
+OIN_DTL11                             
+OIN_DTL1    140   1513736UP96280006304860               CA0002000079300000079300000000YNN00633000000000
+OIN_DTL2  OBUY CHICKEN WING RST 6-8CT CDN FZN                                             
+OIN_DTL3  000000300000030000000000003039000024099                                          0000000000010.5000000000030.39
+OIN_DTL4   727799382Limson Poultry Commodity 30486       5Poultry                  17120Chicken Wings Raw        
+OIN_DTL5                                  Commodity      00025KGA   00000  9628000630486030486                       
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  OBUY CHICKEN WING RST 6-8CT CDN FZN                                             
+OIN_DTL11                             
+OIN_DTL1    170   1359579UP90620868199352               CA0004000052800000052800000000YNN00881000000000
+OIN_DTL2  PORK SHOULDER BUTT BNLS IWP VCP FZN                                             
+OIN_DTL3  000000400000040000000000006874000036295                                          0000000000017.2000000000068.74
+OIN_DTL4   727806769Limson Pork Commodity    45875       3Meat                     16270Pork Fresh Boxed         
+OIN_DTL5                                  Gordon Choice  00044KGA   00000  9062086819935245875                       
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  PORK SHOULDER BUTT BNLS IWP VCP FZN     PORC EPAULE DES SU                      
+OIN_DTL11                             
+OIN_DTL1    120   5062605UP10055773031352               CA0006000675600000675600000000NNN01061000000000
+OIN_DTL2  POTATO POMPOM TATER TOT TFC                                                     
+OIN_DTL3  000000200000020000000000000000000013512                                          000000000014.15000000000027.22
+OIN_DTL4   727790034McCain Foods             403135      2Frozen                   14020FZN Potato & French Fr   
+OIN_DTL5                                  McCain         00062.27KG 00000  10055773031352403135                      
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  POTATO POMPOM TATER TOT TFC             PATATE POMPOM                           
+OIN_DTL11                             
+OIN_DTL1    180   1108361UP30059371380038               CA0008001721300001721300000000NNN00843000000000
+OIN_DTL2  SEAFOOD MEDLEY CLAM SQUID WHT SHRIMP IQF                                        
+OIN_DTL3  000000100000010000000000000000000017213                                          000000000009.08000000000009.07
+OIN_DTL4   727789102Export Packers BC Co. LtdSF00712     4Seafood                  15120Seafood Specialty        
+OIN_DTL5                                  Ocean Jewel    00081.13KG 00000  30059371380038SF00712                     
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  SEAFOOD MEDLEY CLAM SQUID WHT SHRIMP IQFFRUIT MER MEL PALOURD/CALMAR/CREV BL IQF
+OIN_DTL11                             
+OIN_DTL1     60   1405255UP10061763083959               CA0004000981600000981600000000NNN00516000000000
+OIN_DTL2  SHRIMP 27-32CT BRD BUFFALO CRUNCH FZN                                           
+OIN_DTL3  000000100000010000000000000000000009816                                          000000000005.21000000000004.54
+OIN_DTL4   727790624High Liner               8395        4Seafood                  15070Breaded/Battered Shrimp  
+OIN_DTL5                                  High Liner Food00041.13KG 00000  100617630839598395                        
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  SHRIMP 27-32CT BRD BUFFALO CRUNCH FZN   CREV PANEE CROUST BUFFALO 27-32 SU      
+OIN_DTL11                             
+OIN_DTL1    150   1138123UP40055686509307               CA0010000727100000727100000000NNN00955000000000
+OIN_DTL2  SPINACH NUGGET CHOPPED FZN                                                      
+OIN_DTL3  000000100000010000000000000000000007271                                          000000000010.46000000000000010
+OIN_DTL4        3060Vancouver                50930       2Frozen                   14010FZN Vegetables           
+OIN_DTL5                                  Arctic Gardens 00101KG    00000  4005568650930750930                       
+OIN_DTL6  99999                         
+OIN_DTL7  6045290963
+OIN_DTL8  
+OIN_DTL9  SPINACH NUGGET CHOPPED FZN              EPINARD FEUILLE PORT 15G                
+OIN_DTL11                             
+OIN_DTL1     60   1477007UP10620868219252               CA0002000224100000224100000000NNN00530000000000
+OIN_DTL2  STRAWBERRY WHL IQF                                                              
+OIN_DTL3  000000300000030000000000000000000006723                                          000000000000006000000000000015
+OIN_DTL4   727818002Limson FZN Fruit Tillsonb1477007     2Frozen                   14000FZN Fruits               
+OIN_DTL5                                  Kitchen Essenti00022.5KG  00000  106208682192521477007                     
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  STRAWBERRY WHL IQF                      FRAISE ENT IQF                          
+OIN_DTL11                             
+OIN_DTL1     80   5032605UP00687415802049               CA0240000379400000379400000000NNN00489000000000
+OIN_DTL2  TART SHELL SWT 2IN ZTF                                                          
+OIN_DTL3  000000200000020000000000000000000007588                                          000000000004.24000000000007.68
+OIN_DTL4   727798223Harlan Bakeries          80204       2Frozen                   14090FZN Pastries             
+OIN_DTL5                                  Apple Valley Fo024016G    00000  0068741580204980204                       
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  TART SHELL SWT 2IN ZTF                  TARTELETTE SUCREE 2PO SGT               
+OIN_DTL11                             
+OIN_DTL1     30   1171510UP10063350145460               CA0004000697200000697200000000NNN00283000000000
+OIN_DTL2  BASE CHICK CONC LIQ G/FREE                                                      
+OIN_DTL3  000000200000020000000000000000000013944                                          000000000005.04000000000009.24
+OIN_DTL4   727793435Unilever Food Solutions  68692900    1Grocery                  10130Soup Bases               
+OIN_DTL5                                  Knorr          0004946ML  00000  1006335014546068692900                    
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  BASE CHICK CONC LIQ G/FREE              SOUPE BASE PLT CONC LIQ S/GLUTEN        
+OIN_DTL11                             
+OIN_DTL1     10   1221933UP10063350294878               CA0006000605900000605900000000NNN00586000000000
+OIN_DTL2  BASE CREAM CULINARY G/FREE                                                      
+OIN_DTL3  000000200000020000000000000000000012118                                          000000000004.94000000000008.58
+OIN_DTL4   727793435Unilever Food Solutions  68593083    1Grocery                  10140Sauce: Ready To Use      
+OIN_DTL5                                  Knorr          0006715G   00000  1006335029487868593083                    
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  BASE CREAM CULINARY G/FREE              SOUPE BASE CREME CULINAIRE VEGE S/GLUTEN
+OIN_DTL11                             
+OIN_DTL1    320   1184670UP10620868136597               CA0006000490400000490400000000NNN01003000000000
+OIN_DTL2  BEET SMOOTH DCD                                                                 
+OIN_DTL3  000000200000020000000000000000000009808                                          000000000020.41000000000000039
+OIN_DTL4   727797156Limson DRY GROC          13659       1Grocery                  10010Canned Vegetables        
+OIN_DTL5                                  Gordon Choice  00062.84L  00000  1062086813659713659                       
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  BEET SMOOTH DCD                         BETTERAVE CUBE                          
+OIN_DTL11                             
+OIN_DTL1    230   1313532UP10025469031515               CA0004001502200001502200000000NNN00975000000000
+OIN_DTL2  CLEANER DESCALER LIME AWAY SOLVENT                                              
+OIN_DTL3  000000100000010000000000000000000015022                                          000000000018.59000000000017.46
+OIN_DTL4   727787583Ecolab Co.               6101131     8Chemical                 22050Delimers & Presoaks      
+OIN_DTL5                                  Ecolab         00043.78L  00000  100254690315156101131                     
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  CLEANER DESCALER LIME AWAY SOLVENT      NET DETARTRANT LIME A WAY               
+OIN_DTL11                             
+OIN_SACD1 CH740000000000000751 000500                              06                              
+OIN_SACD2 Tax - Sales and Use                                                             
+OIN_SACD1 CD360000000000000751 000500                              06                              
+OIN_SACD2 GST                                                                             
+OIN_DTL1    210   1207714UP10025469573176               CA0001001621000001621000000000NNN00605000000000
+OIN_DTL2  CLEANER FLOOR MAXX DUAL ACTION                                                  
+OIN_DTL3  000000100000010000000000000000000016210                                          000000000010.76000000000010.12
+OIN_DTL4   727787583Ecolab Co.               6100428     8Chemical                 22140Floor Cleaners           
+OIN_DTL5                                  Ecolab         00019.46L  00000  100254695731766100428                     
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  CLEANER FLOOR MAXX DUAL ACTION          NET PLANCHER MAXX DUAL ACTION           
+OIN_DTL11                             
+OIN_SACD1 CH740000000000000811 000500                              06                              
+OIN_SACD2 Tax - Sales and Use                                                             
+OIN_SACD1 CD360000000000000811 000500                              06                              
+OIN_SACD2 GST                                                                             
+OIN_DTL1    200   8774005UP00025469145598               CA0001001879000001879000000000NNN00623000000000
+OIN_DTL2  CLEANER M/PURP OASIS ORANGE FORCE 137                                           
+OIN_DTL3  000000100000010000000000000000000018790                                          0000000000010.30000000000009.7
+OIN_DTL4   727787583Ecolab Co.               6114559     8Chemical                 22120General Purpose Cleaners 
+OIN_DTL5                                  Ecolab         00019.5L   00000  000254691455986114559                     
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  CLEANER M/PURP OASIS ORANGE FORCE 137   NET DEGRAIS T/SURFACE OASIS 137         
+OIN_DTL11                             
+OIN_SACD1 CH740000000000000940 000500                              06                              
+OIN_SACD2 Tax - Sales and Use                                                             
+OIN_SACD1 CD360000000000000940 000500                              06                              
+OIN_SACD2 GST                                                                             
+OIN_DTL1    300   3024397UP10067131120028               CA0006000789500000789500000000NNN01037000000000
+OIN_DTL2  COCONUT MILK 17-19PCT MF                                                        
+OIN_DTL3  000000100000010000000000000000000007895                                          000000000021.08000000000000017
+OIN_DTL4   727796173Tree Of Life - DRY       63807       1Grocery                  10100Asian Foods              
+OIN_DTL5                                  Tropic Isle    00062.84L  00000  1006713112002863807                       
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  COCONUT MILK 17-19PCT MF                LAIT COCO 17-19PCT                      
+OIN_DTL11                             
+OIN_DTL1    200   1459365UP40762111494342               CA0006001074400001074400000000NNN00490000000000
+OIN_DTL2  COFFEE ESPRESSO ROAST WB                                                        
+OIN_DTL3  000000200000020000000000000000000021488                                          000000000003.09000000000005.44
+OIN_DTL4   727833088Nestle Canada Hopewell DR12366127    9Beverage                 13220Espresso                 
+OIN_DTL5                                  Starbucks      00061LB    00000  4076211149434212366127                    
+OIN_DTL6  99999                         
+OIN_DTL7  8005383545
+OIN_DTL8  
+OIN_DTL9  COFFEE ESPRESSO ROAST WB                SBUX TORR ESPRESSO EN GRAIN 6X1LB       
+OIN_DTL11                             
+OIN_DTL1    310   7888605UP20066942301012               CA0006000527600000527600000000NNN00955000000000
+OIN_DTL2  CORN BABY CUT                                                                   
+OIN_DTL3  000000100000010000000000000000000005276                                          000000000020.44000000000017.04
+OIN_DTL4   727799836Shafer-Haggart Ltd.      30101       1Grocery                  10010Canned Vegetables        
+OIN_DTL5                                  Success        00062.84L  00000  2006694230101230101                       
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  CORN BABY CUT                           MAIS PETIT TR                           
+OIN_DTL11                             
+OIN_DTL1    270   2204405UP10066721514100               CA0001000470800000470800000000NNN00561000000000
+OIN_DTL2  CRACKER RITZ PLAIN TFC                                                          
+OIN_DTL3  000000100000010000000000000000000004708                                          000000000004.040000000000003.5
+OIN_DTL4   727790136Mondelez International   51410       1Grocery                  10380Crackers                 
+OIN_DTL5                                  Christie Cookie00013.5KG  00000  1006672151410051410                       
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  CRACKER RITZ PLAIN TFC                  BISC RITZ                               
+OIN_DTL11                             
+OIN_DTL1    220   1141665UP10025469102567               CA0004002658200002658200000000NNN00908000000000
+OIN_DTL2  DET DISH SOLID SUPER IMPACT MACH                                                
+OIN_DTL3  000000100000010000000000000000000026582                                          000000000017.65000000000016.33
+OIN_DTL4   727787583Ecolab Co.               6110256     8Chemical                 22010Mechanical Warewash      
+OIN_DTL5                                  Ecolab         00044.1KG  00000  100254691025676110256                     
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  DET DISH SOLID SUPER IMPACT MACH        SOLID SUPER IMPACT                      
+OIN_DTL11                             
+OIN_SACD1 CH740000000000001329 000500                              06                              
+OIN_SACD2 Tax - Sales and Use                                                             
+OIN_SACD1 CD360000000000001329 000500                              06                              
+OIN_SACD2 GST                                                                             
+OIN_DTL1     60   1317323UP10620868180040               CA0002000552900000552900000000NNN00522000000000
+OIN_DTL2  DRESSING BALSAMIC                                                               
+OIN_DTL3  000000100000010000000000000000000005529                                          000000000008.42000000000007.87
+OIN_DTL4   727818549Limson Delmar Del        20868-1800  1Grocery                  10170Salad Dressings          
+OIN_DTL5                                  Gordon Choice  00023.78L  00000  1062086818004020868-18004                 
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  DRESSING BALSAMIC                       VIN BALSAMIQUE                          
+OIN_DTL11                             
+OIN_DTL1    540   1317329UP10620868179921               CA0002000500800000500800000000NNN00538000000000
+OIN_DTL2  DRESSING RANCH CLASSIC                                                          
+OIN_DTL3  000000200000020000000000000000000010016                                          000000000007.92000000000014.74
+OIN_DTL4   727818549Limson Delmar Del        20868-1799  1Grocery                  10170Salad Dressings          
+OIN_DTL5                                  Gordon Choice  00023.78L  00000  1062086817992120868-17992                 
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  DRESSING RANCH CLASSIC                  VIN RANCH CLASSIQUE                     
+OIN_DTL11                             
+OIN_DTL1     40   1310844UP10620868178832               CA0002000572600000572600000000NNN00417000000000
+OIN_DTL2  DRESSING SESAME HOISIN VINAIG                                                   
+OIN_DTL3  000000200000020000000000000000000011452                                          000000000009.06000000000016.36
+OIN_DTL4   727818549Limson Delmar Del        20868-1788  1Grocery                  10170Salad Dressings          
+OIN_DTL5                                  Pepper Mill    00023.78L  00000  1062086817883220868-17883                 
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  DRESSING SESAME HOISIN VINAIG           VIN HOISIN/SESAME                       
+OIN_DTL11                             
+OIN_DTL1     10   1362831UP10063350000431               CA0002000598000000598000000000NNN00466000000000
+OIN_DTL2  DRESSING SMKD PEACH                                                             
+OIN_DTL3  000000400000040000000000000000000023920                                          000000000008.43000000000032.04
+OIN_DTL4   727793435Unilever Food Solutions  69559799    1Grocery                  10170Salad Dressings          
+OIN_DTL5                                  Hellmann's     00023.78L  00000  1006335000043169559799                    
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  DRESSING SMKD PEACH                     VIN PECHE FUMEE                         
+OIN_DTL11                             
+OIN_DTL1     20   1310841UP10620868180491               CA0002000502300000502300000000NNN00417000000000
+OIN_DTL2  DRESSING THOUSAND ISLAND                                                        
+OIN_DTL3  000000100000010000000000000000000005023                                          000000000008.74000000000007.86
+OIN_DTL4   727818549Limson Delmar Del        20868-1804  1Grocery                  10170Salad Dressings          
+OIN_DTL5                                  Pepper Mill    00023.78L  00000  1062086818049120868-18049                 
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  DRESSING THOUSAND ISLAND                VIN M/ILES                              
+OIN_DTL11                             
+OIN_DTL1    110   1424124UP10620868212024               CA0002000689000000689000000000NNN00384000000000
+OIN_DTL2  DRESSING ZESTY ORANGE VINAIG                                                    
+OIN_DTL3  000000200000020000000000000000000013780                                          0000000000007.10000000000013.6
+OIN_DTL4   727818549Limson Delmar Del        75373       1Grocery                  10170Salad Dressings          
+OIN_DTL5                                  Pepper Mill    00023.78L  00000  1062086821202475373                       
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  DRESSING ZESTY ORANGE VINAIG            VIN PIQ ORANGE                          
+OIN_DTL11                             
+OIN_DTL1    120   1422127UP00620868212508               CA0001000655700000655700000000NNN00676000000000
+OIN_DTL2  ECO KIT CUTLERY WRPD WHT F-K-S CPLA                                             
+OIN_DTL3  000000200000020000000000000000000013114                                          0000000000000040000000000007.5
+OIN_DTL4   727826973511 Foods Ltd.           WCPW-KIT-G  7Disposables              21280Cutlery Kits             
+OIN_DTL5                                  Re.Source      0001250UN  00000  00620868212508WCPW-KIT-G                  
+OIN_DTL6  99999                         
+OIN_DTL7  9058291006
+OIN_DTL8  
+OIN_DTL9  ECO KIT CUTLERY WRPD WHT F-K-S CPLA     ECO USTEN PL ENVEL BL 3MCX F/C/N CPLA   
+OIN_DTL11                             
+OIN_SACD1 CH740000000000000656 000500                              06                              
+OIN_SACD2 Tax - Sales and Use                                                             
+OIN_SACD1 CD360000000000000656 000500                              06                              
+OIN_SACD2 GST                                                                             
+OIN_DTL1    210   1276732UP10072504112364               CA0001000265300000265300000000NNN00649000000000
+OIN_DTL2  FILTER COFFEE TALL 13.75X5.3IN 24 CUP                                           
+OIN_DTL3  000000100000010000000000000000000002653                                          000000000002.27000000000001.97
+OIN_DTL4   727786177Bunn-O-Matic Corp. Of CDA20138.1     9Beverage                 13240Beverage Product Misc    
+OIN_DTL5                                  Bunn           0001500UN  00000  1007250411236420138.1                     
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  FILTER COFFEE TALL 13.75X5.3IN 24 CUP   FILTRE CAFE 13.75X5.3PO 24T             
+OIN_DTL11                             
+OIN_SACD1 CH740000000000000133 000500                              06                              
+OIN_SACD2 Tax - Sales and Use                                                             
+OIN_SACD1 CD360000000000000133 000500                              06                              
+OIN_SACD2 GST                                                                             
+OIN_DTL1     90   5917805UP00620868404569               CA0001000208200000208200000000NNN01253000000000
+OIN_DTL2  FLOUR A/P UNBLEACHED                                                            
+OIN_DTL3  000000200000020000000000000000000004164                                          000000000020.09000000000000040
+OIN_DTL4   727819762Limson Canada - Ardent Mi10083       1Grocery                  10270Flour                    
+OIN_DTL5                                  Gordon Choice  000120KG   00000  0062086840456910083                       
+OIN_DTL6  99999                         
+OIN_DTL7  3069339951
+OIN_DTL8  
+OIN_DTL9  FLOUR A/P UNBLEACHED                    FARINE T/USAGE N/BLANCHIE               
+OIN_DTL11                             
+OIN_DTL1     80   3531227UP00620868404606               CA0001000216600000216600000000NNN01263000000000
+OIN_DTL2  FLOUR PIZZA UNBLEACHED                                                          
+OIN_DTL3  000000200000020000000000000000000004332                                          000000000020.09000000000000040
+OIN_DTL4   727819762Limson Canada - Ardent Mi10468       1Grocery                  10270Flour                    
+OIN_DTL5                                  Tavolini       000120KG   00000  0062086840460610468                       
+OIN_DTL6  99999                         
+OIN_DTL7  3069339951
+OIN_DTL8  
+OIN_DTL9  FLOUR PIZZA UNBLEACHED                  FARINE PIZZA ENRICHIE N/BLANCHIE        
+OIN_DTL11                             
+OIN_DTL1    150   8280005UP10067311028335               CA0012000338300000338300000000NNN00660000000000
+OIN_DTL2  JUICE PINEAPPLE BLND TETRA                                                      
+OIN_DTL3  000000300000030000000000000000000010149                                          0000000000012.70000000000038.1
+OIN_DTL4   727795682Lassonde Beverages- LWC C28335       1Grocery                  10465Bulk RTU Juices & Drinks 
+OIN_DTL5                                  Oasis          0012960ML  00000  1006731102833528335                       
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  JUICE PINEAPPLE BLND TETRA              JUS ANANAS MEL TETRA                    
+OIN_DTL11                             
+OIN_SACD1 AH740000000000000000 000000                              06                              
+OIN_SACD2 Tax - Sales and Use                                                             
+OIN_SACD1 CB570000000000000360 000354                              06                              
+OIN_SACD2 Bottle Deposits                                                                 
+OIN_SACD1 CC090000000000000108 000106                              06                              
+OIN_SACD2 Ecology Fees                                                                    
+OIN_SACD1 CD360000000000000005 000500                              06                              
+OIN_SACD2 GST                                                                             
+OIN_DTL1    340   1235356UP10057000033245               CA0006000707300000707300000000NNN01066000000000
+OIN_DTL2  KETCHUP BIG RED PLAS                                                            
+OIN_DTL3  000000100000010000000000000000000007073                                          000000000020.86000000000019.37
+OIN_DTL4   727784430Kraft Heinz Canada Milton76000553    1Grocery                  10035Ketchup                  
+OIN_DTL5                                  Heinz          00062.84L  00000  1005700003324576000553                    
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  KETCHUP BIG RED PLAS                    KETCHUP MEGAROUGE PLAST                 
+OIN_DTL11                             
+OIN_DTL1    160   1379983UP00055000383363               CA0008001991000001991000000000NNN00745000000000
+OIN_DTL2  MIX DAIRY FROTH BEV                                                             
+OIN_DTL3  000000200000020000000000000000000039820                                          000000000007.73000000000014.52
+OIN_DTL4   727833088Nestle Canada Hopewell DR12321890    9Beverage                 13210Flavoured Coffee/Cappuc  
+OIN_DTL5                                  Nestle         0008907G   00000  0005500038336312321890                    
+OIN_DTL6  99999                         
+OIN_DTL7  8005383545
+OIN_DTL8  
+OIN_DTL9  MIX DAIRY FROTH BEV                     MEL BOISS LAIT MOUSSE ALEGRIA           
+OIN_DTL11                             
+OIN_DTL1    330   1247963UP00620868156642               CA0001000396200000396200000000NNN00538000000000
+OIN_DTL2  PASTA ORZO                                                                      
+OIN_DTL3  000000100000010000000000000000000003962                                          000000000009.41000000000009.07
+OIN_DTL4   727804121Italpasta Ltd.           122240      1Grocery                  10240Pasta: Dry               
+OIN_DTL5                                  Tavolini       00019.07KG 00000  00620868156642122240                      
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  PASTA ORZO                              PASTA ORZO                              
+OIN_DTL11                             
+OIN_DTL1    190   1134588UP10620868684593               CA0006000608600000608600000000NNN00937000000000
+OIN_DTL2  PEACH SLCD IN L/S CLINGSTONE                                                    
+OIN_DTL3  000000100000010000000000000000000006086                                          0000000000020.5000000000000018
+OIN_DTL4   727797156Limson DRY GROC          1134588     1Grocery                  10000Canned Fruits            
+OIN_DTL5                                  Gordon Choice  00062.84L  00000  106208686845931134588                     
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  PEACH SLCD IN L/S CLINGSTONE            PECHE TR SIROP LEGER                    
+OIN_DTL11                             
+OIN_DTL1    130   1108877UP00061052915087               CA0001000771300000771300000000NNN00749000000000
+OIN_DTL2  QUINOA ORG BAG                                                                  
+OIN_DTL3  000000100000010000000000000000000007713                                          000000000011.45000000000000011
+OIN_DTL4   727788657Western Rice Mills - Rice24994025    1Grocery                  10250Rice & Side Dishes       
+OIN_DTL5                                  Royal          000125LB   00000  0006105291508724994025                    
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  QUINOA ORG BAG                                                                  
+OIN_DTL11                             
+OIN_DTL1    220   1251235UP10682264400009               CA0001000103600000103600000000NNN00241000000000
+OIN_DTL2  SALT SEA COARSE KOSHER                                                          
+OIN_DTL3  000000100000010000000000000000000001036                                          000000000002.77000000000002.27
+OIN_DTL4        3060Vancouver                40000       1Grocery                  10260Salt                     
+OIN_DTL5                                  Sunco Foods    00012.27KG 00000  1068226440000940000                       
+OIN_DTL6  99999                         
+OIN_DTL7  6045290963
+OIN_DTL8  
+OIN_DTL9  SALT SEA COARSE KOSHER                                                          
+OIN_DTL11                             
+OIN_DTL1     70   9958005UP10068100479703               CA0002000560400000560400000000NNN00431000000000
+OIN_DTL2  SAUCE BBQ BOLD ORIG TFC                                                         
+OIN_DTL3  000000200000020000000000000000000011208                                          000000000009.55000000000015.14
+OIN_DTL4   727784430Kraft Heinz Canada Milton47970       1Grocery                  10140Sauce: Ready To Use      
+OIN_DTL5                                  Bull's-Eye     00023.78L  00000  1006810047970347970                       
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  SAUCE BBQ BOLD ORIG TFC                 SAUCE BBQ ORIGINALE                     
+OIN_DTL11                             
+OIN_DTL1    100   7135205UP00620868579649               CA0001000367700000367700000000NNN00239000000000
+OIN_DTL2  SEED SESAME RST - NO SALT                                                       
+OIN_DTL3  000000100000010000000000000000000003677                                          000000000003.17000000000000003
+OIN_DTL4   727801220Trophy Foods Inc.        57964       1Grocery                  10410Nuts                     
+OIN_DTL5                                  Gordon Choice  00013KG    00000  0062086857964957964                       
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  SEED SESAME RST - NO SALT               GRAINE SESAME BL ROTIE S/SEL            
+OIN_DTL11                             
+OIN_DTL1    260   1069600UP00056000006832               CA0012000071100000071100000000NNN00243000000000
+OIN_DTL2  SOFT DRINK ORANGE CRUSH CAN                                                     
+OIN_DTL3  000000400000040000000000000000000002844                                          000000000004.730000000000018.8
+OIN_DTL4   727787031Pepsi Beverages          64325       1Grocery                  10470Carbonated Beverages     
+OIN_DTL5                                  Crush          0012355ML  00000  0005600000683264325                       
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  SOFT DRINK ORANGE CRUSH CAN             BOISS GAZ ORANGE CRUSH CAN              
+OIN_DTL11                             
+OIN_SACD1 CH740000000000000142 000500                              06                              
+OIN_SACD2 Tax - Sales and Use                                                             
+OIN_SACD1 CD360000000000000142 000500                              06                              
+OIN_SACD2 GST                                                                             
+OIN_SACD1 CB570000000000000480 001687                              06                              
+OIN_SACD2 Bottle Deposits                                                                 
+OIN_DTL1    170   8870205UP00069000003039               CA0001000837800000837800000000NNN00950000000000
+OIN_DTL2  SOFT DRINK PEPSI BIB                                                            
+OIN_DTL3  000000100000010000000000000000000008378                                          0000000000026.1000000000000020
+OIN_DTL4   727787031Pepsi Beverages          65074       9Beverage                 13000Soda Pop Bag In Box      
+OIN_DTL5                                  Pepsi          000120L    00120L 0006900000303965074                       
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  SOFT DRINK PEPSI BIB                    BOISS GAZ PEPSI BIB                     
+OIN_DTL11                             
+OIN_DTL1    180   8870005UP00069000011034               CA0001000543400000543400000000NNN00560000000000
+OIN_DTL2  SOFT DRINK PEPSI DIET BIB                                                       
+OIN_DTL3  000000200000020000000000000000000010868                                          000000000012.45000000000000024
+OIN_DTL4   727787031Pepsi Beverages          65070       9Beverage                 13000Soda Pop Bag In Box      
+OIN_DTL5                                  Pepsi          000112L    00000  0006900001103465070                       
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  SOFT DRINK PEPSI DIET BIB               BOISS GAZ PEPSI DIETE BIB               
+OIN_DTL11                             
+OIN_DTL1    230   1283822UP10620868171888               CA0012000879300000879300000000NNN00611000000000
+OIN_DTL2  SPICE CORIANDER SEED GRND                                                       
+OIN_DTL3  000000100000010000000000000000000008793                                          000000000005.750000000000004.8
+OIN_DTL4   727791630LA Cie McCormick Canada  901291558   1Grocery                  10360Spices & Seasonings      
+OIN_DTL5                                  Trade East     0012400G   00000  10620868171888901291558                   
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  SPICE CORIANDER SEED GRND               EPICE CORIANDRE MOULU                   
+OIN_DTL11                             
+OIN_DTL1    250   1440606UP00620868144069               CA0001000399100000399100000000NNN00282000000000
+OIN_DTL2  SPICE GARLIC PWDR TFC                                                           
+OIN_DTL3  000000200000020000000000000000000007982                                          0000000000002.40000000000004.2
+OIN_DTL4   727791630LA Cie McCormick Canada  964406      1Grocery                  10360Spices & Seasonings      
+OIN_DTL5                                  Trade East     00012.1KG  00000  00620868144069964406                      
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  SPICE GARLIC PWDR TFC                   EPICE AIL PDRE                          
+OIN_DTL11                             
+OIN_DTL1    240   9546805UP00620868144090               CA0001000372300000372300000000NNN00306000000000
+OIN_DTL2  SPICE PAPRIKA TFC                                                               
+OIN_DTL3  000000100000010000000000000000000003723                                          000000000002.740000000000002.4
+OIN_DTL4   727791630LA Cie McCormick Canada  964409      1Grocery                  10360Spices & Seasonings      
+OIN_DTL5                                  Trade East     00012.4KG  00000  00620868144090964409                      
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  SPICE PAPRIKA TFC                       EPICE PAPRIKA ESPAGNOL                  
+OIN_DTL11                             
+OIN_DTL1    280   1104543UP00065254724362               CA0006002514400002514400000000NNN00931000000000
+OIN_DTL2  SYRUP MAPLE FLVR CDN ORIG                                                       
+OIN_DTL3  000000100000010000000000000000000025144                                          000000000016.56000000000000012
+OIN_DTL4        3060Vancouver                251         1Grocery                  10200Breakfast Maple Syrups   
+OIN_DTL5                                  Steeves Maples 00062L     00000  00065254724362251                         
+OIN_DTL6  99999                         
+OIN_DTL7  6045290963
+OIN_DTL8  
+OIN_DTL9  SYRUP MAPLE FLVR CDN ORIG                                                       
+OIN_DTL11                             
+OIN_DTL1    290   9779605UP10620868880186               CA0004000654600000654600000000NNN01000000000000
+OIN_DTL2  SYRUP TABLE PANCAKE MAPLE FLAVOUR                                               
+OIN_DTL3  000000100000010000000000000000000006546                                          000000000022.68000000000021.48
+OIN_DTL4   727791896W.T. Lynch Foods Ltd.    6007-44     1Grocery                  10200Breakfast Maple Syrups   
+OIN_DTL5                                  Gordon Choice  00044L     00000  106208688801866007-44                     
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  SYRUP TABLE PANCAKE MAPLE FLAVOUR       SIROP TABLE                             
+OIN_DTL11                             
+OIN_DTL1    190   1292564UP10025469012576               CA0001001518200001518200000000NNN00611000000000
+OIN_DTL2  TREATMENT FRT/VEG ANTIMICROBIAL                                                 
+OIN_DTL3  000000100000010000000000000000000015182                                          000000000011.03000000000010.39
+OIN_DTL4   727787583Ecolab Co.               6100777     8Chemical                 22000Clean Power Support Misc 
+OIN_DTL5                                  Ecolab         00019.46L  00000  100254690125766100777                     
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  TREATMENT FRT/VEG ANTIMICROBIAL         TRAITEMENT ANTIBACTERIEN FRUIT/LEG      
+OIN_DTL11                             
+OIN_SACD1 CH740000000000000759 000500                              06                              
+OIN_SACD2 Tax - Sales and Use                                                             
+OIN_SACD1 CD360000000000000759 000500                              06                              
+OIN_SACD2 GST                                                                             
+OIN_DTL1    140   1179807UP10620868136016               CA0002000187700000187700000000NNN00565000000000
+OIN_DTL2  VINEGAR APPLE CIDER PURE                                                        
+OIN_DTL3  000000100000010000000000000000000001877                                          000000000010.62000000000010.14
+OIN_DTL4   727791554Reinhart Foods Ltd       2086813601  1Grocery                  10180Pickles Peppers & Vinegar
+OIN_DTL5                                  Gordon Choice  00025L     00000  106208681360162086813601                  
+OIN_DTL6  99999                         
+OIN_DTL7  
+OIN_DTL8  
+OIN_DTL9  VINEGAR APPLE CIDER PURE                VINAIGRE CIDRE POMME                    
+OIN_DTL11                             
+OIN_TTL1     99000020720426180014784240014880220000156540000000000000000002015
+OIN_SACS1 CH740000000000005614 000000                              06SUMMARY TAX                   
+OIN_SACS2 Tax - Sales and Use                                                             
+OIN_SACS1 CD260000000000001300 000000                              06                              
+OIN_SACS2 Fuel Charge                                                                     
+OIN_SACS1 CD360000000000000064 000000                              06                              
+OIN_SACS2 GST                                                                             
+OIN_SACS1 CB570000000000002015 000000                              06                              
+OIN_SACS2 Bottle Deposits                                                                 
+OIN_SACS1 CC090000000000000578 000000                              06                              
+OIN_SACS2 Ecology Fees                                                                    
+OIN_SACS1 CD360000000000000029 000500                              06                              
+OIN_SACS2 GST                                                                             
+OIN_SACS1 CD360000000000005614 000000                              06SUMMARY TAX                   
+OIN_SACS2 GST                                                                             

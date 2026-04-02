@@ -279,7 +279,7 @@ pyedi compare --profile 810_invoice --source-dir src/ --target-dir tgt/ --export
 
 Profiles are defined in `config/config.yaml` under `compare.profiles`. Each profile specifies a match key (e.g., `BIG:BIG02` for 810 invoices), segment qualifiers, and a rules YAML file. Adding a new transaction type is a config change — no code changes required.
 
-Built-in profiles: `810_invoice`, `850_purchase_order`, `855_po_ack`, `856_asn`, `860_po_change`, `820_payment`, `csv_generic`, `cxml_generic`, `bevager_810`, `darden_asbn`.
+Built-in profiles: `810_invoice`, `850_purchase_order`, `855_po_ack`, `856_asn`, `860_po_change`, `820_payment`, `csv_generic`, `cxml_generic`, `bevager_810`, `darden_asbn`, `retalix_p_i_invo`.
 
 Flat file compare mode (`_compare_flat_dict`) handles structured JSON with `{header, lines, summary}` by matching lines positionally. The `scaffold-rules` CLI command auto-generates compare rules YAML from compiled schemas. Runtime severity overrides are stored in the `field_crosswalk` SQLite table with `amount_variance` support for numeric tolerance.
 
@@ -367,12 +367,16 @@ config/
     ├── csv_generic.yaml
     ├── cxml_generic.yaml
     ├── bevager_810.yaml
-    └── darden_asbn.yaml
+    ├── darden_asbn.yaml
+    └── retalix_p_i_invo.yaml
 artifacts/
 ├── darden/              # Darden ASBN trading partner data
 │   ├── DardenInvoiceASBN.xsd        # XSD schema
 │   ├── ca-source/                   # Control XML invoices (3 files)
 │   └── na-source/                   # Test XML invoices (3 files, intentional diffs)
+├── RetalixPIInvoiceFileSchemaSacFF.ffSchema  # Retalix PI Invoice DSL schema
+├── RetalixPIPOAckFF.ffSchema                 # Retalix PO Acknowledgement DSL schema
+└── silver/                          # Retalix silver data (ca-silver/, na-silver/)
 data/
 └── compare.db           # SQLite database (compare run history)
 schemas/
@@ -451,7 +455,7 @@ Test cases are defined in `tests/user_supplied/metadata.yaml` with per-case cont
 
 ## Project Assessment
 
-A candid evaluation of PyEDI-Core's maturity, measured against its own success criteria (see `PROJECT_INTENT.md`) and informed by a full code review (`REVIEW_REPORT.md`), specification gap analysis, and open backlog.
+A candid evaluation of PyEDI-Core's maturity, measured against its own success criteria (see `PROJECT_INTENT.md`) and informed by a full code review (`REVIEW_REPORT.md`), specification gap analysis, and open backlog. See `rulesApproach.MD` for a detailed description of the 3-tier rules architecture.
 
 ### Success Criteria Scorecard
 
@@ -462,7 +466,7 @@ A candid evaluation of PyEDI-Core's maturity, measured against its own success c
 | 3 | Deterministic results | MET | Core transforms are deterministic. Timezone-naive timestamps in metadata (W21) are an envelope issue, not a payload issue. |
 | 4 | Full traceability | MET | Correlation IDs, manifest, error sidecars all in place. Cross-process manifest locking (W11) is the gap for multi-instance deployments. |
 | 5 | No silent failures | MOSTLY MET | Dead-letter queue covers all stages. Two quiet paths remain: schema compilation failures can fall back to stale files (W2), and failed field transforms return the original untransformed value (W19). |
-| 6 | Comparison confidence | MET | Compare engine complete with 9 profiles (added 855, 860), SQLite storage, field-level diffs, field_crosswalk with segment column, error discovery, reclassification, summary statistics, run diffing. All 11 sqlLiteReport.md improvement tasks implemented. Bidirectional matcher detects both source-only and target-only unmatched pairs. |
+| 6 | Comparison confidence | MET | Compare engine complete with 11 profiles (added 855, 860, retalix_p_i_invo), SQLite storage, field-level diffs, field_crosswalk with segment column, error discovery, reclassification, summary statistics, run diffing. All 11 sqlLiteReport.md improvement tasks implemented. Bidirectional matcher detects both source-only and target-only unmatched pairs. |
 | 7 | Test coverage matches capability | MOSTLY MET | 221 tests with strong pipeline coverage. W50 (main.py), W52 (X12 parsing), W53 (cXML fixture), W57 (failure paths) all resolved. Remaining gap: schema compilation round-trip test. |
 | 8 | Portal parity | MOSTLY MET | All major CLI operations available including compare with reclassify, run diff, summary stats, discoveries. Gaps: file upload not wired, manifest page not built, config editing is read-only. |
 | 9 | Business logic lives in YAML | MET | Verified — no hardcoded transaction-type logic in Python engine code. |

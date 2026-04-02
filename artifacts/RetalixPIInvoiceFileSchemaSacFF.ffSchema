@@ -1,0 +1,1521 @@
+package com.gfs.customer.ca.core.system.schemas ;
+
+/*RetalixPIInvoiceFileSchema (SAC) 1.0*/
+def flatFileSchema RetalixPIInvoiceFileSchemaSacFF {
+	sampleFile = "/com.gfsvendor.us.x12/src/com/gfsvendor/us/x12/inbound/n810/810_X12_2127383Source.txt"
+
+	_oTpidGroup OTpidGroup []
+
+	def record OinSacd1 {
+		fieldIdentifier {
+			value = "OIN_SACD1 "
+			field = recordID
+		}
+
+		recordID String (
+			length = 10
+			maxLength = 10
+			minLength = 10
+			readEmptyAsNull = true
+		)
+		allowChargeIndicator String (
+			length = 1
+			readEmptyAsNull = true
+		)
+		allowChargeCode String (
+			length = 4
+			readEmptyAsNull = true
+		)
+		allowChargeAmount ImpliedDecimal (
+			length = 15
+			fractionalDigits = 2
+			readEmptyAsNull = true
+		)
+		percentQualifier String (
+			length = 1
+			readEmptyAsNull = true
+		)
+		percent Integer (
+			length = 6
+			readEmptyAsNull = true
+		)
+		ignore String (
+			length = 30
+			readEmptyAsNull = true
+		)
+		allowChargeHandlingCode String (
+			length = 2
+			readEmptyAsNull = true
+		)
+		referenceID String (
+			length = 30
+			readEmptyAsNull = true
+		)
+	}
+
+	def record OinDtl9 {
+		fieldIdentifier {
+			value = "OIN_DTL9  "
+			field = recordID
+		}
+
+		recordID String (
+			length = 10
+			maxLength = 10
+			minLength = 10
+			readEmptyAsNull = true
+		)
+	}
+
+	def record OinSacs1 {
+		fieldIdentifier {
+			value = "OIN_SACS1 "
+			field = recordID
+		}
+
+		recordID String (
+			length = 10
+			maxLength = 10
+			minLength = 10
+			readEmptyAsNull = true
+		)
+		allowChargeIndicator String (
+			length = 1
+			readEmptyAsNull = true
+		)
+		allowChargeCode String (
+			length = 4
+			readEmptyAsNull = true
+		)
+		allowChargeAmount ImpliedDecimal (
+			length = 15
+			maxLength = 15
+			minLength = 15
+			fractionalDigits = 2
+			readEmptyAsNull = true
+		)
+		percentQualifier String (
+			length = 1
+			readEmptyAsNull = true
+		)
+		percent Integer (
+			length = 6
+			readEmptyAsNull = true
+		)
+		ignore String (
+			length = 30
+			readEmptyAsNull = true
+		)
+		allowChargeHandlingCode String (
+			length = 2
+			readEmptyAsNull = true
+		)
+		referenceID String (
+			length = 30
+			readEmptyAsNull = true
+		)
+	}
+
+	def record OinDtl6 {
+		fieldIdentifier {
+			value = "OIN_DTL6  "
+			field = recordID
+		}
+
+		recordID String (
+			length = 10
+			maxLength = 10
+			minLength = 10
+			readEmptyAsNull = true
+		)
+		orderGuideCategory String (
+			length = 5
+			maxLength = 5
+			minLength = 5
+			readEmptyAsNull = true
+		)
+		orderGuideCategoryDes String (
+			length = 25
+			readEmptyAsNull = true
+		)
+	}
+
+	def record OinSacd2 {
+		fieldIdentifier {
+			value = "OIN_SACD2 "
+			field = recordID
+		}
+
+		recordID String (
+			length = 10
+			maxLength = 10
+			minLength = 10
+			readEmptyAsNull = true
+		)
+		allowChargeDesc String (
+			length = 80
+			readEmptyAsNull = true
+		)
+	}
+
+	def record OTpid {
+		fieldIdentifier {
+			value = "O_TPID    "
+			field = recordID
+		}
+
+		recordID String (
+			length = 10
+			maxLength = 10
+			minLength = 10
+			readEmptyAsNull = true
+		)
+		tPCode String (
+			length = 10
+			maxLength = 10
+			minLength = 10
+			readEmptyAsNull = true
+		)
+		functionalGroupCode String (
+			length = 10
+			maxLength = 10
+			minLength = 10
+			readEmptyAsNull = true
+		)
+		messageID String (
+			length = 10
+			maxLength = 10
+			minLength = 10
+			readEmptyAsNull = true
+		)
+		messageClass String (
+			length = 10
+			maxLength = 10
+			minLength = 10
+			readEmptyAsNull = true
+		)
+	}
+
+	def record OinDstid {
+		fieldIdentifier {
+			value = "OIN_DSTID "
+			field = recordID
+		}
+
+		recordID String (
+			length = 10
+			maxLength = 10
+			minLength = 10
+			readEmptyAsNull = true
+		)
+	}
+
+	def record OinHdra {
+		fieldIdentifier {
+			value = "OIN_HDRA  "
+			field = recordID
+		}
+
+		recordID String (
+			length = 10
+			maxLength = 10
+			minLength = 10
+			readEmptyAsNull = true
+		)
+		companyNumber Decimal (
+			length = 3
+			maxLength = 3
+			minLength = 3
+			readEmptyAsNull = true
+		)
+		divisionNumber Decimal (
+			length = 3
+			maxLength = 3
+			minLength = 3
+			readEmptyAsNull = true
+		)
+		departmentNumber Decimal (
+			length = 3
+			maxLength = 3
+			minLength = 3
+			readEmptyAsNull = true
+		)
+		warehouseNumber Decimal (
+			length = 3
+			maxLength = 3
+			minLength = 3
+			readEmptyAsNull = true
+		)
+		customerNumber Decimal (
+			length = 10
+			maxLength = 10
+			minLength = 10
+			readEmptyAsNull = true
+		)
+	}
+
+	def record OinRefh1 {
+		fieldIdentifier {
+			value = "OIN_REFH1 "
+			field = recordID
+		}
+
+		recordID String (
+			length = 10
+			maxLength = 10
+			minLength = 10
+			readEmptyAsNull = true
+		)
+		referenceQualifier String (
+			length = 3
+			maxLength = 3
+			minLength = 3
+			readEmptyAsNull = true
+		)
+		referenceID String (
+			length = 30
+			maxLength = 30
+			minLength = 30
+			readEmptyAsNull = true
+		)
+	}
+
+	def record OinTrm1 {
+		fieldIdentifier {
+			value = "OIN_TRM1  "
+			field = recordID
+		}
+
+		recordID String (
+			length = 10
+			maxLength = 10
+			minLength = 10
+			readEmptyAsNull = true
+		)
+		termsTypeCode String (
+			length = 2
+			maxLength = 2
+			minLength = 2
+			readEmptyAsNull = true
+		)
+		termsDiscountPercent Decimal (
+			length = 5
+			maxLength = 5
+			minLength = 5
+			readEmptyAsNull = true
+		)
+		termsDiscountDueDate Decimal (
+			length = 8
+			maxLength = 8
+			minLength = 8
+			readEmptyAsNull = true
+		)
+		termsDiscountDays Decimal (
+			length = 3
+			maxLength = 3
+			minLength = 3
+			readEmptyAsNull = true
+		)
+		termsDiscountAmount String (
+			length = 9
+			maxLength = 9
+			minLength = 9
+			readEmptyAsNull = true
+		)
+		termsNetDueDate String (
+			length = 8
+			maxLength = 8
+			minLength = 8
+			readEmptyAsNull = true
+		)
+		termsNetDays String (
+			length = 3
+			maxLength = 3
+			minLength = 3
+			readEmptyAsNull = true
+		)
+		termsDescription String (
+			length = 25
+			maxLength = 25
+			minLength = 25
+			readEmptyAsNull = true
+		)
+	}
+
+	def record OinHdr4 {
+		fieldIdentifier {
+			value = "OIN_HDR4  "
+			field = recordID
+		}
+
+		recordID String (
+			length = 10
+			maxLength = 10
+			minLength = 10
+			readEmptyAsNull = true
+		)
+		shipMethodOfPayment String (
+			length = 2
+			maxLength = 2
+			minLength = 2
+			readEmptyAsNull = true
+		)
+		transportationType String (
+			length = 1
+			maxLength = 1
+			minLength = 1
+			readEmptyAsNull = true
+		)
+	}
+
+	def record OinHdr3 {
+		fieldIdentifier {
+			value = "OIN_HDR3  "
+			field = recordID
+		}
+
+		recordID String (
+			length = 10
+			maxLength = 10
+			minLength = 10
+			readEmptyAsNull = true
+		)
+		orderContractNumber String (
+			length = 20
+			maxLength = 20
+			minLength = 20
+			readEmptyAsNull = true
+		)
+		contractNumber String (
+			length = 20
+			maxLength = 20
+			minLength = 20
+			readEmptyAsNull = true
+		)
+		manifestNumber String (
+			length = 20
+			maxLength = 20
+			minLength = 20
+			readEmptyAsNull = true
+		)
+	}
+
+	def record OinHdr1 {
+		fieldIdentifier {
+			value = "OIN_HDR1  "
+			field = recordID
+		}
+
+		recordID String (
+			length = 10
+			maxLength = 10
+			minLength = 10
+			readEmptyAsNull = true
+		)
+		orderNumber Decimal (
+			length = 7
+			maxLength = 7
+			minLength = 7
+			readEmptyAsNull = true
+		)
+		invoiceNumber Decimal (
+			length = 7
+			maxLength = 7
+			minLength = 7
+			readEmptyAsNull = true
+		)
+		orderDate String (
+			length = 8
+			maxLength = 8
+			minLength = 8
+			readEmptyAsNull = true
+		)
+		invoiceDate String (
+			length = 8
+			maxLength = 8
+			minLength = 8
+			readEmptyAsNull = true
+		)
+		shipDate String (
+			length = 8
+			maxLength = 8
+			minLength = 8
+			readEmptyAsNull = true
+		)
+		pONumber String (
+			length = 20
+			maxLength = 20
+			minLength = 20
+			readEmptyAsNull = true
+		)
+	}
+
+	def record OinHdr2 {
+		fieldIdentifier {
+			value = "OIN_HDR2  "
+			field = recordID
+		}
+
+		recordID String (
+			length = 10
+			maxLength = 10
+			minLength = 10
+			readEmptyAsNull = true
+		)
+		billOfLadingNumber String (
+			length = 30
+			maxLength = 30
+			minLength = 30
+			readEmptyAsNull = true
+		)
+		aPVendorNumber String (
+			length = 15
+			maxLength = 15
+			minLength = 15
+			readEmptyAsNull = true
+		)
+		marketingVendorNumber String (
+			length = 10
+			maxLength = 10
+			minLength = 10
+			readEmptyAsNull = true
+		)
+		creditDebitCode String (
+			length = 2
+			maxLength = 2
+			minLength = 2
+			readEmptyAsNull = true
+		)
+		originalInvoiceNumber Decimal (
+			length = 7
+			maxLength = 7
+			minLength = 7
+			readEmptyAsNull = true
+		)
+	}
+
+	def record OinSt1 {
+		fieldIdentifier {
+			value = "OIN_ST1   "
+			field = recordID
+		}
+
+		recordID String (
+			length = 10
+			maxLength = 10
+			minLength = 10
+			readEmptyAsNull = true
+		)
+		shipToName String (
+			length = 25
+			maxLength = 25
+			minLength = 25
+			readEmptyAsNull = true
+		)
+		shipToIDQualifier String (
+			length = 2
+			maxLength = 2
+			minLength = 2
+			readEmptyAsNull = true
+		)
+		shiptoID String (
+			length = 15
+			maxLength = 15
+			minLength = 15
+			readEmptyAsNull = true
+		)
+		shipToStoreNumber String (
+			length = 20
+			maxLength = 20
+			minLength = 20
+			readEmptyAsNull = true
+		)
+		shipToCustomerNumber Decimal (
+			length = 10
+			maxLength = 10
+			minLength = 10
+			readEmptyAsNull = true
+		)
+		/**/
+		customerLangPref String (
+			length = 3
+			maxLength = 3
+			minLength = 3
+		)
+		chainDescription String (
+			length = 25
+			maxLength = 25
+			minLength = 25
+		)
+	}
+
+	def record OinSt3 {
+		fieldIdentifier {
+			value = "OIN_ST3   "
+			field = recordID
+		}
+
+		recordID String (
+			length = 10
+			maxLength = 10
+			minLength = 10
+			readEmptyAsNull = true
+		)
+		shipToCity String (
+			length = 15
+			maxLength = 15
+			minLength = 15
+			readEmptyAsNull = true
+		)
+		shipToProvince String (
+			length = 2
+			maxLength = 2
+			minLength = 2
+			readEmptyAsNull = true
+		)
+		shipToPostalCode String (
+			length = 10
+			maxLength = 10
+			minLength = 10
+			readEmptyAsNull = true
+		)
+	}
+
+	def record OinBt1 {
+		fieldIdentifier {
+			value = "OIN_BT1   "
+			field = recordID
+		}
+
+		recordID String (
+			length = 10
+			maxLength = 10
+			minLength = 10
+			readEmptyAsNull = true
+		)
+		billToName String (
+			length = 25
+			maxLength = 25
+			minLength = 25
+			readEmptyAsNull = true
+		)
+		billToIDQualifier String (
+			length = 2
+			maxLength = 2
+			minLength = 2
+			readEmptyAsNull = true
+		)
+		billToID String (
+			length = 15
+			maxLength = 15
+			minLength = 15
+			readEmptyAsNull = true
+		)
+	}
+
+	def record OinRe1 {
+		fieldIdentifier {
+			value = "OIN_RE1   "
+			field = recordID
+		}
+
+		recordID String (
+			length = 10
+			maxLength = 10
+			minLength = 10
+			readEmptyAsNull = true
+		)
+		remitToName String (
+			length = 25
+			maxLength = 25
+			minLength = 25
+			readEmptyAsNull = true
+		)
+		remitToIDQualifier Decimal (
+			length = 2
+			maxLength = 2
+			minLength = 2
+			readEmptyAsNull = true
+		)
+		remitToID Decimal (
+			length = 15
+			maxLength = 15
+			minLength = 15
+			readEmptyAsNull = true
+		)
+	}
+
+	def record OinSt2 {
+		fieldIdentifier {
+			value = "OIN_ST2   "
+			field = recordID
+		}
+
+		recordID String (
+			length = 10
+			maxLength = 10
+			minLength = 10
+			readEmptyAsNull = true
+		)
+		shiptoAddress1 String (
+			length = 25
+			maxLength = 25
+			minLength = 25
+			readEmptyAsNull = true
+		)
+		shiptoAddress2 String (
+			length = 25
+			maxLength = 25
+			minLength = 25
+			readEmptyAsNull = true
+		)
+	}
+
+	def record OinBt2 {
+		fieldIdentifier {
+			value = "OIN_BT2   "
+			field = recordID
+		}
+
+		recordID String (
+			length = 10
+			maxLength = 10
+			minLength = 10
+			readEmptyAsNull = true
+		)
+		billToAddress1 String (
+			length = 25
+			maxLength = 25
+			minLength = 25
+			readEmptyAsNull = true
+		)
+		billToCareOf String (
+			length = 30
+			maxLength = 30
+			minLength = 30
+			readEmptyAsNull = true
+		)
+	}
+
+	def record OinBt3 {
+		fieldIdentifier {
+			value = "OIN_BT3   "
+			field = recordID
+		}
+
+		recordID String (
+			length = 10
+			maxLength = 10
+			minLength = 10
+			readEmptyAsNull = true
+		)
+		billToCity String (
+			length = 15
+			maxLength = 15
+			minLength = 15
+			readEmptyAsNull = true
+		)
+		billToProvince String (
+			length = 2
+			maxLength = 2
+			minLength = 2
+			readEmptyAsNull = true
+		)
+		billToPostalCode String (
+			length = 10
+			maxLength = 10
+			minLength = 10
+			readEmptyAsNull = true
+		)
+	}
+
+	def record OinRe3 {
+		fieldIdentifier {
+			value = "OIN_RE3   "
+			field = recordID
+		}
+
+		recordID String (
+			length = 10
+			maxLength = 10
+			minLength = 10
+			readEmptyAsNull = true
+		)
+		remitToCity String (
+			length = 15
+			maxLength = 15
+			minLength = 15
+			readEmptyAsNull = true
+		)
+		remitToProvince String (
+			length = 2
+			maxLength = 2
+			minLength = 2
+			readEmptyAsNull = true
+		)
+		remitToPostalCode String (
+			length = 10
+			maxLength = 10
+			minLength = 10
+			readEmptyAsNull = true
+		)
+	}
+
+	def record OinDtl2 {
+		fieldIdentifier {
+			value = "OIN_DTL2  "
+			field = recordID
+		}
+
+		recordID String (
+			length = 10
+			maxLength = 10
+			minLength = 10
+			readEmptyAsNull = true
+		)
+		itemDescription String (
+			length = 80
+			maxLength = 80
+			minLength = 80
+			readEmptyAsNull = true
+		)
+	}
+
+	def record OinDtl1 {
+		fieldIdentifier {
+			value = "OIN_DTL1  "
+			field = recordID
+		}
+
+		recordID String (
+			length = 10
+			maxLength = 10
+			minLength = 10
+			readEmptyAsNull = true
+		)
+		lineNumber Decimal (
+			length = 5
+			maxLength = 5
+			minLength = 5
+			readEmptyAsNull = true
+		)
+		distributorItemNumber Decimal (
+			length = 10
+			maxLength = 10
+			minLength = 10
+			readEmptyAsNull = true
+		)
+		uPCQualifier String (
+			length = 2
+			maxLength = 2
+			minLength = 2
+			readEmptyAsNull = true
+		)
+		uPCEANNumber String (
+			length = 14
+			maxLength = 14
+			minLength = 14
+			readEmptyAsNull = true
+		)
+		customerItemNumber String (
+			length = 15
+			maxLength = 15
+			minLength = 15
+			readEmptyAsNull = true
+		)
+		unitOfMeasure String (
+			length = 2
+			maxLength = 2
+			minLength = 2
+			readEmptyAsNull = true
+		)
+		itemsPerUnit String (
+			length = 4
+			maxLength = 4
+			minLength = 4
+			readEmptyAsNull = true
+		)
+		itemPriceGross ImpliedDecimal (
+			length = 9
+			maxLength = 9
+			minLength = 9
+			fractionalDigits = 2
+			readEmptyAsNull = true
+		)
+		itemPriceNet ImpliedDecimal (
+			length = 9
+			maxLength = 9
+			minLength = 9
+			fractionalDigits = 4
+			readEmptyAsNull = true
+		)
+		taxes String (
+			length = 6
+			maxLength = 6
+			minLength = 6
+			readEmptyAsNull = true
+		)
+		catchWeightFlag String (
+			length = 1
+			maxLength = 1
+			minLength = 1
+			readEmptyAsNull = true
+		)
+		BrokenCaseCode String (
+			length = 1
+			maxLength = 1
+			minLength = 1
+		)
+		itemNonStockIndicator String (
+			length = 1
+			maxLength = 1
+			minLength = 1
+		)
+		itemCube ImpliedDecimal (
+			length = 5
+			maxLength = 5
+			minLength = 5
+			totalDigits = 5
+			fractionalDigits = 3
+		)
+		unitCostForPrice ImpliedDecimal (
+			length = 9
+			maxLength = 9
+			minLength = 9
+			totalDigits = 2
+			fractionalDigits = 2
+		)
+	}
+
+	def record OinDtl3 {
+		fieldIdentifier {
+			value = "OIN_DTL3  "
+			field = recordID
+		}
+
+		recordID String (
+			length = 10
+			maxLength = 10
+			minLength = 10
+			readEmptyAsNull = true
+		)
+		quantityOrdered Decimal (
+			length = 7
+			maxLength = 7
+			minLength = 7
+			readEmptyAsNull = true
+		)
+		quantityShipped Decimal (
+			length = 7
+			maxLength = 7
+			minLength = 7
+			readEmptyAsNull = true
+		)
+		quantityDifference String (
+			length = 7
+			maxLength = 7
+			minLength = 7
+			readEmptyAsNull = true
+		)
+		extendedWeight ImpliedDecimal (
+			length = 9
+			maxLength = 9
+			minLength = 9
+			fractionalDigits = 2
+			readEmptyAsNull = true
+		)
+		extendedPrice ImpliedDecimal (
+			length = 9
+			maxLength = 9
+			minLength = 9
+			fractionalDigits = 2
+			readEmptyAsNull = true
+		)
+		lotNumber String (
+			length = 15
+			maxLength = 15
+			minLength = 15
+			readEmptyAsNull = true
+		)
+		productionDayCodeSubCode String (
+			length = 14
+			maxLength = 14
+			minLength = 14
+			readEmptyAsNull = true
+		)
+		priceQuantity String (
+			length = 11
+			maxLength = 11
+			minLength = 11
+			readEmptyAsNull = true
+		)
+		priceUnitOfMeasure Decimal (
+			length = 2
+			maxLength = 2
+			minLength = 2
+			readEmptyAsNull = true
+		)
+		unitGrossWeight Decimal (
+			length = 15
+			maxLength = 15
+			minLength = 15
+			totalDigits = 15
+		)
+		unitNetWeight Decimal (
+			length = 15
+			maxLength = 15
+			minLength = 15
+			totalDigits = 15
+		)
+	}
+
+	def record OinRe2 {
+		fieldIdentifier {
+			value = "OIN_RE2   "
+			field = recordID
+		}
+
+		recordID String (
+			length = 10
+			maxLength = 10
+			minLength = 10
+			readEmptyAsNull = true
+		)
+		remitToAddress String (
+			length = 25
+			maxLength = 25
+			minLength = 25
+			readEmptyAsNull = true
+		)
+		remitToCareOf String (
+			length = 30
+			maxLength = 30
+			minLength = 30
+			readEmptyAsNull = true
+		)
+	}
+
+	def record OinDtl4 {
+		fieldIdentifier {
+			value = "OIN_DTL4  "
+			field = recordID
+		}
+
+		recordID String (
+			length = 10
+			maxLength = 10
+			minLength = 10
+			readEmptyAsNull = true
+		)
+		vendorNumber Decimal (
+			length = 10
+			maxLength = 10
+			minLength = 10
+			readEmptyAsNull = true
+		)
+		vendorName String (
+			length = 25
+			maxLength = 25
+			minLength = 25
+			readEmptyAsNull = true
+		)
+		vendorItemNumber String (
+			length = 10
+			maxLength = 10
+			minLength = 10
+			readEmptyAsNull = true
+		)
+		classNumber Decimal (
+			length = 3
+			maxLength = 3
+			minLength = 3
+			readEmptyAsNull = true
+		)
+		classDescription String (
+			length = 25
+			maxLength = 25
+			minLength = 25
+			readEmptyAsNull = true
+		)
+		priceBookHeading String (
+			length = 5
+			maxLength = 5
+			minLength = 5
+			readEmptyAsNull = true
+		)
+		pricebookHeadingDescription String (
+			length = 25
+			maxLength = 25
+			minLength = 25
+			readEmptyAsNull = true
+		)
+	}
+
+	def record OinDtl5 {
+		fieldIdentifier {
+			value = "OIN_DTL5  "
+			field = recordID
+		}
+
+		recordID String (
+			length = 10
+			maxLength = 10
+			minLength = 10
+			readEmptyAsNull = true
+		)
+		priceBookFamilyNumber String (
+			length = 7
+			maxLength = 7
+			minLength = 7
+			readEmptyAsNull = true
+		)
+		priceBookFamilyDescription String (
+			length = 25
+			maxLength = 25
+			minLength = 25
+			readEmptyAsNull = true
+		)
+		brand String (
+			length = 15
+			maxLength = 15
+			minLength = 15
+			readEmptyAsNull = true
+		)
+		pack Decimal (
+			length = 4
+			maxLength = 4
+			minLength = 4
+			readEmptyAsNull = true
+		)
+		size String (
+			length = 7
+			maxLength = 7
+			minLength = 7
+			readEmptyAsNull = true
+		)
+		servingsPerCase Decimal (
+			length = 5
+			maxLength = 5
+			minLength = 5
+			readEmptyAsNull = true
+		)
+		servingsPerCaseUOM String (
+			length = 2
+			maxLength = 2
+			minLength = 2
+			readEmptyAsNull = true
+		)
+		caseUPCNumber Decimal (
+			length = 14
+			maxLength = 14
+			minLength = 14
+			readEmptyAsNull = true
+		)
+		vendorUPCNumber String (
+			length = 14
+			maxLength = 14
+			minLength = 14
+			readEmptyAsNull = true
+		)
+		unitUPCNumber String (
+			length = 14
+			maxLength = 14
+			minLength = 14
+			readEmptyAsNull = true
+		)
+	}
+
+	def record OinTtl1 {
+		fieldIdentifier {
+			value = "OIN_TTL1  "
+			field = recordID
+		}
+
+		recordID String (
+			length = 10
+			maxLength = 10
+			minLength = 10
+			readEmptyAsNull = true
+		)
+		lineCount Decimal (
+			length = 5
+			maxLength = 5
+			minLength = 5
+			readEmptyAsNull = true
+		)
+		itemCount Decimal (
+			length = 7
+			maxLength = 7
+			minLength = 7
+			readEmptyAsNull = true
+		)
+		totalWeight Decimal (
+			length = 7
+			maxLength = 7
+			minLength = 7
+			readEmptyAsNull = true
+		)
+		grossInvoiceAmount ImpliedDecimal (
+			length = 9
+			maxLength = 9
+			minLength = 9
+			fractionalDigits = 2
+			readEmptyAsNull = true
+		)
+		netInvoiceAmount ImpliedDecimal (
+			length = 9
+			maxLength = 9
+			minLength = 9
+			fractionalDigits = 2
+			readEmptyAsNull = true
+		)
+		extendedFeeAmount Decimal (
+			length = 9
+			maxLength = 9
+			minLength = 9
+			readEmptyAsNull = true
+		)
+		extendedDiscountAmount Decimal (
+			length = 7
+			maxLength = 7
+			minLength = 7
+			readEmptyAsNull = true
+		)
+		extendedInventoryTax Decimal (
+			length = 8
+			maxLength = 8
+			minLength = 8
+			readEmptyAsNull = true
+		)
+		bottleDeposit Decimal (
+			length = 7
+			maxLength = 7
+			minLength = 7
+			readEmptyAsNull = true
+		)
+	}
+
+	def record OinSacs2 {
+		fieldIdentifier {
+			value = "OIN_SACS2 "
+			field = recordID
+		}
+
+		recordID String (
+			length = 10
+			maxLength = 10
+			minLength = 10
+			readEmptyAsNull = true
+		)
+		allowChargeDesc String (
+			length = 80
+			readEmptyAsNull = true
+		)
+	}
+
+	def record OinHdr5 {
+		fieldIdentifier {
+			value = "OIN_HDR5  "
+			field = recordID
+		}
+
+		recordID String (
+			length = 10
+			maxLength = 10
+			minLength = 10
+			readEmptyAsNull = true
+		)
+		netInvoiceAmout String (
+			length = 11
+		)
+		originalOrderDate String (
+			length = 8
+		)
+		originalOrderNumber String (
+			length = 7
+		)
+		originalInvoiceDate String (
+			length = 8
+		)
+	}
+
+	def record OinDtl7 {
+		fieldIdentifier {
+			value = "OIN_DTL7  "
+			field = recordID
+		}
+
+		recordID String (
+			length = 10
+			maxLength = 10
+			minLength = 10
+			readEmptyAsNull = true
+		)
+		extraItemDescription2 String (
+			length = 40
+			maxLength = 40
+			minLength = 40
+		)
+		extraItemDescription3 String (
+			length = 40
+			maxLength = 40
+			minLength = 40
+		)
+		vendorPhoneNumber String (
+			length = 10
+			maxLength = 10
+			minLength = 10
+		)
+	}
+
+	def record OinDtl8 {
+		fieldIdentifier {
+			value = "OIN_DTL8  "
+			field = recordID
+		}
+
+		recordID String (
+			length = 10
+			maxLength = 10
+			minLength = 10
+			readEmptyAsNull = true
+		)
+	}
+
+	def record OinTxS1 {
+		fieldIdentifier {
+			value = "OIN_TAXS1"
+			field = recordID
+		}
+
+		recordID String (
+			length = 10
+			maxLength = 10
+			minLength = 10
+			readEmptyAsNull = true
+		)
+		taxPercntCode String (
+			length = 2
+			maxLength = 2
+			minLength = 2
+			readEmptyAsNull = true
+		)
+		taxAmt ImpliedDecimal (
+			length = 8
+			maxLength = 8
+			minLength = 8
+			fractionalDigits = 2
+			readEmptyAsNull = true
+		)
+		taxPercntage Decimal (
+			length = 5
+			maxLength = 5
+			minLength = 5
+			readEmptyAsNull = true
+		)
+	}
+
+	def record OinTxS2 {
+		fieldIdentifier {
+			value = "OIN_TAXS1"
+			field = recordID
+		}
+
+		recordID String (
+			length = 10
+			maxLength = 10
+			minLength = 10
+			readEmptyAsNull = true
+		)
+		taxPrcentCode String (
+			length = 2
+			maxLength = 2
+			minLength = 2
+			readEmptyAsNull = true
+		)
+		taxAmnt ImpliedDecimal (
+			length = 8
+			maxLength = 8
+			minLength = 8
+			fractionalDigits = 2
+			readEmptyAsNull = true
+		)
+		taxPrcntage Decimal (
+			length = 5
+			maxLength = 5
+			minLength = 5
+			readEmptyAsNull = true
+		)
+	}
+
+	def record OinTxD1 {
+		fieldIdentifier {
+			value = "OIN_TAXD1"
+			field = recordID
+		}
+
+		recordID String (
+			length = 10
+			maxLength = 10
+			minLength = 10
+			readEmptyAsNull = true
+		)
+		taxPercentCode String (
+			length = 2
+			maxLength = 2
+			minLength = 2
+			readEmptyAsNull = true
+		)
+		taxAmt ImpliedDecimal (
+			length = 8
+			maxLength = 8
+			minLength = 8
+			fractionalDigits = 2
+			readEmptyAsNull = true
+		)
+		taxPercentage Decimal (
+			length = 5
+			maxLength = 5
+			minLength = 5
+			readEmptyAsNull = true
+		)
+	}
+
+	def record OinDtl4z {
+		fieldIdentifier {
+			value = "OIN_DTL4Z "
+			field = recordID
+		}
+
+		recordID String (
+			length = 10
+			maxLength = 10
+			minLength = 10
+		)
+	}
+
+	def record TpmHdr {
+		fieldIdentifier {
+			value = "TPM_HDR   "
+			field = recordID
+		}
+
+		recordID String (
+			length = 10
+			maxLength = 10
+			minLength = 10
+		)
+		invoiceNumber String (
+			length = 10
+			maxLength = 10
+			minLength = 10
+		)
+		originalInvoiceNumber String (
+			length = 10
+			maxLength = 10
+			minLength = 10
+		)
+		orderNumber String (
+			length = 10
+			maxLength = 10
+			minLength = 10
+		)
+		originalOrderNumber String (
+			length = 10
+			maxLength = 10
+			minLength = 10
+		)
+		SAPWarehouseNumber String (
+			length = 10
+			maxLength = 10
+			minLength = 10
+		)
+	}
+
+	def record OinDtl11 {
+		fieldIdentifier {
+			value = "OIN_DTL11 "
+			field = recordID
+		}
+
+		recordID String (
+			length = 10
+			maxLength = 10
+			minLength = 10
+		)
+		creditCode String (
+			length = 3
+			maxLength = 3
+			minLength = 3
+		)
+		creditCodeDescription String (
+			length = 25
+			maxLength = 25
+			minLength = 25
+		)
+	}
+
+	/*SAC - Summary*/
+	def recordSequence OinSacs1Group {
+
+		_oinSacs1 OinSacs1 [0..0]
+		_oinSacs2 OinSacs2 [0..0]
+		_OinTxS2 OinTxS2 [0..0]
+	}
+
+	/*SAC - Detail*/
+	def recordSequence OinSacd1Group {
+
+		_oinSacd1 OinSacd1 []
+		_oinSacd2 OinSacd2 [0..0]
+	}
+
+	/*Invoice Header*/
+	def recordSequence OTpidGroup {
+		groupOnRecord = true
+
+		_oTpid OTpid [0..0]
+		_oinDstid OinDstid []
+		_oinHdra OinHdra []
+		_TpmHdr TpmHdr []
+		_oinHdr1 OinHdr1 []
+		_oinHdr2 OinHdr2 []
+		_oinHdr3 OinHdr3 []
+		_oinHdr4 OinHdr4 []
+		_oinHdr5 OinHdr5 [0..0]
+		_oinRefh1 OinRefh1 []
+		_oinTrm1 OinTrm1 []
+		_oinSt1 OinSt1 []
+		_oinSt2 OinSt2 []
+		_oinSt3 OinSt3 []
+		_oinBt1 OinBt1 []
+		_oinBt2 OinBt2 []
+		_oinBt3 OinBt3 []
+		_oinRe1 OinRe1 []
+		_oinRe2 OinRe2 []
+		_oinRe3 OinRe3 []
+		_oinDtl1Group OinDtl1Group []
+		_oinTtl1 OinTtl1 []
+		_OinTxS1 OinTxS1 [0..0]
+		_oinSacs1Group OinSacs1Group []
+	}
+
+	/*Item Details*/
+	def recordSequence OinDtl1Group {
+		groupType = UnorderedAfterStart
+
+		_oinDtl1 OinDtl1 []
+		_OinDtl11 OinDtl11 []
+		_oinDtl2 OinDtl2 []
+		_oinDtl3 OinDtl3 []
+		_oinDtl4 OinDtl4 []
+		_OinDtl4z OinDtl4z []
+		_oinDtl5 OinDtl5 []
+		_oinDtl6 OinDtl6 [0..0]
+		_oinDtl7 OinDtl7 [0..0]
+		_oinDtl8 OinDtl8 [0..0]
+		_oinDtl9 OinDtl9 [0..0]
+		_OinTxD1 OinTxD1 []
+		_oinSacd1Group OinSacd1Group []
+	}
+}

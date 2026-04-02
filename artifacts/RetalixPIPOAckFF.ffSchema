@@ -1,0 +1,453 @@
+package com.gfs.customer.ca.core.system.schemas ;
+
+/*RetalixPIPOAck 1.0*/
+def flatFileSchema RetalixPIPOAckFF {
+	delimiter = "|"
+
+	_oTpidGroup OTpidGroup []
+
+	def record OTpid {
+		fieldIdentifier {
+			value = "O_TPID"
+			field = recordType
+		}
+
+		recordType String (
+			length = 10
+			maxLength = 10
+			minLength = 10
+			readEmptyAsNull = true
+		)
+		tpID String (
+			length = 20
+			maxLength = 20
+			minLength = 20
+		)
+	}
+
+	def record OpaHdra {
+		fieldIdentifier {
+			value = "OPA_HDRA   "
+			field = recordType
+		}
+
+		recordType String (
+			length = 10
+			maxLength = 10
+			minLength = 10
+			readEmptyAsNull = true
+		)
+		companyNumber Integer (
+			length = 3
+			maxLength = 3
+			minLength = 3
+			readEmptyAsNull = true
+		)
+		divisionNumber Integer (
+			length = 3
+			maxLength = 3
+			minLength = 3
+			readEmptyAsNull = true
+		)
+		locationNumber Integer (
+			length = 3
+			maxLength = 3
+			minLength = 3
+			readEmptyAsNull = true
+		)
+		warehouseNumber Integer (
+			length = 3
+			maxLength = 3
+			minLength = 3
+			readEmptyAsNull = true
+		)
+		customerNumber Integer (
+			length = 10
+			maxLength = 10
+			minLength = 10
+			readEmptyAsNull = true
+		)
+	}
+
+	def record OpaHdr1 {
+		fieldIdentifier {
+			value = "OPA_HDR1  "
+			field = recordType
+		}
+
+		recordType String (
+			length = 10
+			maxLength = 10
+			minLength = 10
+			readEmptyAsNull = true
+		)
+		ackType String (
+			length = 2
+			maxLength = 2
+			minLength = 2
+			readEmptyAsNull = true
+		)
+		pONumber String (
+			length = 20
+			maxLength = 20
+			minLength = 20
+			readEmptyAsNull = true
+		)
+		pODate String (
+			length = 8
+			maxLength = 8
+			minLength = 8
+			readEmptyAsNull = true
+		)
+		requestedShipDate String (
+			length = 8
+			maxLength = 8
+			minLength = 8
+			readEmptyAsNull = true
+		)
+		projectedShipDate String (
+			length = 8
+			maxLength = 8
+			minLength = 8
+			readEmptyAsNull = true
+		)
+		orderNumber Integer (
+			length = 7
+			maxLength = 7
+			minLength = 7
+			readEmptyAsNull = true
+		)
+		contractOrderNumber String (
+			length = 20
+			maxLength = 20
+			minLength = 20
+			readEmptyAsNull = true
+		)
+	}
+
+	def record OpaSt1 {
+		fieldIdentifier {
+			value = "OPA_ST1   "
+			field = recordType
+		}
+
+		recordType String (
+			length = 10
+			maxLength = 10
+			minLength = 10
+			readEmptyAsNull = true
+		)
+		shipToNameNU String (
+			length = 25
+			maxLength = 25
+			minLength = 25
+			readEmptyAsNull = true
+		)
+		shipToIDQualNU String (
+			length = 2
+			maxLength = 2
+			minLength = 2
+			readEmptyAsNull = true
+		)
+		shipToIDNU String (
+			length = 15
+			maxLength = 15
+			minLength = 15
+			readEmptyAsNull = true
+		)
+		shipToStoreNumber String (
+			length = 20
+			maxLength = 20
+			minLength = 20
+			readEmptyAsNull = true
+		)
+		erpCustomerNumber String (
+			length = 10
+			maxLength = 10
+			minLength = 10
+			readEmptyAsNull = true
+		)
+		languageCode String (
+			length = 3
+			maxLength = 3
+			minLength = 3
+			readEmptyAsNull = true
+		)
+	}
+
+	def record OpaVn1 {
+		fieldIdentifier {
+			value = "OPA_VN1   "
+			field = recordType
+		}
+
+		recordType String (
+			length = 10
+			maxLength = 10
+			minLength = 10
+			readEmptyAsNull = true
+		)
+		distributorName String (
+			length = 50
+			maxLength = 50
+			minLength = 50
+			readEmptyAsNull = true
+		)
+		distributorID Integer (
+			length = 15
+			maxLength = 15
+			minLength = 15
+			readEmptyAsNull = true
+		)
+	}
+
+	def record OpaDtl1 {
+		fieldIdentifier {
+			value = "OPA_DTL1  "
+			field = recordType
+		}
+
+		recordType String (
+			length = 10
+			maxLength = 10
+			minLength = 10
+			readEmptyAsNull = true
+		)
+		lineNumber Integer (
+			length = 5
+			maxLength = 5
+			minLength = 5
+			readEmptyAsNull = true
+		)
+		uPCNumber String (
+			length = 14
+			maxLength = 14
+			minLength = 14
+			readEmptyAsNull = true
+		)
+		itemQual String (
+			length = 2
+			maxLength = 2
+			minLength = 2
+			readEmptyAsNull = true
+		)
+		customerItemNumber String (
+			length = 15
+			maxLength = 15
+			minLength = 15
+			readEmptyAsNull = true
+		)
+		itemNumber String (
+			length = 10
+			maxLength = 10
+			minLength = 10
+			readEmptyAsNull = true
+		)
+		itemStatus String (
+			length = 2
+			maxLength = 2
+			minLength = 2
+			readEmptyAsNull = true
+		)
+		purchaseUnit String (
+			length = 2
+			maxLength = 2
+			minLength = 2
+			readEmptyAsNull = true
+		)
+		quantityConfirmed Integer (
+			length = 7
+			maxLength = 7
+			minLength = 7
+			readEmptyAsNull = true
+		)
+		priceConfirmed Decimal (
+			length = 10
+			maxLength = 10
+			minLength = 10
+			readEmptyAsNull = true
+		)
+		quantityOrdered Integer (
+			length = 7
+			maxLength = 7
+			minLength = 7
+			readEmptyAsNull = true
+		)
+		priceOrdered Decimal (
+			length = 10
+			maxLength = 10
+			minLength = 10
+			readEmptyAsNull = true
+		)
+		averageWeight Decimal (
+			length = 8
+			maxLength = 8
+			minLength = 8
+			readEmptyAsNull = true
+		)
+		activeItem String (
+			length = 1
+			maxLength = 1
+			minLength = 1
+			readEmptyAsNull = true
+		)
+		catchweightFlag String (
+			length = 1
+			maxLength = 1
+			minLength = 1
+			readEmptyAsNull = true
+		)
+	}
+
+	def record OpaDtl2 {
+		fieldIdentifier {
+			value = "OPA_DTL2"
+			field = recordType
+		}
+
+		recordType String (
+			length = 10
+			maxLength = 10
+			minLength = 10
+			readEmptyAsNull = true
+		)
+		itemDescription String (
+			length = 40
+			maxLength = 40
+			minLength = 40
+			readEmptyAsNull = true
+		)
+	}
+
+	def record OpaDtl3 {
+		fieldIdentifier {
+			value = "OPA_DTL3"
+			field = recordType
+		}
+
+		recordType String (
+			length = 10
+			maxLength = 10
+			minLength = 10
+			readEmptyAsNull = true
+		)
+		englishDescription String (
+			length = 40
+			maxLength = 40
+			minLength = 40
+			readEmptyAsNull = true
+		)
+		frenchDescription String (
+			length = 40
+			maxLength = 40
+			minLength = 40
+			readEmptyAsNull = true
+		)
+	}
+
+	def record OpaTtl1 {
+		fieldIdentifier {
+			value = "OPA_TTL1  "
+			field = recordType
+		}
+
+		recordType String (
+			length = 10
+			maxLength = 10
+			minLength = 10
+			readEmptyAsNull = true
+		)
+		lineCount Integer (
+			length = 6
+			maxLength = 6
+			minLength = 6
+			readEmptyAsNull = true
+		)
+		quantityTotal Integer (
+			length = 3
+			maxLength = 3
+			minLength = 3
+			readEmptyAsNull = true
+		)
+		recordCount Integer (
+			length = 6
+			maxLength = 6
+			minLength = 6
+			readEmptyAsNull = true
+		)
+	}
+
+	def record TPM2_HDR {
+		fieldIdentifier {
+			value = "TPM2_HDR"
+			field = recordType
+		}
+
+		recordType String (
+			length = 10
+		)
+		SAP_SalesOrderNbr String (
+			length = 20
+		)
+		Manifest String (
+			length = 20
+		)
+		SAP_Plant String (
+			length = 4
+		)
+		SAP_Organization String (
+			length = 4
+		)
+		SAP_Division String (
+			length = 4
+		)
+		SAP_DistChannel String (
+			length = 4
+		)
+	}
+
+	def record OpaRef1 {
+		fieldIdentifier {
+			value = "OPA_REFH1"
+			field = recordType
+		}
+
+		recordType String (
+			length = 10
+			maxLength = 10
+			minLength = 10
+			readEmptyAsNull = true
+		)
+		RefQual String (
+			length = 3
+			maxLength = 3
+			minLength = 3
+		)
+		RefId String (
+			length = 30
+			maxLength = 30
+			minLength = 30
+		)
+	}
+
+	def recordSequence OTpidGroup {
+		groupOnRecord = true
+
+		_oTpid OTpid []
+		_opaHdra OpaHdra []
+		_opaHdr1 OpaHdr1 []
+		_OpaRef1 OpaRef1 []
+		_opaSt1 OpaSt1 []
+		_opaVn1 OpaVn1 []
+		_TPM2_HDR TPM2_HDR []
+		_opaDtl1Group OpaDtl1Group []
+		_opaTtl1 OpaTtl1 []
+	}
+
+	def recordSequence OpaDtl1Group {
+
+		_opaDtl1 OpaDtl1 []
+		_opaDtl2 OpaDtl2 []
+		_opaDtl3 OpaDtl3 []
+	}
+}

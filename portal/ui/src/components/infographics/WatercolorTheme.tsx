@@ -93,6 +93,7 @@ export default function WatercolorTheme({ onNavigate }: InfographicThemeProps) {
         {WORKFLOW_STEPS.map((step, i) => (
           <div key={step.pageKey} className="flex items-center">
             <button
+              data-testid={`nav-${step.pageKey}`}
               onClick={() => onNavigate?.(step.pageKey)}
               className={`
                 relative ${WASH_COLORS[i].bg} rounded-2xl
@@ -116,7 +117,7 @@ export default function WatercolorTheme({ onNavigate }: InfographicThemeProps) {
 
             {/* Soft curved connector */}
             {i < WORKFLOW_STEPS.length - 1 && (
-              <svg width="32" height="20" viewBox="0 0 32 20" className="mx-1 flex-shrink-0 opacity-40">
+              <svg width="32" height="20" viewBox="0 0 32 20" className="mx-1 flex-shrink-0 opacity-40 pointer-events-none">
                 <path
                   d={`M2 10 Q16 ${i % 2 === 0 ? 2 : 18}, 30 10`}
                   fill="none"
@@ -175,6 +176,7 @@ export default function WatercolorTheme({ onNavigate }: InfographicThemeProps) {
           {QUICK_TIPS.map((tip, i) => (
             <button
               key={tip.pageKey}
+              data-testid={`tip-${tip.pageKey}`}
               onClick={() => onNavigate?.(tip.pageKey)}
               className={`
                 ${TIP_WASHES[i]} ${TIP_ROTATIONS[i]} rounded-xl p-3.5 text-left cursor-pointer

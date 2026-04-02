@@ -1,7 +1,6 @@
 transaction_type: 810_INVOICE
 input_format: CSV
 schema:
-  delimiter: ','
   columns:
   - name: PurchaseOrderNumber
     type: string
@@ -58,6 +57,7 @@ schema:
     type: float
     required: true
   records: {}
+  delimiter: ','
 mapping:
   header: {}
   lines:

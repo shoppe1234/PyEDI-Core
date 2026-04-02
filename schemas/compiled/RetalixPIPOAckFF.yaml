@@ -1,0 +1,598 @@
+transaction_type: RETALIXPIPOACKFF
+input_format: FIXED_WIDTH
+schema:
+  columns:
+  - name: recordType
+    type: string
+    required: true
+    width: 10
+    read_empty_as_null: true
+  - name: tpID
+    type: string
+    required: true
+    width: 20
+  - name: companyNumber
+    type: integer
+    required: true
+    width: 3
+    read_empty_as_null: true
+  - name: divisionNumber
+    type: integer
+    required: true
+    width: 3
+    read_empty_as_null: true
+  - name: locationNumber
+    type: integer
+    required: true
+    width: 3
+    read_empty_as_null: true
+  - name: warehouseNumber
+    type: integer
+    required: true
+    width: 3
+    read_empty_as_null: true
+  - name: customerNumber
+    type: integer
+    required: true
+    width: 10
+    read_empty_as_null: true
+  - name: ackType
+    type: string
+    required: true
+    width: 2
+    read_empty_as_null: true
+  - name: pONumber
+    type: string
+    required: true
+    width: 20
+    read_empty_as_null: true
+  - name: pODate
+    type: string
+    required: true
+    width: 8
+    read_empty_as_null: true
+  - name: requestedShipDate
+    type: string
+    required: true
+    width: 8
+    read_empty_as_null: true
+  - name: projectedShipDate
+    type: string
+    required: true
+    width: 8
+    read_empty_as_null: true
+  - name: orderNumber
+    type: integer
+    required: true
+    width: 7
+    read_empty_as_null: true
+  - name: contractOrderNumber
+    type: string
+    required: true
+    width: 20
+    read_empty_as_null: true
+  - name: shipToNameNU
+    type: string
+    required: true
+    width: 25
+    read_empty_as_null: true
+  - name: shipToIDQualNU
+    type: string
+    required: true
+    width: 2
+    read_empty_as_null: true
+  - name: shipToIDNU
+    type: string
+    required: true
+    width: 15
+    read_empty_as_null: true
+  - name: shipToStoreNumber
+    type: string
+    required: true
+    width: 20
+    read_empty_as_null: true
+  - name: erpCustomerNumber
+    type: string
+    required: true
+    width: 10
+    read_empty_as_null: true
+  - name: languageCode
+    type: string
+    required: true
+    width: 3
+    read_empty_as_null: true
+  - name: distributorName
+    type: string
+    required: true
+    width: 50
+    read_empty_as_null: true
+  - name: distributorID
+    type: integer
+    required: true
+    width: 15
+    read_empty_as_null: true
+  - name: lineNumber
+    type: integer
+    required: true
+    width: 5
+    read_empty_as_null: true
+  - name: uPCNumber
+    type: string
+    required: true
+    width: 14
+    read_empty_as_null: true
+  - name: itemQual
+    type: string
+    required: true
+    width: 2
+    read_empty_as_null: true
+  - name: customerItemNumber
+    type: string
+    required: true
+    width: 15
+    read_empty_as_null: true
+  - name: itemNumber
+    type: string
+    required: true
+    width: 10
+    read_empty_as_null: true
+  - name: itemStatus
+    type: string
+    required: true
+    width: 2
+    read_empty_as_null: true
+  - name: purchaseUnit
+    type: string
+    required: true
+    width: 2
+    read_empty_as_null: true
+  - name: quantityConfirmed
+    type: integer
+    required: true
+    width: 7
+    read_empty_as_null: true
+  - name: priceConfirmed
+    type: float
+    required: true
+    width: 10
+    read_empty_as_null: true
+  - name: quantityOrdered
+    type: integer
+    required: true
+    width: 7
+    read_empty_as_null: true
+  - name: priceOrdered
+    type: float
+    required: true
+    width: 10
+    read_empty_as_null: true
+  - name: averageWeight
+    type: float
+    required: true
+    width: 8
+    read_empty_as_null: true
+  - name: activeItem
+    type: string
+    required: true
+    width: 1
+    read_empty_as_null: true
+  - name: catchweightFlag
+    type: string
+    required: true
+    width: 1
+    read_empty_as_null: true
+  - name: itemDescription
+    type: string
+    required: true
+    width: 40
+    read_empty_as_null: true
+  - name: englishDescription
+    type: string
+    required: true
+    width: 40
+    read_empty_as_null: true
+  - name: frenchDescription
+    type: string
+    required: true
+    width: 40
+    read_empty_as_null: true
+  - name: lineCount
+    type: integer
+    required: true
+    width: 6
+    read_empty_as_null: true
+  - name: quantityTotal
+    type: integer
+    required: true
+    width: 3
+    read_empty_as_null: true
+  - name: recordCount
+    type: integer
+    required: true
+    width: 6
+    read_empty_as_null: true
+  - name: SAP_SalesOrderNbr
+    type: string
+    required: true
+    width: 20
+  - name: Manifest
+    type: string
+    required: true
+    width: 20
+  - name: SAP_Plant
+    type: string
+    required: true
+    width: 4
+  - name: SAP_Organization
+    type: string
+    required: true
+    width: 4
+  - name: SAP_Division
+    type: string
+    required: true
+    width: 4
+  - name: SAP_DistChannel
+    type: string
+    required: true
+    width: 4
+  - name: RefQual
+    type: string
+    required: true
+    width: 3
+  - name: RefId
+    type: string
+    required: true
+    width: 30
+  records:
+    O_TPID:
+    - recordType
+    - tpID
+    OPA_HDRA:
+    - recordType
+    - companyNumber
+    - divisionNumber
+    - locationNumber
+    - warehouseNumber
+    - customerNumber
+    OPA_HDR1:
+    - recordType
+    - ackType
+    - pONumber
+    - pODate
+    - requestedShipDate
+    - projectedShipDate
+    - orderNumber
+    - contractOrderNumber
+    OPA_ST1:
+    - recordType
+    - shipToNameNU
+    - shipToIDQualNU
+    - shipToIDNU
+    - shipToStoreNumber
+    - erpCustomerNumber
+    - languageCode
+    OPA_VN1:
+    - recordType
+    - distributorName
+    - distributorID
+    OPA_DTL1:
+    - recordType
+    - lineNumber
+    - uPCNumber
+    - itemQual
+    - customerItemNumber
+    - itemNumber
+    - itemStatus
+    - purchaseUnit
+    - quantityConfirmed
+    - priceConfirmed
+    - quantityOrdered
+    - priceOrdered
+    - averageWeight
+    - activeItem
+    - catchweightFlag
+    OPA_DTL2:
+    - recordType
+    - itemDescription
+    OPA_DTL3:
+    - recordType
+    - englishDescription
+    - frenchDescription
+    OPA_TTL1:
+    - recordType
+    - lineCount
+    - quantityTotal
+    - recordCount
+    TPM2_HDR:
+    - recordType
+    - SAP_SalesOrderNbr
+    - Manifest
+    - SAP_Plant
+    - SAP_Organization
+    - SAP_Division
+    - SAP_DistChannel
+    OPA_REFH1:
+    - recordType
+    - RefQual
+    - RefId
+  record_layouts:
+    O_TPID:
+    - name: recordType
+      width: 10
+    - name: tpID
+      width: 20
+    OPA_HDRA:
+    - name: recordType
+      width: 10
+    - name: companyNumber
+      width: 3
+    - name: divisionNumber
+      width: 3
+    - name: locationNumber
+      width: 3
+    - name: warehouseNumber
+      width: 3
+    - name: customerNumber
+      width: 10
+    OPA_HDR1:
+    - name: recordType
+      width: 10
+    - name: ackType
+      width: 2
+    - name: pONumber
+      width: 20
+    - name: pODate
+      width: 8
+    - name: requestedShipDate
+      width: 8
+    - name: projectedShipDate
+      width: 8
+    - name: orderNumber
+      width: 7
+    - name: contractOrderNumber
+      width: 20
+    OPA_ST1:
+    - name: recordType
+      width: 10
+    - name: shipToNameNU
+      width: 25
+    - name: shipToIDQualNU
+      width: 2
+    - name: shipToIDNU
+      width: 15
+    - name: shipToStoreNumber
+      width: 20
+    - name: erpCustomerNumber
+      width: 10
+    - name: languageCode
+      width: 3
+    OPA_VN1:
+    - name: recordType
+      width: 10
+    - name: distributorName
+      width: 50
+    - name: distributorID
+      width: 15
+    OPA_DTL1:
+    - name: recordType
+      width: 10
+    - name: lineNumber
+      width: 5
+    - name: uPCNumber
+      width: 14
+    - name: itemQual
+      width: 2
+    - name: customerItemNumber
+      width: 15
+    - name: itemNumber
+      width: 10
+    - name: itemStatus
+      width: 2
+    - name: purchaseUnit
+      width: 2
+    - name: quantityConfirmed
+      width: 7
+    - name: priceConfirmed
+      width: 10
+    - name: quantityOrdered
+      width: 7
+    - name: priceOrdered
+      width: 10
+    - name: averageWeight
+      width: 8
+    - name: activeItem
+      width: 1
+    - name: catchweightFlag
+      width: 1
+    OPA_DTL2:
+    - name: recordType
+      width: 10
+    - name: itemDescription
+      width: 40
+    OPA_DTL3:
+    - name: recordType
+      width: 10
+    - name: englishDescription
+      width: 40
+    - name: frenchDescription
+      width: 40
+    OPA_TTL1:
+    - name: recordType
+      width: 10
+    - name: lineCount
+      width: 6
+    - name: quantityTotal
+      width: 3
+    - name: recordCount
+      width: 6
+    TPM2_HDR:
+    - name: recordType
+      width: 10
+    - name: SAP_SalesOrderNbr
+      width: 20
+    - name: Manifest
+      width: 20
+    - name: SAP_Plant
+      width: 4
+    - name: SAP_Organization
+      width: 4
+    - name: SAP_Division
+      width: 4
+    - name: SAP_DistChannel
+      width: 4
+    OPA_REFH1:
+    - name: recordType
+      width: 10
+    - name: RefQual
+      width: 3
+    - name: RefId
+      width: 30
+  record_inventory:
+  - fieldIdentifier: O_TPID
+    field_count: 2
+  - fieldIdentifier: OPA_HDRA
+    field_count: 6
+  - fieldIdentifier: OPA_HDR1
+    field_count: 8
+  - fieldIdentifier: OPA_ST1
+    field_count: 7
+  - fieldIdentifier: OPA_VN1
+    field_count: 3
+  - fieldIdentifier: OPA_DTL1
+    field_count: 15
+  - fieldIdentifier: OPA_DTL2
+    field_count: 2
+  - fieldIdentifier: OPA_DTL3
+    field_count: 3
+  - fieldIdentifier: OPA_TTL1
+    field_count: 4
+  - fieldIdentifier: TPM2_HDR
+    field_count: 7
+  - fieldIdentifier: OPA_REFH1
+    field_count: 3
+mapping:
+  header: {}
+  lines:
+  - recordType:
+      source: recordType
+  - tpID:
+      source: tpID
+  - companyNumber:
+      source: companyNumber
+  - divisionNumber:
+      source: divisionNumber
+  - locationNumber:
+      source: locationNumber
+  - warehouseNumber:
+      source: warehouseNumber
+  - customerNumber:
+      source: customerNumber
+  - ackType:
+      source: ackType
+  - pONumber:
+      source: pONumber
+  - pODate:
+      source: pODate
+  - requestedShipDate:
+      source: requestedShipDate
+  - projectedShipDate:
+      source: projectedShipDate
+  - orderNumber:
+      source: orderNumber
+  - contractOrderNumber:
+      source: contractOrderNumber
+  - shipToNameNU:
+      source: shipToNameNU
+  - shipToIDQualNU:
+      source: shipToIDQualNU
+  - shipToIDNU:
+      source: shipToIDNU
+  - shipToStoreNumber:
+      source: shipToStoreNumber
+  - erpCustomerNumber:
+      source: erpCustomerNumber
+  - languageCode:
+      source: languageCode
+  - distributorName:
+      source: distributorName
+  - distributorID:
+      source: distributorID
+  - lineNumber:
+      source: lineNumber
+  - uPCNumber:
+      source: uPCNumber
+  - itemQual:
+      source: itemQual
+  - customerItemNumber:
+      source: customerItemNumber
+  - itemNumber:
+      source: itemNumber
+  - itemStatus:
+      source: itemStatus
+  - purchaseUnit:
+      source: purchaseUnit
+  - quantityConfirmed:
+      source: quantityConfirmed
+  - priceConfirmed:
+      source: priceConfirmed
+  - quantityOrdered:
+      source: quantityOrdered
+  - priceOrdered:
+      source: priceOrdered
+  - averageWeight:
+      source: averageWeight
+  - activeItem:
+      source: activeItem
+  - catchweightFlag:
+      source: catchweightFlag
+  - itemDescription:
+      source: itemDescription
+  - englishDescription:
+      source: englishDescription
+  - frenchDescription:
+      source: frenchDescription
+  - lineCount:
+      source: lineCount
+  - quantityTotal:
+      source: quantityTotal
+  - recordCount:
+      source: recordCount
+  - SAP_SalesOrderNbr:
+      source: SAP_SalesOrderNbr
+  - Manifest:
+      source: Manifest
+  - SAP_Plant:
+      source: SAP_Plant
+  - SAP_Organization:
+      source: SAP_Organization
+  - SAP_Division:
+      source: SAP_Division
+  - SAP_DistChannel:
+      source: SAP_DistChannel
+  - RefQual:
+      source: RefQual
+  - RefId:
+      source: RefId
+  summary: {}
+record_groups:
+  OTpidGroup:
+    member_records:
+    - O_TPID
+    - OPA_HDRA
+    - OPA_HDR1
+    - OPA_REFH1
+    - OPA_ST1
+    - OPA_VN1
+    - TPM2_HDR
+    - OPA_TTL1
+    - OPA_DTL1
+    - OPA_DTL2
+    - OPA_DTL3
+    group_on_record: true
+    nested_groups:
+    - OpaDtl1Group
+  OpaDtl1Group:
+    member_records:
+    - OPA_DTL1
+    - OPA_DTL2
+    - OPA_DTL3

@@ -101,6 +101,7 @@ export default function WhiteboardTheme({ onNavigate }: InfographicThemeProps) {
         {WORKFLOW_STEPS.map((step, i) => (
           <div key={step.pageKey} className="flex items-center">
             <button
+              data-testid={`nav-${step.pageKey}`}
               onClick={() => onNavigate?.(step.pageKey)}
               className={`
                 relative bg-white border-2 border-dashed ${STEP_COLORS[i].border} ${RADII[i]} ${ROTATIONS[i]}
@@ -120,7 +121,7 @@ export default function WhiteboardTheme({ onNavigate }: InfographicThemeProps) {
 
             {/* Dashed arrow between cards */}
             {i < WORKFLOW_STEPS.length - 1 && (
-              <svg width="36" height="24" viewBox="0 0 36 24" className="mx-1 flex-shrink-0">
+              <svg width="36" height="24" viewBox="0 0 36 24" className="mx-1 flex-shrink-0 pointer-events-none">
                 <path
                   d={`M2 ${12 + (i % 2 === 0 ? -2 : 2)} C12 ${12 + (i % 2 === 0 ? 4 : -4)}, 24 ${12 + (i % 2 === 0 ? -3 : 3)}, 30 12`}
                   fill="none"
@@ -185,6 +186,7 @@ export default function WhiteboardTheme({ onNavigate }: InfographicThemeProps) {
           {QUICK_TIPS.map((tip, i) => (
             <button
               key={tip.pageKey}
+              data-testid={`tip-${tip.pageKey}`}
               onClick={() => onNavigate?.(tip.pageKey)}
               className={`
                 ${TIP_BG[i]} ${TIP_ROTATIONS[i]} rounded-md p-3 text-left cursor-pointer

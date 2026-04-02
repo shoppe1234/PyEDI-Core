@@ -1,5 +1,33 @@
 # TODO
 
+## Completed (2026-04-02)
+
+### Retalix PI Invoice Schema Onboarding
+
+- [x] **Retalix PI Invoice ffSchema** — `artifacts/RetalixPIInvoiceFileSchemaSacFF.ffSchema` and `artifacts/RetalixPIPOAckFF.ffSchema` added as schema source artifacts.
+- [x] **Compiled Retalix schemas** — `schemas/compiled/RetalixPIInvoiceFileSchemaSacFF_map.yaml` + `.meta.json` and `RetalixPIPOAckFF.yaml` + `.meta.json` compiled.
+- [x] **GFS Generic Out 810 compiled** — `schemas/compiled/gfsGenericOut810FF_map.yaml` + `.meta.json`.
+- [x] **Retalix compare rules** — `config/compare_rules/retalix_p_i_invo.yaml` with field-level severity classification.
+- [x] **Silver data artifacts** — `artifacts/silver/ca-silver/` and `artifacts/silver/na-silver/` for Retalix PI Invoice comparison workflow.
+- [x] **tpm810SourceFF record_inventory** — `record_inventory` block added to `tpm810SourceFF_map.yaml` enumerating 7 record types (HDR, DTL, TP, D_HIST, SUM, INV_TR, FILE_TR) with expected field counts.
+
+### Compare Rules Normalization
+
+- [x] **amount_variance in all rules** — `amount_variance: null` field added to all classification entries in `810_invoice.yaml`, `bevager_810.yaml`, and other profiles. Normalizes rule schema so crosswalk overrides work uniformly.
+- [x] **bevager_810.yaml GTIN → ignore** — GTIN field added with `severity: ignore`. Rules reformatted to flat YAML style matching all other profiles.
+
+### Portal UI Improvements
+
+- [x] **Compare.tsx split loading states** — `loading` split into `pairsLoading` and `diffsLoading` so pair list and diff panel have independent loading indicators.
+- [x] **Compare.tsx empty state for filtered pairs** — Table body shows "No pairs match the current filter." row instead of empty tbody when `filteredPairs.length === 0`.
+- [x] **Compare.tsx diffs panel always shown** — Diff section renders whenever a pair is selected (not just when `diffs.length > 0`). Header changed to "Diffs — Pair #{id}".
+- [x] **Infographic themes testability** — `data-testid` attributes added to all nav and tip buttons in all 4 themes (RetroArcade, StickyNotes, Watercolor, Whiteboard). Connector decorators (SVG/span) marked `pointer-events-none` to prevent click interception.
+- [x] **Playwright added as dev dependency** — `@playwright/test` + `playwright` v1.58.2 added to `portal/ui/package.json`.
+
+### Documentation
+
+- [x] **rulesApproach.MD** — New root-level document describing the 3-tier rules architecture (universal → transaction → partner), strengths, trade-offs, opportunities, and summary matrix.
+
 ## Completed (2026-03-27)
 
 ### XSD-Driven XML Import Pipeline (`364c66d`)
@@ -96,4 +124,4 @@ All 11 improvement tasks from the SQLite gap analysis have been implemented:
 - [ ] **Standardize YAML quoting conventions** — 11 files with mixed quoting.
 - [ ] **Portal: authentication** — Basic auth or API key middleware.
 - [ ] **Portal: config editing UI** — Inline editing for csv_schema_registry entries.
-- [ ] **Compare: "ignore" severity in practice** — No rules YAML uses `severity: ignore`. Consider adding for date formatting diffs.
+- [ ] **Compare: "ignore" severity broader use** — `severity: ignore` added to `bevager_810.yaml` for GTIN. Consider applying to other profiles for date formatting diffs and envelope-only fields.

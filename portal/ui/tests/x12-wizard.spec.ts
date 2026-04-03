@@ -127,4 +127,34 @@ test.describe('X12 Wizard E2E', () => {
     await page.waitForTimeout(500);
     await expect(page.locator('select')).toBeVisible();
   });
+
+  test('Next: Register Partner button appears after schema review', async ({ page }) => {
+    await page.goto('/#onboard');
+    await page.waitForTimeout(2000);
+
+    await page.locator('button', { hasText: 'X12 EDI' }).click();
+    await page.waitForTimeout(2000);
+
+    await page.locator('select').selectOption('810');
+    await page.getByRole('button', { name: 'Review Schema' }).click();
+    await page.waitForTimeout(2000);
+
+    // "Next: Register Partner" should be visible and enabled
+    const nextBtn = page.getByRole('button', { name: 'Next: Register Partner' });
+    await expect(nextBtn).toBeVisible();
+    await expect(nextBtn).toBeEnabled();
+
+    // Click it to advance to Step 2
+    await nextBtn.click();
+    await page.waitForTimeout(2000);
+
+    // Step 2: Register Partner heading visible
+    await expect(page.getByText('Register Trading Partner')).toBeVisible();
+
+    // Transaction type should be pre-filled with "810"
+    const txnInput = page.locator('input').filter({ hasText: /810/ });
+    // The transaction type is in an Input component — check the input value
+    const txnField = page.locator('input[placeholder="810"]');
+    await expect(txnField).toHaveValue('810');
+  });
 });

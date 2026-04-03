@@ -6,12 +6,12 @@ set -e
 cd "$(dirname "$0")/.."
 
 echo "Starting PyEDI Portal (dev mode)..."
-echo "  API:  http://localhost:8000"
-echo "  UI:   http://localhost:5173"
+echo "  API:  http://localhost:18041"
+echo "  UI:   http://localhost:15174"
 echo ""
 
 # Start API in background
-PYTHONPATH=. uvicorn portal.api.app:app --reload --port 8000 &
+PYTHONPATH=. uvicorn portal.api.app:app --reload --port 18041 &
 API_PID=$!
 
 # Start Vite dev server

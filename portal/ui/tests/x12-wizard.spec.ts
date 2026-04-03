@@ -302,4 +302,31 @@ test.describe('X12 Wizard E2E', () => {
     const exists = existsSync(rulesPath);
     expect(exists).toBe(true);
   });
+
+  test('Registering duplicate profile name shows error', async ({ page }) => {
+    await page.goto('/#onboard');
+    await page.waitForTimeout(2000);
+
+    // Steps 0-1
+    await page.locator('button', { hasText: 'X12 EDI' }).click();
+    await page.waitForTimeout(2000);
+    await page.locator('select').selectOption('810');
+    await page.getByRole('button', { name: 'Review Schema' }).click();
+    await page.waitForTimeout(2000);
+    await page.getByRole('button', { name: 'Next: Register Partner' }).click();
+    await page.waitForTimeout(2000);
+
+    // Step 2: Use an existing profile name
+    await page.locator('input[placeholder="bevager_810"]').fill('regional_health_810');
+    await page.locator('input[placeholder="Bevager"]').fill('Duplicate Test');
+    await page.getByRole('button', { name: 'Register' }).click();
+    await page.waitForTimeout(3000);
+
+    // Error message should appear with "already exists"
+    await expect(page.getByText('already exists')).toBeVisible();
+
+    // Wizard should NOT advance — "Next: Configure Rules" should be disabled
+    const nextRulesBtn = page.getByRole('button', { name: 'Next: Configure Rules' });
+    await expect(nextRulesBtn).toBeDisabled();
+  });
 });

@@ -184,4 +184,51 @@ test.describe('X12 Wizard E2E', () => {
     const fieldInput = page.locator('input[placeholder="BIG02"]');
     await expect(fieldInput).toHaveValue('BIG02');
   });
+
+  test('Registering X12 partner creates profile and shows rules step', async ({ page }) => {
+    await page.goto('/#onboard');
+    await page.waitForTimeout(2000);
+
+    // Step 0: X12 EDI
+    await page.locator('button', { hasText: 'X12 EDI' }).click();
+    await page.waitForTimeout(2000);
+
+    // Step 1: 810 → Review → Next
+    await page.locator('select').selectOption('810');
+    await page.getByRole('button', { name: 'Review Schema' }).click();
+    await page.waitForTimeout(2000);
+    await page.getByRole('button', { name: 'Next: Register Partner' }).click();
+    await page.waitForTimeout(2000);
+
+    // Step 2: Fill registration form
+    const profileInput = page.locator('input[placeholder="bevager_810"]');
+    await profileInput.fill(TEST_PROFILE);
+
+    const partnerInput = page.locator('input[placeholder="Bevager"]');
+    await partnerInput.fill('PW Test Partner');
+
+    // Transaction type should already be "810"
+    await expect(page.locator('input[placeholder="810"]')).toHaveValue('810');
+
+    // Click Register
+    await page.getByRole('button', { name: 'Register' }).click();
+    await page.waitForTimeout(3000);
+
+    // Success indicator
+    await expect(page.getByText('Partner registered successfully')).toBeVisible();
+
+    // "Next: Configure Rules" should be enabled
+    const nextRulesBtn = page.getByRole('button', { name: 'Next: Configure Rules' });
+    await expect(nextRulesBtn).toBeEnabled();
+
+    // Click to advance to Step 3
+    await nextRulesBtn.click();
+    await page.waitForTimeout(2000);
+
+    // Step 3: Rules table should be visible
+    await expect(page.getByRole('heading', { name: 'Compare Rules' })).toBeVisible();
+
+    // At least one rule row references a field from the 810 schema
+    await expect(page.getByText('invoice_number')).toBeVisible();
+  });
 });

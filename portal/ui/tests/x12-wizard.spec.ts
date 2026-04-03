@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { execSync } from 'child_process';
-import { writeFileSync, unlinkSync } from 'fs';
+import { writeFileSync, unlinkSync, existsSync } from 'fs';
 import { resolve, join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
@@ -267,5 +267,39 @@ test.describe('X12 Wizard E2E', () => {
 
     // Catch-all row (* / *) exists
     await expect(page.getByText('* / * (catch-all)')).toBeVisible();
+  });
+
+  test('Saving rules completes wizard and shows success state', async ({ page }) => {
+    await page.goto('/#onboard');
+    await page.waitForTimeout(2000);
+
+    // Steps 0-1
+    await page.locator('button', { hasText: 'X12 EDI' }).click();
+    await page.waitForTimeout(2000);
+    await page.locator('select').selectOption('810');
+    await page.getByRole('button', { name: 'Review Schema' }).click();
+    await page.waitForTimeout(2000);
+    await page.getByRole('button', { name: 'Next: Register Partner' }).click();
+    await page.waitForTimeout(2000);
+
+    // Step 2: Register
+    await page.locator('input[placeholder="bevager_810"]').fill(TEST_PROFILE);
+    await page.locator('input[placeholder="Bevager"]').fill('PW Test Partner');
+    await page.getByRole('button', { name: 'Register' }).click();
+    await page.waitForTimeout(3000);
+    await page.getByRole('button', { name: 'Next: Configure Rules' }).click();
+    await page.waitForTimeout(2000);
+
+    // Step 3: Save Rules
+    await page.getByRole('button', { name: 'Save Rules' }).click();
+    await page.waitForTimeout(3000);
+
+    // Wizard shows completion state
+    await expect(page.getByText('Trading Partner Onboarded')).toBeVisible();
+
+    // Verify rules file was created
+    const rulesPath = join(PROJECT_ROOT, 'config', 'compare_rules', `${TEST_PROFILE}.yaml`);
+    const exists = existsSync(rulesPath);
+    expect(exists).toBe(true);
   });
 });

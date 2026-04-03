@@ -1,24 +1,16 @@
-# Partner-specific rules: Regional Health (Bluewater) 810 Invoice
-# Inherits from: _universal.yaml → _global_810.yaml
-# Only overrides/additions below.
-
 classification:
-  # Ship-to address — soft diff (D2: ca-target omits, na-target populates)
-  - segment: N3
-    field: N301
-    severity: soft
-    ignore_case: true
-    numeric: false
-    conditional_qualifier: null
-    amount_variance: null
-
-  # PO number format — hard diff (D3: bwd vs -BWD is a real difference)
-  - segment: BIG
-    field: BIG04
-    severity: hard
-    ignore_case: false
-    numeric: false
-    conditional_qualifier: null
-    amount_variance: null
-
+- segment: N3
+  field: N301
+  severity: hard
+  ignore_case: true
+  numeric: false
+  conditional_qualifier: null
+  amount_variance: null
+- segment: BIG
+  field: BIG04
+  severity: hard
+  ignore_case: false
+  numeric: false
+  conditional_qualifier: null
+  amount_variance: null
 ignore: []

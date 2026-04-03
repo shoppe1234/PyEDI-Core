@@ -160,7 +160,7 @@ compare:
       match_key:
         segment: BIG
         field: BIG02
-        normalize: "^903|"
+        normalize: ^903|
       segment_qualifiers:
         N1: N101
         REF: REF01
@@ -174,19 +174,28 @@ compare:
         N3: null
         N4: null
       rules_file: config/compare_rules/regional_health_810.yaml
+    '850':
+      description: ''
+      trading_partner: SeanEDITp1
+      transaction_type: '850'
+      match_key:
+        segment: BEG
+        field: BEG03
+      segment_qualifiers: {}
+      rules_file: config/compare_rules/850.yaml
 xml_schema_registry:
   darden_asbn_control:
     source_xsd: ./artifacts/darden/DardenInvoiceASBN.xsd
     compiled_output: ./schemas/compiled/DardenInvoiceASBN_map.yaml
     inbound_dir: ./artifacts/darden/ca-source
     transaction_type: DARDEN_ASBN
-    namespace: "http://DRI.iKitchen.BTS.Shared.Schemas.AdvancedShippingNotification.InBoundASN"
+    namespace: http://DRI.iKitchen.BTS.Shared.Schemas.AdvancedShippingNotification.InBoundASN
   darden_asbn_test:
     source_xsd: ./artifacts/darden/DardenInvoiceASBN.xsd
     compiled_output: ./schemas/compiled/DardenInvoiceASBN_map.yaml
     inbound_dir: ./artifacts/darden/na-source
     transaction_type: DARDEN_ASBN
-    namespace: "http://DRI.iKitchen.BTS.Shared.Schemas.AdvancedShippingNotification.InBoundASN"
+    namespace: http://DRI.iKitchen.BTS.Shared.Schemas.AdvancedShippingNotification.InBoundASN
 csv_schema_registry:
   margin_edge_810:
     source_dsl: ./tpm810SourceFF.txt
@@ -223,3 +232,8 @@ csv_schema_registry:
     compiled_output: ./schemas/compiled/RetalixPIInvoiceFileSchemaSacFF_map.yaml
     inbound_dir: ./artifacts/silver/na-silver
     transaction_type: RETALIXPIINVOICEFILESCHEMASACFF
+  '850':
+    source_dsl: ./rules/gfs_850_map.yaml
+    compiled_output: ./rules/gfs_850_map.yaml
+    inbound_dir: ''
+    transaction_type: '850'

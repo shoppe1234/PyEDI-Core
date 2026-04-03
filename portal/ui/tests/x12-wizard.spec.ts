@@ -54,4 +54,23 @@ test.describe('X12 Wizard E2E', () => {
     await expect(x12El).toBeEnabled();
     await expect(flatEl).toBeEnabled();
   });
+
+  test('Selecting X12 EDI loads transaction type dropdown', async ({ page }) => {
+    await page.goto('/#onboard');
+    await page.waitForTimeout(2000);
+
+    await page.locator('button', { hasText: 'X12 EDI' }).click();
+    await page.waitForTimeout(2000);
+
+    // Transaction type select should appear
+    const select = page.locator('select');
+    await expect(select).toBeVisible();
+
+    // Should have an option containing "810"
+    const option810 = select.locator('option', { hasText: '810' });
+    await expect(option810).toBeAttached();
+
+    // Card header should show "Select X12 Transaction Type"
+    await expect(page.getByText('Select X12 Transaction Type')).toBeVisible();
+  });
 });

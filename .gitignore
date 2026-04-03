@@ -48,6 +48,7 @@ logs/
 Thumbs.db
 
 # Project specific
+standards/
 pyedi_core/logs/
 pyedi_core/failed/
 pyedi_core/outbound/

@@ -1,7 +1,7 @@
 # Tier 3 & Tier 4 — Remaining Tasks
 
-**Source:** `REVIEW_REPORT.md` (2026-03-17 code review), updated 2026-03-24
-**Baseline:** 143 tests (86 unit, 57 integration), 0 failures
+**Source:** `REVIEW_REPORT.md` (2026-03-17 code review), updated 2026-04-03
+**Baseline (at time of review):** 143 tests (86 unit, 57 integration). **Current:** 205 tests (127 unit, 71 integration), 0 failures. **Playwright E2E:** 10 tests (x12-wizard.spec.ts), all passing (2026-04-03)
 **Prerequisites:** Tiers 1 and 2 complete
 
 ---

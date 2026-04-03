@@ -3,6 +3,7 @@
 
 transaction_type: 'UNKNOWN_X12'
 input_format: 'X12'
+x12_version: '5010'
 schema:
   delimiter: '*'
 mapping:

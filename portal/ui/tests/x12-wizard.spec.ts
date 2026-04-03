@@ -55,20 +55,24 @@ test.describe('X12 Wizard E2E', () => {
     await expect(flatEl).toBeEnabled();
   });
 
-  test('Selecting X12 EDI loads transaction type dropdown', async ({ page }) => {
+  test('Selecting X12 EDI loads version dropdown and transaction search', async ({ page }) => {
     await page.goto('/#onboard');
     await page.waitForTimeout(2000);
 
     await page.locator('button', { hasText: 'X12 EDI' }).click();
-    await page.waitForTimeout(2000);
+    await page.waitForTimeout(3000);
 
-    // Transaction type select should appear
-    const select = page.locator('select');
-    await expect(select).toBeVisible();
+    // Version select should appear with X12 versions
+    const versionSelect = page.locator('select');
+    await expect(versionSelect).toBeVisible();
 
-    // Should have an option containing "810"
-    const option810 = select.locator('option', { hasText: '810' });
-    await expect(option810).toBeAttached();
+    // Should have an option containing "5010"
+    const option5010 = versionSelect.locator('option', { hasText: '5010' });
+    await expect(option5010).toBeAttached();
+
+    // Transaction type search input should appear
+    const searchInput = page.locator('input[placeholder="Search transaction types..."]');
+    await expect(searchInput).toBeVisible();
 
     // Card header should show "Select X12 Transaction Type"
     await expect(page.getByText('Select X12 Transaction Type')).toBeVisible();
@@ -81,8 +85,12 @@ test.describe('X12 Wizard E2E', () => {
     await page.locator('button', { hasText: 'X12 EDI' }).click();
     await page.waitForTimeout(2000);
 
-    // Select 810
-    await page.locator('select').selectOption('810');
+    // Select 810 via search + click
+    const searchInput = page.locator('input[placeholder="Search transaction types..."]');
+    await searchInput.fill('810');
+    await page.waitForTimeout(500);
+    await page.locator('button', { hasText: /^810/ }).first().click();
+    await page.waitForTimeout(500);
 
     // Click Review Schema
     await page.getByRole('button', { name: 'Review Schema' }).click();
@@ -108,21 +116,22 @@ test.describe('X12 Wizard E2E', () => {
     await page.locator('button', { hasText: 'X12 EDI' }).click();
     await page.waitForTimeout(2000);
 
-    // "Existing Type" should be active, select visible
+    // "Existing Type" should be active, version select and search input visible
     const existingBtn = page.getByRole('button', { name: 'Existing Type' });
     const uploadBtn = page.getByRole('button', { name: 'Upload New Mapping' });
     await expect(existingBtn).toBeVisible();
     await expect(page.locator('select')).toBeVisible();
+    await expect(page.locator('input[placeholder="Search transaction types..."]')).toBeVisible();
 
     // Click "Upload New Mapping"
     await uploadBtn.click();
     await page.waitForTimeout(500);
 
-    // File input should appear, select should be gone
+    // File input should appear, version select and search should be gone
     await expect(page.locator('input[type="file"]')).toBeVisible();
     await expect(page.locator('select')).not.toBeVisible();
 
-    // Click "Existing Type" — select returns
+    // Click "Existing Type" — version select returns
     await existingBtn.click();
     await page.waitForTimeout(500);
     await expect(page.locator('select')).toBeVisible();
@@ -135,7 +144,11 @@ test.describe('X12 Wizard E2E', () => {
     await page.locator('button', { hasText: 'X12 EDI' }).click();
     await page.waitForTimeout(2000);
 
-    await page.locator('select').selectOption('810');
+    const searchInput = page.locator('input[placeholder="Search transaction types..."]');
+    await searchInput.fill('810');
+    await page.waitForTimeout(500);
+    await page.locator('button', { hasText: /^810/ }).first().click();
+    await page.waitForTimeout(500);
     await page.getByRole('button', { name: 'Review Schema' }).click();
     await page.waitForTimeout(2000);
 
@@ -167,7 +180,11 @@ test.describe('X12 Wizard E2E', () => {
     await page.waitForTimeout(2000);
 
     // Step 1: select 810, review schema, advance
-    await page.locator('select').selectOption('810');
+    const searchInput = page.locator('input[placeholder="Search transaction types..."]');
+    await searchInput.fill('810');
+    await page.waitForTimeout(500);
+    await page.locator('button', { hasText: /^810/ }).first().click();
+    await page.waitForTimeout(500);
     await page.getByRole('button', { name: 'Review Schema' }).click();
     await page.waitForTimeout(2000);
     await page.getByRole('button', { name: 'Next: Register Partner' }).click();
@@ -194,7 +211,11 @@ test.describe('X12 Wizard E2E', () => {
     await page.waitForTimeout(2000);
 
     // Step 1: 810 → Review → Next
-    await page.locator('select').selectOption('810');
+    const searchInput = page.locator('input[placeholder="Search transaction types..."]');
+    await searchInput.fill('810');
+    await page.waitForTimeout(500);
+    await page.locator('button', { hasText: /^810/ }).first().click();
+    await page.waitForTimeout(500);
     await page.getByRole('button', { name: 'Review Schema' }).click();
     await page.waitForTimeout(2000);
     await page.getByRole('button', { name: 'Next: Register Partner' }).click();
@@ -239,7 +260,11 @@ test.describe('X12 Wizard E2E', () => {
     // Steps 0-1: X12 → 810 → Schema → Next
     await page.locator('button', { hasText: 'X12 EDI' }).click();
     await page.waitForTimeout(2000);
-    await page.locator('select').selectOption('810');
+    const searchInput = page.locator('input[placeholder="Search transaction types..."]');
+    await searchInput.fill('810');
+    await page.waitForTimeout(500);
+    await page.locator('button', { hasText: /^810/ }).first().click();
+    await page.waitForTimeout(500);
     await page.getByRole('button', { name: 'Review Schema' }).click();
     await page.waitForTimeout(2000);
     await page.getByRole('button', { name: 'Next: Register Partner' }).click();
@@ -276,7 +301,11 @@ test.describe('X12 Wizard E2E', () => {
     // Steps 0-1
     await page.locator('button', { hasText: 'X12 EDI' }).click();
     await page.waitForTimeout(2000);
-    await page.locator('select').selectOption('810');
+    const searchInput = page.locator('input[placeholder="Search transaction types..."]');
+    await searchInput.fill('810');
+    await page.waitForTimeout(500);
+    await page.locator('button', { hasText: /^810/ }).first().click();
+    await page.waitForTimeout(500);
     await page.getByRole('button', { name: 'Review Schema' }).click();
     await page.waitForTimeout(2000);
     await page.getByRole('button', { name: 'Next: Register Partner' }).click();
@@ -310,7 +339,11 @@ test.describe('X12 Wizard E2E', () => {
     // Steps 0-1
     await page.locator('button', { hasText: 'X12 EDI' }).click();
     await page.waitForTimeout(2000);
-    await page.locator('select').selectOption('810');
+    const searchInput = page.locator('input[placeholder="Search transaction types..."]');
+    await searchInput.fill('810');
+    await page.waitForTimeout(500);
+    await page.locator('button', { hasText: /^810/ }).first().click();
+    await page.waitForTimeout(500);
     await page.getByRole('button', { name: 'Review Schema' }).click();
     await page.waitForTimeout(2000);
     await page.getByRole('button', { name: 'Next: Register Partner' }).click();

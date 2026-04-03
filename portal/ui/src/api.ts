@@ -9,6 +9,58 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
   return res.json();
 }
 
+// Standards discovery types
+export interface StandardVersion {
+  version: string
+  transaction_count: number
+}
+
+export interface StandardType {
+  standard: string
+  versions: StandardVersion[]
+}
+
+export interface StandardTransaction {
+  code: string
+  name: string
+  file: string
+  has_mapping: boolean
+}
+
+export interface StandardSegmentRef {
+  name: string
+  ref_type: string
+  min_occurs: number
+  max_occurs: number
+  children: StandardSegmentRef[]
+}
+
+export interface StandardElementDef {
+  position: number
+  name: string
+  data_type: string
+  min_occurs: number
+  max_occurs: number
+}
+
+export interface StandardSegmentDef {
+  code: string
+  name: string
+  elements: StandardElementDef[]
+}
+
+export interface StandardSchemaResponse {
+  code: string
+  name: string
+  version: string
+  standard: string
+  functional_group: string
+  areas: StandardSegmentRef[][]
+  segment_defs: Record<string, StandardSegmentDef>
+  has_mapping: boolean
+  match_key_default: Record<string, string>
+}
+
 export const api = {
   health: () => request<{ status: string }>('/health'),
 
@@ -98,6 +150,12 @@ export const api = {
   compareRunSummary: (runId: number) =>
     request<any>(`/compare/runs/${runId}/summary`),
 
+  // Profile management
+  profileDelete: (name: string) =>
+    request<{ status: string; profile: string }>(`/onboard/profile/${encodeURIComponent(name)}`, {
+      method: 'DELETE',
+    }),
+
   // Onboard wizard
   onboardRegister: (data: {
     profile_name: string;
@@ -144,17 +202,27 @@ export const api = {
   // X12 onboard
   onboardX12Types: () =>
     request<{
-      types: Array<{ code: string; label: string; map_file: string }>;
+      types: Array<{
+        code: string; label: string; map_file: string;
+        version: string; available_versions: string[];
+        category: string; description: string; has_mapping: boolean;
+      }>;
     }>('/onboard/x12-types'),
 
-  onboardX12Schema: (type: string) =>
-    request<{
+  onboardX12Versions: (code: string) =>
+    request<{ versions: string[] }>(`/onboard/x12-types/${encodeURIComponent(code)}/versions`),
+
+  onboardX12Schema: (type: string, version?: string) => {
+    const params = new URLSearchParams({ type });
+    if (version) params.set('version', version);
+    return request<{
       transaction_type: string;
       input_format: string;
       segments: string[];
       fields: Array<{ name: string; source: string; section: string }>;
       match_key_default: Record<string, string>;
-    }>(`/onboard/x12-schema?type=${encodeURIComponent(type)}`),
+    }>(`/onboard/x12-schema?${params}`);
+  },
 
   onboardX12Validate: (type: string, samplePath: string) =>
     request<{
@@ -182,6 +250,20 @@ export const api = {
       };
     }>('/onboard/x12-upload-map', { method: 'POST', body: form });
   },
+
+  // Standards discovery
+  standardsCatalog: () =>
+    request<{ standards: StandardType[] }>('/onboard/standards'),
+
+  standardsTransactions: (standard: string, version: string) =>
+    request<{ standard: string; version: string; transactions: StandardTransaction[] }>(
+      `/onboard/standards/${encodeURIComponent(standard)}/${encodeURIComponent(version)}/transactions`
+    ),
+
+  standardsSchema: (standard: string, version: string, code: string) =>
+    request<StandardSchemaResponse>(
+      `/onboard/standards/${encodeURIComponent(standard)}/${encodeURIComponent(version)}/${encodeURIComponent(code)}/schema`
+    ),
 
   // Rules tier API
   ruleTiers: () =>

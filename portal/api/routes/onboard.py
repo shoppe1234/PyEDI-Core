@@ -7,10 +7,29 @@ import yaml
 from fastapi import APIRouter, HTTPException, Query, UploadFile, File as FastAPIFile
 from pydantic import BaseModel
 
+from pyedi_core.standards_parser import (
+    get_catalog,
+    get_message_segments,
+    MessageSchema,
+    parse_edi_schema,
+    scan_standards_dir,
+)
+
 router = APIRouter(prefix="/api/onboard", tags=["onboard"])
 
 _PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent.parent
 _CONFIG_PATH = _PROJECT_ROOT / "config" / "config.yaml"
+
+
+def _get_standards_dir() -> Path:
+    """Resolve standards directory from config or default."""
+    if _CONFIG_PATH.exists():
+        with open(_CONFIG_PATH, "r", encoding="utf-8") as f:
+            config = yaml.safe_load(f)
+        rel = config.get("standards_dir", "./standards")
+    else:
+        rel = "./standards"
+    return _PROJECT_ROOT / rel
 
 
 # ---------------------------------------------------------------------------
@@ -50,6 +69,11 @@ class X12TypeEntry(BaseModel):
     code: str
     label: str
     map_file: str
+    version: str = '5010'
+    available_versions: List[str] = ['5010']
+    category: str = 'Other'
+    description: str = ''
+    has_mapping: bool = True
 
 
 class X12TypesResponse(BaseModel):
@@ -90,6 +114,212 @@ class X12UploadMapResponse(BaseModel):
     code: str
     map_file: str
     x12_schema: X12SchemaResponse
+
+
+# ---------------------------------------------------------------------------
+# Standards discovery models
+# ---------------------------------------------------------------------------
+
+class StandardVersion(BaseModel):
+    version: str
+    transaction_count: int
+
+
+class StandardType(BaseModel):
+    standard: str
+    versions: List[StandardVersion]
+
+
+class StandardsCatalogResponse(BaseModel):
+    standards: List[StandardType]
+
+
+class StandardTransaction(BaseModel):
+    code: str
+    name: str
+    file: str
+    has_mapping: bool
+
+
+class TransactionsResponse(BaseModel):
+    standard: str
+    version: str
+    transactions: List[StandardTransaction]
+
+
+class StandardSegmentRef(BaseModel):
+    name: str
+    ref_type: str
+    min_occurs: int
+    max_occurs: int
+    children: List['StandardSegmentRef'] = []
+
+
+class StandardElementDef(BaseModel):
+    position: int
+    name: str
+    data_type: str
+    min_occurs: int
+    max_occurs: int
+
+
+class StandardSegmentDef(BaseModel):
+    code: str
+    name: str
+    elements: List[StandardElementDef]
+
+
+class StandardSchemaResponse(BaseModel):
+    code: str
+    name: str
+    version: str
+    standard: str
+    functional_group: str
+    areas: List[List[StandardSegmentRef]]
+    segment_defs: Dict[str, StandardSegmentDef]
+    has_mapping: bool
+    match_key_default: Dict[str, str]
+
+
+# ---------------------------------------------------------------------------
+# GET /api/onboard/standards
+# ---------------------------------------------------------------------------
+
+@router.get("/standards", response_model=StandardsCatalogResponse)
+def standards_catalog() -> StandardsCatalogResponse:
+    """Return available EDI standards and their versions from the standards directory."""
+    standards_dir = _get_standards_dir()
+    if not standards_dir.exists():
+        raise HTTPException(status_code=404, detail="Standards directory not found")
+    catalog = get_catalog(standards_dir)
+    result: List[StandardType] = []
+    for std_name, versions in sorted(catalog.items()):
+        sv_list = [
+            StandardVersion(version=v, transaction_count=len(txns))
+            for v, txns in sorted(versions.items())
+        ]
+        result.append(StandardType(standard=std_name, versions=sv_list))
+    return StandardsCatalogResponse(standards=result)
+
+
+# ---------------------------------------------------------------------------
+# GET /api/onboard/standards/{standard}/{version}/transactions
+# ---------------------------------------------------------------------------
+
+@router.get("/standards/{standard}/{version}/transactions", response_model=TransactionsResponse)
+def standards_transactions(standard: str, version: str) -> TransactionsResponse:
+    """Return all transaction types for a given standard and version."""
+    standards_dir = _get_standards_dir()
+    catalog = get_catalog(standards_dir)
+    std_data = catalog.get(standard)
+    if not std_data:
+        raise HTTPException(status_code=404, detail=f"Standard '{standard}' not found")
+    txns = std_data.get(version)
+    if txns is None:
+        raise HTTPException(status_code=404, detail=f"Version '{version}' not found for '{standard}'")
+
+    # Check which have custom mappings in transaction_registry
+    registry_codes: set = set()
+    if _CONFIG_PATH.exists():
+        with open(_CONFIG_PATH, "r", encoding="utf-8") as f:
+            config = yaml.safe_load(f)
+        registry = config.get("transaction_registry", {})
+        default_map = registry.get("_default_x12", "")
+        for code, map_file in registry.items():
+            if not code.startswith("_") and map_file != default_map:
+                base = code.split("_")[0] if code[0].isdigit() else code
+                registry_codes.add(base)
+
+    # Sort by code (numeric)
+    sorted_txns = sorted(txns, key=lambda t: t["code"].zfill(6))
+    transactions = [
+        StandardTransaction(
+            code=t["code"],
+            name=t["name"],
+            file=t["file"],
+            has_mapping=t["code"] in registry_codes,
+        )
+        for t in sorted_txns
+    ]
+    return TransactionsResponse(standard=standard, version=version, transactions=transactions)
+
+
+# ---------------------------------------------------------------------------
+# GET /api/onboard/standards/{standard}/{version}/{code}/schema
+# ---------------------------------------------------------------------------
+
+def _seg_ref_to_model(ref: Any) -> StandardSegmentRef:
+    """Convert a SegmentRef dataclass to the Pydantic model."""
+    return StandardSegmentRef(
+        name=ref.name,
+        ref_type=ref.ref_type,
+        min_occurs=ref.min_occurs,
+        max_occurs=ref.max_occurs,
+        children=[_seg_ref_to_model(c) for c in ref.children],
+    )
+
+
+@router.get("/standards/{standard}/{version}/{code}/schema", response_model=StandardSchemaResponse)
+def standards_schema(standard: str, version: str, code: str) -> StandardSchemaResponse:
+    """Parse and return the full schema for a specific transaction type."""
+    standards_dir = _get_standards_dir()
+    # Pad version: "4010" -> "v004010"
+    padded = version.zfill(6)
+    schema_file = standards_dir / standard / f"v{padded}" / "schemas" / f"Message{code}.ediSchema"
+    if not schema_file.exists():
+        raise HTTPException(
+            status_code=404,
+            detail=f"Schema file not found: {standard}/{version}/{code}",
+        )
+
+    msg = parse_edi_schema(schema_file)
+
+    # Convert areas
+    areas_out: List[List[StandardSegmentRef]] = []
+    for area in msg.areas:
+        areas_out.append([_seg_ref_to_model(ref) for ref in area])
+
+    # Convert segment defs
+    seg_defs_out: Dict[str, StandardSegmentDef] = {}
+    for seg_code, seg_def in msg.segment_defs.items():
+        seg_defs_out[seg_code] = StandardSegmentDef(
+            code=seg_def.code,
+            name=seg_def.name,
+            elements=[
+                StandardElementDef(
+                    position=e.position,
+                    name=e.name,
+                    data_type=e.data_type,
+                    min_occurs=e.min_occurs,
+                    max_occurs=e.max_occurs,
+                )
+                for e in seg_def.elements
+            ],
+        )
+
+    # Check has_mapping
+    has_mapping = False
+    if _CONFIG_PATH.exists():
+        with open(_CONFIG_PATH, "r", encoding="utf-8") as f:
+            config = yaml.safe_load(f)
+        registry = config.get("transaction_registry", {})
+        default_map = registry.get("_default_x12", "")
+        map_file = registry.get(code, "")
+        has_mapping = bool(map_file) and map_file != default_map
+
+    match_key = _X12_MATCH_KEY_DEFAULTS.get(code, {})
+
+    return StandardSchemaResponse(
+        code=msg.code,
+        name=msg.name,
+        version=msg.version,
+        standard=standard,
+        functional_group=msg.functional_group,
+        areas=areas_out,
+        segment_defs=seg_defs_out,
+        has_mapping=has_mapping,
+        match_key_default=match_key,
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -301,61 +531,181 @@ def _extract_x12_schema(map_data: Dict[str, Any], code: str) -> X12SchemaRespons
 # GET /api/onboard/x12-types
 # ---------------------------------------------------------------------------
 
+_X12_META: Dict[str, tuple] = {
+    '810': ('Purchasing', 'Invoice'),
+    '820': ('Financial', 'Payment Order/Remittance Advice'),
+    '834': ('Insurance', 'Benefit Enrollment and Maintenance'),
+    '835': ('Insurance', 'Health Care Claim Payment/Advice'),
+    '837': ('Insurance', 'Health Care Claim'),
+    '850': ('Purchasing', 'Purchase Order'),
+    '855': ('Purchasing', 'Purchase Order Acknowledgment'),
+    '856': ('Shipping', 'Ship Notice/Manifest'),
+    '860': ('Purchasing', 'Purchase Order Change Request'),
+    '997': ('Acknowledgment', 'Functional Acknowledgment'),
+}
+
+
 @router.get("/x12-types", response_model=X12TypesResponse)
 def x12_types() -> X12TypesResponse:
-    """Return X12 transaction types from the transaction_registry."""
-    if not _CONFIG_PATH.exists():
-        raise HTTPException(status_code=404, detail="config.yaml not found")
+    """Return X12 transaction types — standards as base, overlaid with registry mappings."""
+    standards_dir = _get_standards_dir()
+    catalog = get_catalog(standards_dir)
+    x12_catalog = catalog.get("x12", {})
 
-    with open(_CONFIG_PATH, "r", encoding="utf-8") as f:
-        config = yaml.safe_load(f)
+    # Build set of codes with custom (non-default) mappings
+    registry_codes: set = set()
+    registry_map_files: Dict[str, str] = {}
+    if _CONFIG_PATH.exists():
+        with open(_CONFIG_PATH, "r", encoding="utf-8") as f:
+            config = yaml.safe_load(f)
+        registry = config.get("transaction_registry", {})
+        default_map = registry.get("_default_x12", "")
+        for code, map_file in registry.items():
+            if not code.startswith("_") and map_file != default_map:
+                base = code.split("_")[0] if code[0].isdigit() else code
+                registry_codes.add(base)
+                registry_map_files[base] = map_file
 
-    registry: Dict[str, str] = config.get("transaction_registry", {})
+    # Use highest version (5010) as the default catalog source
+    highest_version = sorted(x12_catalog.keys(), reverse=True)[0] if x12_catalog else "5010"
+    txns = x12_catalog.get(highest_version, [])
+
+    # Collect all versions per code
+    code_versions: Dict[str, List[str]] = {}
+    for v, v_txns in x12_catalog.items():
+        for t in v_txns:
+            code_versions.setdefault(t["code"], []).append(v)
+
     entries: List[X12TypeEntry] = []
-
-    for code, map_file in registry.items():
-        # Skip internal keys and non-X12 entries
-        if code.startswith("_"):
-            continue
-        # Read the mapping file to confirm it's X12
-        map_path = _resolve_map_path(map_file)
-        if not map_path.exists():
-            continue
-        try:
-            with open(map_path, "r", encoding="utf-8") as f:
-                map_data = yaml.safe_load(f)
-        except (yaml.YAMLError, OSError):
-            continue
-        if map_data.get("input_format") != "X12":
-            continue
-        label = map_data.get("transaction_type", code)
-        entries.append(X12TypeEntry(code=code, label=label, map_file=map_file))
+    for t in sorted(txns, key=lambda x: x["code"].zfill(6)):
+        code = t["code"]
+        meta = _X12_META.get(code, ('Other', ''))
+        has_mapping = code in registry_codes
+        map_file = registry_map_files.get(code, f"./rules/default_x12_map.yaml")
+        entries.append(X12TypeEntry(
+            code=code,
+            label=t["name"],
+            map_file=map_file,
+            version=highest_version,
+            available_versions=sorted(code_versions.get(code, [highest_version])),
+            category=meta[0],
+            description=t["name"],
+            has_mapping=has_mapping,
+        ))
 
     return X12TypesResponse(types=entries)
+
+
+# ---------------------------------------------------------------------------
+# GET /api/onboard/x12-types/{code}/versions
+# ---------------------------------------------------------------------------
+
+@router.get("/x12-types/{code}/versions")
+def get_x12_versions(code: str) -> Dict[str, List[str]]:
+    """Return available X12 versions for a transaction type from standards."""
+    standards_dir = _get_standards_dir()
+    catalog = get_catalog(standards_dir)
+    x12 = catalog.get("x12", {})
+    versions = [v for v, txns in x12.items() if any(t["code"] == code for t in txns)]
+    if not versions:
+        raise HTTPException(status_code=404, detail=f"No versions found for '{code}'")
+    return {"versions": sorted(versions)}
 
 
 # ---------------------------------------------------------------------------
 # GET /api/onboard/x12-schema
 # ---------------------------------------------------------------------------
 
+def _schema_from_standard(msg: MessageSchema, code: str) -> X12SchemaResponse:
+    """Convert a MessageSchema from standards parser to X12SchemaResponse."""
+    segments: List[str] = []
+    seen: set = set()
+    for area in msg.areas:
+        for ref in area:
+            if ref.ref_type == 'segment' and ref.name not in seen:
+                seen.add(ref.name)
+                segments.append(ref.name)
+            for child in ref.children:
+                if child.ref_type == 'segment' and child.name not in seen:
+                    seen.add(child.name)
+                    segments.append(child.name)
+
+    fields: List[X12Field] = []
+    for area_idx, area in enumerate(msg.areas):
+        section = 'header' if area_idx == 0 else 'lines' if area_idx == 1 else 'summary'
+        for ref in area:
+            seg_code = ref.name if ref.ref_type == 'segment' else None
+            if seg_code and seg_code in msg.segment_defs:
+                for elem in msg.segment_defs[seg_code].elements:
+                    fields.append(X12Field(
+                        name=f"{seg_code}{str(elem.position).zfill(2)}",
+                        source=f"{seg_code}.{elem.position}",
+                        section=section,
+                    ))
+
+    match_key = _X12_MATCH_KEY_DEFAULTS.get(code, {})
+    return X12SchemaResponse(
+        transaction_type=code,
+        input_format='X12',
+        segments=segments,
+        fields=fields,
+        match_key_default=match_key,
+    )
+
+
 @router.get("/x12-schema", response_model=X12SchemaResponse)
 def x12_schema(
     type: str = Query(..., description="X12 transaction type code (e.g. 810)"),
+    version: Optional[str] = Query(None, description="X12 version (e.g. 5010)"),
 ) -> X12SchemaResponse:
-    """Parse a mapping YAML and return its fields for wizard review."""
-    if not _CONFIG_PATH.exists():
-        raise HTTPException(status_code=404, detail="config.yaml not found")
+    """Parse a mapping YAML and return its fields for wizard review.
 
-    with open(_CONFIG_PATH, "r", encoding="utf-8") as f:
-        config = yaml.safe_load(f)
+    Falls back to standards .ediSchema if no mapping YAML matches.
+    """
+    # Try mapping YAML first
+    if _CONFIG_PATH.exists():
+        with open(_CONFIG_PATH, "r", encoding="utf-8") as f:
+            config = yaml.safe_load(f)
+        registry = config.get("transaction_registry", {})
+        map_rel = registry.get(type)
 
-    registry = config.get("transaction_registry", {})
-    map_rel = registry.get(type)
-    if not map_rel:
-        raise HTTPException(status_code=404, detail=f"Transaction type '{type}' not in registry")
+        if map_rel:
+            # If version specified, try version-specific map
+            if version:
+                for reg_code, reg_map in registry.items():
+                    if reg_code.startswith("_"):
+                        continue
+                    base = reg_code.split("_")[0] if reg_code[0].isdigit() else reg_code
+                    if base != type:
+                        continue
+                    candidate_path = _resolve_map_path(reg_map)
+                    if not candidate_path.exists():
+                        continue
+                    try:
+                        with open(candidate_path, "r", encoding="utf-8") as f:
+                            candidate_data = yaml.safe_load(f)
+                    except (yaml.YAMLError, OSError):
+                        continue
+                    if candidate_data.get("x12_version") == version:
+                        map_rel = reg_map
+                        break
 
-    map_data = _parse_mapping_yaml(_resolve_map_path(map_rel))
-    return _extract_x12_schema(map_data, type)
+            map_path = _resolve_map_path(map_rel)
+            # Only use mapping YAML if it's not the default stub
+            if map_path.exists() and map_path.name != "default_x12_map.yaml":
+                map_data = _parse_mapping_yaml(map_path)
+                return _extract_x12_schema(map_data, type)
+
+    # Fall back to standards directory
+    if version:
+        standards_dir = _get_standards_dir()
+        padded = version.zfill(6)
+        schema_file = standards_dir / "x12" / f"v{padded}" / "schemas" / f"Message{type}.ediSchema"
+        if schema_file.exists():
+            msg = parse_edi_schema(schema_file)
+            return _schema_from_standard(msg, type)
+
+    raise HTTPException(status_code=404, detail=f"No schema found for type '{type}'")
 
 
 # ---------------------------------------------------------------------------
@@ -591,3 +941,40 @@ def rules_template(
     })
 
     return RulesTemplateResponse(classification=classification, ignore=[])
+
+
+# ---------------------------------------------------------------------------
+# DELETE /api/onboard/profile/{name}
+# ---------------------------------------------------------------------------
+
+@router.delete("/profile/{name}")
+def delete_profile(name: str) -> Dict[str, str]:
+    """Delete a trading partner profile from config.yaml and remove its rules file."""
+    if not _CONFIG_PATH.exists():
+        raise HTTPException(status_code=404, detail="config.yaml not found")
+
+    with open(_CONFIG_PATH, "r", encoding="utf-8") as f:
+        config = yaml.safe_load(f)
+
+    # Remove from compare.profiles
+    profiles = config.get("compare", {}).get("profiles", {})
+    if name not in profiles:
+        raise HTTPException(status_code=404, detail=f"Profile '{name}' not found")
+    del profiles[name]
+
+    # Remove from csv_schema_registry if present
+    csv_registry = config.get("csv_schema_registry", {})
+    if name in csv_registry:
+        del csv_registry[name]
+
+    # Write updated config
+    with open(_CONFIG_PATH, "w", encoding="utf-8") as f:
+        yaml.dump(config, f, default_flow_style=False, sort_keys=False)
+
+    # Delete rules file if it exists
+    import os
+    rules_path = _PROJECT_ROOT / "config" / "compare_rules" / f"{name}.yaml"
+    if rules_path.exists():
+        os.remove(rules_path)
+
+    return {"status": "deleted", "profile": name}

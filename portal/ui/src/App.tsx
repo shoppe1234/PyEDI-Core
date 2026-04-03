@@ -8,17 +8,19 @@ import ConfigPage from './pages/Config'
 import ComparePage from './pages/Compare'
 import OnboardPage from './pages/Onboard'
 import RulesPage from './pages/Rules'
+import TradingPartners from './pages/TradingPartners'
 
-type Page = 'dashboard' | 'validate' | 'pipeline' | 'tests' | 'compare' | 'rules' | 'config' | 'onboard'
+type Page = 'dashboard' | 'partners' | 'validate' | 'pipeline' | 'tests' | 'compare' | 'rules' | 'config' | 'onboard'
 
 function getInitialPage(): Page {
   const hash = window.location.hash.replace('#', '')
-  const valid: Page[] = ['dashboard','validate','pipeline','tests','compare','rules','config','onboard']
+  const valid: Page[] = ['dashboard','partners','validate','pipeline','tests','compare','rules','config','onboard']
   return valid.includes(hash as Page) ? (hash as Page) : 'dashboard'
 }
 
 const NAV: { key: Page; label: string }[] = [
   { key: 'dashboard', label: 'Dashboard' },
+  { key: 'partners', label: 'Partners' },
   { key: 'validate', label: 'Validate' },
   { key: 'pipeline', label: 'Pipeline' },
   { key: 'tests', label: 'Tests' },
@@ -45,7 +47,7 @@ function App() {
   useEffect(() => {
     const onHash = () => {
       const h = window.location.hash.replace('#', '')
-      const valid: Page[] = ['dashboard','validate','pipeline','tests','compare','rules','config','onboard']
+      const valid: Page[] = ['dashboard','partners','validate','pipeline','tests','compare','rules','config','onboard']
       if (valid.includes(h as Page)) setPage(h as Page)
     }
     window.addEventListener('hashchange', onHash)
@@ -81,6 +83,7 @@ function App() {
 
       <main className="flex-1 overflow-auto p-6">
         {page === 'dashboard' && <DashboardPage onNavigate={(p) => setPage(p as Page)} />}
+        {page === 'partners' && <TradingPartners onNavigate={(p) => setPage(p as Page)} />}
         {page === 'validate' && <ValidatePage />}
         {page === 'pipeline' && <PipelinePage />}
         {page === 'tests' && <TestsPage />}

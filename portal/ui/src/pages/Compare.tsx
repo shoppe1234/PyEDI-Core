@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { api } from '../api'
+import { useProfileChanged } from '../profileEvents'
 
 function StatusBadge({ status }: { status: string }) {
   const colors: Record<string, string> = {
@@ -91,9 +92,16 @@ export default function ComparePage({ onNavigate }: { onNavigate?: (page: string
       && wildcardMatch(matchVal, matchValueFilter)
   })
 
+  const loadProfiles = useCallback(() => {
+    api.compareProfiles().then(setProfiles).catch(e => setError(e.message))
+  }, [])
+
+  // Refresh profiles when any page emits a profile change
+  useProfileChanged(useCallback(() => loadProfiles(), [loadProfiles]))
+
   // Load profiles on mount
   useEffect(() => {
-    api.compareProfiles().then(setProfiles).catch(e => setError(e.message))
+    loadProfiles()
     loadRuns()
   }, [])
 

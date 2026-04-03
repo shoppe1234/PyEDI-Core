@@ -1,3 +1,4 @@
+standards_dir: ./standards
 system:
   source_system_id: gfs
   max_workers: 8
@@ -18,8 +19,15 @@ directories:
   processed: ./.processed
 transaction_registry:
   '810': ./rules/gfs_810_map.yaml
+  '820': ./rules/default_x12_map.yaml
+  '834': ./rules/default_x12_map.yaml
+  '835': ./rules/default_x12_map.yaml
+  '837': ./rules/default_x12_map.yaml
   '850': ./rules/gfs_850_map.yaml
+  '855': ./rules/default_x12_map.yaml
   '856': ./rules/gfs_856_map.yaml
+  '860': ./rules/default_x12_map.yaml
+  '997': ./rules/default_x12_map.yaml
   gfs_csv: ./rules/gfs_csv_map.yaml
   cxml_850: ./rules/cxml_850_map.yaml
   _default_x12: ./rules/default_x12_map.yaml
@@ -183,6 +191,15 @@ compare:
         field: BEG03
       segment_qualifiers: {}
       rules_file: config/compare_rules/850.yaml
+    856sean:
+      description: ''
+      trading_partner: Sean-856
+      transaction_type: '856'
+      match_key:
+        segment: BSN
+        field: BSN02
+      segment_qualifiers: {}
+      rules_file: config/compare_rules/856sean.yaml
 xml_schema_registry:
   darden_asbn_control:
     source_xsd: ./artifacts/darden/DardenInvoiceASBN.xsd
@@ -237,3 +254,8 @@ csv_schema_registry:
     compiled_output: ./rules/gfs_850_map.yaml
     inbound_dir: ''
     transaction_type: '850'
+  856sean:
+    source_dsl: ''
+    compiled_output: ''
+    inbound_dir: ''
+    transaction_type: '856'

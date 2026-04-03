@@ -2,6 +2,7 @@
 
 transaction_type: '810_INVOICE'
 input_format: 'X12'
+x12_version: '5010'
 schema:
   delimiter: '*'
   segments:

@@ -1,5 +1,7 @@
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect, useMemo, useRef } from 'react'
 import { api } from '../api'
+import type { StandardVersion, StandardTransaction, StandardSchemaResponse } from '../api'
+import { emitProfileChanged } from '../profileEvents'
 
 interface ColumnInfo {
   name: string
@@ -277,12 +279,18 @@ function StepX12Select({
   onNext: () => void
   onChangeFormat: () => void
 }) {
-  const [x12Types, setX12Types] = useState<Array<{ code: string; label: string; map_file: string }>>([])
+  const [standardVersions, setStandardVersions] = useState<StandardVersion[]>([])
+  const [standardTransactions, setStandardTransactions] = useState<StandardTransaction[]>([])
+  const [selectedStandard] = useState<string>('x12')
+  const [selectedVersion, setSelectedVersion] = useState<string>('')
   const [selectedCode, setSelectedCode] = useState('')
+  const [typeQuery, setTypeQuery] = useState('')
+  const [comboOpen, setComboOpen] = useState(false)
   const [mode, setMode] = useState<'existing' | 'upload'>('existing')
   const [uploadFile, setUploadFile] = useState<File | null>(null)
   const [loading, setLoading] = useState(false)
-  const [typesLoading, setTypesLoading] = useState(true)
+  const [loadingVersions, setLoadingVersions] = useState(true)
+  const [loadingTransactions, setLoadingTransactions] = useState(false)
   const [error, setError] = useState('')
   const [schema, setSchema] = useState<X12Schema | null>(null)
 
@@ -292,14 +300,77 @@ function StepX12Select({
   const [sampleResult, setSampleResult] = useState<any>(null)
   const [sampleError, setSampleError] = useState('')
 
-  // Load available X12 types
+  // Fetch versions on mount
   useEffect(() => {
-    setTypesLoading(true)
-    api.onboardX12Types()
-      .then(data => setX12Types(data.types))
+    setLoadingVersions(true)
+    api.standardsCatalog()
+      .then(res => {
+        const x12 = res.standards.find(s => s.standard === 'x12')
+        if (x12) {
+          setStandardVersions(x12.versions)
+          const highest = [...x12.versions].sort((a, b) => b.version.localeCompare(a.version))[0]
+          if (highest) setSelectedVersion(highest.version)
+        }
+      })
       .catch(e => setError(e.message))
-      .finally(() => setTypesLoading(false))
+      .finally(() => setLoadingVersions(false))
   }, [])
+
+  // Fetch transactions when version changes
+  useEffect(() => {
+    if (!selectedVersion) return
+    setLoadingTransactions(true)
+    setStandardTransactions([])
+    setSelectedCode('')
+    setTypeQuery('')
+    setSchema(null)
+    api.standardsTransactions(selectedStandard, selectedVersion)
+      .then(res => setStandardTransactions(res.transactions))
+      .catch(e => setError(e.message))
+      .finally(() => setLoadingTransactions(false))
+  }, [selectedStandard, selectedVersion])
+
+  const convertStandardSchema = (std: StandardSchemaResponse): X12Schema => {
+    const segments: string[] = []
+    const seen = new Set<string>()
+    for (const area of std.areas) {
+      for (const ref of area) {
+        if (ref.ref_type === 'segment' && !seen.has(ref.name)) {
+          seen.add(ref.name)
+          segments.push(ref.name)
+        }
+        for (const child of ref.children || []) {
+          if (child.ref_type === 'segment' && !seen.has(child.name)) {
+            seen.add(child.name)
+            segments.push(child.name)
+          }
+        }
+      }
+    }
+    const fields: X12Field[] = []
+    std.areas.forEach((area, areaIdx) => {
+      const section = areaIdx === 0 ? 'header' : areaIdx === 1 ? 'lines' : 'summary'
+      for (const ref of area) {
+        const segCode = ref.ref_type === 'segment' ? ref.name : null
+        if (segCode && std.segment_defs[segCode]) {
+          for (const elem of std.segment_defs[segCode].elements) {
+            fields.push({
+              name: `${segCode}${String(elem.position).padStart(2, '0')}`,
+              source: `${segCode}.${elem.position}`,
+              section,
+            })
+          }
+        }
+      }
+    })
+    return {
+      transaction_type: std.code,
+      input_format: 'X12',
+      segments,
+      fields,
+      match_key_default: std.match_key_default,
+    }
+  }
 
   const loadSchema = async () => {
     setError('')
@@ -307,13 +378,17 @@ function StepX12Select({
     setLoading(true)
     try {
       if (mode === 'existing' && selectedCode) {
-        const res = await api.onboardX12Schema(selectedCode)
-        setSchema(res)
-        onUpdate({
-          transactionType: selectedCode,
-          x12Schema: res,
-          x12MapFile: x12Types.find(t => t.code === selectedCode)?.map_file,
-        })
+        const selectedTxn = standardTransactions.find(t => t.code === selectedCode)
+        if (selectedTxn?.has_mapping) {
+          const res = await api.onboardX12Schema(selectedCode, selectedVersion || undefined)
+          setSchema(res)
+          onUpdate({ transactionType: selectedCode, x12Schema: res })
+        } else {
+          const stdRes = await api.standardsSchema(selectedStandard, selectedVersion, selectedCode)
+          const converted = convertStandardSchema(stdRes)
+          setSchema(converted)
+          onUpdate({ transactionType: selectedCode, x12Schema: converted })
+        }
       } else if (mode === 'upload' && uploadFile) {
         const res = await api.onboardX12UploadMap(uploadFile)
         setSchema(res.x12_schema)
@@ -346,7 +421,56 @@ function StepX12Select({
     }
   }
 
-  const canLoad = mode === 'existing' ? !!selectedCode : !!uploadFile
+  const comboRef = useRef<HTMLDivElement>(null)
+  const [highlightIdx, setHighlightIdx] = useState(-1)
+
+  // Click-outside to close combobox
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (comboRef.current && !comboRef.current.contains(e.target as Node)) {
+        setComboOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handler)
+    return () => document.removeEventListener('mousedown', handler)
+  }, [])
+
+  // Filter transactions (flat sorted list — no categories for standards)
+  const filteredTypes = standardTransactions.filter(t =>
+    !typeQuery || t.code.includes(typeQuery) || t.name.toLowerCase().includes(typeQuery.toLowerCase())
+  )
+
+  const selectType = (code: string) => {
+    setSelectedCode(code)
+    const t = standardTransactions.find(x => x.code === code)
+    setTypeQuery(t ? `${t.code} — ${t.name}` : code)
+    setComboOpen(false)
+    setSchema(null)
+    setHighlightIdx(-1)
+  }
+
+  const handleComboKeyDown = (e: React.KeyboardEvent) => {
+    if (!comboOpen) {
+      if (e.key === 'ArrowDown' || e.key === 'Enter') { setComboOpen(true); e.preventDefault() }
+      return
+    }
+    if (e.key === 'ArrowDown') {
+      e.preventDefault()
+      setHighlightIdx(i => Math.min(i + 1, filteredTypes.length - 1))
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault()
+      setHighlightIdx(i => Math.max(i - 1, 0))
+    } else if (e.key === 'Enter' && highlightIdx >= 0 && highlightIdx < filteredTypes.length) {
+      e.preventDefault()
+      selectType(filteredTypes[highlightIdx].code)
+    } else if (e.key === 'Escape') {
+      setComboOpen(false)
+    }
+  }
+
+  const selectedTxn = standardTransactions.find(t => t.code === selectedCode)
+
+  const canLoad = mode === 'existing' ? (!!selectedCode && !!selectedVersion) : !!uploadFile
   const reviewed = !!schema
 
   return (
@@ -367,21 +491,95 @@ function StepX12Select({
 
         {mode === 'existing' ? (
           <div>
+            {/* Version Selector */}
+            <div className="mb-4">
+              <label className="block text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">X12 Version</label>
+              {loadingVersions ? (
+                <div className="flex items-center gap-2 text-sm text-gray-400"><Spinner /> Loading versions...</div>
+              ) : (
+                <select
+                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm bg-white max-w-xs
+                             focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400"
+                  value={selectedVersion}
+                  onChange={e => setSelectedVersion(e.target.value)}
+                  disabled={loadingVersions}
+                >
+                  {standardVersions.map(v => (
+                    <option key={v.version} value={v.version}>
+                      {v.version} ({v.transaction_count} transaction types)
+                    </option>
+                  ))}
+                </select>
+              )}
+            </div>
+
+            {/* Transaction Type */}
             <label className="block text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">Transaction Type</label>
-            {typesLoading ? (
+            {loadingTransactions ? (
               <div className="flex items-center gap-2 text-sm text-gray-400"><Spinner /> Loading types...</div>
             ) : (
-              <select
-                value={selectedCode}
-                onChange={e => { setSelectedCode(e.target.value); setSchema(null) }}
-                className="border border-gray-200 rounded-lg px-3 py-2 text-sm bg-white w-64
-                           focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400"
-              >
-                <option value="">Select a type...</option>
-                {x12Types.map(t => (
-                  <option key={t.code} value={t.code}>{t.code} — {t.label}</option>
-                ))}
-              </select>
+              <div ref={comboRef} className="relative w-80">
+                <div className="relative">
+                  <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"
+                    fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
+                  <input
+                    type="text"
+                    value={typeQuery}
+                    onChange={e => {
+                      setTypeQuery(e.target.value)
+                      setComboOpen(true)
+                      setHighlightIdx(-1)
+                      if (!e.target.value) { setSelectedCode('') }
+                    }}
+                    onFocus={() => setComboOpen(true)}
+                    onKeyDown={handleComboKeyDown}
+                    placeholder="Search transaction types..."
+                    className="w-full border border-gray-200 rounded-lg pl-9 pr-3 py-2 text-sm bg-white
+                               focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400"
+                  />
+                </div>
+
+                {comboOpen && filteredTypes.length > 0 && (
+                  <div className="absolute z-20 mt-1 w-full bg-white border border-gray-200 rounded-lg shadow-lg max-h-72 overflow-auto">
+                    {filteredTypes.map((t, idx) => (
+                      <button
+                        key={t.code}
+                        onClick={() => selectType(t.code)}
+                        className={`w-full text-left px-3 py-2 text-sm flex items-center gap-2 transition-colors ${
+                          idx === highlightIdx ? 'bg-indigo-50' : 'hover:bg-gray-50'
+                        } ${t.code === selectedCode ? 'bg-indigo-50 font-medium' : ''}`}
+                      >
+                        <span className="font-bold text-gray-900 w-10">{t.code}</span>
+                        <span className="text-gray-600 flex-1">{t.name}</span>
+                        {t.has_mapping ? (
+                          <span className="text-emerald-500 text-xs" title="Custom mapping">
+                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                            </svg>
+                          </span>
+                        ) : (
+                          <span className="text-xs text-gray-400">(standard only)</span>
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                )}
+                {comboOpen && filteredTypes.length === 0 && typeQuery && (
+                  <div className="absolute z-20 mt-1 w-full bg-white border border-gray-200 rounded-lg shadow-lg p-3 text-sm text-gray-400">
+                    No matching transaction types.
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Standard-only info banner */}
+            {selectedTxn && !selectedTxn.has_mapping && (
+              <div className="mt-3 px-4 py-2.5 bg-blue-50 border border-blue-200 rounded-lg text-sm text-blue-700">
+                This transaction type is loaded from the X12 {selectedVersion} standard definition.
+                Segment structure is shown below. A custom field mapping can be uploaded after onboarding.
+              </div>
             )}
           </div>
         ) : (
@@ -1142,6 +1340,7 @@ function StepRules({
       }
       await api.compareUpdateRules(wizard.profileName, payload)
       onUpdate({ complete: true })
+      emitProfileChanged({ action: 'created', profileName: wizard.profileName })
       setSaved(true)
     } catch (e: any) {
       setError(e.message)

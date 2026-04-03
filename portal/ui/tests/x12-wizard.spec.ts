@@ -231,4 +231,41 @@ test.describe('X12 Wizard E2E', () => {
     // At least one rule row references a field from the 810 schema
     await expect(page.getByText('invoice_number')).toBeVisible();
   });
+
+  test('Rules step auto-seeds rules from X12 810 schema fields', async ({ page }) => {
+    await page.goto('/#onboard');
+    await page.waitForTimeout(2000);
+
+    // Steps 0-1: X12 → 810 → Schema → Next
+    await page.locator('button', { hasText: 'X12 EDI' }).click();
+    await page.waitForTimeout(2000);
+    await page.locator('select').selectOption('810');
+    await page.getByRole('button', { name: 'Review Schema' }).click();
+    await page.waitForTimeout(2000);
+    await page.getByRole('button', { name: 'Next: Register Partner' }).click();
+    await page.waitForTimeout(2000);
+
+    // Step 2: Register
+    await page.locator('input[placeholder="bevager_810"]').fill(TEST_PROFILE);
+    await page.locator('input[placeholder="Bevager"]').fill('PW Test Partner');
+    await page.getByRole('button', { name: 'Register' }).click();
+    await page.waitForTimeout(3000);
+    await page.getByRole('button', { name: 'Next: Configure Rules' }).click();
+    await page.waitForTimeout(2000);
+
+    // Step 3: Rules table should have multiple rows
+    const ruleRows = page.locator('table tbody tr');
+    await expect(ruleRows).not.toHaveCount(0);
+    const count = await ruleRows.count();
+    expect(count).toBeGreaterThan(5);
+
+    // At least one row should have severity "hard" (default)
+    await expect(page.locator('select option[value="hard"]').first()).toBeAttached();
+
+    // Known 810 fields should be present
+    await expect(page.getByText('invoice_number')).toBeVisible();
+
+    // Catch-all row (* / *) exists
+    await expect(page.getByText('* / * (catch-all)')).toBeVisible();
+  });
 });

@@ -20,7 +20,22 @@ interface RuleRow {
   record_name?: string
 }
 
+interface X12Field {
+  name: string
+  source: string
+  section: string
+}
+
+interface X12Schema {
+  transaction_type: string
+  input_format: string
+  segments: string[]
+  fields: X12Field[]
+  match_key_default: Record<string, string>
+}
+
 interface WizardState {
+  formatMode: 'x12' | 'other' | ''
   columns: ColumnInfo[]
   compiledYamlPath: string
   transactionType: string
@@ -28,10 +43,18 @@ interface WizardState {
   profileName: string
   rulesFile: string
   complete: boolean
+  x12Schema?: X12Schema
+  x12MapFile?: string
 }
 
-const STEPS = [
+const STEPS_OTHER = [
   { label: 'Import & Compile', sub: 'Parse DSL schema' },
+  { label: 'Register Partner', sub: 'Configure profile' },
+  { label: 'Configure Rules', sub: 'Set compare rules' },
+] as const
+
+const STEPS_X12 = [
+  { label: 'Select X12 Type', sub: 'Review schema' },
   { label: 'Register Partner', sub: 'Configure profile' },
   { label: 'Configure Rules', sub: 'Set compare rules' },
 ] as const
@@ -39,6 +62,7 @@ const STEPS = [
 export default function OnboardPage({ onNavigate }: { onNavigate?: (page: string) => void }) {
   const [step, setStep] = useState(0)
   const [wizard, setWizard] = useState<WizardState>({
+    formatMode: '',
     columns: [],
     compiledYamlPath: '',
     transactionType: '',
@@ -54,6 +78,7 @@ export default function OnboardPage({ onNavigate }: { onNavigate?: (page: string
   const resetWizard = () => {
     setStep(0)
     setWizard({
+      formatMode: '',
       columns: [],
       compiledYamlPath: '',
       transactionType: '',
@@ -64,6 +89,9 @@ export default function OnboardPage({ onNavigate }: { onNavigate?: (page: string
     })
   }
 
+  const steps = wizard.formatMode === 'x12' ? STEPS_X12 : STEPS_OTHER
+  const showFormatSelector = step === 0 && !wizard.formatMode
+
   return (
     <div className="max-w-5xl mx-auto">
       <div className="mb-8">
@@ -71,40 +99,60 @@ export default function OnboardPage({ onNavigate }: { onNavigate?: (page: string
           Onboard Trading Partner
         </h1>
         <p className="text-sm text-gray-500 mt-1">
-          Import a DSL schema, register the partner profile, and configure compare rules.
+          {wizard.formatMode
+            ? wizard.formatMode === 'x12'
+              ? 'Select an X12 transaction type, register the partner, and configure compare rules.'
+              : 'Import a DSL schema, register the partner profile, and configure compare rules.'
+            : 'Choose a format to get started.'}
         </p>
       </div>
 
-      {/* ── Stepper ── */}
-      <Stepper current={step} complete={wizard.complete} />
+      {/* ── Format Selector (shown before step 1 if no mode chosen) ── */}
+      {showFormatSelector ? (
+        <FormatSelector onSelect={(mode) => updateWizard({ formatMode: mode })} />
+      ) : (
+        <>
+          {/* ── Stepper ── */}
+          <Stepper steps={steps} current={step} complete={wizard.complete} />
 
-      {/* ── Step Content ── */}
-      <div className="mt-6">
-        {step === 0 && (
-          <StepCompile
-            wizard={wizard}
-            onUpdate={updateWizard}
-            onNext={() => setStep(1)}
-          />
-        )}
-        {step === 1 && (
-          <StepRegister
-            wizard={wizard}
-            onUpdate={updateWizard}
-            onBack={() => setStep(0)}
-            onNext={() => setStep(2)}
-          />
-        )}
-        {step === 2 && (
-          <StepRules
-            wizard={wizard}
-            onUpdate={updateWizard}
-            onBack={() => setStep(1)}
-            onNavigate={onNavigate}
-            onReset={resetWizard}
-          />
-        )}
-      </div>
+          {/* ── Step Content ── */}
+          <div className="mt-6">
+            {step === 0 && wizard.formatMode === 'x12' && (
+              <StepX12Select
+                wizard={wizard}
+                onUpdate={updateWizard}
+                onNext={() => setStep(1)}
+                onChangeFormat={() => updateWizard({ formatMode: '' })}
+              />
+            )}
+            {step === 0 && wizard.formatMode === 'other' && (
+              <StepCompile
+                wizard={wizard}
+                onUpdate={updateWizard}
+                onNext={() => setStep(1)}
+                onChangeFormat={() => updateWizard({ formatMode: '' })}
+              />
+            )}
+            {step === 1 && (
+              <StepRegister
+                wizard={wizard}
+                onUpdate={updateWizard}
+                onBack={() => setStep(0)}
+                onNext={() => setStep(2)}
+              />
+            )}
+            {step === 2 && (
+              <StepRules
+                wizard={wizard}
+                onUpdate={updateWizard}
+                onBack={() => setStep(1)}
+                onNavigate={onNavigate}
+                onReset={resetWizard}
+              />
+            )}
+          </div>
+        </>
+      )}
     </div>
   )
 }
@@ -114,11 +162,11 @@ export default function OnboardPage({ onNavigate }: { onNavigate?: (page: string
    STEPPER
    ═══════════════════════════════════════════════════════════════════════════ */
 
-function Stepper({ current, complete }: { current: number; complete: boolean }) {
+function Stepper({ steps, current, complete }: { steps: readonly { label: string; sub: string }[]; current: number; complete: boolean }) {
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-100 px-8 py-5">
       <div className="flex items-center justify-between">
-        {STEPS.map((s, i) => {
+        {steps.map((s, i) => {
           const done = complete || i < current
           const active = i === current && !complete
           return (
@@ -153,7 +201,7 @@ function Stepper({ current, complete }: { current: number; complete: boolean }) 
                 </div>
               </div>
               {/* Connector */}
-              {i < STEPS.length - 1 && (
+              {i < steps.length - 1 && (
                 <div className="flex-1 mx-4">
                   <div className={`h-0.5 rounded-full transition-colors duration-500 ${
                     i < current ? 'bg-emerald-400' : 'bg-gray-200'
@@ -170,17 +218,337 @@ function Stepper({ current, complete }: { current: number; complete: boolean }) 
 
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   STEP 1 — IMPORT & COMPILE
+   FORMAT SELECTOR
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+function FormatSelector({ onSelect }: { onSelect: (mode: 'x12' | 'other') => void }) {
+  return (
+    <div className="grid grid-cols-2 gap-6 mt-6">
+      <button
+        onClick={() => onSelect('x12')}
+        className="group bg-white rounded-xl shadow-sm border-2 border-gray-100 p-8 text-left
+                   hover:border-indigo-400 hover:shadow-md transition-all"
+      >
+        <div className="w-12 h-12 rounded-lg bg-indigo-100 text-indigo-600 flex items-center justify-center mb-4
+                        group-hover:bg-indigo-600 group-hover:text-white transition-colors">
+          <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+          </svg>
+        </div>
+        <h3 className="text-lg font-bold text-gray-900 mb-1">X12 EDI</h3>
+        <p className="text-sm text-gray-500">
+          Onboard an X12 transaction type (810, 850, 856, etc.) using existing or uploaded mapping rules.
+        </p>
+      </button>
+
+      <button
+        onClick={() => onSelect('other')}
+        className="group bg-white rounded-xl shadow-sm border-2 border-gray-100 p-8 text-left
+                   hover:border-violet-400 hover:shadow-md transition-all"
+      >
+        <div className="w-12 h-12 rounded-lg bg-violet-100 text-violet-600 flex items-center justify-center mb-4
+                        group-hover:bg-violet-600 group-hover:text-white transition-colors">
+          <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M3.375 19.5h17.25m-17.25 0a1.125 1.125 0 01-1.125-1.125M3.375 19.5h7.5c.621 0 1.125-.504 1.125-1.125m-9.75 0V5.625m0 12.75v-1.5c0-.621.504-1.125 1.125-1.125m18.375 2.625V5.625m0 12.75c0 .621-.504 1.125-1.125 1.125m1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125m0 3.75h-7.5A1.125 1.125 0 0112 18.375m9.75-12.75c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125m19.5 0v1.5c0 .621-.504 1.125-1.125 1.125M2.25 5.625v1.5c0 .621.504 1.125 1.125 1.125m0 0h17.25m-17.25 0h7.5c.621 0 1.125.504 1.125 1.125M3.375 8.25c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125m17.25-3.75h-7.5c-.621 0-1.125.504-1.125 1.125m8.625-1.125c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125m-17.25 0h7.5m-7.5 0c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125M12 10.875v-1.5m0 1.5c0 .621-.504 1.125-1.125 1.125M12 10.875c0 .621.504 1.125 1.125 1.125m-2.25 0c.621 0 1.125.504 1.125 1.125M10.875 12c-.621 0-1.125.504-1.125 1.125M12 10.875c-.621 0-1.125.504-1.125 1.125m0 1.5v-1.5m0 0c0-.621.504-1.125 1.125-1.125m-1.125 1.125c0 .621.504 1.125 1.125 1.125m0 0v-1.5m0 0c0-.621-.504-1.125-1.125-1.125" />
+          </svg>
+        </div>
+        <h3 className="text-lg font-bold text-gray-900 mb-1">Flat-File / XML</h3>
+        <p className="text-sm text-gray-500">
+          Import a DSL schema (CSV, fixed-width) or XSD and compile it for comparison.
+        </p>
+      </button>
+    </div>
+  )
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   STEP 1 (X12) — SELECT TRANSACTION TYPE
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+function StepX12Select({
+  wizard,
+  onUpdate,
+  onNext,
+  onChangeFormat,
+}: {
+  wizard: WizardState
+  onUpdate: (p: Partial<WizardState>) => void
+  onNext: () => void
+  onChangeFormat: () => void
+}) {
+  const [x12Types, setX12Types] = useState<Array<{ code: string; label: string; map_file: string }>>([])
+  const [selectedCode, setSelectedCode] = useState('')
+  const [mode, setMode] = useState<'existing' | 'upload'>('existing')
+  const [uploadFile, setUploadFile] = useState<File | null>(null)
+  const [loading, setLoading] = useState(false)
+  const [typesLoading, setTypesLoading] = useState(true)
+  const [error, setError] = useState('')
+  const [schema, setSchema] = useState<X12Schema | null>(null)
+
+  // Sample EDI validation
+  const [samplePath, setSamplePath] = useState('')
+  const [sampleLoading, setSampleLoading] = useState(false)
+  const [sampleResult, setSampleResult] = useState<any>(null)
+  const [sampleError, setSampleError] = useState('')
+
+  // Load available X12 types
+  useEffect(() => {
+    setTypesLoading(true)
+    api.onboardX12Types()
+      .then(data => setX12Types(data.types))
+      .catch(e => setError(e.message))
+      .finally(() => setTypesLoading(false))
+  }, [])
+
+  const loadSchema = async () => {
+    setError('')
+    setSchema(null)
+    setLoading(true)
+    try {
+      if (mode === 'existing' && selectedCode) {
+        const res = await api.onboardX12Schema(selectedCode)
+        setSchema(res)
+        onUpdate({
+          transactionType: selectedCode,
+          x12Schema: res,
+          x12MapFile: x12Types.find(t => t.code === selectedCode)?.map_file,
+        })
+      } else if (mode === 'upload' && uploadFile) {
+        const res = await api.onboardX12UploadMap(uploadFile)
+        setSchema(res.x12_schema)
+        setSelectedCode(res.code)
+        onUpdate({
+          transactionType: res.code,
+          x12Schema: res.x12_schema,
+          x12MapFile: res.map_file,
+        })
+      }
+    } catch (e: any) {
+      setError(e.message)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const validateSample = async () => {
+    if (!samplePath || !selectedCode) return
+    setSampleError('')
+    setSampleResult(null)
+    setSampleLoading(true)
+    try {
+      const res = await api.onboardX12Validate(selectedCode, samplePath)
+      setSampleResult(res)
+    } catch (e: any) {
+      setSampleError(e.message)
+    } finally {
+      setSampleLoading(false)
+    }
+  }
+
+  const canLoad = mode === 'existing' ? !!selectedCode : !!uploadFile
+  const reviewed = !!schema
+
+  return (
+    <div className="space-y-4">
+      <Card>
+        <div className="flex items-center justify-between mb-4">
+          <CardHeader title="Select X12 Transaction Type" />
+          <button onClick={onChangeFormat} className="text-xs text-gray-400 hover:text-indigo-600 transition-colors">
+            Change format
+          </button>
+        </div>
+
+        {/* Mode toggle */}
+        <div className="flex gap-1 bg-gray-100 rounded-lg p-1 w-fit mb-4">
+          <ToggleBtn active={mode === 'existing'} onClick={() => setMode('existing')}>Existing Type</ToggleBtn>
+          <ToggleBtn active={mode === 'upload'} onClick={() => setMode('upload')}>Upload New Mapping</ToggleBtn>
+        </div>
+
+        {mode === 'existing' ? (
+          <div>
+            <label className="block text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">Transaction Type</label>
+            {typesLoading ? (
+              <div className="flex items-center gap-2 text-sm text-gray-400"><Spinner /> Loading types...</div>
+            ) : (
+              <select
+                value={selectedCode}
+                onChange={e => { setSelectedCode(e.target.value); setSchema(null) }}
+                className="border border-gray-200 rounded-lg px-3 py-2 text-sm bg-white w-64
+                           focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400"
+              >
+                <option value="">Select a type...</option>
+                {x12Types.map(t => (
+                  <option key={t.code} value={t.code}>{t.code} — {t.label}</option>
+                ))}
+              </select>
+            )}
+          </div>
+        ) : (
+          <div className="space-y-2">
+            <label className="block text-xs font-medium text-gray-500 uppercase tracking-wide">Mapping YAML File</label>
+            <input type="file" accept=".yaml,.yml" className="text-sm text-gray-600"
+              onChange={e => { setUploadFile(e.target.files?.[0] || null); setSchema(null) }} />
+            <p className="text-xs text-gray-400">
+              Upload a YAML mapping file with transaction_type, mapping (header/lines/summary), and schema sections.
+            </p>
+          </div>
+        )}
+
+        <div className="mt-4">
+          <button
+            onClick={loadSchema}
+            disabled={loading || !canLoad}
+            className="bg-indigo-600 text-white px-5 py-2 rounded-lg text-sm font-medium
+                       hover:bg-indigo-700 disabled:opacity-40 disabled:cursor-not-allowed
+                       transition-colors shadow-sm"
+          >
+            {loading ? (
+              <span className="flex items-center gap-2"><Spinner /> Loading...</span>
+            ) : mode === 'existing' ? 'Review Schema' : 'Upload & Review'}
+          </button>
+        </div>
+      </Card>
+
+      {error && <ErrorBanner message={error} />}
+
+      {/* Schema review */}
+      {schema && (
+        <>
+          <Card>
+            <CardHeader title="Schema Review" badge={`${schema.fields.length} fields`} badgeColor="indigo" />
+            <dl className="grid grid-cols-2 gap-x-6 gap-y-2 text-sm mb-4">
+              <dt className="text-gray-500">Transaction Type</dt>
+              <dd className="font-medium font-mono text-indigo-700">{schema.transaction_type}</dd>
+              <dt className="text-gray-500">Input Format</dt>
+              <dd className="font-medium">{schema.input_format}</dd>
+              <dt className="text-gray-500">Match Key Default</dt>
+              <dd className="font-mono text-xs">
+                {schema.match_key_default.segment}.{schema.match_key_default.field}
+              </dd>
+              <dt className="text-gray-500">Required Segments</dt>
+              <dd className="font-mono text-xs">{schema.segments.join(', ')}</dd>
+            </dl>
+
+            <div className="overflow-auto max-h-72 rounded-lg border border-gray-100">
+              <table className="w-full text-sm text-left">
+                <thead className="bg-gray-50 sticky top-0">
+                  <tr>
+                    <Th>Section</Th>
+                    <Th>Field Name</Th>
+                    <Th>Source (Segment.Element)</Th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {schema.fields.map((f, i) => (
+                    <tr key={i} className={i % 2 === 0 ? 'bg-white' : 'bg-gray-50/50'}>
+                      <td className="px-3 py-1.5">
+                        <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${
+                          f.section === 'header' ? 'bg-blue-100 text-blue-700'
+                            : f.section === 'lines' ? 'bg-emerald-100 text-emerald-700'
+                            : 'bg-amber-100 text-amber-700'
+                        }`}>
+                          {f.section}
+                        </span>
+                      </td>
+                      <td className="px-3 py-1.5 font-mono text-xs font-medium text-gray-800">{f.name}</td>
+                      <td className="px-3 py-1.5 font-mono text-xs text-gray-500">{f.source}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </Card>
+
+          {/* Optional sample validation */}
+          <Card>
+            <CardHeader title="Sample EDI Validation" badge="Optional" badgeColor="amber" />
+            <div className="flex gap-3 items-end">
+              <div className="flex-1">
+                <Input label="Sample EDI File Path" value={samplePath} onChange={setSamplePath}
+                  placeholder="testingData/sample_810.edi" />
+              </div>
+              <button
+                onClick={validateSample}
+                disabled={sampleLoading || !samplePath}
+                className="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium
+                           hover:bg-gray-200 disabled:opacity-40 disabled:cursor-not-allowed
+                           transition-colors"
+              >
+                {sampleLoading ? <Spinner /> : 'Validate'}
+              </button>
+            </div>
+            {sampleError && <div className="mt-2"><ErrorBanner message={sampleError} /></div>}
+            {sampleResult && (
+              <div className="mt-3">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700">
+                    {sampleResult.segment_count} segments parsed
+                  </span>
+                  <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-blue-100 text-blue-700">
+                    ST01: {sampleResult.transaction_type}
+                  </span>
+                </div>
+                <div className="overflow-auto max-h-48 rounded-lg border border-gray-100 text-xs">
+                  <table className="w-full text-left">
+                    <thead className="bg-gray-50 sticky top-0">
+                      <tr>
+                        <th className="px-2 py-1 font-semibold text-gray-500">Segment</th>
+                        <th className="px-2 py-1 font-semibold text-gray-500">Fields</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {sampleResult.segments.map((seg: any, i: number) => (
+                        <tr key={i} className={i % 2 === 0 ? 'bg-white' : 'bg-gray-50/50'}>
+                          <td className="px-2 py-1 font-mono font-medium text-indigo-700">{seg.segment}</td>
+                          <td className="px-2 py-1 font-mono text-gray-500">
+                            {seg.fields.map((f: any) => `${f.name}=${f.content}`).join(' | ')}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
+          </Card>
+        </>
+      )}
+
+      {/* Navigation */}
+      <div className="flex justify-end pt-2">
+        <button
+          onClick={onNext}
+          disabled={!reviewed}
+          className="bg-indigo-600 text-white px-6 py-2 rounded-lg text-sm font-medium
+                     hover:bg-indigo-700 disabled:opacity-40 disabled:cursor-not-allowed
+                     transition-colors shadow-sm flex items-center gap-2"
+        >
+          Next: Register Partner
+          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  )
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   STEP 1 (OTHER) — IMPORT & COMPILE
    ═══════════════════════════════════════════════════════════════════════════ */
 
 function StepCompile({
   wizard,
   onUpdate,
   onNext,
+  onChangeFormat,
 }: {
   wizard: WizardState
   onUpdate: (p: Partial<WizardState>) => void
   onNext: () => void
+  onChangeFormat: () => void
 }) {
   const [mode, setMode] = useState<'path' | 'upload'>('path')
   const [dslPath, setDslPath] = useState(wizard.dslPath || '')
@@ -244,7 +612,12 @@ function StepCompile({
   return (
     <div className="space-y-4">
       <Card>
-        <CardHeader title="Import DSL Schema" />
+        <div className="flex items-center justify-between mb-4">
+          <CardHeader title="Import DSL Schema" />
+          <button onClick={onChangeFormat} className="text-xs text-gray-400 hover:text-indigo-600 transition-colors">
+            Change format
+          </button>
+        </div>
 
         {/* Mode toggle */}
         <div className="flex gap-1 bg-gray-100 rounded-lg p-1 w-fit mb-4">
@@ -437,15 +810,16 @@ function StepRegister({
     return base.replace(/([A-Z])/g, '_$1').replace(/^_/, '').toLowerCase().replace(/[^a-z0-9_]/g, '')
   }
 
-  const [profileName, setProfileName] = useState(wizard.profileName || suggestProfileName(wizard.dslPath))
+  const isX12 = wizard.formatMode === 'x12'
+  const [profileName, setProfileName] = useState(wizard.profileName || suggestProfileName(wizard.dslPath || wizard.transactionType))
   const [tradingPartner, setTradingPartner] = useState('')
   const [transactionType, setTransactionType] = useState(wizard.transactionType)
   const [description, setDescription] = useState('')
   const [inboundDir, setInboundDir] = useState('')
-  const [matchKeyType, setMatchKeyType] = useState<'json' | 'x12'>('json')
+  const [matchKeyType, setMatchKeyType] = useState<'json' | 'x12'>(isX12 ? 'x12' : 'json')
   const [jsonField, setJsonField] = useState(wizard.columns[0]?.name || '')
-  const [x12Segment, setX12Segment] = useState('')
-  const [x12Field, setX12Field] = useState('')
+  const [x12Segment, setX12Segment] = useState(isX12 ? (wizard.x12Schema?.match_key_default?.segment || '') : '')
+  const [x12Field, setX12Field] = useState(isX12 ? (wizard.x12Schema?.match_key_default?.field || '') : '')
   const [splitKey, setSplitKey] = useState<string | null>(null)
   const [splitBoundary, setSplitBoundary] = useState<string | null>(null)
   const [splitAutoDetected, setSplitAutoDetected] = useState(false)
@@ -481,8 +855,8 @@ function StepRegister({
         trading_partner: tradingPartner,
         transaction_type: transactionType,
         description,
-        source_dsl: wizard.dslPath,
-        compiled_output: wizard.compiledYamlPath,
+        source_dsl: isX12 ? (wizard.x12MapFile || '') : wizard.dslPath,
+        compiled_output: isX12 ? (wizard.x12MapFile || '') : wizard.compiledYamlPath,
         inbound_dir: inboundDir,
         match_key: matchKey,
         segment_qualifiers: {},
@@ -558,36 +932,38 @@ function StepRegister({
           )}
         </div>
 
-        {/* Split key */}
-        <div className="mt-5 pt-4 border-t border-gray-100">
-          <label className="block text-xs font-medium text-gray-500 uppercase tracking-wide mb-2">
-            Transaction Split Key
-            <span className="ml-2 text-gray-400 normal-case font-normal" title="Field that identifies individual transactions in batch files. Records without this field will be grouped as file-level metadata.">(?)</span>
-          </label>
-          {splitAutoDetected ? (
-            <div className="flex items-center gap-2">
-              <span className="font-mono text-sm bg-emerald-50 text-emerald-700 px-3 py-1.5 rounded-lg border border-emerald-200">
-                {splitKey}
-              </span>
-              <span className="text-xs text-emerald-600">(auto-detected from schema, boundary: {splitBoundary})</span>
-            </div>
-          ) : (
-            <div>
-              <select
-                value={splitKey || ''}
-                onChange={e => setSplitKey(e.target.value || null)}
-                className="border border-gray-200 rounded-lg px-3 py-2 text-sm bg-white w-64
-                           focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400"
-              >
-                <option value="">None (no batch splitting)</option>
-                {wizard.columns.map(c => (
-                  <option key={c.name} value={c.name}>{c.name}</option>
-                ))}
-              </select>
-              <p className="text-xs text-gray-400 mt-1">Optional: select the field that identifies individual transactions in batch files</p>
-            </div>
-          )}
-        </div>
+        {/* Split key (flat-file only — X12 transactions are already split by ST/SE envelope) */}
+        {!isX12 && (
+          <div className="mt-5 pt-4 border-t border-gray-100">
+            <label className="block text-xs font-medium text-gray-500 uppercase tracking-wide mb-2">
+              Transaction Split Key
+              <span className="ml-2 text-gray-400 normal-case font-normal" title="Field that identifies individual transactions in batch files. Records without this field will be grouped as file-level metadata.">(?)</span>
+            </label>
+            {splitAutoDetected ? (
+              <div className="flex items-center gap-2">
+                <span className="font-mono text-sm bg-emerald-50 text-emerald-700 px-3 py-1.5 rounded-lg border border-emerald-200">
+                  {splitKey}
+                </span>
+                <span className="text-xs text-emerald-600">(auto-detected from schema, boundary: {splitBoundary})</span>
+              </div>
+            ) : (
+              <div>
+                <select
+                  value={splitKey || ''}
+                  onChange={e => setSplitKey(e.target.value || null)}
+                  className="border border-gray-200 rounded-lg px-3 py-2 text-sm bg-white w-64
+                             focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400"
+                >
+                  <option value="">None (no batch splitting)</option>
+                  {wizard.columns.map(c => (
+                    <option key={c.name} value={c.name}>{c.name}</option>
+                  ))}
+                </select>
+                <p className="text-xs text-gray-400 mt-1">Optional: select the field that identifies individual transactions in batch files</p>
+              </div>
+            )}
+          </div>
+        )}
 
         <div className="mt-5">
           <button
@@ -677,8 +1053,27 @@ function StepRules({
   const [ruleSearch, setRuleSearch] = useState('')
   const [collapsedRuleRecords, setCollapsedRuleRecords] = useState<Set<string>>(new Set())
 
-  // Load template on mount
+  // Load template on mount — X12 seeds from schema fields, flat-file from compiled YAML
   useEffect(() => {
+    if (wizard.formatMode === 'x12' && wizard.x12Schema) {
+      const rows: RuleRow[] = wizard.x12Schema.fields.map(f => {
+        const seg = f.source.split('.')[0] || '*'
+        return {
+          segment: seg,
+          field: f.name,
+          severity: 'hard',
+          ignore_case: false,
+          numeric: false,
+          dsl_type: f.source,
+          record_name: f.section,
+        }
+      })
+      // Add catch-all
+      rows.push({ segment: '*', field: '*', severity: 'hard', ignore_case: false, numeric: false, record_name: '' })
+      setRules(rows)
+      setLoading(false)
+      return
+    }
     if (!wizard.compiledYamlPath) return
     setLoading(true)
     api.onboardRulesTemplate(wizard.compiledYamlPath)
@@ -691,7 +1086,7 @@ function StepRules({
       })
       .catch(e => setError(e.message))
       .finally(() => setLoading(false))
-  }, [wizard.compiledYamlPath])
+  }, [wizard.compiledYamlPath, wizard.formatMode, wizard.x12Schema])
 
   const updateRule = (idx: number, patch: Partial<RuleRow>) => {
     setRules(prev => prev.map((r, i) => i === idx ? { ...r, ...patch } : r))

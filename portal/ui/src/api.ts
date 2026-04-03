@@ -141,6 +141,48 @@ export const api = {
       ignore: any[];
     }>(`/onboard/rules-template?compiled_yaml=${encodeURIComponent(compiledYaml)}`),
 
+  // X12 onboard
+  onboardX12Types: () =>
+    request<{
+      types: Array<{ code: string; label: string; map_file: string }>;
+    }>('/onboard/x12-types'),
+
+  onboardX12Schema: (type: string) =>
+    request<{
+      transaction_type: string;
+      input_format: string;
+      segments: string[];
+      fields: Array<{ name: string; source: string; section: string }>;
+      match_key_default: Record<string, string>;
+    }>(`/onboard/x12-schema?type=${encodeURIComponent(type)}`),
+
+  onboardX12Validate: (type: string, samplePath: string) =>
+    request<{
+      transaction_type: string;
+      segment_count: number;
+      segments: Array<{ segment: string; fields: Array<{ name: string; content: string }> }>;
+    }>('/onboard/x12-validate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ type, sample_path: samplePath }),
+    }),
+
+  onboardX12UploadMap: (mapFile: File) => {
+    const form = new FormData();
+    form.append('map_file', mapFile);
+    return request<{
+      code: string;
+      map_file: string;
+      x12_schema: {
+        transaction_type: string;
+        input_format: string;
+        segments: string[];
+        fields: Array<{ name: string; source: string; section: string }>;
+        match_key_default: Record<string, string>;
+      };
+    }>('/onboard/x12-upload-map', { method: 'POST', body: form });
+  },
+
   // Rules tier API
   ruleTiers: () =>
     request<{

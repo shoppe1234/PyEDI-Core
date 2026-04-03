@@ -1,0 +1,12 @@
+# Profile: darden_asbn
+# Trading Partner: Darden
+# Transaction Type: DARDEN_ASBN
+# Run ID: 85
+# Started: 2026-03-27T21:38:15.755549+00:00
+# Total Pairs: 3 | Matched: 1 | Mismatched: 2 | Unmatched: 0
+timestamp,profile,trading_partner,run_id,pair_id,source_file,target_file,match_value,status,segment,field,severity,source_value,target_value,description
+2026-03-27T21:38:15.755549+00:00,darden_asbn,Darden,85,412,./outbound/darden-ca\InvoiceNumber_12006852.json,./outbound/darden-na\InvoiceNumber_12006852.json,12006852,MISMATCH,header,InvoiceTotal,hard,257.56,260.00,Content mismatch: Source='257.56' vs Target='260.00'
+2026-03-27T21:38:15.755549+00:00,darden_asbn,Darden,85,412,./outbound/darden-ca\InvoiceNumber_12006852.json,./outbound/darden-na\InvoiceNumber_12006852.json,12006852,MISMATCH,line_0,UnitPrice,hard,18.91,19.50,Content mismatch: Source='18.91' vs Target='19.50'
+2026-03-27T21:38:15.755549+00:00,darden_asbn,Darden,85,413,./outbound/darden-ca\InvoiceNumber_12013475.json,./outbound/darden-na\InvoiceNumber_12013475.json,12013475,MATCH,,,,,,
+2026-03-27T21:38:15.755549+00:00,darden_asbn,Darden,85,414,./outbound/darden-ca\InvoiceNumber_12023434.json,./outbound/darden-na\InvoiceNumber_12023434.json,12023434,MISMATCH,line_12,,hard,,"{'LineNumber': '13', 'ItemID': '6700999', 'UnitPrice': '45.00', 'Description': 'EXTRA LINE ITEM TEST', 'OrderUOM': 'CS', 'OrderQty': '1', 'ShipDetail.ShipDetailItem.ShipUOM': 'CS', 'ShipDetail.ShipDetailItem.ShipQty': '1', 'ShipDetail.ShipDetailItem.Freight': None, 'ShipDetail.ShipDetailItem.ItemTotal': '45.00'}",Extra line in Target at position 12
+# Summary: hard=3

@@ -359,6 +359,7 @@ def _parse_profile(name: str, data: dict) -> CompareProfile:
             segment=mk.get("segment"),
             field=mk.get("field"),
             json_path=mk.get("json_path"),
+            normalize=mk.get("normalize"),
         ),
         segment_qualifiers=data.get("segment_qualifiers", {}),
         rules_file=data.get("rules_file", ""),

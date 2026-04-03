@@ -1,0 +1,8 @@
+{
+  "stage": "DETECTION",
+  "reason": "No csv_schema_registry entry found for inbound directory: C:\\Users\\SeanHoppe\\VS\\pycoreEdi\\testingData\\Batch1\\controlSample-FlatFile-Target",
+  "exception": "SchemaLookupError: No csv_schema_registry entry found for inbound directory: C:\\Users\\SeanHoppe\\VS\\pycoreEdi\\testingData\\Batch1\\controlSample-FlatFile-Target",
+  "correlation_id": "dc1ec7c4-f532-4217-95c5-30867b671ec7",
+  "timestamp": "2026-03-26T15:59:06.468280+00:00",
+  "source_file": "CA_810_BEVAGER_20260324_060426_620-3072.txt"
+}

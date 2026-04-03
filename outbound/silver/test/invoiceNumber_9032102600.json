@@ -1,0 +1,418 @@
+{
+  "header": {
+    "invoiceNumber": "9032102600"
+  },
+  "lines": [
+    {
+      "recordID": "TPM_HDR",
+      "orderNumber": "1044663112",
+      "invoiceNumber": "9032102600",
+      "originalInvoiceNumber": null,
+      "originalOrderNumber": "",
+      "SAPWarehouseNumber": "3072"
+    },
+    {
+      "recordID": "OIN_HDR1",
+      "orderNumber": "4663112",
+      "invoiceNumber": "9032102600",
+      "orderDate": "20260129",
+      "invoiceDate": "20260210",
+      "shipDate": "20260210",
+      "pONumber": "food"
+    },
+    {
+      "recordID": "OIN_HDR2",
+      "invoiceNumber": "9032102600",
+      "billOfLadingNumber": null,
+      "aPVendorNumber": null,
+      "marketingVendorNumber": null,
+      "creditDebitCode": "DR",
+      "originalInvoiceNumber": "0000000"
+    },
+    {
+      "recordID": "OIN_HDR3",
+      "orderContractNumber": null,
+      "contractNumber": null,
+      "manifestNumber": null,
+      "invoiceNumber": "9032102600"
+    },
+    {
+      "recordID": "OIN_HDR4",
+      "shipMethodOfPayment": null,
+      "transportationType": null,
+      "invoiceNumber": "9032102600"
+    },
+    {
+      "recordID": "OIN_HDR5",
+      "invoiceNumber": "9032102600",
+      "netInvoiceAmout": "205.14",
+      "originalOrderDate": "00000000",
+      "originalOrderNumber": "0000000",
+      "originalInvoiceDate": "00000000"
+    },
+    {
+      "recordID": "OIN_TRM1",
+      "termsTypeCode": null,
+      "termsDiscountPercent": "00000",
+      "termsDiscountDueDate": "00000000",
+      "termsDiscountDays": "030",
+      "termsDiscountAmount": "000000000",
+      "termsNetDueDate": "20260312",
+      "termsNetDays": "030",
+      "termsDescription": "Net 30 Days",
+      "invoiceNumber": "9032102600"
+    },
+    {
+      "recordID": "OIN_ST1",
+      "invoiceNumber": "9032102600",
+      "shipToName": "DOUBLETREE HILTON REGINA",
+      "shipToIDQualifier": "ST",
+      "shiptoID": "722676261",
+      "shipToStoreNumber": "212281",
+      "shipToCustomerNumber": "722676261",
+      "customerLangPref": "ENG",
+      "chainDescription": "SILVERBIRCH HOTELS & RESO"
+    },
+    {
+      "recordID": "OIN_ST2",
+      "invoiceNumber": "9032102600",
+      "shiptoAddress1": "1975 BROAD ST E",
+      "shiptoAddress2": null
+    },
+    {
+      "recordID": "OIN_ST3",
+      "invoiceNumber": "9032102600",
+      "shipToCity": "REGINA",
+      "shipToProvince": "SK",
+      "shipToPostalCode": "S4P 1Y2"
+    },
+    {
+      "recordID": "OIN_BT1",
+      "invoiceNumber": "9032102600",
+      "billToName": "SILVERBIRCH HOTELS & RESO",
+      "billToIDQualifier": "ZZ",
+      "billToID": "722274983"
+    },
+    {
+      "recordID": "OIN_BT2",
+      "invoiceNumber": "9032102600",
+      "billToAddress1": "1030 W GEORGIA STE 1600",
+      "billToCareOf": "SILVERBIRCH HOTELS & RESO"
+    },
+    {
+      "recordID": "OIN_BT3",
+      "invoiceNumber": "9032102600",
+      "billToCity": "VANCOUVER",
+      "billToProvince": "BC",
+      "billToPostalCode": "V6E 2Y3"
+    },
+    {
+      "recordID": "OIN_RE1",
+      "invoiceNumber": "9032102600",
+      "remitToName": "GFS",
+      "remitToIDQualifier": "1",
+      "remitToID": "247748312"
+    },
+    {
+      "recordID": "OIN_RE2",
+      "invoiceNumber": "9032102600",
+      "remitToAddress": "290212 Township Road 261",
+      "remitToCareOf": "Gordon Food Service Canada Ltd"
+    },
+    {
+      "recordID": "OIN_RE3",
+      "invoiceNumber": "9032102600",
+      "remitToCity": "Rocky View City",
+      "remitToProvince": "AB",
+      "remitToPostalCode": "T4A 0V6"
+    },
+    {
+      "recordID": "OIN_DTL1",
+      "invoiceNumber": "9032102600",
+      "lineNumber": "10",
+      "distributorItemNumber": "1172910",
+      "uPCQualifier": "UP",
+      "uPCEANNumber": "40012919006248",
+      "customerItemNumber": null,
+      "unitOfMeasure": "CA",
+      "itemsPerUnit": "0042",
+      "taxes": "000706",
+      "catchWeightFlag": "4",
+      "BrokenCaseCode": "0",
+      "itemNonStockIndicator": "0"
+    },
+    {
+      "recordID": "OIN_DTL2",
+      "invoiceNumber": "9032102600",
+      "itemDescription": "COFFEE LEVEL 3 DECAF"
+    },
+    {
+      "recordID": "OIN_DTL3",
+      "invoiceNumber": "9032102600",
+      "quantityOrdered": "0000002",
+      "quantityShipped": "0000002",
+      "quantityDifference": "0000000",
+      "lotNumber": "000000000000014",
+      "productionDayCodeSubCode": "128",
+      "priceQuantity": null,
+      "priceUnitOfMeasure": null,
+      "unitGrossWeight": "",
+      "unitNetWeight": "000000000003"
+    },
+    {
+      "recordID": "OIN_DTL4",
+      "invoiceNumber": "9032102600",
+      "vendorNumber": "727833088",
+      "vendorName": "Nestle Canada Hopewell DR",
+      "vendorItemNumber": "12420866",
+      "classNumber": "9",
+      "classDescription": "Beverage",
+      "priceBookHeading": "13170",
+      "pricebookHeadingDescription": "Branded Coffee"
+    },
+    {
+      "recordID": "OIN_DTL5",
+      "invoiceNumber": "9032102600",
+      "priceBookFamilyNumber": null,
+      "priceBookFamilyDescription": null,
+      "brand": "Seattle's Best",
+      "pack": "0042",
+      "size": "2OZ",
+      "servingsPerCase": "00000",
+      "servingsPerCaseUOM": null,
+      "caseUPCNumber": "40012919006248",
+      "vendorUPCNumber": "12420866",
+      "unitUPCNumber": null
+    },
+    {
+      "recordID": "OIN_DTL6",
+      "orderGuideCategory": "99999",
+      "orderGuideCategoryDes": null,
+      "invoiceNumber": "9032102600"
+    },
+    {
+      "recordID": "OIN_DTL7",
+      "invoiceNumber": "9032102600",
+      "extraItemDescription2": "8005383545",
+      "extraItemDescription3": "",
+      "vendorPhoneNumber": ""
+    },
+    {
+      "recordID": "OIN_DTL8",
+      "invoiceNumber": "9032102600"
+    },
+    {
+      "recordID": "OIN_DTL9",
+      "invoiceNumber": "9032102600"
+    },
+    {
+      "recordID": "OIN_DTL11",
+      "invoiceNumber": "9032102600",
+      "creditCode": "",
+      "creditCodeDescription": ""
+    },
+    {
+      "recordID": "OIN_DTL1",
+      "invoiceNumber": "9032102600",
+      "lineNumber": "20",
+      "distributorItemNumber": "1257374",
+      "uPCQualifier": "UP",
+      "uPCEANNumber": "10072310103624",
+      "customerItemNumber": null,
+      "unitOfMeasure": "CA",
+      "itemsPerUnit": "0006",
+      "taxes": "000319",
+      "catchWeightFlag": "3",
+      "BrokenCaseCode": "0",
+      "itemNonStockIndicator": "0"
+    },
+    {
+      "recordID": "OIN_DTL2",
+      "invoiceNumber": "9032102600",
+      "itemDescription": "TEA BLK VAN CHAI"
+    },
+    {
+      "recordID": "OIN_DTL3",
+      "invoiceNumber": "9032102600",
+      "quantityOrdered": "0000001",
+      "quantityShipped": "0000001",
+      "quantityDifference": "0000000",
+      "lotNumber": "000000000000003",
+      "productionDayCodeSubCode": "193",
+      "priceQuantity": null,
+      "priceUnitOfMeasure": null,
+      "unitGrossWeight": "",
+      "unitNetWeight": "000000000000"
+    },
+    {
+      "recordID": "OIN_DTL4",
+      "invoiceNumber": "9032102600",
+      "vendorNumber": "727792034",
+      "vendorName": "RC Bigelow Inc. FGN",
+      "vendorItemNumber": "10362",
+      "classNumber": "9",
+      "classDescription": "Beverage",
+      "priceBookHeading": "13150",
+      "pricebookHeadingDescription": "Branded Cocoa & Tea"
+    },
+    {
+      "recordID": "OIN_DTL5",
+      "invoiceNumber": "9032102600",
+      "priceBookFamilyNumber": null,
+      "priceBookFamilyDescription": null,
+      "brand": "Bigelow",
+      "pack": "0006",
+      "size": "28UN",
+      "servingsPerCase": "00000",
+      "servingsPerCaseUOM": null,
+      "caseUPCNumber": "10072310103624",
+      "vendorUPCNumber": "10362",
+      "unitUPCNumber": null
+    },
+    {
+      "recordID": "OIN_DTL6",
+      "orderGuideCategory": "99999",
+      "orderGuideCategoryDes": null,
+      "invoiceNumber": "9032102600"
+    },
+    {
+      "recordID": "OIN_DTL7",
+      "invoiceNumber": "9032102600",
+      "extraItemDescription2": "",
+      "extraItemDescription3": "",
+      "vendorPhoneNumber": ""
+    },
+    {
+      "recordID": "OIN_DTL8",
+      "invoiceNumber": "9032102600"
+    },
+    {
+      "recordID": "OIN_DTL9",
+      "invoiceNumber": "9032102600"
+    },
+    {
+      "recordID": "OIN_DTL11",
+      "invoiceNumber": "9032102600",
+      "creditCode": "",
+      "creditCodeDescription": ""
+    },
+    {
+      "recordID": "OIN_DTL1",
+      "invoiceNumber": "9032102600",
+      "lineNumber": "10",
+      "distributorItemNumber": "3533087",
+      "uPCQualifier": "UP",
+      "uPCEANNumber": "10072310123967",
+      "customerItemNumber": null,
+      "unitOfMeasure": "CA",
+      "itemsPerUnit": "0006",
+      "taxes": "000319",
+      "catchWeightFlag": "3",
+      "BrokenCaseCode": "0",
+      "itemNonStockIndicator": "0"
+    },
+    {
+      "recordID": "OIN_DTL2",
+      "invoiceNumber": "9032102600",
+      "itemDescription": "TEA HERBAL SWEET DREAM"
+    },
+    {
+      "recordID": "OIN_DTL3",
+      "invoiceNumber": "9032102600",
+      "quantityOrdered": "0000001",
+      "quantityShipped": "0000001",
+      "quantityDifference": "0000000",
+      "lotNumber": "000000000000003",
+      "productionDayCodeSubCode": "193",
+      "priceQuantity": null,
+      "priceUnitOfMeasure": null,
+      "unitGrossWeight": "",
+      "unitNetWeight": "000000000000"
+    },
+    {
+      "recordID": "OIN_DTL4",
+      "invoiceNumber": "9032102600",
+      "vendorNumber": "727792034",
+      "vendorName": "RC Bigelow Inc. FGN",
+      "vendorItemNumber": "12396",
+      "classNumber": "9",
+      "classDescription": "Beverage",
+      "priceBookHeading": "13150",
+      "pricebookHeadingDescription": "Branded Cocoa & Tea"
+    },
+    {
+      "recordID": "OIN_DTL5",
+      "invoiceNumber": "9032102600",
+      "priceBookFamilyNumber": null,
+      "priceBookFamilyDescription": null,
+      "brand": "Bigelow",
+      "pack": "0006",
+      "size": "28UN",
+      "servingsPerCase": "00000",
+      "servingsPerCaseUOM": null,
+      "caseUPCNumber": "10072310123967",
+      "vendorUPCNumber": "12396",
+      "unitUPCNumber": null
+    },
+    {
+      "recordID": "OIN_DTL6",
+      "orderGuideCategory": "99999",
+      "orderGuideCategoryDes": null,
+      "invoiceNumber": "9032102600"
+    },
+    {
+      "recordID": "OIN_DTL7",
+      "invoiceNumber": "9032102600",
+      "extraItemDescription2": "",
+      "extraItemDescription3": "",
+      "vendorPhoneNumber": ""
+    },
+    {
+      "recordID": "OIN_DTL8",
+      "invoiceNumber": "9032102600"
+    },
+    {
+      "recordID": "OIN_DTL9",
+      "invoiceNumber": "9032102600"
+    },
+    {
+      "recordID": "OIN_DTL11",
+      "invoiceNumber": "9032102600",
+      "creditCode": "",
+      "creditCodeDescription": ""
+    },
+    {
+      "recordID": "OIN_TTL1",
+      "invoiceNumber": "9032102600",
+      "lineCount": "3",
+      "itemCount": "0000004",
+      "totalWeight": "0006270",
+      "extendedFeeAmount": "000020514",
+      "extendedDiscountAmount": "0000205",
+      "extendedInventoryTax": "14000000",
+      "bottleDeposit": "5820000"
+    },
+    {
+      "recordID": "O_TPID",
+      "tPCode": "SILVR",
+      "functionalGroupCode": null,
+      "messageID": null,
+      "messageClass": null,
+      "invoiceNumber": "9032102600"
+    },
+    {
+      "recordID": "OIN_DSTID",
+      "invoiceNumber": "9032102600"
+    },
+    {
+      "recordID": "OIN_HDRA",
+      "companyNumber": "1",
+      "divisionNumber": "73",
+      "departmentNumber": "3",
+      "warehouseNumber": "72",
+      "customerNumber": "722676261",
+      "invoiceNumber": "9032102600"
+    }
+  ],
+  "summary": {}
+}

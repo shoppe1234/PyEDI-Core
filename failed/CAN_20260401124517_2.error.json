@@ -1,0 +1,8 @@
+{
+  "stage": "TRANSFORMATION",
+  "reason": "No mapping rules found for file: artifacts/regionalHealth/ca-target\\CAN_20260401124517.810",
+  "exception": "MappingError: No mapping rules found for file: artifacts/regionalHealth/ca-target\\CAN_20260401124517.810",
+  "correlation_id": "9ea1cf22-f5b9-4335-ac19-dea111103bdc",
+  "timestamp": "2026-04-02T12:32:19.113227+00:00",
+  "source_file": "CAN_20260401124517.810"
+}

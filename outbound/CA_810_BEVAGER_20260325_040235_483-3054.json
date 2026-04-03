@@ -1,0 +1,10 @@
+{
+  "header": {},
+  "lines": [],
+  "summary": {},
+  "envelope": {
+    "schema_version": "1.0",
+    "transaction_type": "810_INVOICE",
+    "input_format": "CSV"
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "header": {
+    "Concept": "013",
+    "Restaurant": "8046",
+    "PONumber": "",
+    "OrderDate": "03172026",
+    "ShipDate": "03212026",
+    "InvoiceDate": "03202026",
+    "InvoiceNumber": "12013475",
+    "InvoiceTotal": "371.98",
+    "InvoiceType": "DEBIT",
+    "DeliveryDate": "03212026",
+    "TotalQtyShipped": "17.4",
+    "CenterID": "HSS00",
+    "SpecialCharges.SpecialCharge.ChargeType": "9983",
+    "SpecialCharges.SpecialCharge.ChargeAmount": "42.95",
+    "ASBNTotalLines": "1",
+    "ASBNCount": "1",
+    "TransmissionID": "23518",
+    "SenderID": "HALPERNS STEAK AND SEAFOOD",
+    "ReceiverID": "DARDEN RESTAURANTS",
+    "TimeStamp": "03/22/2026 23:35:56 PM"
+  },
+  "lines": [
+    {
+      "LineNumber": "1",
+      "ItemID": "6950100",
+      "UnitPrice": "18.91",
+      "Description": "LOBSTER, LIVE CHIX 1# HARD SHELL",
+      "OrderUOM": "PC",
+      "OrderQty": "16",
+      "ShipDetail.ShipDetailItem.ShipUOM": "LB",
+      "ShipDetail.ShipDetailItem.ShipQty": "17.4",
+      "ShipDetail.ShipDetailItem.Freight": null,
+      "ShipDetail.ShipDetailItem.ItemTotal": "329.03"
+    }
+  ],
+  "summary": {}
+}

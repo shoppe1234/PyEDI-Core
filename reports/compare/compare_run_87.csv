@@ -1,0 +1,16 @@
+# Profile: regional_health_810
+# Trading Partner: RegionalHealth
+# Transaction Type: 810
+# Run ID: 87
+# Started: 2026-04-02T12:37:48.670334+00:00
+# Total Pairs: 5 | Matched: 0 | Mismatched: 3 | Unmatched: 2
+timestamp,profile,trading_partner,run_id,pair_id,source_file,target_file,match_value,status,segment,field,severity,source_value,target_value,description
+2026-04-02T12:37:48.670334+00:00,regional_health_810,RegionalHealth,87,415,outbound/regionalHealth-ca\CAN_20260401124517.json,outbound/regionalHealth-na\CAN_20260401132837.json,2908167,MISMATCH,N3*position_0,N301,soft, ,88 NORMAN STREET,Content mismatch: Source=' ' vs Target='88 NORMAN STREET'
+2026-04-02T12:37:48.670334+00:00,regional_health_810,RegionalHealth,87,415,outbound/regionalHealth-ca\CAN_20260401124517.json,outbound/regionalHealth-na\CAN_20260401132837.json,2908167,MISMATCH,BIG*position_0,BIG02,hard,2908167,9032908167,Content mismatch: Source='2908167' vs Target='9032908167'
+2026-04-02T12:37:48.670334+00:00,regional_health_810,RegionalHealth,87,416,outbound/regionalHealth-ca\CAN_20260401124625.json,outbound/regionalHealth-na\CAN_20260401132837_0d7b6d6f4a17419da078f257b8f791b1.json,3934987,MISMATCH,N3*position_0,N301,soft, ,88 NORMAN STREET,Content mismatch: Source=' ' vs Target='88 NORMAN STREET'
+2026-04-02T12:37:48.670334+00:00,regional_health_810,RegionalHealth,87,416,outbound/regionalHealth-ca\CAN_20260401124625.json,outbound/regionalHealth-na\CAN_20260401132837_0d7b6d6f4a17419da078f257b8f791b1.json,3934987,MISMATCH,BIG*position_0,BIG02,hard,3934987,9033934987,Content mismatch: Source='3934987' vs Target='9033934987'
+2026-04-02T12:37:48.670334+00:00,regional_health_810,RegionalHealth,87,417,outbound/regionalHealth-ca\CAN_20260401124627_71d80f6349f0419da22bbba77a998f07.json,outbound/regionalHealth-na\CAN_20260401132838.json,3685808,MISMATCH,N3*position_0,N301,soft, ,88 NORMAN STREET,Content mismatch: Source=' ' vs Target='88 NORMAN STREET'
+2026-04-02T12:37:48.670334+00:00,regional_health_810,RegionalHealth,87,417,outbound/regionalHealth-ca\CAN_20260401124627_71d80f6349f0419da22bbba77a998f07.json,outbound/regionalHealth-na\CAN_20260401132838.json,3685808,MISMATCH,BIG*position_0,BIG02,hard,3685808,9033685808,Content mismatch: Source='3685808' vs Target='9033685808'
+2026-04-02T12:37:48.670334+00:00,regional_health_810,RegionalHealth,87,418,,outbound/regionalHealth-na\CAN_20260401132836.json,3175055,UNMATCHED,,,,,,
+2026-04-02T12:37:48.670334+00:00,regional_health_810,RegionalHealth,87,419,,outbound/regionalHealth-na\CAN_20260401132837_0ba1e1c44a17419d8f09d08fb63a9b47.json,3430670,UNMATCHED,,,,,,
+# Summary: hard=3, soft=3

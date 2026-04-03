@@ -1,0 +1,26 @@
+{
+  "header": {
+    "invoiceNumber": "unknown"
+  },
+  "lines": [
+    {
+      "recordID": "O_TPID",
+      "tPCode": "SILVR",
+      "functionalGroupCode": null,
+      "messageID": null,
+      "messageClass": null
+    },
+    {
+      "recordID": "OIN_DSTID"
+    },
+    {
+      "recordID": "OIN_HDRA",
+      "companyNumber": "1",
+      "divisionNumber": "74",
+      "departmentNumber": "1",
+      "warehouseNumber": "60",
+      "customerNumber": "722679462"
+    }
+  ],
+  "summary": {}
+}

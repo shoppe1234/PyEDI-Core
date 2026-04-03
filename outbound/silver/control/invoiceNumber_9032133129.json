@@ -1,0 +1,3325 @@
+{
+  "header": {
+    "invoiceNumber": "9032133129"
+  },
+  "lines": [
+    {
+      "recordID": "TPM_HDR",
+      "orderNumber": "1045117109",
+      "invoiceNumber": "9032133129",
+      "originalInvoiceNumber": null,
+      "originalOrderNumber": "",
+      "SAPWarehouseNumber": "3060"
+    },
+    {
+      "recordID": "OIN_HDR1",
+      "orderNumber": "5117109",
+      "invoiceNumber": "9032133129",
+      "orderDate": "20260206",
+      "invoiceDate": "20260210",
+      "shipDate": "20260210",
+      "pONumber": null
+    },
+    {
+      "recordID": "OIN_HDR2",
+      "invoiceNumber": "9032133129",
+      "billOfLadingNumber": null,
+      "aPVendorNumber": null,
+      "marketingVendorNumber": null,
+      "creditDebitCode": "DR",
+      "originalInvoiceNumber": "0000000"
+    },
+    {
+      "recordID": "OIN_HDR3",
+      "orderContractNumber": null,
+      "contractNumber": null,
+      "manifestNumber": null,
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_HDR4",
+      "shipMethodOfPayment": null,
+      "transportationType": null,
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_HDR5",
+      "invoiceNumber": "9032133129",
+      "netInvoiceAmout": "3194.83",
+      "originalOrderDate": "00000000",
+      "originalOrderNumber": "0000000",
+      "originalInvoiceDate": "00000000"
+    },
+    {
+      "recordID": "OIN_TRM1",
+      "termsTypeCode": null,
+      "termsDiscountPercent": "00000",
+      "termsDiscountDueDate": "00000000",
+      "termsDiscountDays": "021",
+      "termsDiscountAmount": "000000000",
+      "termsNetDueDate": "20260303",
+      "termsNetDays": "021",
+      "termsDescription": "Net 21 jours",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_ST1",
+      "invoiceNumber": "9032133129",
+      "shipToName": "RESIDENCE INN GATEHOUSE",
+      "shipToIDQualifier": "ST",
+      "shiptoID": "722679462",
+      "shipToStoreNumber": null,
+      "shipToCustomerNumber": "722679462",
+      "customerLangPref": "ENG",
+      "chainDescription": "SILVERBIRCH HOTELS & RESO"
+    },
+    {
+      "recordID": "OIN_ST2",
+      "invoiceNumber": "9032133129",
+      "shiptoAddress1": "1234 Hornby St",
+      "shiptoAddress2": null
+    },
+    {
+      "recordID": "OIN_ST3",
+      "invoiceNumber": "9032133129",
+      "shipToCity": "Vancouver",
+      "shipToProvince": "BC",
+      "shipToPostalCode": "V6Z 1W2"
+    },
+    {
+      "recordID": "OIN_BT1",
+      "invoiceNumber": "9032133129",
+      "billToName": "SILVERBIRCH HOTELS & RESO",
+      "billToIDQualifier": "ZZ",
+      "billToID": "722275249"
+    },
+    {
+      "recordID": "OIN_BT2",
+      "invoiceNumber": "9032133129",
+      "billToAddress1": "1030 W. GEORGIA STE 1600",
+      "billToCareOf": "SILVERBIRCH HOTELS & RESO"
+    },
+    {
+      "recordID": "OIN_BT3",
+      "invoiceNumber": "9032133129",
+      "billToCity": "VANCOUVER",
+      "billToProvince": "BC",
+      "billToPostalCode": "V6E 2Y3"
+    },
+    {
+      "recordID": "OIN_RE1",
+      "invoiceNumber": "9032133129",
+      "remitToName": "GFS British Columbia Divi",
+      "remitToIDQualifier": "1",
+      "remitToID": "201131161"
+    },
+    {
+      "recordID": "OIN_RE2",
+      "invoiceNumber": "9032133129",
+      "remitToAddress": "P.O. Box 6",
+      "remitToCareOf": "Gordon Food Service Canada"
+    },
+    {
+      "recordID": "OIN_RE3",
+      "invoiceNumber": "9032133129",
+      "remitToCity": "New Westminster",
+      "remitToProvince": "BC",
+      "remitToPostalCode": "V3L 4X9"
+    },
+    {
+      "recordID": "OIN_DTL1",
+      "invoiceNumber": "9032133129",
+      "lineNumber": "270",
+      "distributorItemNumber": "4103067",
+      "uPCQualifier": "UP",
+      "uPCEANNumber": "10628962411169",
+      "customerItemNumber": null,
+      "unitOfMeasure": "CA",
+      "itemsPerUnit": "0001",
+      "taxes": "000379",
+      "catchWeightFlag": "8",
+      "BrokenCaseCode": "0",
+      "itemNonStockIndicator": "0"
+    },
+    {
+      "recordID": "OIN_DTL2",
+      "invoiceNumber": "9032133129",
+      "itemDescription": "APPLE ROYAL GALA 90-110CT FANCY"
+    },
+    {
+      "recordID": "OIN_DTL3",
+      "invoiceNumber": "9032133129",
+      "quantityOrdered": "0000001",
+      "quantityShipped": "0000001",
+      "quantityDifference": "0000000",
+      "lotNumber": "000000000000003",
+      "productionDayCodeSubCode": "798",
+      "priceQuantity": null,
+      "priceUnitOfMeasure": null,
+      "unitGrossWeight": "",
+      "unitNetWeight": "000000000019"
+    },
+    {
+      "recordID": "OIN_DTL4",
+      "invoiceNumber": "9032133129",
+      "vendorNumber": "727796321",
+      "vendorName": "Fresh Start Repack",
+      "vendorItemNumber": "41116",
+      "classNumber": "10",
+      "classDescription": "Produce",
+      "priceBookHeading": "12005",
+      "pricebookHeadingDescription": "Fresh Apples/Pears"
+    },
+    {
+      "recordID": "OIN_DTL5",
+      "invoiceNumber": "9032133129",
+      "priceBookFamilyNumber": null,
+      "priceBookFamilyDescription": null,
+      "brand": "Markon First Cr",
+      "pack": "0001",
+      "size": "40LB",
+      "servingsPerCase": "00000",
+      "servingsPerCaseUOM": null,
+      "caseUPCNumber": "10628962411169",
+      "vendorUPCNumber": "41116",
+      "unitUPCNumber": null
+    },
+    {
+      "recordID": "OIN_DTL6",
+      "orderGuideCategory": "99999",
+      "orderGuideCategoryDes": null,
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL7",
+      "invoiceNumber": "9032133129",
+      "extraItemDescription2": "",
+      "extraItemDescription3": "",
+      "vendorPhoneNumber": ""
+    },
+    {
+      "recordID": "OIN_DTL8",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL9",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL11",
+      "invoiceNumber": "9032133129",
+      "creditCode": "",
+      "creditCodeDescription": ""
+    },
+    {
+      "recordID": "OIN_DTL1",
+      "invoiceNumber": "9032133129",
+      "lineNumber": "360",
+      "distributorItemNumber": "4103157",
+      "uPCQualifier": "UP",
+      "uPCEANNumber": "00650746000484",
+      "customerItemNumber": null,
+      "unitOfMeasure": "CA",
+      "itemsPerUnit": "0001",
+      "taxes": "000409",
+      "catchWeightFlag": "4",
+      "BrokenCaseCode": "0",
+      "itemNonStockIndicator": "0"
+    },
+    {
+      "recordID": "OIN_DTL2",
+      "invoiceNumber": "9032133129",
+      "itemDescription": "BANANA GRN TIP STG 3/4"
+    },
+    {
+      "recordID": "OIN_DTL3",
+      "invoiceNumber": "9032133129",
+      "quantityOrdered": "0000002",
+      "quantityShipped": "0000002",
+      "quantityDifference": "0000000",
+      "lotNumber": "000000000000008",
+      "productionDayCodeSubCode": "188",
+      "priceQuantity": null,
+      "priceUnitOfMeasure": null,
+      "unitGrossWeight": "",
+      "unitNetWeight": "000000000019"
+    },
+    {
+      "recordID": "OIN_DTL4",
+      "invoiceNumber": "9032133129",
+      "vendorNumber": "727804989",
+      "vendorName": "Fresh Direct Produce Ltd.",
+      "vendorItemNumber": null,
+      "classNumber": "10",
+      "classDescription": "Produce",
+      "priceBookHeading": "12010",
+      "pricebookHeadingDescription": "Fresh Bananas"
+    },
+    {
+      "recordID": "OIN_DTL5",
+      "invoiceNumber": "9032133129",
+      "priceBookFamilyNumber": null,
+      "priceBookFamilyDescription": null,
+      "brand": "Packer Label",
+      "pack": "0001",
+      "size": "40LB",
+      "servingsPerCase": "00000",
+      "servingsPerCaseUOM": null,
+      "caseUPCNumber": "00650746000484",
+      "vendorUPCNumber": null,
+      "unitUPCNumber": null
+    },
+    {
+      "recordID": "OIN_DTL6",
+      "orderGuideCategory": "99999",
+      "orderGuideCategoryDes": null,
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL7",
+      "invoiceNumber": "9032133129",
+      "extraItemDescription2": "",
+      "extraItemDescription3": "",
+      "vendorPhoneNumber": ""
+    },
+    {
+      "recordID": "OIN_DTL8",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL9",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL11",
+      "invoiceNumber": "9032133129",
+      "creditCode": "",
+      "creditCodeDescription": ""
+    },
+    {
+      "recordID": "OIN_DTL1",
+      "invoiceNumber": "9032133129",
+      "lineNumber": "320",
+      "distributorItemNumber": "1199543",
+      "uPCQualifier": "UP",
+      "uPCEANNumber": "10063549718215",
+      "customerItemNumber": null,
+      "unitOfMeasure": "CA",
+      "itemsPerUnit": "0715",
+      "taxes": "000665",
+      "catchWeightFlag": "8",
+      "BrokenCaseCode": "0",
+      "itemNonStockIndicator": "0"
+    },
+    {
+      "recordID": "OIN_DTL2",
+      "invoiceNumber": "9032133129",
+      "itemDescription": "BUTTER WHIPPED SALTED CUP IND KOSHER"
+    },
+    {
+      "recordID": "OIN_DTL3",
+      "invoiceNumber": "9032133129",
+      "quantityOrdered": "0000001",
+      "quantityShipped": "0000001",
+      "quantityDifference": "0000000",
+      "lotNumber": "000000000000006",
+      "productionDayCodeSubCode": "658",
+      "priceQuantity": null,
+      "priceUnitOfMeasure": null,
+      "unitGrossWeight": "",
+      "unitNetWeight": "000000000003"
+    },
+    {
+      "recordID": "OIN_DTL4",
+      "invoiceNumber": "9032133129",
+      "vendorNumber": "727794752",
+      "vendorName": "Saputo BC POCO 1D",
+      "vendorItemNumber": "71821",
+      "classNumber": "6",
+      "classDescription": "Dairy",
+      "priceBookHeading": "11140",
+      "pricebookHeadingDescription": "Butter"
+    },
+    {
+      "recordID": "OIN_DTL5",
+      "invoiceNumber": "9032133129",
+      "priceBookFamilyNumber": null,
+      "priceBookFamilyDescription": null,
+      "brand": "Saputo",
+      "pack": "0715",
+      "size": "4.5G",
+      "servingsPerCase": "00000",
+      "servingsPerCaseUOM": null,
+      "caseUPCNumber": "10063549718215",
+      "vendorUPCNumber": "71821",
+      "unitUPCNumber": null
+    },
+    {
+      "recordID": "OIN_DTL6",
+      "orderGuideCategory": "99999",
+      "orderGuideCategoryDes": null,
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL7",
+      "invoiceNumber": "9032133129",
+      "extraItemDescription2": "",
+      "extraItemDescription3": "",
+      "vendorPhoneNumber": ""
+    },
+    {
+      "recordID": "OIN_DTL8",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL9",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL11",
+      "invoiceNumber": "9032133129",
+      "creditCode": "",
+      "creditCodeDescription": ""
+    },
+    {
+      "recordID": "OIN_DTL1",
+      "invoiceNumber": "9032133129",
+      "lineNumber": "290",
+      "distributorItemNumber": "1797405",
+      "uPCQualifier": "UP",
+      "uPCEANNumber": "00611628950556",
+      "customerItemNumber": null,
+      "unitOfMeasure": "CA",
+      "itemsPerUnit": "0001",
+      "taxes": "000317",
+      "catchWeightFlag": "0",
+      "BrokenCaseCode": "0",
+      "itemNonStockIndicator": "0"
+    },
+    {
+      "recordID": "OIN_DTL2",
+      "invoiceNumber": "9032133129",
+      "itemDescription": "CARROT JUMBO"
+    },
+    {
+      "recordID": "OIN_DTL3",
+      "invoiceNumber": "9032133129",
+      "quantityOrdered": "0000001",
+      "quantityShipped": "0000001",
+      "quantityDifference": "0000000",
+      "lotNumber": "000000000000003",
+      "productionDayCodeSubCode": "170",
+      "priceQuantity": null,
+      "priceUnitOfMeasure": null,
+      "unitGrossWeight": "",
+      "unitNetWeight": "000000000000"
+    },
+    {
+      "recordID": "OIN_DTL4",
+      "invoiceNumber": "9032133129",
+      "vendorNumber": "727785349",
+      "vendorName": "Markon Cooperative FGN",
+      "vendorItemNumber": "95055",
+      "classNumber": "10",
+      "classDescription": "Produce",
+      "priceBookHeading": "12070",
+      "pricebookHeadingDescription": "Fresh Carrots"
+    },
+    {
+      "recordID": "OIN_DTL5",
+      "invoiceNumber": "9032133129",
+      "priceBookFamilyNumber": null,
+      "priceBookFamilyDescription": null,
+      "brand": "Markon First Cr",
+      "pack": "0001",
+      "size": "10LB",
+      "servingsPerCase": "00000",
+      "servingsPerCaseUOM": null,
+      "caseUPCNumber": "00611628950556",
+      "vendorUPCNumber": "95055",
+      "unitUPCNumber": null
+    },
+    {
+      "recordID": "OIN_DTL6",
+      "orderGuideCategory": "99999",
+      "orderGuideCategoryDes": null,
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL7",
+      "invoiceNumber": "9032133129",
+      "extraItemDescription2": "",
+      "extraItemDescription3": "",
+      "vendorPhoneNumber": ""
+    },
+    {
+      "recordID": "OIN_DTL8",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL9",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL11",
+      "invoiceNumber": "9032133129",
+      "creditCode": "",
+      "creditCodeDescription": ""
+    },
+    {
+      "recordID": "OIN_DTL1",
+      "invoiceNumber": "9032133129",
+      "lineNumber": "210",
+      "distributorItemNumber": "1389680",
+      "uPCQualifier": "UP",
+      "uPCEANNumber": "10068200476244",
+      "customerItemNumber": null,
+      "unitOfMeasure": "CA",
+      "itemsPerUnit": "0012",
+      "taxes": "001253",
+      "catchWeightFlag": "5",
+      "BrokenCaseCode": "0",
+      "itemNonStockIndicator": "0"
+    },
+    {
+      "recordID": "OIN_DTL2",
+      "invoiceNumber": "9032133129",
+      "itemDescription": "CHEESE CHED MILD SLCD NAT 14G"
+    },
+    {
+      "recordID": "OIN_DTL3",
+      "invoiceNumber": "9032133129",
+      "quantityOrdered": "0000001",
+      "quantityShipped": "0000001",
+      "quantityDifference": "0000000",
+      "lotNumber": "000000000000012",
+      "productionDayCodeSubCode": "535",
+      "priceQuantity": null,
+      "priceUnitOfMeasure": null,
+      "unitGrossWeight": "",
+      "unitNetWeight": "000000000006"
+    },
+    {
+      "recordID": "OIN_DTL4",
+      "invoiceNumber": "9032133129",
+      "vendorNumber": "727814236",
+      "vendorName": "Lactalis / CCC",
+      "vendorItemNumber": "47624",
+      "classNumber": "6",
+      "classDescription": "Dairy",
+      "priceBookHeading": "11080",
+      "pricebookHeadingDescription": "Cheese Blocks Slc Port"
+    },
+    {
+      "recordID": "OIN_DTL5",
+      "invoiceNumber": "9032133129",
+      "priceBookFamilyNumber": null,
+      "priceBookFamilyDescription": null,
+      "brand": "Cracker Barrel",
+      "pack": "0012",
+      "size": "500G",
+      "servingsPerCase": "00000",
+      "servingsPerCaseUOM": null,
+      "caseUPCNumber": "10068200476244",
+      "vendorUPCNumber": "47624",
+      "unitUPCNumber": null
+    },
+    {
+      "recordID": "OIN_DTL6",
+      "orderGuideCategory": "99999",
+      "orderGuideCategoryDes": null,
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL7",
+      "invoiceNumber": "9032133129",
+      "extraItemDescription2": "6133943317-213",
+      "extraItemDescription3": "",
+      "vendorPhoneNumber": ""
+    },
+    {
+      "recordID": "OIN_DTL8",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL9",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL11",
+      "invoiceNumber": "9032133129",
+      "creditCode": "",
+      "creditCodeDescription": ""
+    },
+    {
+      "recordID": "OIN_DTL1",
+      "invoiceNumber": "9032133129",
+      "lineNumber": "160",
+      "distributorItemNumber": "1340835",
+      "uPCQualifier": "UP",
+      "uPCEANNumber": "10065651010775",
+      "customerItemNumber": null,
+      "unitOfMeasure": "CA",
+      "itemsPerUnit": "0001",
+      "taxes": "000869",
+      "catchWeightFlag": "8",
+      "BrokenCaseCode": "0",
+      "itemNonStockIndicator": "0"
+    },
+    {
+      "recordID": "OIN_DTL2",
+      "invoiceNumber": "9032133129",
+      "itemDescription": "EGG HARD CKD/PLD FREE RUN MED"
+    },
+    {
+      "recordID": "OIN_DTL3",
+      "invoiceNumber": "9032133129",
+      "quantityOrdered": "0000001",
+      "quantityShipped": "0000001",
+      "quantityDifference": "0000000",
+      "lotNumber": "000000000000008",
+      "productionDayCodeSubCode": "698",
+      "priceQuantity": null,
+      "priceUnitOfMeasure": null,
+      "unitGrossWeight": "",
+      "unitNetWeight": "000000000001"
+    },
+    {
+      "recordID": "OIN_DTL4",
+      "invoiceNumber": "9032133129",
+      "vendorNumber": "727798410",
+      "vendorName": "Burnbrae Farms CLR",
+      "vendorItemNumber": "1077",
+      "classNumber": "6",
+      "classDescription": "Dairy",
+      "priceBookHeading": "11165",
+      "pricebookHeadingDescription": "Egg Products"
+    },
+    {
+      "recordID": "OIN_DTL5",
+      "invoiceNumber": "9032133129",
+      "priceBookFamilyNumber": null,
+      "priceBookFamilyDescription": null,
+      "brand": "Burnbrae Farms",
+      "pack": "0001",
+      "size": "10KG",
+      "servingsPerCase": "00000",
+      "servingsPerCaseUOM": null,
+      "caseUPCNumber": "10065651010775",
+      "vendorUPCNumber": "1077",
+      "unitUPCNumber": null
+    },
+    {
+      "recordID": "OIN_DTL6",
+      "orderGuideCategory": "99999",
+      "orderGuideCategoryDes": null,
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL7",
+      "invoiceNumber": "9032133129",
+      "extraItemDescription2": "",
+      "extraItemDescription3": "",
+      "vendorPhoneNumber": ""
+    },
+    {
+      "recordID": "OIN_DTL8",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL9",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL11",
+      "invoiceNumber": "9032133129",
+      "creditCode": "",
+      "creditCodeDescription": ""
+    },
+    {
+      "recordID": "OIN_DTL1",
+      "invoiceNumber": "9032133129",
+      "lineNumber": "10",
+      "distributorItemNumber": "1154591",
+      "uPCQualifier": "UP",
+      "uPCEANNumber": "10069481044429",
+      "customerItemNumber": null,
+      "unitOfMeasure": "CA",
+      "itemsPerUnit": "0006",
+      "taxes": "000877",
+      "catchWeightFlag": "2",
+      "BrokenCaseCode": "0",
+      "itemNonStockIndicator": "0"
+    },
+    {
+      "recordID": "OIN_DTL2",
+      "invoiceNumber": "9032133129",
+      "itemDescription": "EGG LIQ WHL CAGE FREE HALAL FRSH"
+    },
+    {
+      "recordID": "OIN_DTL3",
+      "invoiceNumber": "9032133129",
+      "quantityOrdered": "0000002",
+      "quantityShipped": "0000002",
+      "quantityDifference": "0000000",
+      "lotNumber": "000000000000017",
+      "productionDayCodeSubCode": "544",
+      "priceQuantity": null,
+      "priceUnitOfMeasure": null,
+      "unitGrossWeight": "",
+      "unitNetWeight": "000000000012"
+    },
+    {
+      "recordID": "OIN_DTL4",
+      "invoiceNumber": "9032133129",
+      "vendorNumber": "727794552",
+      "vendorName": "Vanderpols Eggs CLR DRY",
+      "vendorItemNumber": "4443",
+      "classNumber": "6",
+      "classDescription": "Dairy",
+      "priceBookHeading": "11165",
+      "pricebookHeadingDescription": "Egg Products"
+    },
+    {
+      "recordID": "OIN_DTL5",
+      "invoiceNumber": "9032133129",
+      "priceBookFamilyNumber": null,
+      "priceBookFamilyDescription": null,
+      "brand": "Vanderpol's Egg",
+      "pack": "0006",
+      "size": "2KG",
+      "servingsPerCase": "00000",
+      "servingsPerCaseUOM": null,
+      "caseUPCNumber": "10069481044429",
+      "vendorUPCNumber": "4443",
+      "unitUPCNumber": null
+    },
+    {
+      "recordID": "OIN_DTL6",
+      "orderGuideCategory": "99999",
+      "orderGuideCategoryDes": null,
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL7",
+      "invoiceNumber": "9032133129",
+      "extraItemDescription2": "",
+      "extraItemDescription3": "",
+      "vendorPhoneNumber": ""
+    },
+    {
+      "recordID": "OIN_DTL8",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL9",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL11",
+      "invoiceNumber": "9032133129",
+      "creditCode": "",
+      "creditCodeDescription": ""
+    },
+    {
+      "recordID": "OIN_DTL1",
+      "invoiceNumber": "9032133129",
+      "lineNumber": "70",
+      "distributorItemNumber": "1154591",
+      "uPCQualifier": "UP",
+      "uPCEANNumber": "10069481044429",
+      "customerItemNumber": null,
+      "unitOfMeasure": "CA",
+      "itemsPerUnit": "0006",
+      "taxes": "000877",
+      "catchWeightFlag": "2",
+      "BrokenCaseCode": "0",
+      "itemNonStockIndicator": "0"
+    },
+    {
+      "recordID": "OIN_DTL2",
+      "invoiceNumber": "9032133129",
+      "itemDescription": "EGG LIQ WHL CAGE FREE HALAL FRSH"
+    },
+    {
+      "recordID": "OIN_DTL3",
+      "invoiceNumber": "9032133129",
+      "quantityOrdered": "0000004",
+      "quantityShipped": "0000004",
+      "quantityDifference": "0000000",
+      "lotNumber": "000000000000035",
+      "productionDayCodeSubCode": "088",
+      "priceQuantity": null,
+      "priceUnitOfMeasure": null,
+      "unitGrossWeight": "",
+      "unitNetWeight": "000000000012"
+    },
+    {
+      "recordID": "OIN_DTL4",
+      "invoiceNumber": "9032133129",
+      "vendorNumber": "727794552",
+      "vendorName": "Vanderpols Eggs CLR DRY",
+      "vendorItemNumber": "4443",
+      "classNumber": "6",
+      "classDescription": "Dairy",
+      "priceBookHeading": "11165",
+      "pricebookHeadingDescription": "Egg Products"
+    },
+    {
+      "recordID": "OIN_DTL5",
+      "invoiceNumber": "9032133129",
+      "priceBookFamilyNumber": null,
+      "priceBookFamilyDescription": null,
+      "brand": "Vanderpol's Egg",
+      "pack": "0006",
+      "size": "2KG",
+      "servingsPerCase": "00000",
+      "servingsPerCaseUOM": null,
+      "caseUPCNumber": "10069481044429",
+      "vendorUPCNumber": "4443",
+      "unitUPCNumber": null
+    },
+    {
+      "recordID": "OIN_DTL6",
+      "orderGuideCategory": "99999",
+      "orderGuideCategoryDes": null,
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL7",
+      "invoiceNumber": "9032133129",
+      "extraItemDescription2": "",
+      "extraItemDescription3": "",
+      "vendorPhoneNumber": ""
+    },
+    {
+      "recordID": "OIN_DTL8",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL9",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL11",
+      "invoiceNumber": "9032133129",
+      "creditCode": "",
+      "creditCodeDescription": ""
+    },
+    {
+      "recordID": "OIN_DTL1",
+      "invoiceNumber": "9032133129",
+      "lineNumber": "380",
+      "distributorItemNumber": "1116433",
+      "uPCQualifier": "UP",
+      "uPCEANNumber": "10620868124440",
+      "customerItemNumber": null,
+      "unitOfMeasure": "CA",
+      "itemsPerUnit": "0001",
+      "taxes": "000347",
+      "catchWeightFlag": "4",
+      "BrokenCaseCode": "0",
+      "itemNonStockIndicator": "0"
+    },
+    {
+      "recordID": "OIN_DTL2",
+      "invoiceNumber": "9032133129",
+      "itemDescription": "JIT CANTALOUPE PLD HLVS DRY PACK"
+    },
+    {
+      "recordID": "OIN_DTL3",
+      "invoiceNumber": "9032133129",
+      "quantityOrdered": "0000002",
+      "quantityShipped": "0000002",
+      "quantityDifference": "0000000",
+      "lotNumber": "000000000000006",
+      "productionDayCodeSubCode": "948",
+      "priceQuantity": null,
+      "priceUnitOfMeasure": null,
+      "unitGrossWeight": "",
+      "unitNetWeight": "000000000003"
+    },
+    {
+      "recordID": "OIN_DTL4",
+      "invoiceNumber": "9032133129",
+      "vendorNumber": "727796279",
+      "vendorName": "Fresh Start CLR 0DY",
+      "vendorItemNumber": "63037",
+      "classNumber": "10",
+      "classDescription": "Produce",
+      "priceBookHeading": "12307",
+      "pricebookHeadingDescription": "Fresh Cut Fruit-Melon/Pin"
+    },
+    {
+      "recordID": "OIN_DTL5",
+      "invoiceNumber": "9032133129",
+      "priceBookFamilyNumber": null,
+      "priceBookFamilyDescription": null,
+      "brand": "Fresh Start",
+      "pack": "0001",
+      "size": "6LB",
+      "servingsPerCase": "00000",
+      "servingsPerCaseUOM": null,
+      "caseUPCNumber": "10620868124440",
+      "vendorUPCNumber": "63037",
+      "unitUPCNumber": null
+    },
+    {
+      "recordID": "OIN_DTL6",
+      "orderGuideCategory": "99999",
+      "orderGuideCategoryDes": null,
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL7",
+      "invoiceNumber": "9032133129",
+      "extraItemDescription2": "",
+      "extraItemDescription3": "",
+      "vendorPhoneNumber": ""
+    },
+    {
+      "recordID": "OIN_DTL8",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL9",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL11",
+      "invoiceNumber": "9032133129",
+      "creditCode": "",
+      "creditCodeDescription": ""
+    },
+    {
+      "recordID": "OIN_DTL1",
+      "invoiceNumber": "9032133129",
+      "lineNumber": "370",
+      "distributorItemNumber": "1116446",
+      "uPCQualifier": "UP",
+      "uPCEANNumber": "10620868124464",
+      "customerItemNumber": null,
+      "unitOfMeasure": "CA",
+      "itemsPerUnit": "0001",
+      "taxes": "000389",
+      "catchWeightFlag": "4",
+      "BrokenCaseCode": "0",
+      "itemNonStockIndicator": "0"
+    },
+    {
+      "recordID": "OIN_DTL2",
+      "invoiceNumber": "9032133129",
+      "itemDescription": "JIT HONEYDEW PLD DRY PACK"
+    },
+    {
+      "recordID": "OIN_DTL3",
+      "invoiceNumber": "9032133129",
+      "quantityOrdered": "0000002",
+      "quantityShipped": "0000002",
+      "quantityDifference": "0000000",
+      "lotNumber": "000000000000007",
+      "productionDayCodeSubCode": "788",
+      "priceQuantity": null,
+      "priceUnitOfMeasure": null,
+      "unitGrossWeight": "",
+      "unitNetWeight": "000000000003"
+    },
+    {
+      "recordID": "OIN_DTL4",
+      "invoiceNumber": "9032133129",
+      "vendorNumber": "727796279",
+      "vendorName": "Fresh Start CLR 0DY",
+      "vendorItemNumber": "63088",
+      "classNumber": "10",
+      "classDescription": "Produce",
+      "priceBookHeading": "12307",
+      "pricebookHeadingDescription": "Fresh Cut Fruit-Melon/Pin"
+    },
+    {
+      "recordID": "OIN_DTL5",
+      "invoiceNumber": "9032133129",
+      "priceBookFamilyNumber": null,
+      "priceBookFamilyDescription": null,
+      "brand": "Fresh Start",
+      "pack": "0001",
+      "size": "6LB",
+      "servingsPerCase": "00000",
+      "servingsPerCaseUOM": null,
+      "caseUPCNumber": "10620868124464",
+      "vendorUPCNumber": "63088",
+      "unitUPCNumber": null
+    },
+    {
+      "recordID": "OIN_DTL6",
+      "orderGuideCategory": "99999",
+      "orderGuideCategoryDes": null,
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL7",
+      "invoiceNumber": "9032133129",
+      "extraItemDescription2": "",
+      "extraItemDescription3": "",
+      "vendorPhoneNumber": ""
+    },
+    {
+      "recordID": "OIN_DTL8",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL9",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL11",
+      "invoiceNumber": "9032133129",
+      "creditCode": "",
+      "creditCodeDescription": ""
+    },
+    {
+      "recordID": "OIN_DTL1",
+      "invoiceNumber": "9032133129",
+      "lineNumber": "240",
+      "distributorItemNumber": "1310822",
+      "uPCQualifier": "UP",
+      "uPCEANNumber": "00063549103052",
+      "customerItemNumber": null,
+      "unitOfMeasure": "CA",
+      "itemsPerUnit": "0001",
+      "taxes": "000554",
+      "catchWeightFlag": "3",
+      "BrokenCaseCode": "0",
+      "itemNonStockIndicator": "0"
+    },
+    {
+      "recordID": "OIN_DTL2",
+      "invoiceNumber": "9032133129",
+      "itemDescription": "MILK 2PCT"
+    },
+    {
+      "recordID": "OIN_DTL3",
+      "invoiceNumber": "9032133129",
+      "quantityOrdered": "0000001",
+      "quantityShipped": "0000001",
+      "quantityDifference": "0000000",
+      "lotNumber": "000000000000005",
+      "productionDayCodeSubCode": "543",
+      "priceQuantity": null,
+      "priceUnitOfMeasure": null,
+      "unitGrossWeight": "",
+      "unitNetWeight": "000000000020"
+    },
+    {
+      "recordID": "OIN_DTL4",
+      "invoiceNumber": "9032133129",
+      "vendorNumber": "727794752",
+      "vendorName": "Saputo BC POCO 1D",
+      "vendorItemNumber": "134014",
+      "classNumber": "6",
+      "classDescription": "Dairy",
+      "priceBookHeading": "11150",
+      "pricebookHeadingDescription": "Fluid Milk & Cream"
+    },
+    {
+      "recordID": "OIN_DTL5",
+      "invoiceNumber": "9032133129",
+      "priceBookFamilyNumber": null,
+      "priceBookFamilyDescription": null,
+      "brand": "Saputo",
+      "pack": "0001",
+      "size": "20L",
+      "servingsPerCase": "00000",
+      "servingsPerCaseUOM": null,
+      "caseUPCNumber": "00063549103052",
+      "vendorUPCNumber": "134014",
+      "unitUPCNumber": null
+    },
+    {
+      "recordID": "OIN_DTL6",
+      "orderGuideCategory": "99999",
+      "orderGuideCategoryDes": null,
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL7",
+      "invoiceNumber": "9032133129",
+      "extraItemDescription2": "",
+      "extraItemDescription3": "",
+      "vendorPhoneNumber": ""
+    },
+    {
+      "recordID": "OIN_DTL8",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL9",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL11",
+      "invoiceNumber": "9032133129",
+      "creditCode": "",
+      "creditCodeDescription": ""
+    },
+    {
+      "recordID": "OIN_SACD1",
+      "allowChargeIndicator": "A",
+      "allowChargeCode": "H740",
+      "percentQualifier": "0",
+      "percent": "000000",
+      "ignore": "00000000 000000",
+      "allowChargeHandlingCode": null,
+      "referenceID": "06",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_SACD2",
+      "allowChargeDesc": "Tax - Sales and Use",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_SACD1",
+      "allowChargeIndicator": "C",
+      "allowChargeCode": "C090",
+      "percentQualifier": "0",
+      "percent": "000000",
+      "ignore": "00000003 000005",
+      "allowChargeHandlingCode": null,
+      "referenceID": "06",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_SACD2",
+      "allowChargeDesc": "Ecology Fees",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL1",
+      "invoiceNumber": "9032133129",
+      "lineNumber": "10",
+      "distributorItemNumber": "1124005",
+      "uPCQualifier": "UP",
+      "uPCEANNumber": "00611628955001",
+      "customerItemNumber": null,
+      "unitOfMeasure": "CA",
+      "itemsPerUnit": "0001",
+      "taxes": "000206",
+      "catchWeightFlag": "4",
+      "BrokenCaseCode": "0",
+      "itemNonStockIndicator": "0"
+    },
+    {
+      "recordID": "OIN_DTL2",
+      "invoiceNumber": "9032133129",
+      "itemDescription": "ONION RED JUMBO BOX"
+    },
+    {
+      "recordID": "OIN_DTL3",
+      "invoiceNumber": "9032133129",
+      "quantityOrdered": "0000001",
+      "quantityShipped": "0000001",
+      "quantityDifference": "0000000",
+      "lotNumber": "000000000000002",
+      "productionDayCodeSubCode": "064",
+      "priceQuantity": null,
+      "priceUnitOfMeasure": null,
+      "unitGrossWeight": "",
+      "unitNetWeight": "000000000012"
+    },
+    {
+      "recordID": "OIN_DTL4",
+      "invoiceNumber": "9032133129",
+      "vendorNumber": "727797941",
+      "vendorName": "Markon Inc. WA FGN",
+      "vendorItemNumber": "95500",
+      "classNumber": "10",
+      "classDescription": "Produce",
+      "priceBookHeading": "12115",
+      "pricebookHeadingDescription": "Fresh Onion/Garlic"
+    },
+    {
+      "recordID": "OIN_DTL5",
+      "invoiceNumber": "9032133129",
+      "priceBookFamilyNumber": null,
+      "priceBookFamilyDescription": null,
+      "brand": "Markon First Cr",
+      "pack": "0001",
+      "size": "25LB",
+      "servingsPerCase": "00000",
+      "servingsPerCaseUOM": null,
+      "caseUPCNumber": "00611628955001",
+      "vendorUPCNumber": "95500",
+      "unitUPCNumber": null
+    },
+    {
+      "recordID": "OIN_DTL6",
+      "orderGuideCategory": "99999",
+      "orderGuideCategoryDes": null,
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL7",
+      "invoiceNumber": "9032133129",
+      "extraItemDescription2": "",
+      "extraItemDescription3": "",
+      "vendorPhoneNumber": ""
+    },
+    {
+      "recordID": "OIN_DTL8",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL9",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL11",
+      "invoiceNumber": "9032133129",
+      "creditCode": "",
+      "creditCodeDescription": ""
+    },
+    {
+      "recordID": "OIN_DTL1",
+      "invoiceNumber": "9032133129",
+      "lineNumber": "40",
+      "distributorItemNumber": "1154510",
+      "uPCQualifier": "UP",
+      "uPCEANNumber": "00650746045386",
+      "customerItemNumber": null,
+      "unitOfMeasure": "CA",
+      "itemsPerUnit": "0001",
+      "taxes": "000478",
+      "catchWeightFlag": "5",
+      "BrokenCaseCode": "0",
+      "itemNonStockIndicator": "0"
+    },
+    {
+      "recordID": "OIN_DTL2",
+      "invoiceNumber": "9032133129",
+      "itemDescription": "ORANGE MANDARIN"
+    },
+    {
+      "recordID": "OIN_DTL3",
+      "invoiceNumber": "9032133129",
+      "quantityOrdered": "0000001",
+      "quantityShipped": "0000001",
+      "quantityDifference": "0000000",
+      "lotNumber": "000000000000004",
+      "productionDayCodeSubCode": "785",
+      "priceQuantity": null,
+      "priceUnitOfMeasure": null,
+      "unitGrossWeight": "",
+      "unitNetWeight": "000000000010"
+    },
+    {
+      "recordID": "OIN_DTL4",
+      "invoiceNumber": "9032133129",
+      "vendorNumber": "727811300",
+      "vendorName": "Star Produce",
+      "vendorItemNumber": "SATMAN",
+      "classNumber": "10",
+      "classDescription": "Produce",
+      "priceBookHeading": "12030",
+      "pricebookHeadingDescription": "Fresh Citrus"
+    },
+    {
+      "recordID": "OIN_DTL5",
+      "invoiceNumber": "9032133129",
+      "priceBookFamilyNumber": null,
+      "priceBookFamilyDescription": null,
+      "brand": "Packer Label",
+      "pack": "0001",
+      "size": "10KG",
+      "servingsPerCase": "00000",
+      "servingsPerCaseUOM": null,
+      "caseUPCNumber": "00650746045386",
+      "vendorUPCNumber": "SATMAN",
+      "unitUPCNumber": null
+    },
+    {
+      "recordID": "OIN_DTL6",
+      "orderGuideCategory": "99999",
+      "orderGuideCategoryDes": null,
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL7",
+      "invoiceNumber": "9032133129",
+      "extraItemDescription2": "",
+      "extraItemDescription3": "",
+      "vendorPhoneNumber": ""
+    },
+    {
+      "recordID": "OIN_DTL8",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL9",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL11",
+      "invoiceNumber": "9032133129",
+      "creditCode": "",
+      "creditCodeDescription": ""
+    },
+    {
+      "recordID": "OIN_DTL1",
+      "invoiceNumber": "9032133129",
+      "lineNumber": "280",
+      "distributorItemNumber": "1154510",
+      "uPCQualifier": "UP",
+      "uPCEANNumber": "00650746045386",
+      "customerItemNumber": null,
+      "unitOfMeasure": "CA",
+      "itemsPerUnit": "0001",
+      "taxes": "000478",
+      "catchWeightFlag": "5",
+      "BrokenCaseCode": "0",
+      "itemNonStockIndicator": "0"
+    },
+    {
+      "recordID": "OIN_DTL2",
+      "invoiceNumber": "9032133129",
+      "itemDescription": "ORANGE MANDARIN"
+    },
+    {
+      "recordID": "OIN_DTL3",
+      "invoiceNumber": "9032133129",
+      "quantityOrdered": "0000001",
+      "quantityShipped": "0000001",
+      "quantityDifference": "0000000",
+      "lotNumber": "000000000000004",
+      "productionDayCodeSubCode": "785",
+      "priceQuantity": null,
+      "priceUnitOfMeasure": null,
+      "unitGrossWeight": "",
+      "unitNetWeight": "000000000010"
+    },
+    {
+      "recordID": "OIN_DTL4",
+      "invoiceNumber": "9032133129",
+      "vendorNumber": "727811300",
+      "vendorName": "Star Produce",
+      "vendorItemNumber": "SATMAN",
+      "classNumber": "10",
+      "classDescription": "Produce",
+      "priceBookHeading": "12030",
+      "pricebookHeadingDescription": "Fresh Citrus"
+    },
+    {
+      "recordID": "OIN_DTL5",
+      "invoiceNumber": "9032133129",
+      "priceBookFamilyNumber": null,
+      "priceBookFamilyDescription": null,
+      "brand": "Packer Label",
+      "pack": "0001",
+      "size": "10KG",
+      "servingsPerCase": "00000",
+      "servingsPerCaseUOM": null,
+      "caseUPCNumber": "00650746045386",
+      "vendorUPCNumber": "SATMAN",
+      "unitUPCNumber": null
+    },
+    {
+      "recordID": "OIN_DTL6",
+      "orderGuideCategory": "99999",
+      "orderGuideCategoryDes": null,
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL7",
+      "invoiceNumber": "9032133129",
+      "extraItemDescription2": "",
+      "extraItemDescription3": "",
+      "vendorPhoneNumber": ""
+    },
+    {
+      "recordID": "OIN_DTL8",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL9",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL11",
+      "invoiceNumber": "9032133129",
+      "creditCode": "",
+      "creditCodeDescription": ""
+    },
+    {
+      "recordID": "OIN_DTL1",
+      "invoiceNumber": "9032133129",
+      "lineNumber": "230",
+      "distributorItemNumber": "4203707",
+      "uPCQualifier": "UP",
+      "uPCEANNumber": "00620868127727",
+      "customerItemNumber": null,
+      "unitOfMeasure": "CA",
+      "itemsPerUnit": "0001",
+      "taxes": "000269",
+      "catchWeightFlag": "2",
+      "BrokenCaseCode": "0",
+      "itemNonStockIndicator": "0"
+    },
+    {
+      "recordID": "OIN_DTL2",
+      "invoiceNumber": "9032133129",
+      "itemDescription": "PEPPER ASST"
+    },
+    {
+      "recordID": "OIN_DTL3",
+      "invoiceNumber": "9032133129",
+      "quantityOrdered": "0000001",
+      "quantityShipped": "0000001",
+      "quantityDifference": "0000000",
+      "lotNumber": "000000000000002",
+      "productionDayCodeSubCode": "692",
+      "priceQuantity": null,
+      "priceUnitOfMeasure": null,
+      "unitGrossWeight": "",
+      "unitNetWeight": "000000000002"
+    },
+    {
+      "recordID": "OIN_DTL4",
+      "invoiceNumber": "9032133129",
+      "vendorNumber": "727796321",
+      "vendorName": "Fresh Start Repack",
+      "vendorItemNumber": "41620",
+      "classNumber": "10",
+      "classDescription": "Produce",
+      "priceBookHeading": "12120",
+      "pricebookHeadingDescription": "Fresh Peppers"
+    },
+    {
+      "recordID": "OIN_DTL5",
+      "invoiceNumber": "9032133129",
+      "priceBookFamilyNumber": null,
+      "priceBookFamilyDescription": null,
+      "brand": "Fresh Start",
+      "pack": "0001",
+      "size": "6LB",
+      "servingsPerCase": "00000",
+      "servingsPerCaseUOM": null,
+      "caseUPCNumber": "00620868127727",
+      "vendorUPCNumber": "41620",
+      "unitUPCNumber": null
+    },
+    {
+      "recordID": "OIN_DTL6",
+      "orderGuideCategory": "99999",
+      "orderGuideCategoryDes": null,
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL7",
+      "invoiceNumber": "9032133129",
+      "extraItemDescription2": "",
+      "extraItemDescription3": "",
+      "vendorPhoneNumber": ""
+    },
+    {
+      "recordID": "OIN_DTL8",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL9",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL11",
+      "invoiceNumber": "9032133129",
+      "creditCode": "",
+      "creditCodeDescription": ""
+    },
+    {
+      "recordID": "OIN_DTL1",
+      "invoiceNumber": "9032133129",
+      "lineNumber": "10",
+      "distributorItemNumber": "1006101",
+      "uPCQualifier": "UP",
+      "uPCEANNumber": "10064359125682",
+      "customerItemNumber": null,
+      "unitOfMeasure": "CA",
+      "itemsPerUnit": "0006",
+      "taxes": "000414",
+      "catchWeightFlag": "6",
+      "BrokenCaseCode": "0",
+      "itemNonStockIndicator": "0"
+    },
+    {
+      "recordID": "OIN_DTL2",
+      "invoiceNumber": "9032133129",
+      "itemDescription": "SAUSAGE ANDOUILLE CKD FRSH"
+    },
+    {
+      "recordID": "OIN_DTL3",
+      "invoiceNumber": "9032133129",
+      "quantityOrdered": "0000010",
+      "quantityShipped": "0000010",
+      "quantityDifference": "0000000",
+      "lotNumber": "000000000000041",
+      "productionDayCodeSubCode": "460",
+      "priceQuantity": null,
+      "priceUnitOfMeasure": null,
+      "unitGrossWeight": "",
+      "unitNetWeight": "000000000000"
+    },
+    {
+      "recordID": "OIN_DTL4",
+      "invoiceNumber": "9032133129",
+      "vendorNumber": "727795324",
+      "vendorName": "Freybe Gourmet Foods Reg",
+      "vendorItemNumber": "125686",
+      "classNumber": "3",
+      "classDescription": "Meat",
+      "priceBookHeading": "16510",
+      "pricebookHeadingDescription": "Ethnic Sausage"
+    },
+    {
+      "recordID": "OIN_DTL5",
+      "invoiceNumber": "9032133129",
+      "priceBookFamilyNumber": null,
+      "priceBookFamilyDescription": null,
+      "brand": "Freybe",
+      "pack": "0006",
+      "size": "375G",
+      "servingsPerCase": "00000",
+      "servingsPerCaseUOM": null,
+      "caseUPCNumber": "10064359125682",
+      "vendorUPCNumber": "125686",
+      "unitUPCNumber": null
+    },
+    {
+      "recordID": "OIN_DTL6",
+      "orderGuideCategory": "99999",
+      "orderGuideCategoryDes": null,
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL7",
+      "invoiceNumber": "9032133129",
+      "extraItemDescription2": "",
+      "extraItemDescription3": "",
+      "vendorPhoneNumber": ""
+    },
+    {
+      "recordID": "OIN_DTL8",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL9",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL11",
+      "invoiceNumber": "9032133129",
+      "creditCode": "",
+      "creditCodeDescription": ""
+    },
+    {
+      "recordID": "OIN_DTL1",
+      "invoiceNumber": "9032133129",
+      "lineNumber": "20",
+      "distributorItemNumber": "1172949",
+      "uPCQualifier": "UP",
+      "uPCEANNumber": "10056800517726",
+      "customerItemNumber": null,
+      "unitOfMeasure": "CA",
+      "itemsPerUnit": "0003",
+      "taxes": "000240",
+      "catchWeightFlag": "1",
+      "BrokenCaseCode": "0",
+      "itemNonStockIndicator": "0"
+    },
+    {
+      "recordID": "OIN_DTL2",
+      "invoiceNumber": "9032133129",
+      "itemDescription": "YOGURT CRMY ASST FRUIT PUREE"
+    },
+    {
+      "recordID": "OIN_DTL3",
+      "invoiceNumber": "9032133129",
+      "quantityOrdered": "0000002",
+      "quantityShipped": "0000002",
+      "quantityDifference": "0000000",
+      "lotNumber": "000000000000004",
+      "productionDayCodeSubCode": "802",
+      "priceQuantity": null,
+      "priceUnitOfMeasure": null,
+      "unitGrossWeight": "",
+      "unitNetWeight": "00000000005."
+    },
+    {
+      "recordID": "OIN_DTL4",
+      "invoiceNumber": "9032133129",
+      "vendorNumber": "727801691",
+      "vendorName": "Danone Inc",
+      "vendorItemNumber": "51772",
+      "classNumber": "6",
+      "classDescription": "Dairy",
+      "priceBookHeading": "11170",
+      "pricebookHeadingDescription": "Fresh Yogurt"
+    },
+    {
+      "recordID": "OIN_DTL5",
+      "invoiceNumber": "9032133129",
+      "priceBookFamilyNumber": null,
+      "priceBookFamilyDescription": null,
+      "brand": "Danone",
+      "pack": "0003",
+      "size": "16X100G",
+      "servingsPerCase": "00000",
+      "servingsPerCaseUOM": null,
+      "caseUPCNumber": "10056800517726",
+      "vendorUPCNumber": "51772",
+      "unitUPCNumber": null
+    },
+    {
+      "recordID": "OIN_DTL6",
+      "orderGuideCategory": "99999",
+      "orderGuideCategoryDes": null,
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL7",
+      "invoiceNumber": "9032133129",
+      "extraItemDescription2": "",
+      "extraItemDescription3": "",
+      "vendorPhoneNumber": ""
+    },
+    {
+      "recordID": "OIN_DTL8",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL9",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL11",
+      "invoiceNumber": "9032133129",
+      "creditCode": "",
+      "creditCodeDescription": ""
+    },
+    {
+      "recordID": "OIN_DTL1",
+      "invoiceNumber": "9032133129",
+      "lineNumber": "110",
+      "distributorItemNumber": "1172949",
+      "uPCQualifier": "UP",
+      "uPCEANNumber": "10056800517726",
+      "customerItemNumber": null,
+      "unitOfMeasure": "CA",
+      "itemsPerUnit": "0003",
+      "taxes": "000240",
+      "catchWeightFlag": "1",
+      "BrokenCaseCode": "0",
+      "itemNonStockIndicator": "0"
+    },
+    {
+      "recordID": "OIN_DTL2",
+      "invoiceNumber": "9032133129",
+      "itemDescription": "YOGURT CRMY ASST FRUIT PUREE"
+    },
+    {
+      "recordID": "OIN_DTL3",
+      "invoiceNumber": "9032133129",
+      "quantityOrdered": "0000002",
+      "quantityShipped": "0000002",
+      "quantityDifference": "0000000",
+      "lotNumber": "000000000000004",
+      "productionDayCodeSubCode": "802",
+      "priceQuantity": null,
+      "priceUnitOfMeasure": null,
+      "unitGrossWeight": "",
+      "unitNetWeight": "00000000005."
+    },
+    {
+      "recordID": "OIN_DTL4",
+      "invoiceNumber": "9032133129",
+      "vendorNumber": "727801691",
+      "vendorName": "Danone Inc",
+      "vendorItemNumber": "51772",
+      "classNumber": "6",
+      "classDescription": "Dairy",
+      "priceBookHeading": "11170",
+      "pricebookHeadingDescription": "Fresh Yogurt"
+    },
+    {
+      "recordID": "OIN_DTL5",
+      "invoiceNumber": "9032133129",
+      "priceBookFamilyNumber": null,
+      "priceBookFamilyDescription": null,
+      "brand": "Danone",
+      "pack": "0003",
+      "size": "16X100G",
+      "servingsPerCase": "00000",
+      "servingsPerCaseUOM": null,
+      "caseUPCNumber": "10056800517726",
+      "vendorUPCNumber": "51772",
+      "unitUPCNumber": null
+    },
+    {
+      "recordID": "OIN_DTL6",
+      "orderGuideCategory": "99999",
+      "orderGuideCategoryDes": null,
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL7",
+      "invoiceNumber": "9032133129",
+      "extraItemDescription2": "",
+      "extraItemDescription3": "",
+      "vendorPhoneNumber": ""
+    },
+    {
+      "recordID": "OIN_DTL8",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL9",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL11",
+      "invoiceNumber": "9032133129",
+      "creditCode": "",
+      "creditCodeDescription": ""
+    },
+    {
+      "recordID": "OIN_DTL1",
+      "invoiceNumber": "9032133129",
+      "lineNumber": "330",
+      "distributorItemNumber": "1243175",
+      "uPCQualifier": "UP",
+      "uPCEANNumber": "00068700030109",
+      "customerItemNumber": null,
+      "unitOfMeasure": "CA",
+      "itemsPerUnit": "0001",
+      "taxes": "000248",
+      "catchWeightFlag": "1",
+      "BrokenCaseCode": "0",
+      "itemNonStockIndicator": "0"
+    },
+    {
+      "recordID": "OIN_DTL2",
+      "invoiceNumber": "9032133129",
+      "itemDescription": "YOGURT GREEK-STYLE PLAIN FRSH"
+    },
+    {
+      "recordID": "OIN_DTL3",
+      "invoiceNumber": "9032133129",
+      "quantityOrdered": "0000004",
+      "quantityShipped": "0000004",
+      "quantityDifference": "0000000",
+      "lotNumber": "000000000000009",
+      "productionDayCodeSubCode": "924",
+      "priceQuantity": null,
+      "priceUnitOfMeasure": null,
+      "unitGrossWeight": "",
+      "unitNetWeight": "000000000004"
+    },
+    {
+      "recordID": "OIN_DTL4",
+      "invoiceNumber": "9032133129",
+      "vendorNumber": "727794752",
+      "vendorName": "Saputo BC POCO 1D",
+      "vendorItemNumber": "162126",
+      "classNumber": "6",
+      "classDescription": "Dairy",
+      "priceBookHeading": "11170",
+      "pricebookHeadingDescription": "Fresh Yogurt"
+    },
+    {
+      "recordID": "OIN_DTL5",
+      "invoiceNumber": "9032133129",
+      "priceBookFamilyNumber": null,
+      "priceBookFamilyDescription": null,
+      "brand": "Nature's Treat",
+      "pack": "0001",
+      "size": "4KG",
+      "servingsPerCase": "00000",
+      "servingsPerCaseUOM": null,
+      "caseUPCNumber": "00068700030109",
+      "vendorUPCNumber": "162126",
+      "unitUPCNumber": null
+    },
+    {
+      "recordID": "OIN_DTL6",
+      "orderGuideCategory": "99999",
+      "orderGuideCategoryDes": null,
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL7",
+      "invoiceNumber": "9032133129",
+      "extraItemDescription2": "",
+      "extraItemDescription3": "",
+      "vendorPhoneNumber": ""
+    },
+    {
+      "recordID": "OIN_DTL8",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL9",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL11",
+      "invoiceNumber": "9032133129",
+      "creditCode": "",
+      "creditCodeDescription": ""
+    },
+    {
+      "recordID": "OIN_DTL1",
+      "invoiceNumber": "9032133129",
+      "lineNumber": "30",
+      "distributorItemNumber": "1172950",
+      "uPCQualifier": "UP",
+      "uPCEANNumber": "10056800154365",
+      "customerItemNumber": null,
+      "unitOfMeasure": "CA",
+      "itemsPerUnit": "0048",
+      "taxes": "000240",
+      "catchWeightFlag": "2",
+      "BrokenCaseCode": "0",
+      "itemNonStockIndicator": "0"
+    },
+    {
+      "recordID": "OIN_DTL2",
+      "invoiceNumber": "9032133129",
+      "itemDescription": "YOGURT VAR PK STRW/VAN/PEACH/BLU L/FAT"
+    },
+    {
+      "recordID": "OIN_DTL3",
+      "invoiceNumber": "9032133129",
+      "quantityOrdered": "0000001",
+      "quantityShipped": "0000001",
+      "quantityDifference": "0000000",
+      "lotNumber": "000000000000002",
+      "productionDayCodeSubCode": "402",
+      "priceQuantity": null,
+      "priceUnitOfMeasure": null,
+      "unitGrossWeight": "",
+      "unitNetWeight": "00000000005."
+    },
+    {
+      "recordID": "OIN_DTL4",
+      "invoiceNumber": "9032133129",
+      "vendorNumber": "727801691",
+      "vendorName": "Danone Inc",
+      "vendorItemNumber": "15436",
+      "classNumber": "6",
+      "classDescription": "Dairy",
+      "priceBookHeading": "11170",
+      "pricebookHeadingDescription": "Fresh Yogurt"
+    },
+    {
+      "recordID": "OIN_DTL5",
+      "invoiceNumber": "9032133129",
+      "priceBookFamilyNumber": null,
+      "priceBookFamilyDescription": null,
+      "brand": "Danone",
+      "pack": "0048",
+      "size": "100G",
+      "servingsPerCase": "00000",
+      "servingsPerCaseUOM": null,
+      "caseUPCNumber": "10056800154365",
+      "vendorUPCNumber": "15436",
+      "unitUPCNumber": null
+    },
+    {
+      "recordID": "OIN_DTL6",
+      "orderGuideCategory": "99999",
+      "orderGuideCategoryDes": null,
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL7",
+      "invoiceNumber": "9032133129",
+      "extraItemDescription2": "",
+      "extraItemDescription3": "",
+      "vendorPhoneNumber": ""
+    },
+    {
+      "recordID": "OIN_DTL8",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL9",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL11",
+      "invoiceNumber": "9032133129",
+      "creditCode": "",
+      "creditCodeDescription": ""
+    },
+    {
+      "recordID": "OIN_DTL1",
+      "invoiceNumber": "9032133129",
+      "lineNumber": "120",
+      "distributorItemNumber": "1172950",
+      "uPCQualifier": "UP",
+      "uPCEANNumber": "10056800154365",
+      "customerItemNumber": null,
+      "unitOfMeasure": "CA",
+      "itemsPerUnit": "0048",
+      "taxes": "000240",
+      "catchWeightFlag": "2",
+      "BrokenCaseCode": "0",
+      "itemNonStockIndicator": "0"
+    },
+    {
+      "recordID": "OIN_DTL2",
+      "invoiceNumber": "9032133129",
+      "itemDescription": "YOGURT VAR PK STRW/VAN/PEACH/BLU L/FAT"
+    },
+    {
+      "recordID": "OIN_DTL3",
+      "invoiceNumber": "9032133129",
+      "quantityOrdered": "0000001",
+      "quantityShipped": "0000001",
+      "quantityDifference": "0000000",
+      "lotNumber": "000000000000002",
+      "productionDayCodeSubCode": "402",
+      "priceQuantity": null,
+      "priceUnitOfMeasure": null,
+      "unitGrossWeight": "",
+      "unitNetWeight": "00000000005."
+    },
+    {
+      "recordID": "OIN_DTL4",
+      "invoiceNumber": "9032133129",
+      "vendorNumber": "727801691",
+      "vendorName": "Danone Inc",
+      "vendorItemNumber": "15436",
+      "classNumber": "6",
+      "classDescription": "Dairy",
+      "priceBookHeading": "11170",
+      "pricebookHeadingDescription": "Fresh Yogurt"
+    },
+    {
+      "recordID": "OIN_DTL5",
+      "invoiceNumber": "9032133129",
+      "priceBookFamilyNumber": null,
+      "priceBookFamilyDescription": null,
+      "brand": "Danone",
+      "pack": "0048",
+      "size": "100G",
+      "servingsPerCase": "00000",
+      "servingsPerCaseUOM": null,
+      "caseUPCNumber": "10056800154365",
+      "vendorUPCNumber": "15436",
+      "unitUPCNumber": null
+    },
+    {
+      "recordID": "OIN_DTL6",
+      "orderGuideCategory": "99999",
+      "orderGuideCategoryDes": null,
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL7",
+      "invoiceNumber": "9032133129",
+      "extraItemDescription2": "",
+      "extraItemDescription3": "",
+      "vendorPhoneNumber": ""
+    },
+    {
+      "recordID": "OIN_DTL8",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL9",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL11",
+      "invoiceNumber": "9032133129",
+      "creditCode": "",
+      "creditCodeDescription": ""
+    },
+    {
+      "recordID": "OIN_DTL1",
+      "invoiceNumber": "9032133129",
+      "lineNumber": "190",
+      "distributorItemNumber": "5540205",
+      "uPCQualifier": "UP",
+      "uPCEANNumber": "10055773024408",
+      "customerItemNumber": null,
+      "unitOfMeasure": "CA",
+      "itemsPerUnit": "0006",
+      "taxes": "000689",
+      "catchWeightFlag": "0",
+      "BrokenCaseCode": "0",
+      "itemNonStockIndicator": "0"
+    },
+    {
+      "recordID": "OIN_DTL2",
+      "invoiceNumber": "9032133129",
+      "itemDescription": "HASHBROWN POTATO DCD SAVOURY S/ON"
+    },
+    {
+      "recordID": "OIN_DTL3",
+      "invoiceNumber": "9032133129",
+      "quantityOrdered": "0000001",
+      "quantityShipped": "0000001",
+      "quantityDifference": "0000000",
+      "lotNumber": "000000000000006",
+      "productionDayCodeSubCode": "890",
+      "priceQuantity": null,
+      "priceUnitOfMeasure": null,
+      "unitGrossWeight": "",
+      "unitNetWeight": "000000000014"
+    },
+    {
+      "recordID": "OIN_DTL4",
+      "invoiceNumber": "9032133129",
+      "vendorNumber": "727791143",
+      "vendorName": "McCain Foods Portage",
+      "vendorItemNumber": "402440",
+      "classNumber": "2",
+      "classDescription": "Frozen",
+      "priceBookHeading": "14020",
+      "pricebookHeadingDescription": "FZN Potato & French Fr"
+    },
+    {
+      "recordID": "OIN_DTL5",
+      "invoiceNumber": "9032133129",
+      "priceBookFamilyNumber": null,
+      "priceBookFamilyDescription": null,
+      "brand": "McCain",
+      "pack": "0006",
+      "size": "5LB",
+      "servingsPerCase": "00000",
+      "servingsPerCaseUOM": null,
+      "caseUPCNumber": "10055773024408",
+      "vendorUPCNumber": "402440",
+      "unitUPCNumber": null
+    },
+    {
+      "recordID": "OIN_DTL6",
+      "orderGuideCategory": "99999",
+      "orderGuideCategoryDes": null,
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL7",
+      "invoiceNumber": "9032133129",
+      "extraItemDescription2": "",
+      "extraItemDescription3": "",
+      "vendorPhoneNumber": ""
+    },
+    {
+      "recordID": "OIN_DTL8",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL9",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL11",
+      "invoiceNumber": "9032133129",
+      "creditCode": "",
+      "creditCodeDescription": ""
+    },
+    {
+      "recordID": "OIN_DTL1",
+      "invoiceNumber": "9032133129",
+      "lineNumber": "260",
+      "distributorItemNumber": "1005670",
+      "uPCQualifier": "UP",
+      "uPCEANNumber": "10032100087671",
+      "customerItemNumber": null,
+      "unitOfMeasure": "CA",
+      "itemsPerUnit": "0003",
+      "taxes": "000721",
+      "catchWeightFlag": "7",
+      "BrokenCaseCode": "0",
+      "itemNonStockIndicator": "0"
+    },
+    {
+      "recordID": "OIN_DTL2",
+      "invoiceNumber": "9032133129",
+      "itemDescription": "MUFFIN MINI VAR PAK TFC"
+    },
+    {
+      "recordID": "OIN_DTL3",
+      "invoiceNumber": "9032133129",
+      "quantityOrdered": "0000001",
+      "quantityShipped": "0000001",
+      "quantityDifference": "0000000",
+      "lotNumber": "000000000000007",
+      "productionDayCodeSubCode": "217",
+      "priceQuantity": null,
+      "priceUnitOfMeasure": null,
+      "unitGrossWeight": "",
+      "unitNetWeight": "000000000005"
+    },
+    {
+      "recordID": "OIN_DTL4",
+      "invoiceNumber": "9032133129",
+      "vendorNumber": "727795599",
+      "vendorName": "Dot Foods FZN",
+      "vendorItemNumber": "8767",
+      "classNumber": "2",
+      "classDescription": "Frozen",
+      "priceBookHeading": "14060",
+      "pricebookHeadingDescription": "FZN Muffins & Mixes"
+    },
+    {
+      "recordID": "OIN_DTL5",
+      "invoiceNumber": "9032133129",
+      "priceBookFamilyNumber": null,
+      "priceBookFamilyDescription": null,
+      "brand": "Chef Pierre",
+      "pack": "0003",
+      "size": "54UN",
+      "servingsPerCase": "00000",
+      "servingsPerCaseUOM": null,
+      "caseUPCNumber": "10032100087671",
+      "vendorUPCNumber": "8767",
+      "unitUPCNumber": null
+    },
+    {
+      "recordID": "OIN_DTL6",
+      "orderGuideCategory": "99999",
+      "orderGuideCategoryDes": null,
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL7",
+      "invoiceNumber": "9032133129",
+      "extraItemDescription2": "",
+      "extraItemDescription3": "",
+      "vendorPhoneNumber": ""
+    },
+    {
+      "recordID": "OIN_DTL8",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL9",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL11",
+      "invoiceNumber": "9032133129",
+      "creditCode": "",
+      "creditCodeDescription": ""
+    },
+    {
+      "recordID": "OIN_DTL1",
+      "invoiceNumber": "9032133129",
+      "lineNumber": "300",
+      "distributorItemNumber": "1114625",
+      "uPCQualifier": "UP",
+      "uPCEANNumber": "10055577101015",
+      "customerItemNumber": null,
+      "unitOfMeasure": "CA",
+      "itemsPerUnit": "0012",
+      "taxes": "000543",
+      "catchWeightFlag": "6",
+      "BrokenCaseCode": "0",
+      "itemNonStockIndicator": "0"
+    },
+    {
+      "recordID": "OIN_DTL2",
+      "invoiceNumber": "9032133129",
+      "itemDescription": "CEREAL OATMEAL LRG FLAKE TFC"
+    },
+    {
+      "recordID": "OIN_DTL3",
+      "invoiceNumber": "9032133129",
+      "quantityOrdered": "0000001",
+      "quantityShipped": "0000001",
+      "quantityDifference": "0000000",
+      "lotNumber": "000000000000005",
+      "productionDayCodeSubCode": "436",
+      "priceQuantity": null,
+      "priceUnitOfMeasure": null,
+      "unitGrossWeight": "",
+      "unitNetWeight": "000000000012"
+    },
+    {
+      "recordID": "OIN_DTL4",
+      "invoiceNumber": "9032133129",
+      "vendorNumber": "727795794",
+      "vendorName": "Pepsi QTG Can Quaker DRY",
+      "vendorItemNumber": "10101",
+      "classNumber": "1",
+      "classDescription": "Grocery",
+      "priceBookHeading": "10350",
+      "pricebookHeadingDescription": "Cereals: Hot Or Cold"
+    },
+    {
+      "recordID": "OIN_DTL5",
+      "invoiceNumber": "9032133129",
+      "priceBookFamilyNumber": null,
+      "priceBookFamilyDescription": null,
+      "brand": "Quaker",
+      "pack": "0012",
+      "size": "1KG",
+      "servingsPerCase": "00000",
+      "servingsPerCaseUOM": null,
+      "caseUPCNumber": "10055577101015",
+      "vendorUPCNumber": "10101",
+      "unitUPCNumber": null
+    },
+    {
+      "recordID": "OIN_DTL6",
+      "orderGuideCategory": "99999",
+      "orderGuideCategoryDes": null,
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL7",
+      "invoiceNumber": "9032133129",
+      "extraItemDescription2": "",
+      "extraItemDescription3": "",
+      "vendorPhoneNumber": ""
+    },
+    {
+      "recordID": "OIN_DTL8",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL9",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL11",
+      "invoiceNumber": "9032133129",
+      "creditCode": "",
+      "creditCodeDescription": ""
+    },
+    {
+      "recordID": "OIN_DTL1",
+      "invoiceNumber": "9032133129",
+      "lineNumber": "100",
+      "distributorItemNumber": "1503283",
+      "uPCQualifier": "UP",
+      "uPCEANNumber": "00059724103061",
+      "customerItemNumber": null,
+      "unitOfMeasure": "CA",
+      "itemsPerUnit": "0004",
+      "taxes": "000534",
+      "catchWeightFlag": "2",
+      "BrokenCaseCode": "0",
+      "itemNonStockIndicator": "0"
+    },
+    {
+      "recordID": "OIN_DTL2",
+      "invoiceNumber": "9032133129",
+      "itemDescription": "CEREAL SPECIAL K GRANOLA L/FAT"
+    },
+    {
+      "recordID": "OIN_DTL3",
+      "invoiceNumber": "9032133129",
+      "quantityOrdered": "0000001",
+      "quantityShipped": "0000001",
+      "quantityDifference": "0000000",
+      "lotNumber": "000000000000005",
+      "productionDayCodeSubCode": "342",
+      "priceQuantity": null,
+      "priceUnitOfMeasure": null,
+      "unitGrossWeight": "",
+      "unitNetWeight": "000000000000"
+    },
+    {
+      "recordID": "OIN_DTL4",
+      "invoiceNumber": "9032133129",
+      "vendorNumber": "727828958",
+      "vendorName": "Dot Foods CAL W.K. Kellog",
+      "vendorItemNumber": "789949",
+      "classNumber": "1",
+      "classDescription": "Grocery",
+      "priceBookHeading": "10350",
+      "pricebookHeadingDescription": "Cereals: Hot Or Cold"
+    },
+    {
+      "recordID": "OIN_DTL5",
+      "invoiceNumber": "9032133129",
+      "priceBookFamilyNumber": null,
+      "priceBookFamilyDescription": null,
+      "brand": "Kellogg's",
+      "pack": "0004",
+      "size": "1.4KG",
+      "servingsPerCase": "00000",
+      "servingsPerCaseUOM": null,
+      "caseUPCNumber": "00059724103061",
+      "vendorUPCNumber": "789949",
+      "unitUPCNumber": null
+    },
+    {
+      "recordID": "OIN_DTL6",
+      "orderGuideCategory": "99999",
+      "orderGuideCategoryDes": null,
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL7",
+      "invoiceNumber": "9032133129",
+      "extraItemDescription2": "5196175410",
+      "extraItemDescription3": "",
+      "vendorPhoneNumber": ""
+    },
+    {
+      "recordID": "OIN_DTL8",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL9",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL11",
+      "invoiceNumber": "9032133129",
+      "creditCode": "",
+      "creditCodeDescription": ""
+    },
+    {
+      "recordID": "OIN_DTL1",
+      "invoiceNumber": "9032133129",
+      "lineNumber": "80",
+      "distributorItemNumber": "7615005",
+      "uPCQualifier": "UP",
+      "uPCEANNumber": "00620868579946",
+      "customerItemNumber": null,
+      "unitOfMeasure": "CA",
+      "itemsPerUnit": "0001",
+      "taxes": "000839",
+      "catchWeightFlag": "5",
+      "BrokenCaseCode": "0",
+      "itemNonStockIndicator": "0"
+    },
+    {
+      "recordID": "OIN_DTL2",
+      "invoiceNumber": "9032133129",
+      "itemDescription": "CHIP CHOC MED COMPOUND 1000CT"
+    },
+    {
+      "recordID": "OIN_DTL3",
+      "invoiceNumber": "9032133129",
+      "quantityOrdered": "0000001",
+      "quantityShipped": "0000001",
+      "quantityDifference": "0000000",
+      "lotNumber": "000000000000008",
+      "productionDayCodeSubCode": "395",
+      "priceQuantity": null,
+      "priceUnitOfMeasure": null,
+      "unitGrossWeight": "",
+      "unitNetWeight": "000000000008"
+    },
+    {
+      "recordID": "OIN_DTL4",
+      "invoiceNumber": "9032133129",
+      "vendorNumber": "727795087",
+      "vendorName": "Trophy Foods",
+      "vendorItemNumber": "57994",
+      "classNumber": "1",
+      "classDescription": "Grocery",
+      "priceBookHeading": "10300",
+      "pricebookHeadingDescription": "Baking Ingred Mixes Choc"
+    },
+    {
+      "recordID": "OIN_DTL5",
+      "invoiceNumber": "9032133129",
+      "priceBookFamilyNumber": null,
+      "priceBookFamilyDescription": null,
+      "brand": "Gordon Choice",
+      "pack": "0001",
+      "size": "8KG",
+      "servingsPerCase": "00000",
+      "servingsPerCaseUOM": null,
+      "caseUPCNumber": "00620868579946",
+      "vendorUPCNumber": "57994",
+      "unitUPCNumber": null
+    },
+    {
+      "recordID": "OIN_DTL6",
+      "orderGuideCategory": "99999",
+      "orderGuideCategoryDes": null,
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL7",
+      "invoiceNumber": "9032133129",
+      "extraItemDescription2": "",
+      "extraItemDescription3": "",
+      "vendorPhoneNumber": ""
+    },
+    {
+      "recordID": "OIN_DTL8",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL9",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL11",
+      "invoiceNumber": "9032133129",
+      "creditCode": "",
+      "creditCodeDescription": ""
+    },
+    {
+      "recordID": "OIN_DTL1",
+      "invoiceNumber": "9032133129",
+      "lineNumber": "20",
+      "distributorItemNumber": "1192847",
+      "uPCQualifier": "UP",
+      "uPCEANNumber": "10824024004175",
+      "customerItemNumber": null,
+      "unitOfMeasure": "CA",
+      "itemsPerUnit": "0001",
+      "taxes": "001551",
+      "catchWeightFlag": "5",
+      "BrokenCaseCode": "0",
+      "itemNonStockIndicator": "0"
+    },
+    {
+      "recordID": "OIN_DTL2",
+      "invoiceNumber": "9032133129",
+      "itemDescription": "CUP PLAS CL 9Z PET"
+    },
+    {
+      "recordID": "OIN_DTL3",
+      "invoiceNumber": "9032133129",
+      "quantityOrdered": "0000001",
+      "quantityShipped": "0000001",
+      "quantityDifference": "0000000",
+      "lotNumber": "000000000000015",
+      "productionDayCodeSubCode": "515",
+      "priceQuantity": null,
+      "priceUnitOfMeasure": null,
+      "unitGrossWeight": "",
+      "unitNetWeight": "000000000008"
+    },
+    {
+      "recordID": "OIN_DTL4",
+      "invoiceNumber": "9032133129",
+      "vendorNumber": "727786044",
+      "vendorName": "Stone Straw Ltd.",
+      "vendorItemNumber": "APC9",
+      "classNumber": "7",
+      "classDescription": "Disposables",
+      "priceBookHeading": "21120",
+      "pricebookHeadingDescription": "Containers: Plastic"
+    },
+    {
+      "recordID": "OIN_DTL5",
+      "invoiceNumber": "9032133129",
+      "priceBookFamilyNumber": null,
+      "priceBookFamilyDescription": null,
+      "brand": "Stone Straw",
+      "pack": "0001",
+      "size": "1000UN",
+      "servingsPerCase": "00000",
+      "servingsPerCaseUOM": null,
+      "caseUPCNumber": "10824024004175",
+      "vendorUPCNumber": "APC9",
+      "unitUPCNumber": null
+    },
+    {
+      "recordID": "OIN_DTL6",
+      "orderGuideCategory": "99999",
+      "orderGuideCategoryDes": null,
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL7",
+      "invoiceNumber": "9032133129",
+      "extraItemDescription2": "",
+      "extraItemDescription3": "",
+      "vendorPhoneNumber": ""
+    },
+    {
+      "recordID": "OIN_DTL8",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL9",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL11",
+      "invoiceNumber": "9032133129",
+      "creditCode": "",
+      "creditCodeDescription": ""
+    },
+    {
+      "recordID": "OIN_SACD1",
+      "allowChargeIndicator": "C",
+      "allowChargeCode": "H740",
+      "percentQualifier": "0",
+      "percent": "000000",
+      "ignore": "00000776 000500",
+      "allowChargeHandlingCode": null,
+      "referenceID": "06",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_SACD2",
+      "allowChargeDesc": "Tax - Sales and Use",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_SACD1",
+      "allowChargeIndicator": "C",
+      "allowChargeCode": "D360",
+      "percentQualifier": "0",
+      "percent": "000000",
+      "ignore": "00000776 000500",
+      "allowChargeHandlingCode": null,
+      "referenceID": "06",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_SACD2",
+      "allowChargeDesc": "GST",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL1",
+      "invoiceNumber": "9032133129",
+      "lineNumber": "60",
+      "distributorItemNumber": "5316758",
+      "uPCQualifier": "UP",
+      "uPCEANNumber": "10051500045319",
+      "customerItemNumber": null,
+      "unitOfMeasure": "CA",
+      "itemsPerUnit": "0200",
+      "taxes": "000189",
+      "catchWeightFlag": "9",
+      "BrokenCaseCode": "0",
+      "itemNonStockIndicator": "0"
+    },
+    {
+      "recordID": "OIN_DTL2",
+      "invoiceNumber": "9032133129",
+      "itemDescription": "JAM STRAWB PECTIN PORT"
+    },
+    {
+      "recordID": "OIN_DTL3",
+      "invoiceNumber": "9032133129",
+      "quantityOrdered": "0000002",
+      "quantityShipped": "0000002",
+      "quantityDifference": "0000000",
+      "lotNumber": "000000000000003",
+      "productionDayCodeSubCode": "798",
+      "priceQuantity": null,
+      "priceUnitOfMeasure": null,
+      "unitGrossWeight": "",
+      "unitNetWeight": "000000000003"
+    },
+    {
+      "recordID": "OIN_DTL4",
+      "invoiceNumber": "9032133129",
+      "vendorNumber": "727810903",
+      "vendorName": "Smucker Foods Of Canada",
+      "vendorItemNumber": "5150004531",
+      "classNumber": "1",
+      "classDescription": "Grocery",
+      "priceBookHeading": "10330",
+      "pricebookHeadingDescription": "S/S Condiments Dressings"
+    },
+    {
+      "recordID": "OIN_DTL5",
+      "invoiceNumber": "9032133129",
+      "priceBookFamilyNumber": null,
+      "priceBookFamilyDescription": null,
+      "brand": "Good Morning",
+      "pack": "0200",
+      "size": "10ML",
+      "servingsPerCase": "00000",
+      "servingsPerCaseUOM": null,
+      "caseUPCNumber": "10051500045319",
+      "vendorUPCNumber": "5150004531",
+      "unitUPCNumber": null
+    },
+    {
+      "recordID": "OIN_DTL6",
+      "orderGuideCategory": "99999",
+      "orderGuideCategoryDes": null,
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL7",
+      "invoiceNumber": "9032133129",
+      "extraItemDescription2": "",
+      "extraItemDescription3": "",
+      "vendorPhoneNumber": ""
+    },
+    {
+      "recordID": "OIN_DTL8",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL9",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL11",
+      "invoiceNumber": "9032133129",
+      "creditCode": "",
+      "creditCodeDescription": ""
+    },
+    {
+      "recordID": "OIN_DTL1",
+      "invoiceNumber": "9032133129",
+      "lineNumber": "310",
+      "distributorItemNumber": "8881007",
+      "uPCQualifier": "UP",
+      "uPCEANNumber": "00620868144441",
+      "customerItemNumber": null,
+      "unitOfMeasure": "CA",
+      "itemsPerUnit": "0008",
+      "taxes": "000435",
+      "catchWeightFlag": "7",
+      "BrokenCaseCode": "0",
+      "itemNonStockIndicator": "0"
+    },
+    {
+      "recordID": "OIN_DTL2",
+      "invoiceNumber": "9032133129",
+      "itemDescription": "JIT BREAD FRSH WW SAND 5/8IN SLCD TFC"
+    },
+    {
+      "recordID": "OIN_DTL3",
+      "invoiceNumber": "9032133129",
+      "quantityOrdered": "0000001",
+      "quantityShipped": "0000001",
+      "quantityDifference": "0000000",
+      "lotNumber": "000000000000004",
+      "productionDayCodeSubCode": "357",
+      "priceQuantity": null,
+      "priceUnitOfMeasure": null,
+      "unitGrossWeight": "",
+      "unitNetWeight": "000000000000"
+    },
+    {
+      "recordID": "OIN_DTL4",
+      "invoiceNumber": "9032133129",
+      "vendorNumber": "727792928",
+      "vendorName": "Island City DRY 0DY",
+      "vendorItemNumber": "5028",
+      "classNumber": "2",
+      "classDescription": "Frozen",
+      "priceBookHeading": "14135",
+      "pricebookHeadingDescription": "Fresh Breads & Rolls"
+    },
+    {
+      "recordID": "OIN_DTL5",
+      "invoiceNumber": "9032133129",
+      "priceBookFamilyNumber": null,
+      "priceBookFamilyDescription": null,
+      "brand": "Gordon Choice",
+      "pack": "0008",
+      "size": "1100G",
+      "servingsPerCase": "00000",
+      "servingsPerCaseUOM": null,
+      "caseUPCNumber": "00620868144441",
+      "vendorUPCNumber": "5028",
+      "unitUPCNumber": null
+    },
+    {
+      "recordID": "OIN_DTL6",
+      "orderGuideCategory": "99999",
+      "orderGuideCategoryDes": null,
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL7",
+      "invoiceNumber": "9032133129",
+      "extraItemDescription2": "",
+      "extraItemDescription3": "",
+      "vendorPhoneNumber": ""
+    },
+    {
+      "recordID": "OIN_DTL8",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL9",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL11",
+      "invoiceNumber": "9032133129",
+      "creditCode": "",
+      "creditCodeDescription": ""
+    },
+    {
+      "recordID": "OIN_DTL1",
+      "invoiceNumber": "9032133129",
+      "lineNumber": "90",
+      "distributorItemNumber": "1324483",
+      "uPCQualifier": "UP",
+      "uPCEANNumber": "00011100891160",
+      "customerItemNumber": null,
+      "unitOfMeasure": "CA",
+      "itemsPerUnit": "0003",
+      "taxes": "001180",
+      "catchWeightFlag": "6",
+      "BrokenCaseCode": "0",
+      "itemNonStockIndicator": "0"
+    },
+    {
+      "recordID": "OIN_DTL2",
+      "invoiceNumber": "9032133129",
+      "itemDescription": "JUICE APPLE 100PCT CONC 7+1"
+    },
+    {
+      "recordID": "OIN_DTL3",
+      "invoiceNumber": "9032133129",
+      "quantityOrdered": "0000001",
+      "quantityShipped": "0000001",
+      "quantityDifference": "0000000",
+      "lotNumber": "000000000000011",
+      "productionDayCodeSubCode": "806",
+      "priceQuantity": null,
+      "priceUnitOfMeasure": null,
+      "unitGrossWeight": "",
+      "unitNetWeight": "000000000001"
+    },
+    {
+      "recordID": "OIN_DTL4",
+      "invoiceNumber": "9032133129",
+      "vendorNumber": "727833088",
+      "vendorName": "Nestle Canada Hopewell DR",
+      "vendorItemNumber": "12338781",
+      "classNumber": "9",
+      "classDescription": "Beverage",
+      "priceBookHeading": "13030",
+      "pricebookHeadingDescription": "Branded Dispensed Juice"
+    },
+    {
+      "recordID": "OIN_DTL5",
+      "invoiceNumber": "9032133129",
+      "priceBookFamilyNumber": null,
+      "priceBookFamilyDescription": null,
+      "brand": "Sunsational",
+      "pack": "0003",
+      "size": "3L",
+      "servingsPerCase": "00000",
+      "servingsPerCaseUOM": null,
+      "caseUPCNumber": "00011100891160",
+      "vendorUPCNumber": "12338781",
+      "unitUPCNumber": null
+    },
+    {
+      "recordID": "OIN_DTL6",
+      "orderGuideCategory": "99999",
+      "orderGuideCategoryDes": null,
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL7",
+      "invoiceNumber": "9032133129",
+      "extraItemDescription2": "8005383545",
+      "extraItemDescription3": "",
+      "vendorPhoneNumber": ""
+    },
+    {
+      "recordID": "OIN_DTL8",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL9",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL11",
+      "invoiceNumber": "9032133129",
+      "creditCode": "",
+      "creditCodeDescription": ""
+    },
+    {
+      "recordID": "OIN_DTL1",
+      "invoiceNumber": "9032133129",
+      "lineNumber": "50",
+      "distributorItemNumber": "1286307",
+      "uPCQualifier": "UP",
+      "uPCEANNumber": "00068100898187",
+      "customerItemNumber": null,
+      "unitOfMeasure": "CA",
+      "itemsPerUnit": "0200",
+      "taxes": "000443",
+      "catchWeightFlag": "4",
+      "BrokenCaseCode": "0",
+      "itemNonStockIndicator": "0"
+    },
+    {
+      "recordID": "OIN_DTL2",
+      "invoiceNumber": "9032133129",
+      "itemDescription": "PEANUT BUTTER PORT"
+    },
+    {
+      "recordID": "OIN_DTL3",
+      "invoiceNumber": "9032133129",
+      "quantityOrdered": "0000002",
+      "quantityShipped": "0000002",
+      "quantityDifference": "0000000",
+      "lotNumber": "000000000000008",
+      "productionDayCodeSubCode": "868",
+      "priceQuantity": null,
+      "priceUnitOfMeasure": null,
+      "unitGrossWeight": "",
+      "unitNetWeight": "000000000004"
+    },
+    {
+      "recordID": "OIN_DTL4",
+      "invoiceNumber": "9032133129",
+      "vendorNumber": "727784430",
+      "vendorName": "Kraft Heinz Canada Milton",
+      "vendorItemNumber": "0006810089",
+      "classNumber": "1",
+      "classDescription": "Grocery",
+      "priceBookHeading": "10330",
+      "pricebookHeadingDescription": "S/S Condiments Dressings"
+    },
+    {
+      "recordID": "OIN_DTL5",
+      "invoiceNumber": "9032133129",
+      "priceBookFamilyNumber": null,
+      "priceBookFamilyDescription": null,
+      "brand": "Kraft",
+      "pack": "0200",
+      "size": "18G",
+      "servingsPerCase": "00000",
+      "servingsPerCaseUOM": null,
+      "caseUPCNumber": "00068100898187",
+      "vendorUPCNumber": "00068100898187",
+      "unitUPCNumber": null
+    },
+    {
+      "recordID": "OIN_DTL6",
+      "orderGuideCategory": "99999",
+      "orderGuideCategoryDes": null,
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL7",
+      "invoiceNumber": "9032133129",
+      "extraItemDescription2": "",
+      "extraItemDescription3": "",
+      "vendorPhoneNumber": ""
+    },
+    {
+      "recordID": "OIN_DTL8",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL9",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL11",
+      "invoiceNumber": "9032133129",
+      "creditCode": "",
+      "creditCodeDescription": ""
+    },
+    {
+      "recordID": "OIN_DTL1",
+      "invoiceNumber": "9032133129",
+      "lineNumber": "390",
+      "distributorItemNumber": "1279989",
+      "uPCQualifier": "UP",
+      "uPCEANNumber": "00025469027511",
+      "customerItemNumber": null,
+      "unitOfMeasure": "CA",
+      "itemsPerUnit": "0001",
+      "taxes": "002470",
+      "catchWeightFlag": "1",
+      "BrokenCaseCode": "0",
+      "itemNonStockIndicator": "0"
+    },
+    {
+      "recordID": "OIN_DTL2",
+      "invoiceNumber": "9032133129",
+      "itemDescription": "PRESOAK DISH LIQ DISP CPS-490"
+    },
+    {
+      "recordID": "OIN_DTL3",
+      "invoiceNumber": "9032133129",
+      "quantityOrdered": "0000001",
+      "quantityShipped": "0000001",
+      "quantityDifference": "0000000",
+      "lotNumber": "000000000000024",
+      "productionDayCodeSubCode": "701",
+      "priceQuantity": null,
+      "priceUnitOfMeasure": null,
+      "unitGrossWeight": "",
+      "unitNetWeight": "000000000002"
+    },
+    {
+      "recordID": "OIN_DTL4",
+      "invoiceNumber": "9032133129",
+      "vendorNumber": "727792134",
+      "vendorName": "Ecolab Ltd. Reg",
+      "vendorItemNumber": "6101058",
+      "classNumber": "8",
+      "classDescription": "Chemical",
+      "priceBookHeading": "22050",
+      "pricebookHeadingDescription": "Delimers & Presoaks"
+    },
+    {
+      "recordID": "OIN_DTL5",
+      "invoiceNumber": "9032133129",
+      "priceBookFamilyNumber": null,
+      "priceBookFamilyDescription": null,
+      "brand": "Ecolab",
+      "pack": "0001",
+      "size": "18.9L",
+      "servingsPerCase": "00000",
+      "servingsPerCaseUOM": null,
+      "caseUPCNumber": "00025469027511",
+      "vendorUPCNumber": "6101058",
+      "unitUPCNumber": null
+    },
+    {
+      "recordID": "OIN_DTL6",
+      "orderGuideCategory": "99999",
+      "orderGuideCategoryDes": null,
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL7",
+      "invoiceNumber": "9032133129",
+      "extraItemDescription2": "",
+      "extraItemDescription3": "",
+      "vendorPhoneNumber": ""
+    },
+    {
+      "recordID": "OIN_DTL8",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL9",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL11",
+      "invoiceNumber": "9032133129",
+      "creditCode": "",
+      "creditCodeDescription": ""
+    },
+    {
+      "recordID": "OIN_SACD1",
+      "allowChargeIndicator": "C",
+      "allowChargeCode": "H740",
+      "percentQualifier": "0",
+      "percent": "000000",
+      "ignore": "00002964 001200",
+      "allowChargeHandlingCode": null,
+      "referenceID": "06",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_SACD2",
+      "allowChargeDesc": "Tax - Sales and Use",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_SACD1",
+      "allowChargeIndicator": "C",
+      "allowChargeCode": "D360",
+      "percentQualifier": "0",
+      "percent": "000000",
+      "ignore": "00001235 000500",
+      "allowChargeHandlingCode": null,
+      "referenceID": "06",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_SACD2",
+      "allowChargeDesc": "GST",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_SACD1",
+      "allowChargeIndicator": "C",
+      "allowChargeCode": "H770",
+      "percentQualifier": "0",
+      "percent": "000000",
+      "ignore": "00001729 000700",
+      "allowChargeHandlingCode": null,
+      "referenceID": "06",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_SACD2",
+      "allowChargeDesc": "PST",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL1",
+      "invoiceNumber": "9032133129",
+      "lineNumber": "10",
+      "distributorItemNumber": "2320005",
+      "uPCQualifier": "UP",
+      "uPCEANNumber": "10041565341709",
+      "customerItemNumber": null,
+      "unitOfMeasure": "CA",
+      "itemsPerUnit": "0004",
+      "taxes": "000891",
+      "catchWeightFlag": "0",
+      "BrokenCaseCode": "0",
+      "itemNonStockIndicator": "0"
+    },
+    {
+      "recordID": "OIN_DTL2",
+      "invoiceNumber": "9032133129",
+      "itemDescription": "SALSA MED THICK AND CHUNKY"
+    },
+    {
+      "recordID": "OIN_DTL3",
+      "invoiceNumber": "9032133129",
+      "quantityOrdered": "0000001",
+      "quantityShipped": "0000001",
+      "quantityDifference": "0000000",
+      "lotNumber": "000000000000008",
+      "productionDayCodeSubCode": "910",
+      "priceQuantity": null,
+      "priceUnitOfMeasure": null,
+      "unitGrossWeight": "",
+      "unitNetWeight": "000000000001"
+    },
+    {
+      "recordID": "OIN_DTL4",
+      "invoiceNumber": "9032133129",
+      "vendorNumber": "727831288",
+      "vendorName": "Campbell Co. Of Canada DR",
+      "vendorItemNumber": "34170",
+      "classNumber": "1",
+      "classDescription": "Grocery",
+      "priceBookHeading": "10090",
+      "pricebookHeadingDescription": "Mexican Foods"
+    },
+    {
+      "recordID": "OIN_DTL5",
+      "invoiceNumber": "9032133129",
+      "priceBookFamilyNumber": null,
+      "priceBookFamilyDescription": null,
+      "brand": "Pace",
+      "pack": "0004",
+      "size": "3.7L",
+      "servingsPerCase": "00000",
+      "servingsPerCaseUOM": null,
+      "caseUPCNumber": "10041565341709",
+      "vendorUPCNumber": "34170",
+      "unitUPCNumber": null
+    },
+    {
+      "recordID": "OIN_DTL6",
+      "orderGuideCategory": "99999",
+      "orderGuideCategoryDes": null,
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL7",
+      "invoiceNumber": "9032133129",
+      "extraItemDescription2": "8004107687",
+      "extraItemDescription3": "",
+      "vendorPhoneNumber": ""
+    },
+    {
+      "recordID": "OIN_DTL8",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL9",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL11",
+      "invoiceNumber": "9032133129",
+      "creditCode": "",
+      "creditCodeDescription": ""
+    },
+    {
+      "recordID": "OIN_DTL1",
+      "invoiceNumber": "9032133129",
+      "lineNumber": "220",
+      "distributorItemNumber": "1424659",
+      "uPCQualifier": "UP",
+      "uPCEANNumber": "10620868210747",
+      "customerItemNumber": null,
+      "unitOfMeasure": "CA",
+      "itemsPerUnit": "0006",
+      "taxes": "000433",
+      "catchWeightFlag": "3",
+      "BrokenCaseCode": "0",
+      "itemNonStockIndicator": "0"
+    },
+    {
+      "recordID": "OIN_DTL2",
+      "invoiceNumber": "9032133129",
+      "itemDescription": "SPRAY CANOLA OIL LT NONSTICK PAN"
+    },
+    {
+      "recordID": "OIN_DTL3",
+      "invoiceNumber": "9032133129",
+      "quantityOrdered": "0000001",
+      "quantityShipped": "0000001",
+      "quantityDifference": "0000000",
+      "lotNumber": "000000000000004",
+      "productionDayCodeSubCode": "333",
+      "priceQuantity": null,
+      "priceUnitOfMeasure": null,
+      "unitGrossWeight": "",
+      "unitNetWeight": "000000000003"
+    },
+    {
+      "recordID": "OIN_DTL4",
+      "invoiceNumber": "9032133129",
+      "vendorNumber": "727794859",
+      "vendorName": "Paradise Marketing",
+      "vendorItemNumber": "1000045381",
+      "classNumber": "1",
+      "classDescription": "Grocery",
+      "priceBookHeading": "10220",
+      "pricebookHeadingDescription": "Pan Coatings"
+    },
+    {
+      "recordID": "OIN_DTL5",
+      "invoiceNumber": "9032133129",
+      "priceBookFamilyNumber": null,
+      "priceBookFamilyDescription": null,
+      "brand": "Gordon Choice",
+      "pack": "0006",
+      "size": "17OZ",
+      "servingsPerCase": "00000",
+      "servingsPerCaseUOM": null,
+      "caseUPCNumber": "10620868210747",
+      "vendorUPCNumber": "1000045381",
+      "unitUPCNumber": null
+    },
+    {
+      "recordID": "OIN_DTL6",
+      "orderGuideCategory": "99999",
+      "orderGuideCategoryDes": null,
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL7",
+      "invoiceNumber": "9032133129",
+      "extraItemDescription2": "",
+      "extraItemDescription3": "",
+      "vendorPhoneNumber": ""
+    },
+    {
+      "recordID": "OIN_DTL8",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL9",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL11",
+      "invoiceNumber": "9032133129",
+      "creditCode": "",
+      "creditCodeDescription": ""
+    },
+    {
+      "recordID": "OIN_DTL1",
+      "invoiceNumber": "9032133129",
+      "lineNumber": "40",
+      "distributorItemNumber": "1499748",
+      "uPCQualifier": "UP",
+      "uPCEANNumber": "10794522005250",
+      "customerItemNumber": null,
+      "unitOfMeasure": "CA",
+      "itemsPerUnit": "0006",
+      "taxes": "000273",
+      "catchWeightFlag": "1",
+      "BrokenCaseCode": "0",
+      "itemNonStockIndicator": "0"
+    },
+    {
+      "recordID": "OIN_DTL2",
+      "invoiceNumber": "9032133129",
+      "itemDescription": "TEA BLK ENG BRKFST FULL BODIED"
+    },
+    {
+      "recordID": "OIN_DTL3",
+      "invoiceNumber": "9032133129",
+      "quantityOrdered": "0000001",
+      "quantityShipped": "0000001",
+      "quantityDifference": "0000000",
+      "lotNumber": "000000000000002",
+      "productionDayCodeSubCode": "731",
+      "priceQuantity": null,
+      "priceUnitOfMeasure": null,
+      "unitGrossWeight": "",
+      "unitNetWeight": "000000000000"
+    },
+    {
+      "recordID": "OIN_DTL4",
+      "invoiceNumber": "9032133129",
+      "vendorNumber": "727823460",
+      "vendorName": "Lipton Teas and Infusions",
+      "vendorItemNumber": "69766591",
+      "classNumber": "9",
+      "classDescription": "Beverage",
+      "priceBookHeading": "13150",
+      "pricebookHeadingDescription": "Branded Cocoa & Tea"
+    },
+    {
+      "recordID": "OIN_DTL5",
+      "invoiceNumber": "9032133129",
+      "priceBookFamilyNumber": null,
+      "priceBookFamilyDescription": null,
+      "brand": "Lipton",
+      "pack": "0006",
+      "size": "28UN",
+      "servingsPerCase": "00000",
+      "servingsPerCaseUOM": null,
+      "caseUPCNumber": "10794522005250",
+      "vendorUPCNumber": "69766591",
+      "unitUPCNumber": null
+    },
+    {
+      "recordID": "OIN_DTL6",
+      "orderGuideCategory": "99999",
+      "orderGuideCategoryDes": null,
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL7",
+      "invoiceNumber": "9032133129",
+      "extraItemDescription2": "9739193381",
+      "extraItemDescription3": "",
+      "vendorPhoneNumber": ""
+    },
+    {
+      "recordID": "OIN_DTL8",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL9",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_DTL11",
+      "invoiceNumber": "9032133129",
+      "creditCode": "",
+      "creditCodeDescription": ""
+    },
+    {
+      "recordID": "OIN_TTL1",
+      "invoiceNumber": "9032133129",
+      "lineCount": "35",
+      "itemCount": "0000058",
+      "totalWeight": "0410640",
+      "extendedFeeAmount": "000314336",
+      "extendedDiscountAmount": "0003194",
+      "extendedInventoryTax": "83000001",
+      "bottleDeposit": "7690000"
+    },
+    {
+      "recordID": "OIN_SACS1",
+      "allowChargeIndicator": "C",
+      "allowChargeCode": "H740",
+      "percentQualifier": "0",
+      "percent": "000000",
+      "ignore": "00003805 000700",
+      "allowChargeHandlingCode": null,
+      "referenceID": "06SUMMARY TAX",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_SACS2",
+      "allowChargeDesc": "Tax - Sales and Use",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_SACS1",
+      "allowChargeIndicator": "C",
+      "allowChargeCode": "D260",
+      "percentQualifier": "0",
+      "percent": "000000",
+      "ignore": "00001300 000000",
+      "allowChargeHandlingCode": null,
+      "referenceID": "06",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_SACS2",
+      "allowChargeDesc": "Fuel Charge",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_SACS1",
+      "allowChargeIndicator": "C",
+      "allowChargeCode": "D360",
+      "percentQualifier": "0",
+      "percent": "000000",
+      "ignore": "00000065 000000",
+      "allowChargeHandlingCode": null,
+      "referenceID": "06",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_SACS2",
+      "allowChargeDesc": "GST",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_SACS1",
+      "allowChargeIndicator": "C",
+      "allowChargeCode": "C090",
+      "percentQualifier": "0",
+      "percent": "000000",
+      "ignore": "00000003 000000",
+      "allowChargeHandlingCode": null,
+      "referenceID": "06",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_SACS2",
+      "allowChargeDesc": "Ecology Fees",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_SACS1",
+      "allowChargeIndicator": "C",
+      "allowChargeCode": "D360",
+      "percentQualifier": "0",
+      "percent": "000000",
+      "ignore": "00002076 000000",
+      "allowChargeHandlingCode": null,
+      "referenceID": "06SUMMARY TAX",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_SACS2",
+      "allowChargeDesc": "GST",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_SACS1",
+      "allowChargeIndicator": "C",
+      "allowChargeCode": "H770",
+      "percentQualifier": "0",
+      "percent": "000000",
+      "ignore": "00001729 000700",
+      "allowChargeHandlingCode": null,
+      "referenceID": "06SUMMARY TAX",
+      "invoiceNumber": "9032133129"
+    },
+    {
+      "recordID": "OIN_SACS2",
+      "allowChargeDesc": "PST",
+      "invoiceNumber": "9032133129"
+    }
+  ],
+  "summary": {}
+}

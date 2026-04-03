@@ -1,5 +1,81 @@
 # Transaction-type rules for EDI 810 (Invoice).
 # Apply to all 810 profiles. Partner rules override these.
 
-classification: []
-ignore: []
+classification:
+  # Line item — unit price (numeric)
+  - segment: IT1
+    field: IT104
+    severity: hard
+    ignore_case: false
+    numeric: true
+    conditional_qualifier: null
+    amount_variance: null
+
+  # Line item — quantity (numeric)
+  - segment: IT1
+    field: IT102
+    severity: hard
+    ignore_case: false
+    numeric: true
+    conditional_qualifier: null
+    amount_variance: null
+
+  # Line item — vendor number (conditional on qualifier)
+  - segment: IT1
+    field: IT107
+    severity: hard
+    ignore_case: false
+    numeric: false
+    conditional_qualifier: IT106
+    amount_variance: null
+
+  # Party name — case insensitive
+  - segment: N1
+    field: N102
+    severity: hard
+    ignore_case: true
+    numeric: false
+    conditional_qualifier: null
+    amount_variance: null
+
+  # Product description — soft (truncation/rewording possible)
+  - segment: PID
+    field: PID05
+    severity: soft
+    ignore_case: true
+    numeric: false
+    conditional_qualifier: null
+    amount_variance: null
+
+  # Tax amount — numeric
+  - segment: TXI
+    field: TXI02
+    severity: hard
+    ignore_case: false
+    numeric: true
+    conditional_qualifier: null
+    amount_variance: null
+
+  # Total monetary summary — numeric
+  - segment: TDS
+    field: TDS01
+    severity: hard
+    ignore_case: false
+    numeric: true
+    conditional_qualifier: null
+    amount_variance: null
+
+  # Wildcard fallback — everything else is hard match
+  - segment: '*'
+    field: '*'
+    severity: hard
+    ignore_case: false
+    numeric: false
+    conditional_qualifier: null
+    amount_variance: null
+
+ignore:
+  # ST control number — varies by batch
+  - segment: ST
+    field: ST02
+    reason: "Transaction set control number — batch-dependent"

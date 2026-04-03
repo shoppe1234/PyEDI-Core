@@ -553,12 +553,12 @@ class Pipeline:
         from .core import mapper
         
         filename = Path(file_path).name
-        
+
         # Try to match by transaction type in config
         # First, try to detect transaction type from filename
         import re
         match = re.search(r'(\d{3})', filename)
-        
+
         if match:
             transaction_code = match.group(1)
             map_file = self._transaction_registry.get(transaction_code)

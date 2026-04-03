@@ -1,0 +1,11 @@
+# Profile: 810_invoice
+# Trading Partner: 
+# Transaction Type: 810
+# Run ID: 53
+# Started: 2026-03-26T18:23:19.679408+00:00
+# Total Pairs: 3 | Matched: 1 | Mismatched: 1 | Unmatched: 1
+timestamp,profile,trading_partner,run_id,pair_id,source_file,target_file,match_value,status,segment,field,severity,source_value,target_value,description
+2026-03-26T18:23:19.679408+00:00,810_invoice,,53,192,C:\Users\SeanHoppe\AppData\Local\Temp\pytest-of-SeanHoppe\pytest-90\compare_e2e0\source\inv_001.json,C:\Users\SeanHoppe\AppData\Local\Temp\pytest-of-SeanHoppe\pytest-90\compare_e2e0\target\inv_001.json,INV-001,MATCH,,,,,,
+2026-03-26T18:23:19.679408+00:00,810_invoice,,53,193,C:\Users\SeanHoppe\AppData\Local\Temp\pytest-of-SeanHoppe\pytest-90\compare_e2e0\source\inv_002.json,C:\Users\SeanHoppe\AppData\Local\Temp\pytest-of-SeanHoppe\pytest-90\compare_e2e0\target\inv_002.json,INV-002,MISMATCH,N1*ST,N102,hard,Acme Corp,Beta Inc,Content mismatch: Source='Acme Corp' vs Target='Beta Inc'
+2026-03-26T18:23:19.679408+00:00,810_invoice,,53,194,C:\Users\SeanHoppe\AppData\Local\Temp\pytest-of-SeanHoppe\pytest-90\compare_e2e0\source\inv_003.json,,INV-003,UNMATCHED,,,,,,
+# Summary: hard=1

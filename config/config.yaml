@@ -153,6 +153,27 @@ compare:
         json_path: header.invoiceNumber
       segment_qualifiers: {}
       rules_file: config/compare_rules/retalix_p_i_invo.yaml
+    regional_health_810:
+      description: Regional Health (Bluewater) 810 Invoice X12 comparison
+      trading_partner: RegionalHealth
+      transaction_type: '810'
+      match_key:
+        segment: BIG
+        field: BIG02
+        normalize: "^903|"
+      segment_qualifiers:
+        N1: N101
+        REF: REF01
+        DTM: DTM01
+        PER: PER01
+        IT1: IT101
+        QTY: null
+        TXI: null
+        PID: null
+        PKG: null
+        N3: null
+        N4: null
+      rules_file: config/compare_rules/regional_health_810.yaml
 xml_schema_registry:
   darden_asbn_control:
     source_xsd: ./artifacts/darden/DardenInvoiceASBN.xsd

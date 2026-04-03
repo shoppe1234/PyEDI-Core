@@ -12,6 +12,7 @@ class MatchKeyConfig:
     segment: str | None = None       # X12 segment ID (e.g., "BIG")
     field: str | None = None         # X12 field (e.g., "BIG02")
     json_path: str | None = None     # Dot-notation for flat JSON (e.g., "header.invoice_number")
+    normalize: str | None = None     # Optional regex substitution: "pattern|replacement"
 
 
 @dataclass

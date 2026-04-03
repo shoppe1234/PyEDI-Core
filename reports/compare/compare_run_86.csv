@@ -1,0 +1,8 @@
+# Profile: regional_health_810
+# Trading Partner: RegionalHealth
+# Transaction Type: 810
+# Run ID: 86
+# Started: 2026-04-02T12:35:09.039516+00:00
+# Total Pairs: 0 | Matched: 0 | Mismatched: 0 | Unmatched: 0
+timestamp,profile,trading_partner,run_id,pair_id,source_file,target_file,match_value,status,segment,field,severity,source_value,target_value,description
+# Summary: no diffs

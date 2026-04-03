@@ -1,0 +1,1757 @@
+{
+  "header": {
+    "invoiceNumber": "9032131825"
+  },
+  "lines": [
+    {
+      "recordID": "TPM_HDR",
+      "orderNumber": "1045204236",
+      "invoiceNumber": "9032131825",
+      "originalInvoiceNumber": null,
+      "originalOrderNumber": "",
+      "SAPWarehouseNumber": "3071"
+    },
+    {
+      "recordID": "OIN_HDR1",
+      "orderNumber": "5204236",
+      "invoiceNumber": "9032131825",
+      "orderDate": "20260209",
+      "invoiceDate": "20260210",
+      "shipDate": "20260210",
+      "pONumber": null
+    },
+    {
+      "recordID": "OIN_HDR2",
+      "invoiceNumber": "9032131825",
+      "billOfLadingNumber": null,
+      "aPVendorNumber": null,
+      "marketingVendorNumber": null,
+      "creditDebitCode": "DR",
+      "originalInvoiceNumber": "0000000"
+    },
+    {
+      "recordID": "OIN_HDR3",
+      "orderContractNumber": null,
+      "contractNumber": null,
+      "manifestNumber": null,
+      "invoiceNumber": "9032131825"
+    },
+    {
+      "recordID": "OIN_HDR4",
+      "shipMethodOfPayment": null,
+      "transportationType": null,
+      "invoiceNumber": "9032131825"
+    },
+    {
+      "recordID": "OIN_HDR5",
+      "invoiceNumber": "9032131825",
+      "netInvoiceAmout": "1236.29",
+      "originalOrderDate": "00000000",
+      "originalOrderNumber": "0000000",
+      "originalInvoiceDate": "00000000"
+    },
+    {
+      "recordID": "OIN_TRM1",
+      "termsTypeCode": null,
+      "termsDiscountPercent": "00000",
+      "termsDiscountDueDate": "00000000",
+      "termsDiscountDays": "030",
+      "termsDiscountAmount": "000000000",
+      "termsNetDueDate": "20260312",
+      "termsNetDays": "030",
+      "termsDescription": "Net 30 Days",
+      "invoiceNumber": "9032131825"
+    },
+    {
+      "recordID": "OIN_ST1",
+      "invoiceNumber": "9032131825",
+      "shipToName": "HOME 2 SUITES WEST EDM",
+      "shipToIDQualifier": "ST",
+      "shiptoID": "722676254",
+      "shipToStoreNumber": "208531",
+      "shipToCustomerNumber": "722676254",
+      "customerLangPref": "ENG",
+      "chainDescription": "SILVERBIRCH HOTELS & RESO"
+    },
+    {
+      "recordID": "OIN_ST2",
+      "invoiceNumber": "9032131825",
+      "shiptoAddress1": "16675 109 AVE",
+      "shiptoAddress2": null
+    },
+    {
+      "recordID": "OIN_ST3",
+      "invoiceNumber": "9032131825",
+      "shipToCity": "EDMONTON",
+      "shipToProvince": "AB",
+      "shipToPostalCode": "T5P 4K8"
+    },
+    {
+      "recordID": "OIN_BT1",
+      "invoiceNumber": "9032131825",
+      "billToName": "SILVERBIRCH HOTELS & RESO",
+      "billToIDQualifier": "ZZ",
+      "billToID": "722275074"
+    },
+    {
+      "recordID": "OIN_BT2",
+      "invoiceNumber": "9032131825",
+      "billToAddress1": "1030 W. GEORGIA STE 1600",
+      "billToCareOf": "SILVERBIRCH HOTELS & RESO"
+    },
+    {
+      "recordID": "OIN_BT3",
+      "invoiceNumber": "9032131825",
+      "billToCity": "VANCOUVER",
+      "billToProvince": "BC",
+      "billToPostalCode": "V6E 2Y3"
+    },
+    {
+      "recordID": "OIN_RE1",
+      "invoiceNumber": "9032131825",
+      "remitToName": "GFS",
+      "remitToIDQualifier": "1",
+      "remitToID": "243903713"
+    },
+    {
+      "recordID": "OIN_RE2",
+      "invoiceNumber": "9032131825",
+      "remitToAddress": "290212 Township Road 261",
+      "remitToCareOf": "Gordon Food Service Canada Ltd"
+    },
+    {
+      "recordID": "OIN_RE3",
+      "invoiceNumber": "9032131825",
+      "remitToCity": "Rocky View City",
+      "remitToProvince": "AB",
+      "remitToPostalCode": "T4A 0V6"
+    },
+    {
+      "recordID": "OIN_DTL1",
+      "invoiceNumber": "9032131825",
+      "lineNumber": "60",
+      "distributorItemNumber": "1062605",
+      "uPCQualifier": "UP",
+      "uPCEANNumber": "00650746000569",
+      "customerItemNumber": null,
+      "unitOfMeasure": "CA",
+      "itemsPerUnit": "0001",
+      "taxes": "000465",
+      "catchWeightFlag": "8",
+      "BrokenCaseCode": "0",
+      "itemNonStockIndicator": "0"
+    },
+    {
+      "recordID": "OIN_DTL2",
+      "invoiceNumber": "9032131825",
+      "itemDescription": "BANANA STAGE 4/5"
+    },
+    {
+      "recordID": "OIN_DTL3",
+      "invoiceNumber": "9032131825",
+      "quantityOrdered": "0000001",
+      "quantityShipped": "0000001",
+      "quantityDifference": "0000000",
+      "lotNumber": "000000000000004",
+      "productionDayCodeSubCode": "658",
+      "priceQuantity": null,
+      "priceUnitOfMeasure": null,
+      "unitGrossWeight": "",
+      "unitNetWeight": "000000000020"
+    },
+    {
+      "recordID": "OIN_DTL4",
+      "invoiceNumber": "9032131825",
+      "vendorNumber": "727789946",
+      "vendorName": "KROWN Produce",
+      "vendorItemNumber": "14170",
+      "classNumber": "10",
+      "classDescription": "Produce",
+      "priceBookHeading": "12010",
+      "pricebookHeadingDescription": "Fresh Bananas"
+    },
+    {
+      "recordID": "OIN_DTL5",
+      "invoiceNumber": "9032131825",
+      "priceBookFamilyNumber": null,
+      "priceBookFamilyDescription": null,
+      "brand": "Packer Label",
+      "pack": "0001",
+      "size": "40LB",
+      "servingsPerCase": "00000",
+      "servingsPerCaseUOM": null,
+      "caseUPCNumber": "00650746000569",
+      "vendorUPCNumber": "14170",
+      "unitUPCNumber": null
+    },
+    {
+      "recordID": "OIN_DTL6",
+      "orderGuideCategory": "99999",
+      "orderGuideCategoryDes": null,
+      "invoiceNumber": "9032131825"
+    },
+    {
+      "recordID": "OIN_DTL7",
+      "invoiceNumber": "9032131825",
+      "extraItemDescription2": "",
+      "extraItemDescription3": "",
+      "vendorPhoneNumber": ""
+    },
+    {
+      "recordID": "OIN_DTL8",
+      "invoiceNumber": "9032131825"
+    },
+    {
+      "recordID": "OIN_DTL9",
+      "invoiceNumber": "9032131825"
+    },
+    {
+      "recordID": "OIN_DTL11",
+      "invoiceNumber": "9032131825",
+      "creditCode": "",
+      "creditCodeDescription": ""
+    },
+    {
+      "recordID": "OIN_DTL1",
+      "invoiceNumber": "9032131825",
+      "lineNumber": "20",
+      "distributorItemNumber": "1444920",
+      "uPCQualifier": "UP",
+      "uPCEANNumber": "10620868213939",
+      "customerItemNumber": null,
+      "unitOfMeasure": "CA",
+      "itemsPerUnit": "0024",
+      "taxes": "001212",
+      "catchWeightFlag": "2",
+      "BrokenCaseCode": "0",
+      "itemNonStockIndicator": "0"
+    },
+    {
+      "recordID": "OIN_DTL2",
+      "invoiceNumber": "9032131825",
+      "itemDescription": "CHEESE CHED MILD SLCD NAT COL 14G"
+    },
+    {
+      "recordID": "OIN_DTL3",
+      "invoiceNumber": "9032131825",
+      "quantityOrdered": "0000001",
+      "quantityShipped": "0000001",
+      "quantityDifference": "0000000",
+      "lotNumber": "000000000000012",
+      "productionDayCodeSubCode": "122",
+      "priceQuantity": null,
+      "priceUnitOfMeasure": null,
+      "unitGrossWeight": "",
+      "unitNetWeight": "000000000000"
+    },
+    {
+      "recordID": "OIN_DTL4",
+      "invoiceNumber": "9032131825",
+      "vendorNumber": "727796042",
+      "vendorName": "Saputo ALB SADC 8D",
+      "vendorItemNumber": "420297",
+      "classNumber": "6",
+      "classDescription": "Dairy",
+      "priceBookHeading": "11080",
+      "pricebookHeadingDescription": "Cheese Blocks Slc Port"
+    },
+    {
+      "recordID": "OIN_DTL5",
+      "invoiceNumber": "9032131825",
+      "priceBookFamilyNumber": null,
+      "priceBookFamilyDescription": null,
+      "brand": "Brickman's",
+      "pack": "0024",
+      "size": "252G",
+      "servingsPerCase": "00000",
+      "servingsPerCaseUOM": null,
+      "caseUPCNumber": "10620868213939",
+      "vendorUPCNumber": "420297",
+      "unitUPCNumber": null
+    },
+    {
+      "recordID": "OIN_DTL6",
+      "orderGuideCategory": "99999",
+      "orderGuideCategoryDes": null,
+      "invoiceNumber": "9032131825"
+    },
+    {
+      "recordID": "OIN_DTL7",
+      "invoiceNumber": "9032131825",
+      "extraItemDescription2": "",
+      "extraItemDescription3": "",
+      "vendorPhoneNumber": ""
+    },
+    {
+      "recordID": "OIN_DTL8",
+      "invoiceNumber": "9032131825"
+    },
+    {
+      "recordID": "OIN_DTL9",
+      "invoiceNumber": "9032131825"
+    },
+    {
+      "recordID": "OIN_DTL11",
+      "invoiceNumber": "9032131825",
+      "creditCode": "",
+      "creditCodeDescription": ""
+    },
+    {
+      "recordID": "OIN_DTL1",
+      "invoiceNumber": "9032131825",
+      "lineNumber": "170",
+      "distributorItemNumber": "1279246",
+      "uPCQualifier": "UP",
+      "uPCEANNumber": "00068100897630",
+      "customerItemNumber": null,
+      "unitOfMeasure": "CA",
+      "itemsPerUnit": "0200",
+      "taxes": "000608",
+      "catchWeightFlag": "6",
+      "BrokenCaseCode": "0",
+      "itemNonStockIndicator": "0"
+    },
+    {
+      "recordID": "OIN_DTL2",
+      "invoiceNumber": "9032131825",
+      "itemDescription": "CHEESE CREAM PORT"
+    },
+    {
+      "recordID": "OIN_DTL3",
+      "invoiceNumber": "9032131825",
+      "quantityOrdered": "0000001",
+      "quantityShipped": "0000001",
+      "quantityDifference": "0000000",
+      "lotNumber": "000000000000006",
+      "productionDayCodeSubCode": "086",
+      "priceQuantity": null,
+      "priceUnitOfMeasure": null,
+      "unitGrossWeight": "",
+      "unitNetWeight": "000000000004"
+    },
+    {
+      "recordID": "OIN_DTL4",
+      "invoiceNumber": "9032131825",
+      "vendorNumber": "727784539",
+      "vendorName": "Kraft Heinz Milton CLR",
+      "vendorItemNumber": "89763",
+      "classNumber": "6",
+      "classDescription": "Dairy",
+      "priceBookHeading": "11050",
+      "pricebookHeadingDescription": "Cream Cheese"
+    },
+    {
+      "recordID": "OIN_DTL5",
+      "invoiceNumber": "9032131825",
+      "priceBookFamilyNumber": null,
+      "priceBookFamilyDescription": null,
+      "brand": "Philadelphia",
+      "pack": "0200",
+      "size": "18G",
+      "servingsPerCase": "00000",
+      "servingsPerCaseUOM": null,
+      "caseUPCNumber": "00068100897630",
+      "vendorUPCNumber": "89763",
+      "unitUPCNumber": null
+    },
+    {
+      "recordID": "OIN_DTL6",
+      "orderGuideCategory": "99999",
+      "orderGuideCategoryDes": null,
+      "invoiceNumber": "9032131825"
+    },
+    {
+      "recordID": "OIN_DTL7",
+      "invoiceNumber": "9032131825",
+      "extraItemDescription2": "",
+      "extraItemDescription3": "",
+      "vendorPhoneNumber": ""
+    },
+    {
+      "recordID": "OIN_DTL8",
+      "invoiceNumber": "9032131825"
+    },
+    {
+      "recordID": "OIN_DTL9",
+      "invoiceNumber": "9032131825"
+    },
+    {
+      "recordID": "OIN_DTL11",
+      "invoiceNumber": "9032131825",
+      "creditCode": "",
+      "creditCodeDescription": ""
+    },
+    {
+      "recordID": "OIN_DTL1",
+      "invoiceNumber": "9032131825",
+      "lineNumber": "40",
+      "distributorItemNumber": "1208560",
+      "uPCQualifier": "UP",
+      "uPCEANNumber": "10620868163029",
+      "customerItemNumber": null,
+      "unitOfMeasure": "CA",
+      "itemsPerUnit": "0006",
+      "taxes": "000252",
+      "catchWeightFlag": "8",
+      "BrokenCaseCode": "0",
+      "itemNonStockIndicator": "0"
+    },
+    {
+      "recordID": "OIN_DTL2",
+      "invoiceNumber": "9032131825",
+      "itemDescription": "EGG HARD CKD/PLD PILLOW KOSHER"
+    },
+    {
+      "recordID": "OIN_DTL3",
+      "invoiceNumber": "9032131825",
+      "quantityOrdered": "0000002",
+      "quantityShipped": "0000002",
+      "quantityDifference": "0000000",
+      "lotNumber": "000000000000005",
+      "productionDayCodeSubCode": "056",
+      "priceQuantity": null,
+      "priceUnitOfMeasure": null,
+      "unitGrossWeight": "",
+      "unitNetWeight": "000000000003"
+    },
+    {
+      "recordID": "OIN_DTL4",
+      "invoiceNumber": "9032131825",
+      "vendorNumber": "727797595",
+      "vendorName": "Burnbrae Farms - FRSH",
+      "vendorItemNumber": "01204-5240",
+      "classNumber": "6",
+      "classDescription": "Dairy",
+      "priceBookHeading": "11165",
+      "pricebookHeadingDescription": "Egg Products"
+    },
+    {
+      "recordID": "OIN_DTL5",
+      "invoiceNumber": "9032131825",
+      "priceBookFamilyNumber": null,
+      "priceBookFamilyDescription": null,
+      "brand": "Gordon Choice",
+      "pack": "0006",
+      "size": "12UN",
+      "servingsPerCase": "00000",
+      "servingsPerCaseUOM": null,
+      "caseUPCNumber": "10620868163029",
+      "vendorUPCNumber": "01204-52401",
+      "unitUPCNumber": null
+    },
+    {
+      "recordID": "OIN_DTL6",
+      "orderGuideCategory": "99999",
+      "orderGuideCategoryDes": null,
+      "invoiceNumber": "9032131825"
+    },
+    {
+      "recordID": "OIN_DTL7",
+      "invoiceNumber": "9032131825",
+      "extraItemDescription2": "",
+      "extraItemDescription3": "",
+      "vendorPhoneNumber": ""
+    },
+    {
+      "recordID": "OIN_DTL8",
+      "invoiceNumber": "9032131825"
+    },
+    {
+      "recordID": "OIN_DTL9",
+      "invoiceNumber": "9032131825"
+    },
+    {
+      "recordID": "OIN_DTL11",
+      "invoiceNumber": "9032131825",
+      "creditCode": "",
+      "creditCodeDescription": ""
+    },
+    {
+      "recordID": "OIN_DTL1",
+      "invoiceNumber": "9032131825",
+      "lineNumber": "160",
+      "distributorItemNumber": "1287689",
+      "uPCQualifier": "UP",
+      "uPCEANNumber": "10056800092728",
+      "customerItemNumber": null,
+      "unitOfMeasure": "CA",
+      "itemsPerUnit": "0048",
+      "taxes": "000230",
+      "catchWeightFlag": "2",
+      "BrokenCaseCode": "0",
+      "itemNonStockIndicator": "0"
+    },
+    {
+      "recordID": "OIN_DTL2",
+      "invoiceNumber": "9032131825",
+      "itemDescription": "YOGURT 0PCT ASST FF W/CHK"
+    },
+    {
+      "recordID": "OIN_DTL3",
+      "invoiceNumber": "9032131825",
+      "quantityOrdered": "0000002",
+      "quantityShipped": "0000002",
+      "quantityDifference": "0000000",
+      "lotNumber": "000000000000004",
+      "productionDayCodeSubCode": "604",
+      "priceQuantity": null,
+      "priceUnitOfMeasure": null,
+      "unitGrossWeight": "",
+      "unitNetWeight": "00000000004."
+    },
+    {
+      "recordID": "OIN_DTL4",
+      "invoiceNumber": "9032131825",
+      "vendorNumber": "727806867",
+      "vendorName": "Danone Inc. VH1032C",
+      "vendorItemNumber": "109272",
+      "classNumber": "6",
+      "classDescription": "Dairy",
+      "priceBookHeading": "11170",
+      "pricebookHeadingDescription": "Fresh Yogurt"
+    },
+    {
+      "recordID": "OIN_DTL5",
+      "invoiceNumber": "9032131825",
+      "priceBookFamilyNumber": null,
+      "priceBookFamilyDescription": null,
+      "brand": "Danone",
+      "pack": "0048",
+      "size": "90G",
+      "servingsPerCase": "00000",
+      "servingsPerCaseUOM": null,
+      "caseUPCNumber": "10056800092728",
+      "vendorUPCNumber": "109272",
+      "unitUPCNumber": null
+    },
+    {
+      "recordID": "OIN_DTL6",
+      "orderGuideCategory": "99999",
+      "orderGuideCategoryDes": null,
+      "invoiceNumber": "9032131825"
+    },
+    {
+      "recordID": "OIN_DTL7",
+      "invoiceNumber": "9032131825",
+      "extraItemDescription2": "",
+      "extraItemDescription3": "",
+      "vendorPhoneNumber": ""
+    },
+    {
+      "recordID": "OIN_DTL8",
+      "invoiceNumber": "9032131825"
+    },
+    {
+      "recordID": "OIN_DTL9",
+      "invoiceNumber": "9032131825"
+    },
+    {
+      "recordID": "OIN_DTL11",
+      "invoiceNumber": "9032131825",
+      "creditCode": "",
+      "creditCodeDescription": ""
+    },
+    {
+      "recordID": "OIN_DTL1",
+      "invoiceNumber": "9032131825",
+      "lineNumber": "30",
+      "distributorItemNumber": "1172950",
+      "uPCQualifier": "UP",
+      "uPCEANNumber": "10056800154365",
+      "customerItemNumber": null,
+      "unitOfMeasure": "CA",
+      "itemsPerUnit": "0048",
+      "taxes": "000242",
+      "catchWeightFlag": "5",
+      "BrokenCaseCode": "0",
+      "itemNonStockIndicator": "0"
+    },
+    {
+      "recordID": "OIN_DTL2",
+      "invoiceNumber": "9032131825",
+      "itemDescription": "YOGURT VAR PK STRW/VAN/PEACH/BLU L/FAT"
+    },
+    {
+      "recordID": "OIN_DTL3",
+      "invoiceNumber": "9032131825",
+      "quantityOrdered": "0000002",
+      "quantityShipped": "0000002",
+      "quantityDifference": "0000000",
+      "lotNumber": "000000000000004",
+      "productionDayCodeSubCode": "850",
+      "priceQuantity": null,
+      "priceUnitOfMeasure": null,
+      "unitGrossWeight": "",
+      "unitNetWeight": "00000000005."
+    },
+    {
+      "recordID": "OIN_DTL4",
+      "invoiceNumber": "9032131825",
+      "vendorNumber": "727806867",
+      "vendorName": "Danone Inc. VH1032C",
+      "vendorItemNumber": "15436",
+      "classNumber": "6",
+      "classDescription": "Dairy",
+      "priceBookHeading": "11170",
+      "pricebookHeadingDescription": "Fresh Yogurt"
+    },
+    {
+      "recordID": "OIN_DTL5",
+      "invoiceNumber": "9032131825",
+      "priceBookFamilyNumber": null,
+      "priceBookFamilyDescription": null,
+      "brand": "Danone",
+      "pack": "0048",
+      "size": "100G",
+      "servingsPerCase": "00000",
+      "servingsPerCaseUOM": null,
+      "caseUPCNumber": "10056800154365",
+      "vendorUPCNumber": "15436",
+      "unitUPCNumber": null
+    },
+    {
+      "recordID": "OIN_DTL6",
+      "orderGuideCategory": "99999",
+      "orderGuideCategoryDes": null,
+      "invoiceNumber": "9032131825"
+    },
+    {
+      "recordID": "OIN_DTL7",
+      "invoiceNumber": "9032131825",
+      "extraItemDescription2": "",
+      "extraItemDescription3": "",
+      "vendorPhoneNumber": ""
+    },
+    {
+      "recordID": "OIN_DTL8",
+      "invoiceNumber": "9032131825"
+    },
+    {
+      "recordID": "OIN_DTL9",
+      "invoiceNumber": "9032131825"
+    },
+    {
+      "recordID": "OIN_DTL11",
+      "invoiceNumber": "9032131825",
+      "creditCode": "",
+      "creditCodeDescription": ""
+    },
+    {
+      "recordID": "OIN_DTL1",
+      "invoiceNumber": "9032131825",
+      "lineNumber": "130",
+      "distributorItemNumber": "1258169",
+      "uPCQualifier": "UP",
+      "uPCEANNumber": "10778463048033",
+      "customerItemNumber": null,
+      "unitOfMeasure": "CA",
+      "itemsPerUnit": "0002",
+      "taxes": "000580",
+      "catchWeightFlag": "8",
+      "BrokenCaseCode": "0",
+      "itemNonStockIndicator": "0"
+    },
+    {
+      "recordID": "OIN_DTL2",
+      "invoiceNumber": "9032131825",
+      "itemDescription": "BREAD LEMON POPPYSEED LOAF SLCD 18 CUT"
+    },
+    {
+      "recordID": "OIN_DTL3",
+      "invoiceNumber": "9032131825",
+      "quantityOrdered": "0000001",
+      "quantityShipped": "0000001",
+      "quantityDifference": "0000000",
+      "lotNumber": "000000000000005",
+      "productionDayCodeSubCode": "808",
+      "priceQuantity": null,
+      "priceUnitOfMeasure": null,
+      "unitGrossWeight": "",
+      "unitNetWeight": "000000000003"
+    },
+    {
+      "recordID": "OIN_DTL4",
+      "invoiceNumber": "9032131825",
+      "vendorNumber": "727807101",
+      "vendorName": "Wow! Factor Desserts GFS",
+      "vendorItemNumber": "4803",
+      "classNumber": "2",
+      "classDescription": "Frozen",
+      "priceBookHeading": "14080",
+      "pricebookHeadingDescription": "FZN Breakfast Breads"
+    },
+    {
+      "recordID": "OIN_DTL5",
+      "invoiceNumber": "9032131825",
+      "priceBookFamilyNumber": null,
+      "priceBookFamilyDescription": null,
+      "brand": "WOW! Factor",
+      "pack": "0002",
+      "size": "1.7KG",
+      "servingsPerCase": "00000",
+      "servingsPerCaseUOM": null,
+      "caseUPCNumber": "10778463048033",
+      "vendorUPCNumber": "4803",
+      "unitUPCNumber": null
+    },
+    {
+      "recordID": "OIN_DTL6",
+      "orderGuideCategory": "99999",
+      "orderGuideCategoryDes": null,
+      "invoiceNumber": "9032131825"
+    },
+    {
+      "recordID": "OIN_DTL7",
+      "invoiceNumber": "9032131825",
+      "extraItemDescription2": "",
+      "extraItemDescription3": "",
+      "vendorPhoneNumber": ""
+    },
+    {
+      "recordID": "OIN_DTL8",
+      "invoiceNumber": "9032131825"
+    },
+    {
+      "recordID": "OIN_DTL9",
+      "invoiceNumber": "9032131825"
+    },
+    {
+      "recordID": "OIN_DTL11",
+      "invoiceNumber": "9032131825",
+      "creditCode": "",
+      "creditCodeDescription": ""
+    },
+    {
+      "recordID": "OIN_DTL1",
+      "invoiceNumber": "9032131825",
+      "lineNumber": "50",
+      "distributorItemNumber": "1099923",
+      "uPCQualifier": "UP",
+      "uPCEANNumber": "00620868104025",
+      "customerItemNumber": null,
+      "unitOfMeasure": "CA",
+      "itemsPerUnit": "0230",
+      "taxes": "000463",
+      "catchWeightFlag": "2",
+      "BrokenCaseCode": "0",
+      "itemNonStockIndicator": "0"
+    },
+    {
+      "recordID": "OIN_DTL2",
+      "invoiceNumber": "9032131825",
+      "itemDescription": "BROWNIE TWO BITE"
+    },
+    {
+      "recordID": "OIN_DTL3",
+      "invoiceNumber": "9032131825",
+      "quantityOrdered": "0000001",
+      "quantityShipped": "0000001",
+      "quantityDifference": "0000000",
+      "lotNumber": "000000000000004",
+      "productionDayCodeSubCode": "632",
+      "priceQuantity": null,
+      "priceUnitOfMeasure": null,
+      "unitGrossWeight": "",
+      "unitNetWeight": "000000000004"
+    },
+    {
+      "recordID": "OIN_DTL4",
+      "invoiceNumber": "9032131825",
+      "vendorNumber": "727812327",
+      "vendorName": "Give & Go Prepared Foods",
+      "vendorItemNumber": "09019",
+      "classNumber": "2",
+      "classDescription": "Frozen",
+      "priceBookHeading": "14100",
+      "pricebookHeadingDescription": "FZN Bars Brownies Cupcake"
+    },
+    {
+      "recordID": "OIN_DTL5",
+      "invoiceNumber": "9032131825",
+      "priceBookFamilyNumber": null,
+      "priceBookFamilyDescription": null,
+      "brand": "Gordon Choice",
+      "pack": "0230",
+      "size": "19G",
+      "servingsPerCase": "00000",
+      "servingsPerCaseUOM": null,
+      "caseUPCNumber": "00620868104025",
+      "vendorUPCNumber": "09019",
+      "unitUPCNumber": null
+    },
+    {
+      "recordID": "OIN_DTL6",
+      "orderGuideCategory": "99999",
+      "orderGuideCategoryDes": null,
+      "invoiceNumber": "9032131825"
+    },
+    {
+      "recordID": "OIN_DTL7",
+      "invoiceNumber": "9032131825",
+      "extraItemDescription2": "",
+      "extraItemDescription3": "",
+      "vendorPhoneNumber": ""
+    },
+    {
+      "recordID": "OIN_DTL8",
+      "invoiceNumber": "9032131825"
+    },
+    {
+      "recordID": "OIN_DTL9",
+      "invoiceNumber": "9032131825"
+    },
+    {
+      "recordID": "OIN_DTL11",
+      "invoiceNumber": "9032131825",
+      "creditCode": "",
+      "creditCodeDescription": ""
+    },
+    {
+      "recordID": "OIN_DTL1",
+      "invoiceNumber": "9032131825",
+      "lineNumber": "70",
+      "distributorItemNumber": "1353550",
+      "uPCQualifier": "UP",
+      "uPCEANNumber": "10620868196973",
+      "customerItemNumber": null,
+      "unitOfMeasure": "CA",
+      "itemsPerUnit": "0072",
+      "taxes": "000881",
+      "catchWeightFlag": "7",
+      "BrokenCaseCode": "0",
+      "itemNonStockIndicator": "0"
+    },
+    {
+      "recordID": "OIN_DTL2",
+      "invoiceNumber": "9032131825",
+      "itemDescription": "EGG OMELETTE CHS COLBY"
+    },
+    {
+      "recordID": "OIN_DTL3",
+      "invoiceNumber": "9032131825",
+      "quantityOrdered": "0000001",
+      "quantityShipped": "0000001",
+      "quantityDifference": "0000000",
+      "lotNumber": "000000000000008",
+      "productionDayCodeSubCode": "817",
+      "priceQuantity": null,
+      "priceUnitOfMeasure": null,
+      "unitGrossWeight": "",
+      "unitNetWeight": "000000000000"
+    },
+    {
+      "recordID": "OIN_DTL4",
+      "invoiceNumber": "9032131825",
+      "vendorNumber": "727793790",
+      "vendorName": "Burnbrae Farms - FZN",
+      "vendorItemNumber": "00688-5240",
+      "classNumber": "6",
+      "classDescription": "Dairy",
+      "priceBookHeading": "11165",
+      "pricebookHeadingDescription": "Egg Products"
+    },
+    {
+      "recordID": "OIN_DTL5",
+      "invoiceNumber": "9032131825",
+      "priceBookFamilyNumber": null,
+      "priceBookFamilyDescription": null,
+      "brand": "Gordon Choice",
+      "pack": "0072",
+      "size": "100G",
+      "servingsPerCase": "00000",
+      "servingsPerCaseUOM": null,
+      "caseUPCNumber": "10620868196973",
+      "vendorUPCNumber": "00688-52401",
+      "unitUPCNumber": null
+    },
+    {
+      "recordID": "OIN_DTL6",
+      "orderGuideCategory": "99999",
+      "orderGuideCategoryDes": null,
+      "invoiceNumber": "9032131825"
+    },
+    {
+      "recordID": "OIN_DTL7",
+      "invoiceNumber": "9032131825",
+      "extraItemDescription2": "",
+      "extraItemDescription3": "",
+      "vendorPhoneNumber": ""
+    },
+    {
+      "recordID": "OIN_DTL8",
+      "invoiceNumber": "9032131825"
+    },
+    {
+      "recordID": "OIN_DTL9",
+      "invoiceNumber": "9032131825"
+    },
+    {
+      "recordID": "OIN_DTL11",
+      "invoiceNumber": "9032131825",
+      "creditCode": "",
+      "creditCodeDescription": ""
+    },
+    {
+      "recordID": "OIN_DTL1",
+      "invoiceNumber": "9032131825",
+      "lineNumber": "80",
+      "distributorItemNumber": "1440511",
+      "uPCQualifier": "UP",
+      "uPCEANNumber": "00665079304864",
+      "customerItemNumber": null,
+      "unitOfMeasure": "CA",
+      "itemsPerUnit": "0048",
+      "taxes": "000611",
+      "catchWeightFlag": "8",
+      "BrokenCaseCode": "0",
+      "itemNonStockIndicator": "0"
+    },
+    {
+      "recordID": "OIN_DTL2",
+      "invoiceNumber": "9032131825",
+      "itemDescription": "EGG OMELETTE HMSTYLE WESTERN W/CHS"
+    },
+    {
+      "recordID": "OIN_DTL3",
+      "invoiceNumber": "9032131825",
+      "quantityOrdered": "0000003",
+      "quantityShipped": "0000003",
+      "quantityDifference": "0000000",
+      "lotNumber": "000000000000018",
+      "productionDayCodeSubCode": "354",
+      "priceQuantity": null,
+      "priceUnitOfMeasure": null,
+      "unitGrossWeight": "",
+      "unitNetWeight": "000000000004"
+    },
+    {
+      "recordID": "OIN_DTL4",
+      "invoiceNumber": "9032131825",
+      "vendorNumber": "727793303",
+      "vendorName": "Vanderpols Eggs-FZN",
+      "vendorItemNumber": "30486",
+      "classNumber": "6",
+      "classDescription": "Dairy",
+      "priceBookHeading": "11165",
+      "pricebookHeadingDescription": "Egg Products"
+    },
+    {
+      "recordID": "OIN_DTL5",
+      "invoiceNumber": "9032131825",
+      "priceBookFamilyNumber": null,
+      "priceBookFamilyDescription": null,
+      "brand": "Egg Solutions",
+      "pack": "0048",
+      "size": "85G",
+      "servingsPerCase": "00000",
+      "servingsPerCaseUOM": null,
+      "caseUPCNumber": "00665079304864",
+      "vendorUPCNumber": "30486",
+      "unitUPCNumber": null
+    },
+    {
+      "recordID": "OIN_DTL6",
+      "orderGuideCategory": "99999",
+      "orderGuideCategoryDes": null,
+      "invoiceNumber": "9032131825"
+    },
+    {
+      "recordID": "OIN_DTL7",
+      "invoiceNumber": "9032131825",
+      "extraItemDescription2": "",
+      "extraItemDescription3": "",
+      "vendorPhoneNumber": ""
+    },
+    {
+      "recordID": "OIN_DTL8",
+      "invoiceNumber": "9032131825"
+    },
+    {
+      "recordID": "OIN_DTL9",
+      "invoiceNumber": "9032131825"
+    },
+    {
+      "recordID": "OIN_DTL11",
+      "invoiceNumber": "9032131825",
+      "creditCode": "",
+      "creditCodeDescription": ""
+    },
+    {
+      "recordID": "OIN_DTL1",
+      "invoiceNumber": "9032131825",
+      "lineNumber": "100",
+      "distributorItemNumber": "1125840",
+      "uPCQualifier": "UP",
+      "uPCEANNumber": "10077900237123",
+      "customerItemNumber": null,
+      "unitOfMeasure": "CA",
+      "itemsPerUnit": "0012",
+      "taxes": "000259",
+      "catchWeightFlag": "2",
+      "BrokenCaseCode": "0",
+      "itemNonStockIndicator": "0"
+    },
+    {
+      "recordID": "OIN_DTL2",
+      "invoiceNumber": "9032131825",
+      "itemDescription": "SANDWICH BRKFST BACON EGG CHS MUFFIN"
+    },
+    {
+      "recordID": "OIN_DTL3",
+      "invoiceNumber": "9032131825",
+      "quantityOrdered": "0000002",
+      "quantityShipped": "0000002",
+      "quantityDifference": "0000000",
+      "lotNumber": "000000000000005",
+      "productionDayCodeSubCode": "184",
+      "priceQuantity": null,
+      "priceUnitOfMeasure": null,
+      "unitGrossWeight": "",
+      "unitNetWeight": "000000000001"
+    },
+    {
+      "recordID": "OIN_DTL4",
+      "invoiceNumber": "9032131825",
+      "vendorNumber": "727796300",
+      "vendorName": "Tree Of Life - FZN",
+      "vendorItemNumber": "1000002371",
+      "classNumber": "2",
+      "classDescription": "Frozen",
+      "priceBookHeading": "14070",
+      "pricebookHeadingDescription": "FZN Breakfast Entrees"
+    },
+    {
+      "recordID": "OIN_DTL5",
+      "invoiceNumber": "9032131825",
+      "priceBookFamilyNumber": null,
+      "priceBookFamilyDescription": null,
+      "brand": "Jimmy Dean",
+      "pack": "0012",
+      "size": "104G",
+      "servingsPerCase": "00000",
+      "servingsPerCaseUOM": null,
+      "caseUPCNumber": "10077900237123",
+      "vendorUPCNumber": "10000023712",
+      "unitUPCNumber": null
+    },
+    {
+      "recordID": "OIN_DTL6",
+      "orderGuideCategory": "99999",
+      "orderGuideCategoryDes": null,
+      "invoiceNumber": "9032131825"
+    },
+    {
+      "recordID": "OIN_DTL7",
+      "invoiceNumber": "9032131825",
+      "extraItemDescription2": "",
+      "extraItemDescription3": "",
+      "vendorPhoneNumber": ""
+    },
+    {
+      "recordID": "OIN_DTL8",
+      "invoiceNumber": "9032131825"
+    },
+    {
+      "recordID": "OIN_DTL9",
+      "invoiceNumber": "9032131825"
+    },
+    {
+      "recordID": "OIN_DTL11",
+      "invoiceNumber": "9032131825",
+      "creditCode": "",
+      "creditCodeDescription": ""
+    },
+    {
+      "recordID": "OIN_DTL1",
+      "invoiceNumber": "9032131825",
+      "lineNumber": "110",
+      "distributorItemNumber": "1127625",
+      "uPCQualifier": "UP",
+      "uPCEANNumber": "10077900513678",
+      "customerItemNumber": null,
+      "unitOfMeasure": "CA",
+      "itemsPerUnit": "0012",
+      "taxes": "000259",
+      "catchWeightFlag": "2",
+      "BrokenCaseCode": "0",
+      "itemNonStockIndicator": "0"
+    },
+    {
+      "recordID": "OIN_DTL2",
+      "invoiceNumber": "9032131825",
+      "itemDescription": "SANDWICH BRKFST SAUS EGG CHS MUFFIN TFC"
+    },
+    {
+      "recordID": "OIN_DTL3",
+      "invoiceNumber": "9032131825",
+      "quantityOrdered": "0000002",
+      "quantityShipped": "0000002",
+      "quantityDifference": "0000000",
+      "lotNumber": "000000000000005",
+      "productionDayCodeSubCode": "184",
+      "priceQuantity": null,
+      "priceUnitOfMeasure": null,
+      "unitGrossWeight": "",
+      "unitNetWeight": "000000000001"
+    },
+    {
+      "recordID": "OIN_DTL4",
+      "invoiceNumber": "9032131825",
+      "vendorNumber": "727796300",
+      "vendorName": "Tree Of Life - FZN",
+      "vendorItemNumber": "1000005136",
+      "classNumber": "2",
+      "classDescription": "Frozen",
+      "priceBookHeading": "14070",
+      "pricebookHeadingDescription": "FZN Breakfast Entrees"
+    },
+    {
+      "recordID": "OIN_DTL5",
+      "invoiceNumber": "9032131825",
+      "priceBookFamilyNumber": null,
+      "priceBookFamilyDescription": null,
+      "brand": "Jimmy Dean",
+      "pack": "0012",
+      "size": "141G",
+      "servingsPerCase": "00000",
+      "servingsPerCaseUOM": null,
+      "caseUPCNumber": "10077900513678",
+      "vendorUPCNumber": "10000051367",
+      "unitUPCNumber": null
+    },
+    {
+      "recordID": "OIN_DTL6",
+      "orderGuideCategory": "99999",
+      "orderGuideCategoryDes": null,
+      "invoiceNumber": "9032131825"
+    },
+    {
+      "recordID": "OIN_DTL7",
+      "invoiceNumber": "9032131825",
+      "extraItemDescription2": "",
+      "extraItemDescription3": "",
+      "vendorPhoneNumber": ""
+    },
+    {
+      "recordID": "OIN_DTL8",
+      "invoiceNumber": "9032131825"
+    },
+    {
+      "recordID": "OIN_DTL9",
+      "invoiceNumber": "9032131825"
+    },
+    {
+      "recordID": "OIN_DTL11",
+      "invoiceNumber": "9032131825",
+      "creditCode": "",
+      "creditCodeDescription": ""
+    },
+    {
+      "recordID": "OIN_DTL1",
+      "invoiceNumber": "9032131825",
+      "lineNumber": "90",
+      "distributorItemNumber": "1329725",
+      "uPCQualifier": "UP",
+      "uPCEANNumber": "10077900254564",
+      "customerItemNumber": null,
+      "unitOfMeasure": "CA",
+      "itemsPerUnit": "0106",
+      "taxes": "000449",
+      "catchWeightFlag": "7",
+      "BrokenCaseCode": "0",
+      "itemNonStockIndicator": "0"
+    },
+    {
+      "recordID": "OIN_DTL2",
+      "invoiceNumber": "9032131825",
+      "itemDescription": "SAUSAGE PORK MILD PATTY 1.5Z CKD FZN"
+    },
+    {
+      "recordID": "OIN_DTL3",
+      "invoiceNumber": "9032131825",
+      "quantityOrdered": "0000002",
+      "quantityShipped": "0000002",
+      "quantityDifference": "0000000",
+      "lotNumber": "000000000000008",
+      "productionDayCodeSubCode": "994",
+      "priceQuantity": null,
+      "priceUnitOfMeasure": null,
+      "unitGrossWeight": "",
+      "unitNetWeight": "000000000004"
+    },
+    {
+      "recordID": "OIN_DTL4",
+      "invoiceNumber": "9032131825",
+      "vendorNumber": "727796300",
+      "vendorName": "Tree Of Life - FZN",
+      "vendorItemNumber": "1000002545",
+      "classNumber": "3",
+      "classDescription": "Meat",
+      "priceBookHeading": "16500",
+      "pricebookHeadingDescription": "Breakfast Sausage"
+    },
+    {
+      "recordID": "OIN_DTL5",
+      "invoiceNumber": "9032131825",
+      "priceBookFamilyNumber": null,
+      "priceBookFamilyDescription": null,
+      "brand": "Jimmy Dean",
+      "pack": "0106",
+      "size": "43G",
+      "servingsPerCase": "00000",
+      "servingsPerCaseUOM": null,
+      "caseUPCNumber": "10077900254564",
+      "vendorUPCNumber": "10000025456",
+      "unitUPCNumber": null
+    },
+    {
+      "recordID": "OIN_DTL6",
+      "orderGuideCategory": "99999",
+      "orderGuideCategoryDes": null,
+      "invoiceNumber": "9032131825"
+    },
+    {
+      "recordID": "OIN_DTL7",
+      "invoiceNumber": "9032131825",
+      "extraItemDescription2": "",
+      "extraItemDescription3": "",
+      "vendorPhoneNumber": ""
+    },
+    {
+      "recordID": "OIN_DTL8",
+      "invoiceNumber": "9032131825"
+    },
+    {
+      "recordID": "OIN_DTL9",
+      "invoiceNumber": "9032131825"
+    },
+    {
+      "recordID": "OIN_DTL11",
+      "invoiceNumber": "9032131825",
+      "creditCode": "",
+      "creditCodeDescription": ""
+    },
+    {
+      "recordID": "OIN_DTL1",
+      "invoiceNumber": "9032131825",
+      "lineNumber": "10",
+      "distributorItemNumber": "1477007",
+      "uPCQualifier": "UP",
+      "uPCEANNumber": "10620868219252",
+      "customerItemNumber": null,
+      "unitOfMeasure": "CA",
+      "itemsPerUnit": "0002",
+      "taxes": "000227",
+      "catchWeightFlag": "5",
+      "BrokenCaseCode": "0",
+      "itemNonStockIndicator": "0"
+    },
+    {
+      "recordID": "OIN_DTL2",
+      "invoiceNumber": "9032131825",
+      "itemDescription": "STRAWBERRY WHL IQF"
+    },
+    {
+      "recordID": "OIN_DTL3",
+      "invoiceNumber": "9032131825",
+      "quantityOrdered": "0000001",
+      "quantityShipped": "0000001",
+      "quantityDifference": "0000000",
+      "lotNumber": "000000000000002",
+      "productionDayCodeSubCode": "275",
+      "priceQuantity": null,
+      "priceUnitOfMeasure": null,
+      "unitGrossWeight": "",
+      "unitNetWeight": "000000000000"
+    },
+    {
+      "recordID": "OIN_DTL4",
+      "invoiceNumber": "9032131825",
+      "vendorNumber": "727818002",
+      "vendorName": "Limson FZN Fruit Tillsonb",
+      "vendorItemNumber": "1477007",
+      "classNumber": "2",
+      "classDescription": "Frozen",
+      "priceBookHeading": "14000",
+      "pricebookHeadingDescription": "FZN Fruits"
+    },
+    {
+      "recordID": "OIN_DTL5",
+      "invoiceNumber": "9032131825",
+      "priceBookFamilyNumber": null,
+      "priceBookFamilyDescription": null,
+      "brand": "Kitchen Essenti",
+      "pack": "0002",
+      "size": "2.5KG",
+      "servingsPerCase": "00000",
+      "servingsPerCaseUOM": null,
+      "caseUPCNumber": "10620868219252",
+      "vendorUPCNumber": "1477007",
+      "unitUPCNumber": null
+    },
+    {
+      "recordID": "OIN_DTL6",
+      "orderGuideCategory": "99999",
+      "orderGuideCategoryDes": null,
+      "invoiceNumber": "9032131825"
+    },
+    {
+      "recordID": "OIN_DTL7",
+      "invoiceNumber": "9032131825",
+      "extraItemDescription2": "",
+      "extraItemDescription3": "",
+      "vendorPhoneNumber": ""
+    },
+    {
+      "recordID": "OIN_DTL8",
+      "invoiceNumber": "9032131825"
+    },
+    {
+      "recordID": "OIN_DTL9",
+      "invoiceNumber": "9032131825"
+    },
+    {
+      "recordID": "OIN_DTL11",
+      "invoiceNumber": "9032131825",
+      "creditCode": "",
+      "creditCodeDescription": ""
+    },
+    {
+      "recordID": "OIN_DTL1",
+      "invoiceNumber": "9032131825",
+      "lineNumber": "180",
+      "distributorItemNumber": "1499088",
+      "uPCQualifier": "UP",
+      "uPCEANNumber": "10065633147680",
+      "customerItemNumber": null,
+      "unitOfMeasure": "CA",
+      "itemsPerUnit": "0004",
+      "taxes": "000508",
+      "catchWeightFlag": "6",
+      "BrokenCaseCode": "0",
+      "itemNonStockIndicator": "0"
+    },
+    {
+      "recordID": "OIN_DTL2",
+      "invoiceNumber": "9032131825",
+      "itemDescription": "CEREAL LUCKY CHARMS POUCH TFC"
+    },
+    {
+      "recordID": "OIN_DTL3",
+      "invoiceNumber": "9032131825",
+      "quantityOrdered": "0000001",
+      "quantityShipped": "0000001",
+      "quantityDifference": "0000000",
+      "lotNumber": "000000000000005",
+      "productionDayCodeSubCode": "086",
+      "priceQuantity": null,
+      "priceUnitOfMeasure": null,
+      "unitGrossWeight": "",
+      "unitNetWeight": "000000000004"
+    },
+    {
+      "recordID": "OIN_DTL4",
+      "invoiceNumber": "9032131825",
+      "vendorNumber": "727805054",
+      "vendorName": "General Mills CA Retail",
+      "vendorItemNumber": "14768",
+      "classNumber": "1",
+      "classDescription": "Grocery",
+      "priceBookHeading": "10350",
+      "pricebookHeadingDescription": "Cereals: Hot Or Cold"
+    },
+    {
+      "recordID": "OIN_DTL5",
+      "invoiceNumber": "9032131825",
+      "priceBookFamilyNumber": null,
+      "priceBookFamilyDescription": null,
+      "brand": "General Mills",
+      "pack": "0004",
+      "size": "992G",
+      "servingsPerCase": "00000",
+      "servingsPerCaseUOM": null,
+      "caseUPCNumber": "10065633147680",
+      "vendorUPCNumber": "14768",
+      "unitUPCNumber": null
+    },
+    {
+      "recordID": "OIN_DTL6",
+      "orderGuideCategory": "99999",
+      "orderGuideCategoryDes": null,
+      "invoiceNumber": "9032131825"
+    },
+    {
+      "recordID": "OIN_DTL7",
+      "invoiceNumber": "9032131825",
+      "extraItemDescription2": "",
+      "extraItemDescription3": "",
+      "vendorPhoneNumber": ""
+    },
+    {
+      "recordID": "OIN_DTL8",
+      "invoiceNumber": "9032131825"
+    },
+    {
+      "recordID": "OIN_DTL9",
+      "invoiceNumber": "9032131825"
+    },
+    {
+      "recordID": "OIN_DTL11",
+      "invoiceNumber": "9032131825",
+      "creditCode": "",
+      "creditCodeDescription": ""
+    },
+    {
+      "recordID": "OIN_DTL1",
+      "invoiceNumber": "9032131825",
+      "lineNumber": "120",
+      "distributorItemNumber": "1369575",
+      "uPCQualifier": "UP",
+      "uPCEANNumber": "00055000383103",
+      "customerItemNumber": null,
+      "unitOfMeasure": "CA",
+      "itemsPerUnit": "0006",
+      "taxes": "001304",
+      "catchWeightFlag": "1",
+      "BrokenCaseCode": "0",
+      "itemNonStockIndicator": "0"
+    },
+    {
+      "recordID": "OIN_DTL2",
+      "invoiceNumber": "9032131825",
+      "itemDescription": "DRINK HOT CHOC MIX PORTION 25G"
+    },
+    {
+      "recordID": "OIN_DTL3",
+      "invoiceNumber": "9032131825",
+      "quantityOrdered": "0000001",
+      "quantityShipped": "0000001",
+      "quantityDifference": "0000000",
+      "lotNumber": "000000000000013",
+      "productionDayCodeSubCode": "041",
+      "priceQuantity": null,
+      "priceUnitOfMeasure": null,
+      "unitGrossWeight": "",
+      "unitNetWeight": "000000000008"
+    },
+    {
+      "recordID": "OIN_DTL4",
+      "invoiceNumber": "9032131825",
+      "vendorNumber": "727833088",
+      "vendorName": "Nestle Canada Hopewell DR",
+      "vendorItemNumber": "12366889",
+      "classNumber": "9",
+      "classDescription": "Beverage",
+      "priceBookHeading": "13150",
+      "pricebookHeadingDescription": "Branded Cocoa & Tea"
+    },
+    {
+      "recordID": "OIN_DTL5",
+      "invoiceNumber": "9032131825",
+      "priceBookFamilyNumber": null,
+      "priceBookFamilyDescription": null,
+      "brand": "Carnation",
+      "pack": "0006",
+      "size": "50X25G",
+      "servingsPerCase": "00009",
+      "servingsPerCaseUOM": "L",
+      "caseUPCNumber": "00055000383103",
+      "vendorUPCNumber": "12366889",
+      "unitUPCNumber": null
+    },
+    {
+      "recordID": "OIN_DTL6",
+      "orderGuideCategory": "99999",
+      "orderGuideCategoryDes": null,
+      "invoiceNumber": "9032131825"
+    },
+    {
+      "recordID": "OIN_DTL7",
+      "invoiceNumber": "9032131825",
+      "extraItemDescription2": "8005383545",
+      "extraItemDescription3": "",
+      "vendorPhoneNumber": ""
+    },
+    {
+      "recordID": "OIN_DTL8",
+      "invoiceNumber": "9032131825"
+    },
+    {
+      "recordID": "OIN_DTL9",
+      "invoiceNumber": "9032131825"
+    },
+    {
+      "recordID": "OIN_DTL11",
+      "invoiceNumber": "9032131825",
+      "creditCode": "",
+      "creditCodeDescription": ""
+    },
+    {
+      "recordID": "OIN_DTL1",
+      "invoiceNumber": "9032131825",
+      "lineNumber": "150",
+      "distributorItemNumber": "8319205",
+      "uPCQualifier": "UP",
+      "uPCEANNumber": "10060731303891",
+      "customerItemNumber": null,
+      "unitOfMeasure": "CA",
+      "itemsPerUnit": "0006",
+      "taxes": "000224",
+      "catchWeightFlag": "9",
+      "BrokenCaseCode": "0",
+      "itemNonStockIndicator": "0"
+    },
+    {
+      "recordID": "OIN_DTL2",
+      "invoiceNumber": "9032131825",
+      "itemDescription": "TEA HERBAL PEPPERMINT"
+    },
+    {
+      "recordID": "OIN_DTL3",
+      "invoiceNumber": "9032131825",
+      "quantityOrdered": "0000001",
+      "quantityShipped": "0000001",
+      "quantityDifference": "0000000",
+      "lotNumber": "000000000000002",
+      "productionDayCodeSubCode": "249",
+      "priceQuantity": null,
+      "priceUnitOfMeasure": null,
+      "unitGrossWeight": "",
+      "unitNetWeight": "000000000000"
+    },
+    {
+      "recordID": "OIN_DTL4",
+      "invoiceNumber": "9032131825",
+      "vendorNumber": "727794319",
+      "vendorName": "Mother Parkers Tea & Coff",
+      "vendorItemNumber": "3030389",
+      "classNumber": "9",
+      "classDescription": "Beverage",
+      "priceBookHeading": "13150",
+      "pricebookHeadingDescription": "Branded Cocoa & Tea"
+    },
+    {
+      "recordID": "OIN_DTL5",
+      "invoiceNumber": "9032131825",
+      "priceBookFamilyNumber": null,
+      "priceBookFamilyDescription": null,
+      "brand": "Higgins & Burke",
+      "pack": "0006",
+      "size": "20UN",
+      "servingsPerCase": "00000",
+      "servingsPerCaseUOM": null,
+      "caseUPCNumber": "10060731303891",
+      "vendorUPCNumber": "3030389",
+      "unitUPCNumber": null
+    },
+    {
+      "recordID": "OIN_DTL6",
+      "orderGuideCategory": "99999",
+      "orderGuideCategoryDes": null,
+      "invoiceNumber": "9032131825"
+    },
+    {
+      "recordID": "OIN_DTL7",
+      "invoiceNumber": "9032131825",
+      "extraItemDescription2": "",
+      "extraItemDescription3": "",
+      "vendorPhoneNumber": ""
+    },
+    {
+      "recordID": "OIN_DTL8",
+      "invoiceNumber": "9032131825"
+    },
+    {
+      "recordID": "OIN_DTL9",
+      "invoiceNumber": "9032131825"
+    },
+    {
+      "recordID": "OIN_DTL11",
+      "invoiceNumber": "9032131825",
+      "creditCode": "",
+      "creditCodeDescription": ""
+    },
+    {
+      "recordID": "OIN_DTL1",
+      "invoiceNumber": "9032131825",
+      "lineNumber": "140",
+      "distributorItemNumber": "1123278",
+      "uPCQualifier": "UP",
+      "uPCEANNumber": "10050000461308",
+      "customerItemNumber": null,
+      "unitOfMeasure": "CA",
+      "itemsPerUnit": "0180",
+      "taxes": "000263",
+      "catchWeightFlag": "2",
+      "BrokenCaseCode": "0",
+      "itemNonStockIndicator": "0"
+    },
+    {
+      "recordID": "OIN_DTL2",
+      "invoiceNumber": "9032131825",
+      "itemDescription": "WHITENER COFFEE ORIG"
+    },
+    {
+      "recordID": "OIN_DTL3",
+      "invoiceNumber": "9032131825",
+      "quantityOrdered": "0000002",
+      "quantityShipped": "0000002",
+      "quantityDifference": "0000000",
+      "lotNumber": "000000000000005",
+      "productionDayCodeSubCode": "264",
+      "priceQuantity": null,
+      "priceUnitOfMeasure": null,
+      "unitGrossWeight": "",
+      "unitNetWeight": "000000000002"
+    },
+    {
+      "recordID": "OIN_DTL4",
+      "invoiceNumber": "9032131825",
+      "vendorNumber": "727833088",
+      "vendorName": "Nestle Canada Hopewell DR",
+      "vendorItemNumber": "12109163",
+      "classNumber": "9",
+      "classDescription": "Beverage",
+      "priceBookHeading": "13211",
+      "pricebookHeadingDescription": "Coffee Beverage Flavoring"
+    },
+    {
+      "recordID": "OIN_DTL5",
+      "invoiceNumber": "9032131825",
+      "priceBookFamilyNumber": null,
+      "priceBookFamilyDescription": null,
+      "brand": "Coffee Mate",
+      "pack": "0180",
+      "size": "11ML",
+      "servingsPerCase": "00000",
+      "servingsPerCaseUOM": null,
+      "caseUPCNumber": "10050000461308",
+      "vendorUPCNumber": "12109163",
+      "unitUPCNumber": null
+    },
+    {
+      "recordID": "OIN_DTL6",
+      "orderGuideCategory": "99999",
+      "orderGuideCategoryDes": null,
+      "invoiceNumber": "9032131825"
+    },
+    {
+      "recordID": "OIN_DTL7",
+      "invoiceNumber": "9032131825",
+      "extraItemDescription2": "8005383545",
+      "extraItemDescription3": "",
+      "vendorPhoneNumber": ""
+    },
+    {
+      "recordID": "OIN_DTL8",
+      "invoiceNumber": "9032131825"
+    },
+    {
+      "recordID": "OIN_DTL9",
+      "invoiceNumber": "9032131825"
+    },
+    {
+      "recordID": "OIN_DTL11",
+      "invoiceNumber": "9032131825",
+      "creditCode": "",
+      "creditCodeDescription": ""
+    },
+    {
+      "recordID": "OIN_TTL1",
+      "invoiceNumber": "9032131825",
+      "lineCount": "18",
+      "itemCount": "0000027",
+      "totalWeight": "0115250",
+      "extendedFeeAmount": "000122251",
+      "extendedDiscountAmount": "0001236",
+      "extendedInventoryTax": "29000001",
+      "bottleDeposit": "3810000"
+    },
+    {
+      "recordID": "OIN_SACS1",
+      "allowChargeIndicator": "C",
+      "allowChargeCode": "H740",
+      "percentQualifier": "0",
+      "percent": "000000",
+      "ignore": "00000065 000000",
+      "allowChargeHandlingCode": null,
+      "referenceID": "06SUMMARY TAX",
+      "invoiceNumber": "9032131825"
+    },
+    {
+      "recordID": "OIN_SACS2",
+      "allowChargeDesc": "Tax - Sales and Use",
+      "invoiceNumber": "9032131825"
+    },
+    {
+      "recordID": "OIN_SACS1",
+      "allowChargeIndicator": "C",
+      "allowChargeCode": "D260",
+      "percentQualifier": "0",
+      "percent": "000000",
+      "ignore": "00001300 000000",
+      "allowChargeHandlingCode": null,
+      "referenceID": "06",
+      "invoiceNumber": "9032131825"
+    },
+    {
+      "recordID": "OIN_SACS2",
+      "allowChargeDesc": "Fuel Charge",
+      "invoiceNumber": "9032131825"
+    },
+    {
+      "recordID": "OIN_SACS1",
+      "allowChargeIndicator": "C",
+      "allowChargeCode": "D360",
+      "percentQualifier": "0",
+      "percent": "000000",
+      "ignore": "00000065 000000",
+      "allowChargeHandlingCode": null,
+      "referenceID": "06",
+      "invoiceNumber": "9032131825"
+    },
+    {
+      "recordID": "OIN_SACS2",
+      "allowChargeDesc": "GST",
+      "invoiceNumber": "9032131825"
+    },
+    {
+      "recordID": "OIN_SACS1",
+      "allowChargeIndicator": "C",
+      "allowChargeCode": "D360",
+      "percentQualifier": "0",
+      "percent": "000000",
+      "ignore": "00000065 000000",
+      "allowChargeHandlingCode": null,
+      "referenceID": "06SUMMARY TAX",
+      "invoiceNumber": "9032131825"
+    },
+    {
+      "recordID": "OIN_SACS2",
+      "allowChargeDesc": "GST",
+      "invoiceNumber": "9032131825"
+    },
+    {
+      "recordID": "O_TPID",
+      "tPCode": "SILVR",
+      "functionalGroupCode": null,
+      "messageID": null,
+      "messageClass": null,
+      "invoiceNumber": "9032131825"
+    },
+    {
+      "recordID": "OIN_DSTID",
+      "invoiceNumber": "9032131825"
+    },
+    {
+      "recordID": "OIN_HDRA",
+      "companyNumber": "1",
+      "divisionNumber": "73",
+      "departmentNumber": "2",
+      "warehouseNumber": "71",
+      "customerNumber": "722676242",
+      "invoiceNumber": "9032131825"
+    }
+  ],
+  "summary": {}
+}

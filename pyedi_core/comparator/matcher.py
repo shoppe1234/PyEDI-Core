@@ -10,10 +10,30 @@ from __future__ import annotations
 import json
 import logging
 import os
+import re
 
 from pyedi_core.comparator.models import MatchEntry, MatchKeyConfig, MatchPair
 
 logger = logging.getLogger(__name__)
+
+
+def _normalize_value(value: str, normalize: str | None) -> str:
+    """Apply optional regex normalization to a match value.
+
+    Format: "pattern|replacement" — applies re.sub(pattern, replacement, value).
+    """
+    if not normalize:
+        return value
+    parts = normalize.split("|", 1)
+    if len(parts) != 2:
+        logger.warning("Invalid normalize format (expected 'pattern|replacement'): %s", normalize)
+        return value
+    pattern, replacement = parts
+    try:
+        return re.sub(pattern, replacement, value)
+    except re.error as exc:
+        logger.warning("Normalize regex error: %s", exc)
+        return value
 
 
 def _get_field_content(segment: dict, field_name: str) -> str:
@@ -75,6 +95,7 @@ def extract_match_values(json_data: dict, match_key: MatchKeyConfig) -> list[Mat
             return results
         value = _resolve_json_path(json_data, match_key.json_path)
         if value:
+            value = _normalize_value(value, match_key.normalize)
             results.append(MatchEntry(
                 file_path="",
                 match_value=value,
@@ -95,6 +116,7 @@ def extract_match_values(json_data: dict, match_key: MatchKeyConfig) -> list[Mat
             if seg.get("segment") == match_key.segment:
                 value = _get_field_content(seg, match_key.field)
                 if value:
+                    value = _normalize_value(value, match_key.normalize)
                     results.append(MatchEntry(
                         file_path="",
                         match_value=value,

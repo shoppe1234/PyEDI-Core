@@ -1,0 +1,8 @@
+{
+  "stage": "DETECTION",
+  "reason": "No driver available for file: artifacts/regionalHealth/ca-target\\CAN_20260401124627_71d80f6349f0419da22bbba77a998f07.810",
+  "exception": "DetectionError: No driver available for file: artifacts/regionalHealth/ca-target\\CAN_20260401124627_71d80f6349f0419da22bbba77a998f07.810",
+  "correlation_id": "d1550fd3-4cac-40f4-8d54-64bc576f870b",
+  "timestamp": "2026-04-02T12:29:14.981510+00:00",
+  "source_file": "CAN_20260401124627_71d80f6349f0419da22bbba77a998f07.810"
+}

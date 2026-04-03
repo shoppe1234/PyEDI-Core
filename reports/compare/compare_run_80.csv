@@ -1,0 +1,13 @@
+# Profile: retalix_p_i_invo
+# Trading Partner: Silverbirch
+# Transaction Type: RETALIXPIINVOICEFILESCHEMASACFF
+# Run ID: 80
+# Started: 2026-03-27T19:03:45.708093+00:00
+# Total Pairs: 3 | Matched: 1 | Mismatched: 2 | Unmatched: 0
+timestamp,profile,trading_partner,run_id,pair_id,source_file,target_file,match_value,status,segment,field,severity,source_value,target_value,description
+2026-03-27T19:03:45.708093+00:00,retalix_p_i_invo,Silverbirch,80,382,outbound/silver/control\CA_810_SILVR_20260210_063047_373-3072.json,outbound/silver/test\CA_810_SILVR_20260210_063047_373-3072.json,CA_810_SILVR_20260210_063047_373-3072,MATCH,,,,,,
+2026-03-27T19:03:45.708093+00:00,retalix_p_i_invo,Silverbirch,80,383,outbound/silver/control\CA_810_SILVR_20260210_070604_668-3071.json,outbound/silver/test\CA_810_SILVR_20260210_070604_668-3071.json,CA_810_SILVR_20260210_070604_668-3071,MISMATCH,line_13,billToName,hard,SILVERBIRCH HOTELS & RESO,SILVERBIRCH HOTEL  & RESO,Content mismatch: Source='SILVERBIRCH HOTELS & RESO' vs Target='SILVERBIRCH HOTEL  & RESO'
+2026-03-27T19:03:45.708093+00:00,retalix_p_i_invo,Silverbirch,80,383,outbound/silver/control\CA_810_SILVR_20260210_070604_668-3071.json,outbound/silver/test\CA_810_SILVR_20260210_070604_668-3071.json,CA_810_SILVR_20260210_070604_668-3071,MISMATCH,line_30,itemDescription,hard,CHEESE CHED MILD SLCD NAT COL 14G,CHEESE CHED MILD SLCD NAT COL 27G,Content mismatch: Source='CHEESE CHED MILD SLCD NAT COL 14G' vs Target='CHEESE CHED MILD SLCD NAT COL 27G'
+2026-03-27T19:03:45.708093+00:00,retalix_p_i_invo,Silverbirch,80,384,outbound/silver/control\CA_810_SILVR_20260210_080223_595-3060.json,outbound/silver/test\CA_810_SILVR_20260210_080223_595-3060.json,CA_810_SILVR_20260210_080223_595-3060,MISMATCH,line_17,remitToCareOf,hard,Gordon Food Service Canada,Gordon Food Service USA,Content mismatch: Source='Gordon Food Service Canada' vs Target='Gordon Food Service USA'
+2026-03-27T19:03:45.708093+00:00,retalix_p_i_invo,Silverbirch,80,384,outbound/silver/control\CA_810_SILVR_20260210_080223_595-3060.json,outbound/silver/test\CA_810_SILVR_20260210_080223_595-3060.json,CA_810_SILVR_20260210_080223_595-3060,MISMATCH,line_264,itemDescription,hard,CEREAL SPECIAL K GRANOLA L/FAT,CEREAL SPECIAL K GRANOLA L/LEAN,Content mismatch: Source='CEREAL SPECIAL K GRANOLA L/FAT' vs Target='CEREAL SPECIAL K GRANOLA L/LEAN'
+# Summary: hard=4

@@ -1,0 +1,5991 @@
+{
+  "document": {
+    "config": {
+      "element_separator": "~",
+      "segment_terminator": "|",
+      "sub_element_separator": ">",
+      "version": "00501"
+    },
+    "segments": [
+      {
+        "segment": "ISA",
+        "fields": [
+          {
+            "name": "ISA01",
+            "content": "ISA"
+          },
+          {
+            "name": "ISA02",
+            "content": "00"
+          },
+          {
+            "name": "ISA03",
+            "content": "          "
+          },
+          {
+            "name": "ISA04",
+            "content": "00"
+          },
+          {
+            "name": "ISA05",
+            "content": "          "
+          },
+          {
+            "name": "ISA06",
+            "content": "01"
+          },
+          {
+            "name": "ISA07",
+            "content": "00640009801    "
+          },
+          {
+            "name": "ISA08",
+            "content": "ZZ"
+          },
+          {
+            "name": "ISA09",
+            "content": "WINMET         "
+          },
+          {
+            "name": "ISA10",
+            "content": "260401"
+          },
+          {
+            "name": "ISA11",
+            "content": "1328"
+          },
+          {
+            "name": "ISA12",
+            "content": "U"
+          },
+          {
+            "name": "ISA13",
+            "content": "00401"
+          },
+          {
+            "name": "ISA14",
+            "content": "000002090"
+          },
+          {
+            "name": "ISA15",
+            "content": "0"
+          },
+          {
+            "name": "ISA16",
+            "content": "P"
+          },
+          {
+            "name": "ISA17",
+            "content": ">"
+          }
+        ]
+      },
+      {
+        "segment": "GS",
+        "fields": [
+          {
+            "name": "GS01",
+            "content": "GS"
+          },
+          {
+            "name": "GS02",
+            "content": "IN"
+          },
+          {
+            "name": "GS03",
+            "content": "00640009801"
+          },
+          {
+            "name": "GS04",
+            "content": "WINMET"
+          },
+          {
+            "name": "GS05",
+            "content": "260401"
+          },
+          {
+            "name": "GS06",
+            "content": "1328"
+          },
+          {
+            "name": "GS07",
+            "content": "000002034"
+          },
+          {
+            "name": "GS08",
+            "content": "X"
+          },
+          {
+            "name": "GS09",
+            "content": "003050"
+          }
+        ]
+      },
+      {
+        "segment": "ST",
+        "fields": [
+          {
+            "name": "ST01",
+            "content": "ST"
+          },
+          {
+            "name": "ST02",
+            "content": "810"
+          },
+          {
+            "name": "ST03",
+            "content": "0001"
+          },
+          {
+            "name": "ST04",
+            "content": ""
+          }
+        ]
+      },
+      {
+        "segment": "BIG",
+        "fields": [
+          {
+            "name": "BIG01",
+            "content": "20260311"
+          },
+          {
+            "name": "BIG02",
+            "content": "9033175055"
+          },
+          {
+            "name": "BIG03",
+            "content": "20260310"
+          },
+          {
+            "name": "BIG04",
+            "content": "3204683-BWD"
+          },
+          {
+            "name": "BIG05",
+            "content": ""
+          },
+          {
+            "name": "BIG06",
+            "content": ""
+          },
+          {
+            "name": "BIG07",
+            "content": "DI"
+          }
+        ]
+      },
+      {
+        "segment": "N1",
+        "fields": [
+          {
+            "name": "N101",
+            "content": "ST"
+          },
+          {
+            "name": "N102",
+            "content": "BLUEWATER HEALTH NORMAN S"
+          },
+          {
+            "name": "N103",
+            "content": "91"
+          },
+          {
+            "name": "N104",
+            "content": "365110018"
+          }
+        ]
+      },
+      {
+        "segment": "N3",
+        "fields": [
+          {
+            "name": "N301",
+            "content": "88 NORMAN STREET"
+          }
+        ]
+      },
+      {
+        "segment": "N4",
+        "fields": [
+          {
+            "name": "N401",
+            "content": "SARNIA"
+          },
+          {
+            "name": "N402",
+            "content": "ON"
+          },
+          {
+            "name": "N403",
+            "content": "N7T 6S3"
+          }
+        ]
+      },
+      {
+        "segment": "N1",
+        "fields": [
+          {
+            "name": "N101",
+            "content": "SF"
+          },
+          {
+            "name": "N102",
+            "content": "GFS British Columbia"
+          },
+          {
+            "name": "N103",
+            "content": "9"
+          },
+          {
+            "name": "N104",
+            "content": "50"
+          }
+        ]
+      },
+      {
+        "segment": "N3",
+        "fields": [
+          {
+            "name": "N301",
+            "content": "1700 CLIVEDEN AVE"
+          }
+        ]
+      },
+      {
+        "segment": "N4",
+        "fields": [
+          {
+            "name": "N401",
+            "content": "DELTA"
+          },
+          {
+            "name": "N402",
+            "content": "BC"
+          },
+          {
+            "name": "N403",
+            "content": "V3M 6T2"
+          }
+        ]
+      },
+      {
+        "segment": "DTM",
+        "fields": [
+          {
+            "name": "DTM01",
+            "content": "003"
+          },
+          {
+            "name": "DTM02",
+            "content": "20260311"
+          }
+        ]
+      },
+      {
+        "segment": "IT1",
+        "fields": [
+          {
+            "name": "IT101",
+            "content": "20"
+          },
+          {
+            "name": "IT102",
+            "content": "20"
+          },
+          {
+            "name": "IT103",
+            "content": "CA"
+          },
+          {
+            "name": "IT104",
+            "content": "12.29"
+          },
+          {
+            "name": "IT105",
+            "content": "UM"
+          },
+          {
+            "name": "IT106",
+            "content": "VN"
+          },
+          {
+            "name": "IT107",
+            "content": "2050446"
+          }
+        ]
+      },
+      {
+        "segment": "QTY",
+        "fields": [
+          {
+            "name": "QTY01",
+            "content": "01"
+          },
+          {
+            "name": "QTY02",
+            "content": "20"
+          }
+        ]
+      },
+      {
+        "segment": "TXI",
+        "fields": [
+          {
+            "name": "TXI01",
+            "content": "OH"
+          },
+          {
+            "name": "TXI02",
+            "content": "31.96"
+          }
+        ]
+      },
+      {
+        "segment": "PID",
+        "fields": [
+          {
+            "name": "PID01",
+            "content": "F"
+          },
+          {
+            "name": "PID02",
+            "content": ""
+          },
+          {
+            "name": "PID03",
+            "content": ""
+          },
+          {
+            "name": "PID04",
+            "content": ""
+          },
+          {
+            "name": "PID05",
+            "content": "NOVELTY CUP SUPER SUNDAE VAN"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "PK"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "24"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "UP"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "115ML"
+          }
+        ]
+      },
+      {
+        "segment": "IT1",
+        "fields": [
+          {
+            "name": "IT101",
+            "content": "30"
+          },
+          {
+            "name": "IT102",
+            "content": "1"
+          },
+          {
+            "name": "IT103",
+            "content": "CA"
+          },
+          {
+            "name": "IT104",
+            "content": "38.25"
+          },
+          {
+            "name": "IT105",
+            "content": "UM"
+          },
+          {
+            "name": "IT106",
+            "content": "VN"
+          },
+          {
+            "name": "IT107",
+            "content": "1099023"
+          }
+        ]
+      },
+      {
+        "segment": "QTY",
+        "fields": [
+          {
+            "name": "QTY01",
+            "content": "01"
+          },
+          {
+            "name": "QTY02",
+            "content": "1"
+          }
+        ]
+      },
+      {
+        "segment": "PID",
+        "fields": [
+          {
+            "name": "PID01",
+            "content": "F"
+          },
+          {
+            "name": "PID02",
+            "content": ""
+          },
+          {
+            "name": "PID03",
+            "content": ""
+          },
+          {
+            "name": "PID04",
+            "content": ""
+          },
+          {
+            "name": "PID05",
+            "content": "BREAD LOAF WHITE SLCD T/S"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "PK"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "16"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "UP"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "675G"
+          }
+        ]
+      },
+      {
+        "segment": "IT1",
+        "fields": [
+          {
+            "name": "IT101",
+            "content": "40"
+          },
+          {
+            "name": "IT102",
+            "content": "2"
+          },
+          {
+            "name": "IT103",
+            "content": "CA"
+          },
+          {
+            "name": "IT104",
+            "content": "38.47"
+          },
+          {
+            "name": "IT105",
+            "content": "UM"
+          },
+          {
+            "name": "IT106",
+            "content": "VN"
+          },
+          {
+            "name": "IT107",
+            "content": "1098662"
+          }
+        ]
+      },
+      {
+        "segment": "QTY",
+        "fields": [
+          {
+            "name": "QTY01",
+            "content": "01"
+          },
+          {
+            "name": "QTY02",
+            "content": "2"
+          }
+        ]
+      },
+      {
+        "segment": "PID",
+        "fields": [
+          {
+            "name": "PID01",
+            "content": "F"
+          },
+          {
+            "name": "PID02",
+            "content": ""
+          },
+          {
+            "name": "PID03",
+            "content": ""
+          },
+          {
+            "name": "PID04",
+            "content": ""
+          },
+          {
+            "name": "PID05",
+            "content": "BREAD LOAF WW SLCD T/S"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "PK"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "16"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "UP"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "675G"
+          }
+        ]
+      },
+      {
+        "segment": "IT1",
+        "fields": [
+          {
+            "name": "IT101",
+            "content": "50"
+          },
+          {
+            "name": "IT102",
+            "content": "5"
+          },
+          {
+            "name": "IT103",
+            "content": "CA"
+          },
+          {
+            "name": "IT104",
+            "content": "55.51"
+          },
+          {
+            "name": "IT105",
+            "content": "UM"
+          },
+          {
+            "name": "IT106",
+            "content": "VN"
+          },
+          {
+            "name": "IT107",
+            "content": "2082506"
+          }
+        ]
+      },
+      {
+        "segment": "QTY",
+        "fields": [
+          {
+            "name": "QTY01",
+            "content": "01"
+          },
+          {
+            "name": "QTY02",
+            "content": "5"
+          }
+        ]
+      },
+      {
+        "segment": "PID",
+        "fields": [
+          {
+            "name": "PID01",
+            "content": "F"
+          },
+          {
+            "name": "PID02",
+            "content": ""
+          },
+          {
+            "name": "PID03",
+            "content": ""
+          },
+          {
+            "name": "PID04",
+            "content": ""
+          },
+          {
+            "name": "PID05",
+            "content": "MACARONI AND CHEESE"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "PK"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "4"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "UP"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "1.81KG"
+          }
+        ]
+      },
+      {
+        "segment": "IT1",
+        "fields": [
+          {
+            "name": "IT101",
+            "content": "80"
+          },
+          {
+            "name": "IT102",
+            "content": "3"
+          },
+          {
+            "name": "IT103",
+            "content": "CA"
+          },
+          {
+            "name": "IT104",
+            "content": "25.29"
+          },
+          {
+            "name": "IT105",
+            "content": "UM"
+          },
+          {
+            "name": "IT106",
+            "content": "VN"
+          },
+          {
+            "name": "IT107",
+            "content": "6654605"
+          }
+        ]
+      },
+      {
+        "segment": "QTY",
+        "fields": [
+          {
+            "name": "QTY01",
+            "content": "01"
+          },
+          {
+            "name": "QTY02",
+            "content": "3"
+          }
+        ]
+      },
+      {
+        "segment": "PID",
+        "fields": [
+          {
+            "name": "PID01",
+            "content": "F"
+          },
+          {
+            "name": "PID02",
+            "content": ""
+          },
+          {
+            "name": "PID03",
+            "content": ""
+          },
+          {
+            "name": "PID04",
+            "content": ""
+          },
+          {
+            "name": "PID05",
+            "content": "MUFFIN BATTER FRT FIBER EXTREME SSENSZTF"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "PK"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "1"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "UP"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "13.5LB"
+          }
+        ]
+      },
+      {
+        "segment": "IT1",
+        "fields": [
+          {
+            "name": "IT101",
+            "content": "90"
+          },
+          {
+            "name": "IT102",
+            "content": "2"
+          },
+          {
+            "name": "IT103",
+            "content": "CA"
+          },
+          {
+            "name": "IT104",
+            "content": "43.33"
+          },
+          {
+            "name": "IT105",
+            "content": "UM"
+          },
+          {
+            "name": "IT106",
+            "content": "VN"
+          },
+          {
+            "name": "IT107",
+            "content": "1214230"
+          }
+        ]
+      },
+      {
+        "segment": "QTY",
+        "fields": [
+          {
+            "name": "QTY01",
+            "content": "01"
+          },
+          {
+            "name": "QTY02",
+            "content": "2"
+          }
+        ]
+      },
+      {
+        "segment": "PID",
+        "fields": [
+          {
+            "name": "PID01",
+            "content": "F"
+          },
+          {
+            "name": "PID02",
+            "content": ""
+          },
+          {
+            "name": "PID03",
+            "content": ""
+          },
+          {
+            "name": "PID04",
+            "content": ""
+          },
+          {
+            "name": "PID05",
+            "content": "MUFFIN BATTER DARK BRAN FZN"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "PK"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "1"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "UP"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "7.5KG"
+          }
+        ]
+      },
+      {
+        "segment": "IT1",
+        "fields": [
+          {
+            "name": "IT101",
+            "content": "100"
+          },
+          {
+            "name": "IT102",
+            "content": "1"
+          },
+          {
+            "name": "IT103",
+            "content": "CA"
+          },
+          {
+            "name": "IT104",
+            "content": "30.38"
+          },
+          {
+            "name": "IT105",
+            "content": "UM"
+          },
+          {
+            "name": "IT106",
+            "content": "VN"
+          },
+          {
+            "name": "IT107",
+            "content": "1113493"
+          }
+        ]
+      },
+      {
+        "segment": "QTY",
+        "fields": [
+          {
+            "name": "QTY01",
+            "content": "01"
+          },
+          {
+            "name": "QTY02",
+            "content": "1"
+          }
+        ]
+      },
+      {
+        "segment": "PID",
+        "fields": [
+          {
+            "name": "PID01",
+            "content": "F"
+          },
+          {
+            "name": "PID02",
+            "content": ""
+          },
+          {
+            "name": "PID03",
+            "content": ""
+          },
+          {
+            "name": "PID04",
+            "content": ""
+          },
+          {
+            "name": "PID05",
+            "content": "MUFFIN BATTER BLUEBERRY PASSION ZTF"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "PK"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "1"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "UP"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "4.53KG"
+          }
+        ]
+      },
+      {
+        "segment": "IT1",
+        "fields": [
+          {
+            "name": "IT101",
+            "content": "110"
+          },
+          {
+            "name": "IT102",
+            "content": "4"
+          },
+          {
+            "name": "IT103",
+            "content": "CA"
+          },
+          {
+            "name": "IT104",
+            "content": "29.84"
+          },
+          {
+            "name": "IT105",
+            "content": "UM"
+          },
+          {
+            "name": "IT106",
+            "content": "VN"
+          },
+          {
+            "name": "IT107",
+            "content": "1120282"
+          }
+        ]
+      },
+      {
+        "segment": "QTY",
+        "fields": [
+          {
+            "name": "QTY01",
+            "content": "01"
+          },
+          {
+            "name": "QTY02",
+            "content": "4"
+          }
+        ]
+      },
+      {
+        "segment": "PID",
+        "fields": [
+          {
+            "name": "PID01",
+            "content": "F"
+          },
+          {
+            "name": "PID02",
+            "content": ""
+          },
+          {
+            "name": "PID03",
+            "content": ""
+          },
+          {
+            "name": "PID04",
+            "content": ""
+          },
+          {
+            "name": "PID05",
+            "content": "MUFFIN BATTER BANANA DREAM ZTF"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "PK"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "1"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "UP"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "4.53KG"
+          }
+        ]
+      },
+      {
+        "segment": "IT1",
+        "fields": [
+          {
+            "name": "IT101",
+            "content": "120"
+          },
+          {
+            "name": "IT102",
+            "content": "5"
+          },
+          {
+            "name": "IT103",
+            "content": "CA"
+          },
+          {
+            "name": "IT104",
+            "content": "49.71"
+          },
+          {
+            "name": "IT105",
+            "content": "UM"
+          },
+          {
+            "name": "IT106",
+            "content": "VN"
+          },
+          {
+            "name": "IT107",
+            "content": "4241806"
+          }
+        ]
+      },
+      {
+        "segment": "QTY",
+        "fields": [
+          {
+            "name": "QTY01",
+            "content": "01"
+          },
+          {
+            "name": "QTY02",
+            "content": "5"
+          }
+        ]
+      },
+      {
+        "segment": "PID",
+        "fields": [
+          {
+            "name": "PID01",
+            "content": "F"
+          },
+          {
+            "name": "PID02",
+            "content": ""
+          },
+          {
+            "name": "PID03",
+            "content": ""
+          },
+          {
+            "name": "PID04",
+            "content": ""
+          },
+          {
+            "name": "PID05",
+            "content": "LASAGNA VEG"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "PK"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "3"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "UP"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "2KG"
+          }
+        ]
+      },
+      {
+        "segment": "IT1",
+        "fields": [
+          {
+            "name": "IT101",
+            "content": "130"
+          },
+          {
+            "name": "IT102",
+            "content": "6"
+          },
+          {
+            "name": "IT103",
+            "content": "CA"
+          },
+          {
+            "name": "IT104",
+            "content": "70.16"
+          },
+          {
+            "name": "IT105",
+            "content": "UM"
+          },
+          {
+            "name": "IT106",
+            "content": "VN"
+          },
+          {
+            "name": "IT107",
+            "content": "6284256"
+          }
+        ]
+      },
+      {
+        "segment": "QTY",
+        "fields": [
+          {
+            "name": "QTY01",
+            "content": "01"
+          },
+          {
+            "name": "QTY02",
+            "content": "6"
+          }
+        ]
+      },
+      {
+        "segment": "PID",
+        "fields": [
+          {
+            "name": "PID01",
+            "content": "F"
+          },
+          {
+            "name": "PID02",
+            "content": ""
+          },
+          {
+            "name": "PID03",
+            "content": ""
+          },
+          {
+            "name": "PID04",
+            "content": ""
+          },
+          {
+            "name": "PID05",
+            "content": "PIE SHEPHERD TFC"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "PK"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "3"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "UP"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "2KG"
+          }
+        ]
+      },
+      {
+        "segment": "IT1",
+        "fields": [
+          {
+            "name": "IT101",
+            "content": "140"
+          },
+          {
+            "name": "IT102",
+            "content": "3"
+          },
+          {
+            "name": "IT103",
+            "content": "CA"
+          },
+          {
+            "name": "IT104",
+            "content": "29.3"
+          },
+          {
+            "name": "IT105",
+            "content": "UM"
+          },
+          {
+            "name": "IT106",
+            "content": "VN"
+          },
+          {
+            "name": "IT107",
+            "content": "1104263"
+          }
+        ]
+      },
+      {
+        "segment": "QTY",
+        "fields": [
+          {
+            "name": "QTY01",
+            "content": "01"
+          },
+          {
+            "name": "QTY02",
+            "content": "3"
+          }
+        ]
+      },
+      {
+        "segment": "PID",
+        "fields": [
+          {
+            "name": "PID01",
+            "content": "F"
+          },
+          {
+            "name": "PID02",
+            "content": ""
+          },
+          {
+            "name": "PID03",
+            "content": ""
+          },
+          {
+            "name": "PID04",
+            "content": ""
+          },
+          {
+            "name": "PID05",
+            "content": "BEAN GREEN CUT IQF"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "PK"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "6"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "UP"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "2KG"
+          }
+        ]
+      },
+      {
+        "segment": "IT1",
+        "fields": [
+          {
+            "name": "IT101",
+            "content": "150"
+          },
+          {
+            "name": "IT102",
+            "content": "2"
+          },
+          {
+            "name": "IT103",
+            "content": "CA"
+          },
+          {
+            "name": "IT104",
+            "content": "35.42"
+          },
+          {
+            "name": "IT105",
+            "content": "UM"
+          },
+          {
+            "name": "IT106",
+            "content": "VN"
+          },
+          {
+            "name": "IT107",
+            "content": "2476605"
+          }
+        ]
+      },
+      {
+        "segment": "QTY",
+        "fields": [
+          {
+            "name": "QTY01",
+            "content": "01"
+          },
+          {
+            "name": "QTY02",
+            "content": "2"
+          }
+        ]
+      },
+      {
+        "segment": "PID",
+        "fields": [
+          {
+            "name": "PID01",
+            "content": "F"
+          },
+          {
+            "name": "PID02",
+            "content": ""
+          },
+          {
+            "name": "PID03",
+            "content": ""
+          },
+          {
+            "name": "PID04",
+            "content": ""
+          },
+          {
+            "name": "PID05",
+            "content": "PEA GREEN FANCY IQF"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "PK"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "6"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "UP"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "2KG"
+          }
+        ]
+      },
+      {
+        "segment": "IT1",
+        "fields": [
+          {
+            "name": "IT101",
+            "content": "160"
+          },
+          {
+            "name": "IT102",
+            "content": "2"
+          },
+          {
+            "name": "IT103",
+            "content": "CA"
+          },
+          {
+            "name": "IT104",
+            "content": "38.29"
+          },
+          {
+            "name": "IT105",
+            "content": "UM"
+          },
+          {
+            "name": "IT106",
+            "content": "VN"
+          },
+          {
+            "name": "IT107",
+            "content": "1133768"
+          }
+        ]
+      },
+      {
+        "segment": "QTY",
+        "fields": [
+          {
+            "name": "QTY01",
+            "content": "01"
+          },
+          {
+            "name": "QTY02",
+            "content": "2"
+          }
+        ]
+      },
+      {
+        "segment": "PID",
+        "fields": [
+          {
+            "name": "PID01",
+            "content": "F"
+          },
+          {
+            "name": "PID02",
+            "content": ""
+          },
+          {
+            "name": "PID03",
+            "content": ""
+          },
+          {
+            "name": "PID04",
+            "content": ""
+          },
+          {
+            "name": "PID05",
+            "content": "CORN WHOLE KERNEL FZN"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "PK"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "6"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "UP"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "2KG"
+          }
+        ]
+      },
+      {
+        "segment": "IT1",
+        "fields": [
+          {
+            "name": "IT101",
+            "content": "170"
+          },
+          {
+            "name": "IT102",
+            "content": "1"
+          },
+          {
+            "name": "IT103",
+            "content": "CA"
+          },
+          {
+            "name": "IT104",
+            "content": "32.81"
+          },
+          {
+            "name": "IT105",
+            "content": "UM"
+          },
+          {
+            "name": "IT106",
+            "content": "VN"
+          },
+          {
+            "name": "IT107",
+            "content": "6933805"
+          }
+        ]
+      },
+      {
+        "segment": "QTY",
+        "fields": [
+          {
+            "name": "QTY01",
+            "content": "01"
+          },
+          {
+            "name": "QTY02",
+            "content": "1"
+          }
+        ]
+      },
+      {
+        "segment": "PID",
+        "fields": [
+          {
+            "name": "PID01",
+            "content": "F"
+          },
+          {
+            "name": "PID02",
+            "content": ""
+          },
+          {
+            "name": "PID03",
+            "content": ""
+          },
+          {
+            "name": "PID04",
+            "content": ""
+          },
+          {
+            "name": "PID05",
+            "content": "VEG MIX GRADE A IQF"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "PK"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "6"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "UP"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "2KG"
+          }
+        ]
+      },
+      {
+        "segment": "IT1",
+        "fields": [
+          {
+            "name": "IT101",
+            "content": "180"
+          },
+          {
+            "name": "IT102",
+            "content": "2"
+          },
+          {
+            "name": "IT103",
+            "content": "CA"
+          },
+          {
+            "name": "IT104",
+            "content": "22.23"
+          },
+          {
+            "name": "IT105",
+            "content": "UM"
+          },
+          {
+            "name": "IT106",
+            "content": "VN"
+          },
+          {
+            "name": "IT107",
+            "content": "7002148"
+          }
+        ]
+      },
+      {
+        "segment": "QTY",
+        "fields": [
+          {
+            "name": "QTY01",
+            "content": "01"
+          },
+          {
+            "name": "QTY02",
+            "content": "2"
+          }
+        ]
+      },
+      {
+        "segment": "PID",
+        "fields": [
+          {
+            "name": "PID01",
+            "content": "F"
+          },
+          {
+            "name": "PID02",
+            "content": ""
+          },
+          {
+            "name": "PID03",
+            "content": ""
+          },
+          {
+            "name": "PID04",
+            "content": ""
+          },
+          {
+            "name": "PID05",
+            "content": "CARROT DCD IQF"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "PK"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "6"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "UP"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "2KG"
+          }
+        ]
+      },
+      {
+        "segment": "IT1",
+        "fields": [
+          {
+            "name": "IT101",
+            "content": "190"
+          },
+          {
+            "name": "IT102",
+            "content": "1"
+          },
+          {
+            "name": "IT103",
+            "content": "CA"
+          },
+          {
+            "name": "IT104",
+            "content": "31.31"
+          },
+          {
+            "name": "IT105",
+            "content": "UM"
+          },
+          {
+            "name": "IT106",
+            "content": "VN"
+          },
+          {
+            "name": "IT107",
+            "content": "1032148"
+          }
+        ]
+      },
+      {
+        "segment": "QTY",
+        "fields": [
+          {
+            "name": "QTY01",
+            "content": "01"
+          },
+          {
+            "name": "QTY02",
+            "content": "1"
+          }
+        ]
+      },
+      {
+        "segment": "PID",
+        "fields": [
+          {
+            "name": "PID01",
+            "content": "F"
+          },
+          {
+            "name": "PID02",
+            "content": ""
+          },
+          {
+            "name": "PID03",
+            "content": ""
+          },
+          {
+            "name": "PID04",
+            "content": ""
+          },
+          {
+            "name": "PID05",
+            "content": "BEAN WAX YEL IQF"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "PK"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "6"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "UP"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "2KG"
+          }
+        ]
+      },
+      {
+        "segment": "IT1",
+        "fields": [
+          {
+            "name": "IT101",
+            "content": "200"
+          },
+          {
+            "name": "IT102",
+            "content": "5"
+          },
+          {
+            "name": "IT103",
+            "content": "CA"
+          },
+          {
+            "name": "IT104",
+            "content": "37.62"
+          },
+          {
+            "name": "IT105",
+            "content": "UM"
+          },
+          {
+            "name": "IT106",
+            "content": "VN"
+          },
+          {
+            "name": "IT107",
+            "content": "1450238"
+          }
+        ]
+      },
+      {
+        "segment": "QTY",
+        "fields": [
+          {
+            "name": "QTY01",
+            "content": "01"
+          },
+          {
+            "name": "QTY02",
+            "content": "5"
+          }
+        ]
+      },
+      {
+        "segment": "PID",
+        "fields": [
+          {
+            "name": "PID01",
+            "content": "F"
+          },
+          {
+            "name": "PID02",
+            "content": ""
+          },
+          {
+            "name": "PID03",
+            "content": ""
+          },
+          {
+            "name": "PID04",
+            "content": ""
+          },
+          {
+            "name": "PID05",
+            "content": "PANCAKE ORIGINAL MINI BITE"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "PK"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "6"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "UP"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "500G"
+          }
+        ]
+      },
+      {
+        "segment": "IT1",
+        "fields": [
+          {
+            "name": "IT101",
+            "content": "210"
+          },
+          {
+            "name": "IT102",
+            "content": "1"
+          },
+          {
+            "name": "IT103",
+            "content": "CA"
+          },
+          {
+            "name": "IT104",
+            "content": "71.85"
+          },
+          {
+            "name": "IT105",
+            "content": "UM"
+          },
+          {
+            "name": "IT106",
+            "content": "VN"
+          },
+          {
+            "name": "IT107",
+            "content": "1299841"
+          }
+        ]
+      },
+      {
+        "segment": "QTY",
+        "fields": [
+          {
+            "name": "QTY01",
+            "content": "01"
+          },
+          {
+            "name": "QTY02",
+            "content": "1"
+          }
+        ]
+      },
+      {
+        "segment": "PID",
+        "fields": [
+          {
+            "name": "PID01",
+            "content": "F"
+          },
+          {
+            "name": "PID02",
+            "content": ""
+          },
+          {
+            "name": "PID03",
+            "content": ""
+          },
+          {
+            "name": "PID04",
+            "content": ""
+          },
+          {
+            "name": "PID05",
+            "content": "EGG PATTY SCRAMBLED PLAIN NAT SHAPE"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "PK"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "144"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "UP"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "49G"
+          }
+        ]
+      },
+      {
+        "segment": "IT1",
+        "fields": [
+          {
+            "name": "IT101",
+            "content": "220"
+          },
+          {
+            "name": "IT102",
+            "content": "2"
+          },
+          {
+            "name": "IT103",
+            "content": "CA"
+          },
+          {
+            "name": "IT104",
+            "content": "81.14"
+          },
+          {
+            "name": "IT105",
+            "content": "UM"
+          },
+          {
+            "name": "IT106",
+            "content": "VN"
+          },
+          {
+            "name": "IT107",
+            "content": "1457722"
+          }
+        ]
+      },
+      {
+        "segment": "QTY",
+        "fields": [
+          {
+            "name": "QTY01",
+            "content": "01"
+          },
+          {
+            "name": "QTY02",
+            "content": "2"
+          }
+        ]
+      },
+      {
+        "segment": "PID",
+        "fields": [
+          {
+            "name": "PID01",
+            "content": "F"
+          },
+          {
+            "name": "PID02",
+            "content": ""
+          },
+          {
+            "name": "PID03",
+            "content": ""
+          },
+          {
+            "name": "PID04",
+            "content": ""
+          },
+          {
+            "name": "PID05",
+            "content": "EGG WRAP BRKFST WESTERN 116G FZN"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "PK"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "48"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "UP"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "116G"
+          }
+        ]
+      },
+      {
+        "segment": "IT1",
+        "fields": [
+          {
+            "name": "IT101",
+            "content": "230"
+          },
+          {
+            "name": "IT102",
+            "content": "1"
+          },
+          {
+            "name": "IT103",
+            "content": "CA"
+          },
+          {
+            "name": "IT104",
+            "content": "41.77"
+          },
+          {
+            "name": "IT105",
+            "content": "UM"
+          },
+          {
+            "name": "IT106",
+            "content": "VN"
+          },
+          {
+            "name": "IT107",
+            "content": "1061632"
+          }
+        ]
+      },
+      {
+        "segment": "QTY",
+        "fields": [
+          {
+            "name": "QTY01",
+            "content": "01"
+          },
+          {
+            "name": "QTY02",
+            "content": "1"
+          }
+        ]
+      },
+      {
+        "segment": "PID",
+        "fields": [
+          {
+            "name": "PID01",
+            "content": "F"
+          },
+          {
+            "name": "PID02",
+            "content": ""
+          },
+          {
+            "name": "PID03",
+            "content": ""
+          },
+          {
+            "name": "PID04",
+            "content": ""
+          },
+          {
+            "name": "PID05",
+            "content": "EGG OMELETTE CHS VEG 3Z"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "PK"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "48"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "UP"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "85G"
+          }
+        ]
+      },
+      {
+        "segment": "IT1",
+        "fields": [
+          {
+            "name": "IT101",
+            "content": "240"
+          },
+          {
+            "name": "IT102",
+            "content": "2"
+          },
+          {
+            "name": "IT103",
+            "content": "CA"
+          },
+          {
+            "name": "IT104",
+            "content": "44.29"
+          },
+          {
+            "name": "IT105",
+            "content": "UM"
+          },
+          {
+            "name": "IT106",
+            "content": "VN"
+          },
+          {
+            "name": "IT107",
+            "content": "1356723"
+          }
+        ]
+      },
+      {
+        "segment": "QTY",
+        "fields": [
+          {
+            "name": "QTY01",
+            "content": "01"
+          },
+          {
+            "name": "QTY02",
+            "content": "2"
+          }
+        ]
+      },
+      {
+        "segment": "PID",
+        "fields": [
+          {
+            "name": "PID01",
+            "content": "F"
+          },
+          {
+            "name": "PID02",
+            "content": ""
+          },
+          {
+            "name": "PID03",
+            "content": ""
+          },
+          {
+            "name": "PID04",
+            "content": ""
+          },
+          {
+            "name": "PID05",
+            "content": "EGG OMELETTE SKILLET PLAIN NO CHOLESTERO"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "PK"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "48"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "UP"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "85G"
+          }
+        ]
+      },
+      {
+        "segment": "IT1",
+        "fields": [
+          {
+            "name": "IT101",
+            "content": "250"
+          },
+          {
+            "name": "IT102",
+            "content": "3"
+          },
+          {
+            "name": "IT103",
+            "content": "CA"
+          },
+          {
+            "name": "IT104",
+            "content": "33.33"
+          },
+          {
+            "name": "IT105",
+            "content": "UM"
+          },
+          {
+            "name": "IT106",
+            "content": "VN"
+          },
+          {
+            "name": "IT107",
+            "content": "4601506"
+          }
+        ]
+      },
+      {
+        "segment": "QTY",
+        "fields": [
+          {
+            "name": "QTY01",
+            "content": "01"
+          },
+          {
+            "name": "QTY02",
+            "content": "3"
+          }
+        ]
+      },
+      {
+        "segment": "PID",
+        "fields": [
+          {
+            "name": "PID01",
+            "content": "F"
+          },
+          {
+            "name": "PID02",
+            "content": ""
+          },
+          {
+            "name": "PID03",
+            "content": ""
+          },
+          {
+            "name": "PID04",
+            "content": ""
+          },
+          {
+            "name": "PID05",
+            "content": "POTATO MASHED LOW SODIUM"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "PK"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "4"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "UP"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "5LB"
+          }
+        ]
+      },
+      {
+        "segment": "IT1",
+        "fields": [
+          {
+            "name": "IT101",
+            "content": "260"
+          },
+          {
+            "name": "IT102",
+            "content": "1"
+          },
+          {
+            "name": "IT103",
+            "content": "CA"
+          },
+          {
+            "name": "IT104",
+            "content": "87.06"
+          },
+          {
+            "name": "IT105",
+            "content": "UM"
+          },
+          {
+            "name": "IT106",
+            "content": "VN"
+          },
+          {
+            "name": "IT107",
+            "content": "1439398"
+          }
+        ]
+      },
+      {
+        "segment": "QTY",
+        "fields": [
+          {
+            "name": "QTY01",
+            "content": "01"
+          },
+          {
+            "name": "QTY02",
+            "content": "1"
+          }
+        ]
+      },
+      {
+        "segment": "PID",
+        "fields": [
+          {
+            "name": "PID01",
+            "content": "F"
+          },
+          {
+            "name": "PID02",
+            "content": ""
+          },
+          {
+            "name": "PID03",
+            "content": ""
+          },
+          {
+            "name": "PID04",
+            "content": ""
+          },
+          {
+            "name": "PID05",
+            "content": "MARGARINE SOFT TUB"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "PK"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "6"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "UP"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "1.7KG"
+          }
+        ]
+      },
+      {
+        "segment": "IT1",
+        "fields": [
+          {
+            "name": "IT101",
+            "content": "270"
+          },
+          {
+            "name": "IT102",
+            "content": "1"
+          },
+          {
+            "name": "IT103",
+            "content": "CA"
+          },
+          {
+            "name": "IT104",
+            "content": "46.03"
+          },
+          {
+            "name": "IT105",
+            "content": "UM"
+          },
+          {
+            "name": "IT106",
+            "content": "VN"
+          },
+          {
+            "name": "IT107",
+            "content": "1244556"
+          }
+        ]
+      },
+      {
+        "segment": "QTY",
+        "fields": [
+          {
+            "name": "QTY01",
+            "content": "01"
+          },
+          {
+            "name": "QTY02",
+            "content": "1"
+          }
+        ]
+      },
+      {
+        "segment": "PID",
+        "fields": [
+          {
+            "name": "PID01",
+            "content": "F"
+          },
+          {
+            "name": "PID02",
+            "content": ""
+          },
+          {
+            "name": "PID03",
+            "content": ""
+          },
+          {
+            "name": "PID04",
+            "content": ""
+          },
+          {
+            "name": "PID05",
+            "content": "PUREE PEACH"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "PK"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "48"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "UP"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "100ML"
+          }
+        ]
+      },
+      {
+        "segment": "IT1",
+        "fields": [
+          {
+            "name": "IT101",
+            "content": "280"
+          },
+          {
+            "name": "IT102",
+            "content": "1"
+          },
+          {
+            "name": "IT103",
+            "content": "CA"
+          },
+          {
+            "name": "IT104",
+            "content": "46.03"
+          },
+          {
+            "name": "IT105",
+            "content": "UM"
+          },
+          {
+            "name": "IT106",
+            "content": "VN"
+          },
+          {
+            "name": "IT107",
+            "content": "1244555"
+          }
+        ]
+      },
+      {
+        "segment": "QTY",
+        "fields": [
+          {
+            "name": "QTY01",
+            "content": "01"
+          },
+          {
+            "name": "QTY02",
+            "content": "1"
+          }
+        ]
+      },
+      {
+        "segment": "PID",
+        "fields": [
+          {
+            "name": "PID01",
+            "content": "F"
+          },
+          {
+            "name": "PID02",
+            "content": ""
+          },
+          {
+            "name": "PID03",
+            "content": ""
+          },
+          {
+            "name": "PID04",
+            "content": ""
+          },
+          {
+            "name": "PID05",
+            "content": "PUREE BANANA"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "PK"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "48"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "UP"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "100ML"
+          }
+        ]
+      },
+      {
+        "segment": "IT1",
+        "fields": [
+          {
+            "name": "IT101",
+            "content": "290"
+          },
+          {
+            "name": "IT102",
+            "content": "13"
+          },
+          {
+            "name": "IT103",
+            "content": "CA"
+          },
+          {
+            "name": "IT104",
+            "content": "19.62"
+          },
+          {
+            "name": "IT105",
+            "content": "UM"
+          },
+          {
+            "name": "IT106",
+            "content": "VN"
+          },
+          {
+            "name": "IT107",
+            "content": "1356226"
+          }
+        ]
+      },
+      {
+        "segment": "QTY",
+        "fields": [
+          {
+            "name": "QTY01",
+            "content": "01"
+          },
+          {
+            "name": "QTY02",
+            "content": "13"
+          }
+        ]
+      },
+      {
+        "segment": "PID",
+        "fields": [
+          {
+            "name": "PID01",
+            "content": "F"
+          },
+          {
+            "name": "PID02",
+            "content": ""
+          },
+          {
+            "name": "PID03",
+            "content": ""
+          },
+          {
+            "name": "PID04",
+            "content": ""
+          },
+          {
+            "name": "PID05",
+            "content": "PEACH DCD IN PEAR JCE PORT CUP"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "PK"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "24"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "UP"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "113ML"
+          }
+        ]
+      },
+      {
+        "segment": "IT1",
+        "fields": [
+          {
+            "name": "IT101",
+            "content": "300"
+          },
+          {
+            "name": "IT102",
+            "content": "10"
+          },
+          {
+            "name": "IT103",
+            "content": "CA"
+          },
+          {
+            "name": "IT104",
+            "content": "19.62"
+          },
+          {
+            "name": "IT105",
+            "content": "UM"
+          },
+          {
+            "name": "IT106",
+            "content": "VN"
+          },
+          {
+            "name": "IT107",
+            "content": "1356433"
+          }
+        ]
+      },
+      {
+        "segment": "QTY",
+        "fields": [
+          {
+            "name": "QTY01",
+            "content": "01"
+          },
+          {
+            "name": "QTY02",
+            "content": "10"
+          }
+        ]
+      },
+      {
+        "segment": "PID",
+        "fields": [
+          {
+            "name": "PID01",
+            "content": "F"
+          },
+          {
+            "name": "PID02",
+            "content": ""
+          },
+          {
+            "name": "PID03",
+            "content": ""
+          },
+          {
+            "name": "PID04",
+            "content": ""
+          },
+          {
+            "name": "PID05",
+            "content": "FRUIT CUP MANDARIN IN JCE"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "PK"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "24"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "UP"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "113ML"
+          }
+        ]
+      },
+      {
+        "segment": "IT1",
+        "fields": [
+          {
+            "name": "IT101",
+            "content": "310"
+          },
+          {
+            "name": "IT102",
+            "content": "8"
+          },
+          {
+            "name": "IT103",
+            "content": "CA"
+          },
+          {
+            "name": "IT104",
+            "content": "19.62"
+          },
+          {
+            "name": "IT105",
+            "content": "UM"
+          },
+          {
+            "name": "IT106",
+            "content": "VN"
+          },
+          {
+            "name": "IT107",
+            "content": "1354182"
+          }
+        ]
+      },
+      {
+        "segment": "QTY",
+        "fields": [
+          {
+            "name": "QTY01",
+            "content": "01"
+          },
+          {
+            "name": "QTY02",
+            "content": "8"
+          }
+        ]
+      },
+      {
+        "segment": "PID",
+        "fields": [
+          {
+            "name": "PID01",
+            "content": "F"
+          },
+          {
+            "name": "PID02",
+            "content": ""
+          },
+          {
+            "name": "PID03",
+            "content": ""
+          },
+          {
+            "name": "PID04",
+            "content": ""
+          },
+          {
+            "name": "PID05",
+            "content": "PEAR DCD PORTION"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "PK"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "24"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "UP"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "113ML"
+          }
+        ]
+      },
+      {
+        "segment": "IT1",
+        "fields": [
+          {
+            "name": "IT101",
+            "content": "320"
+          },
+          {
+            "name": "IT102",
+            "content": "1"
+          },
+          {
+            "name": "IT103",
+            "content": "CA"
+          },
+          {
+            "name": "IT104",
+            "content": "34.62"
+          },
+          {
+            "name": "IT105",
+            "content": "UM"
+          },
+          {
+            "name": "IT106",
+            "content": "VN"
+          },
+          {
+            "name": "IT107",
+            "content": "1141991"
+          }
+        ]
+      },
+      {
+        "segment": "QTY",
+        "fields": [
+          {
+            "name": "QTY01",
+            "content": "01"
+          },
+          {
+            "name": "QTY02",
+            "content": "1"
+          }
+        ]
+      },
+      {
+        "segment": "PID",
+        "fields": [
+          {
+            "name": "PID01",
+            "content": "F"
+          },
+          {
+            "name": "PID02",
+            "content": ""
+          },
+          {
+            "name": "PID03",
+            "content": ""
+          },
+          {
+            "name": "PID04",
+            "content": ""
+          },
+          {
+            "name": "PID05",
+            "content": "SAUCE SWEET AND SOUR"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "PK"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "2"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "UP"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "3.7L"
+          }
+        ]
+      },
+      {
+        "segment": "IT1",
+        "fields": [
+          {
+            "name": "IT101",
+            "content": "330"
+          },
+          {
+            "name": "IT102",
+            "content": "3"
+          },
+          {
+            "name": "IT103",
+            "content": "CA"
+          },
+          {
+            "name": "IT104",
+            "content": "51.2"
+          },
+          {
+            "name": "IT105",
+            "content": "UM"
+          },
+          {
+            "name": "IT106",
+            "content": "VN"
+          },
+          {
+            "name": "IT107",
+            "content": "6400426"
+          }
+        ]
+      },
+      {
+        "segment": "QTY",
+        "fields": [
+          {
+            "name": "QTY01",
+            "content": "01"
+          },
+          {
+            "name": "QTY02",
+            "content": "3"
+          }
+        ]
+      },
+      {
+        "segment": "PID",
+        "fields": [
+          {
+            "name": "PID01",
+            "content": "F"
+          },
+          {
+            "name": "PID02",
+            "content": ""
+          },
+          {
+            "name": "PID03",
+            "content": ""
+          },
+          {
+            "name": "PID04",
+            "content": ""
+          },
+          {
+            "name": "PID05",
+            "content": "CHEESE CHED MARBLE PORT HALAL"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "PK"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "100"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "UP"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "21G"
+          }
+        ]
+      },
+      {
+        "segment": "IT1",
+        "fields": [
+          {
+            "name": "IT101",
+            "content": "340"
+          },
+          {
+            "name": "IT102",
+            "content": "7"
+          },
+          {
+            "name": "IT103",
+            "content": "CA"
+          },
+          {
+            "name": "IT104",
+            "content": "21.23"
+          },
+          {
+            "name": "IT105",
+            "content": "UM"
+          },
+          {
+            "name": "IT106",
+            "content": "VN"
+          },
+          {
+            "name": "IT107",
+            "content": "1290155"
+          }
+        ]
+      },
+      {
+        "segment": "QTY",
+        "fields": [
+          {
+            "name": "QTY01",
+            "content": "01"
+          },
+          {
+            "name": "QTY02",
+            "content": "7"
+          }
+        ]
+      },
+      {
+        "segment": "PID",
+        "fields": [
+          {
+            "name": "PID01",
+            "content": "F"
+          },
+          {
+            "name": "PID02",
+            "content": ""
+          },
+          {
+            "name": "PID03",
+            "content": ""
+          },
+          {
+            "name": "PID04",
+            "content": ""
+          },
+          {
+            "name": "PID05",
+            "content": "CHEESE COTTAGE SMOOTH LEMON"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "PK"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "24"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "UP"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "100G"
+          }
+        ]
+      },
+      {
+        "segment": "IT1",
+        "fields": [
+          {
+            "name": "IT101",
+            "content": "350"
+          },
+          {
+            "name": "IT102",
+            "content": "3"
+          },
+          {
+            "name": "IT103",
+            "content": "CA"
+          },
+          {
+            "name": "IT104",
+            "content": "43.26"
+          },
+          {
+            "name": "IT105",
+            "content": "UM"
+          },
+          {
+            "name": "IT106",
+            "content": "VN"
+          },
+          {
+            "name": "IT107",
+            "content": "1274941"
+          }
+        ]
+      },
+      {
+        "segment": "QTY",
+        "fields": [
+          {
+            "name": "QTY01",
+            "content": "01"
+          },
+          {
+            "name": "QTY02",
+            "content": "3"
+          }
+        ]
+      },
+      {
+        "segment": "PID",
+        "fields": [
+          {
+            "name": "PID01",
+            "content": "F"
+          },
+          {
+            "name": "PID02",
+            "content": ""
+          },
+          {
+            "name": "PID03",
+            "content": ""
+          },
+          {
+            "name": "PID04",
+            "content": ""
+          },
+          {
+            "name": "PID05",
+            "content": "EGG HARD BOILED CKD/PLD"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "PK"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "12"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "UP"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "1DZ"
+          }
+        ]
+      },
+      {
+        "segment": "IT1",
+        "fields": [
+          {
+            "name": "IT101",
+            "content": "360"
+          },
+          {
+            "name": "IT102",
+            "content": "1"
+          },
+          {
+            "name": "IT103",
+            "content": "CA"
+          },
+          {
+            "name": "IT104",
+            "content": "28.43"
+          },
+          {
+            "name": "IT105",
+            "content": "UM"
+          },
+          {
+            "name": "IT106",
+            "content": "VN"
+          },
+          {
+            "name": "IT107",
+            "content": "1354017"
+          }
+        ]
+      },
+      {
+        "segment": "QTY",
+        "fields": [
+          {
+            "name": "QTY01",
+            "content": "01"
+          },
+          {
+            "name": "QTY02",
+            "content": "1"
+          }
+        ]
+      },
+      {
+        "segment": "PID",
+        "fields": [
+          {
+            "name": "PID01",
+            "content": "F"
+          },
+          {
+            "name": "PID02",
+            "content": ""
+          },
+          {
+            "name": "PID03",
+            "content": ""
+          },
+          {
+            "name": "PID04",
+            "content": ""
+          },
+          {
+            "name": "PID05",
+            "content": "PUDDING VANILLA W/O SUGAR SNACK SIZE"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "PK"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "48"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "UP"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "99G"
+          }
+        ]
+      },
+      {
+        "segment": "IT1",
+        "fields": [
+          {
+            "name": "IT101",
+            "content": "370"
+          },
+          {
+            "name": "IT102",
+            "content": "2"
+          },
+          {
+            "name": "IT103",
+            "content": "CA"
+          },
+          {
+            "name": "IT104",
+            "content": "97.03"
+          },
+          {
+            "name": "IT105",
+            "content": "UM"
+          },
+          {
+            "name": "IT106",
+            "content": "VN"
+          },
+          {
+            "name": "IT107",
+            "content": "1050242"
+          }
+        ]
+      },
+      {
+        "segment": "QTY",
+        "fields": [
+          {
+            "name": "QTY01",
+            "content": "01"
+          },
+          {
+            "name": "QTY02",
+            "content": "2"
+          }
+        ]
+      },
+      {
+        "segment": "TXI",
+        "fields": [
+          {
+            "name": "TXI01",
+            "content": "OH"
+          },
+          {
+            "name": "TXI02",
+            "content": "25.23"
+          }
+        ]
+      },
+      {
+        "segment": "PID",
+        "fields": [
+          {
+            "name": "PID01",
+            "content": "F"
+          },
+          {
+            "name": "PID02",
+            "content": ""
+          },
+          {
+            "name": "PID03",
+            "content": ""
+          },
+          {
+            "name": "PID04",
+            "content": ""
+          },
+          {
+            "name": "PID05",
+            "content": "SALAD SALMON MINCED LT"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "PK"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "1"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "UP"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "4.54KG"
+          }
+        ]
+      },
+      {
+        "segment": "IT1",
+        "fields": [
+          {
+            "name": "IT101",
+            "content": "380"
+          },
+          {
+            "name": "IT102",
+            "content": "3"
+          },
+          {
+            "name": "IT103",
+            "content": "CA"
+          },
+          {
+            "name": "IT104",
+            "content": "31.9"
+          },
+          {
+            "name": "IT105",
+            "content": "UM"
+          },
+          {
+            "name": "IT106",
+            "content": "VN"
+          },
+          {
+            "name": "IT107",
+            "content": "4945706"
+          }
+        ]
+      },
+      {
+        "segment": "QTY",
+        "fields": [
+          {
+            "name": "QTY01",
+            "content": "01"
+          },
+          {
+            "name": "QTY02",
+            "content": "3"
+          }
+        ]
+      },
+      {
+        "segment": "TXI",
+        "fields": [
+          {
+            "name": "TXI01",
+            "content": "OH"
+          },
+          {
+            "name": "TXI02",
+            "content": "12.44"
+          }
+        ]
+      },
+      {
+        "segment": "PID",
+        "fields": [
+          {
+            "name": "PID01",
+            "content": "F"
+          },
+          {
+            "name": "PID02",
+            "content": ""
+          },
+          {
+            "name": "PID03",
+            "content": ""
+          },
+          {
+            "name": "PID04",
+            "content": ""
+          },
+          {
+            "name": "PID05",
+            "content": "SALAD COLESLAW CREAMY MINCED LT LOCAL"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "PK"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "1"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "UP"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "4.54KG"
+          }
+        ]
+      },
+      {
+        "segment": "IT1",
+        "fields": [
+          {
+            "name": "IT101",
+            "content": "390"
+          },
+          {
+            "name": "IT102",
+            "content": "5"
+          },
+          {
+            "name": "IT103",
+            "content": "CA"
+          },
+          {
+            "name": "IT104",
+            "content": "63.22"
+          },
+          {
+            "name": "IT105",
+            "content": "UM"
+          },
+          {
+            "name": "IT106",
+            "content": "VN"
+          },
+          {
+            "name": "IT107",
+            "content": "5573406"
+          }
+        ]
+      },
+      {
+        "segment": "QTY",
+        "fields": [
+          {
+            "name": "QTY01",
+            "content": "01"
+          },
+          {
+            "name": "QTY02",
+            "content": "5"
+          }
+        ]
+      },
+      {
+        "segment": "TXI",
+        "fields": [
+          {
+            "name": "TXI01",
+            "content": "OH"
+          },
+          {
+            "name": "TXI02",
+            "content": "41.09"
+          }
+        ]
+      },
+      {
+        "segment": "PID",
+        "fields": [
+          {
+            "name": "PID01",
+            "content": "F"
+          },
+          {
+            "name": "PID02",
+            "content": ""
+          },
+          {
+            "name": "PID03",
+            "content": ""
+          },
+          {
+            "name": "PID04",
+            "content": ""
+          },
+          {
+            "name": "PID05",
+            "content": "SALAD CHICKEN MINCED LT"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "PK"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "1"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "UP"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "4.54KG"
+          }
+        ]
+      },
+      {
+        "segment": "IT1",
+        "fields": [
+          {
+            "name": "IT101",
+            "content": "400"
+          },
+          {
+            "name": "IT102",
+            "content": "1"
+          },
+          {
+            "name": "IT103",
+            "content": "CA"
+          },
+          {
+            "name": "IT104",
+            "content": "45.7"
+          },
+          {
+            "name": "IT105",
+            "content": "UM"
+          },
+          {
+            "name": "IT106",
+            "content": "VN"
+          },
+          {
+            "name": "IT107",
+            "content": "1204528"
+          }
+        ]
+      },
+      {
+        "segment": "QTY",
+        "fields": [
+          {
+            "name": "QTY01",
+            "content": "01"
+          },
+          {
+            "name": "QTY02",
+            "content": "1"
+          }
+        ]
+      },
+      {
+        "segment": "PID",
+        "fields": [
+          {
+            "name": "PID01",
+            "content": "F"
+          },
+          {
+            "name": "PID02",
+            "content": ""
+          },
+          {
+            "name": "PID03",
+            "content": ""
+          },
+          {
+            "name": "PID04",
+            "content": ""
+          },
+          {
+            "name": "PID05",
+            "content": "APPLE SLCS RED S/S"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "PK"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "100"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "UP"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "2OZ"
+          }
+        ]
+      },
+      {
+        "segment": "IT1",
+        "fields": [
+          {
+            "name": "IT101",
+            "content": "410"
+          },
+          {
+            "name": "IT102",
+            "content": "11"
+          },
+          {
+            "name": "IT103",
+            "content": "CA"
+          },
+          {
+            "name": "IT104",
+            "content": "22.31"
+          },
+          {
+            "name": "IT105",
+            "content": "UM"
+          },
+          {
+            "name": "IT106",
+            "content": "VN"
+          },
+          {
+            "name": "IT107",
+            "content": "1042151"
+          }
+        ]
+      },
+      {
+        "segment": "QTY",
+        "fields": [
+          {
+            "name": "QTY01",
+            "content": "01"
+          },
+          {
+            "name": "QTY02",
+            "content": "11"
+          }
+        ]
+      },
+      {
+        "segment": "PID",
+        "fields": [
+          {
+            "name": "PID01",
+            "content": "F"
+          },
+          {
+            "name": "PID02",
+            "content": ""
+          },
+          {
+            "name": "PID03",
+            "content": ""
+          },
+          {
+            "name": "PID04",
+            "content": ""
+          },
+          {
+            "name": "PID05",
+            "content": "CHEESE COTTAGE SMOOTH VAN BEAN"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "PK"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "24"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "UP"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "100G"
+          }
+        ]
+      },
+      {
+        "segment": "IT1",
+        "fields": [
+          {
+            "name": "IT101",
+            "content": "430"
+          },
+          {
+            "name": "IT102",
+            "content": "3"
+          },
+          {
+            "name": "IT103",
+            "content": "CA"
+          },
+          {
+            "name": "IT104",
+            "content": "11.86"
+          },
+          {
+            "name": "IT105",
+            "content": "UM"
+          },
+          {
+            "name": "IT106",
+            "content": "VN"
+          },
+          {
+            "name": "IT107",
+            "content": "1483969"
+          }
+        ]
+      },
+      {
+        "segment": "QTY",
+        "fields": [
+          {
+            "name": "QTY01",
+            "content": "01"
+          },
+          {
+            "name": "QTY02",
+            "content": "3"
+          }
+        ]
+      },
+      {
+        "segment": "PID",
+        "fields": [
+          {
+            "name": "PID01",
+            "content": "F"
+          },
+          {
+            "name": "PID02",
+            "content": ""
+          },
+          {
+            "name": "PID03",
+            "content": ""
+          },
+          {
+            "name": "PID04",
+            "content": ""
+          },
+          {
+            "name": "PID05",
+            "content": "YOGURT STRAWB/RASPB/VAN PROBIOTIC 2PCT"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "PK"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "3"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "UP"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "8X100G"
+          }
+        ]
+      },
+      {
+        "segment": "IT1",
+        "fields": [
+          {
+            "name": "IT101",
+            "content": "440"
+          },
+          {
+            "name": "IT102",
+            "content": "5"
+          },
+          {
+            "name": "IT103",
+            "content": "CA"
+          },
+          {
+            "name": "IT104",
+            "content": "21.44"
+          },
+          {
+            "name": "IT105",
+            "content": "UM"
+          },
+          {
+            "name": "IT106",
+            "content": "VN"
+          },
+          {
+            "name": "IT107",
+            "content": "1260965"
+          }
+        ]
+      },
+      {
+        "segment": "QTY",
+        "fields": [
+          {
+            "name": "QTY01",
+            "content": "01"
+          },
+          {
+            "name": "QTY02",
+            "content": "5"
+          }
+        ]
+      },
+      {
+        "segment": "PID",
+        "fields": [
+          {
+            "name": "PID01",
+            "content": "F"
+          },
+          {
+            "name": "PID02",
+            "content": ""
+          },
+          {
+            "name": "PID03",
+            "content": ""
+          },
+          {
+            "name": "PID04",
+            "content": ""
+          },
+          {
+            "name": "PID05",
+            "content": "YOGURT GREEK BLUEB 2PCT W/CHK"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "PK"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "24"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "UP"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "100G"
+          }
+        ]
+      },
+      {
+        "segment": "IT1",
+        "fields": [
+          {
+            "name": "IT101",
+            "content": "450"
+          },
+          {
+            "name": "IT102",
+            "content": "5"
+          },
+          {
+            "name": "IT103",
+            "content": "CA"
+          },
+          {
+            "name": "IT104",
+            "content": "21.44"
+          },
+          {
+            "name": "IT105",
+            "content": "UM"
+          },
+          {
+            "name": "IT106",
+            "content": "VN"
+          },
+          {
+            "name": "IT107",
+            "content": "1260961"
+          }
+        ]
+      },
+      {
+        "segment": "QTY",
+        "fields": [
+          {
+            "name": "QTY01",
+            "content": "01"
+          },
+          {
+            "name": "QTY02",
+            "content": "5"
+          }
+        ]
+      },
+      {
+        "segment": "PID",
+        "fields": [
+          {
+            "name": "PID01",
+            "content": "F"
+          },
+          {
+            "name": "PID02",
+            "content": ""
+          },
+          {
+            "name": "PID03",
+            "content": ""
+          },
+          {
+            "name": "PID04",
+            "content": ""
+          },
+          {
+            "name": "PID05",
+            "content": "YOGURT GREEK VAN 2PCT"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "PK"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "24"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "UP"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "100G"
+          }
+        ]
+      },
+      {
+        "segment": "IT1",
+        "fields": [
+          {
+            "name": "IT101",
+            "content": "460"
+          },
+          {
+            "name": "IT102",
+            "content": "1"
+          },
+          {
+            "name": "IT103",
+            "content": "CA"
+          },
+          {
+            "name": "IT104",
+            "content": "147.34"
+          },
+          {
+            "name": "IT105",
+            "content": "UM"
+          },
+          {
+            "name": "IT106",
+            "content": "VN"
+          },
+          {
+            "name": "IT107",
+            "content": "1394428"
+          }
+        ]
+      },
+      {
+        "segment": "QTY",
+        "fields": [
+          {
+            "name": "QTY01",
+            "content": "01"
+          },
+          {
+            "name": "QTY02",
+            "content": "1"
+          }
+        ]
+      },
+      {
+        "segment": "PID",
+        "fields": [
+          {
+            "name": "PID01",
+            "content": "F"
+          },
+          {
+            "name": "PID02",
+            "content": ""
+          },
+          {
+            "name": "PID03",
+            "content": ""
+          },
+          {
+            "name": "PID04",
+            "content": ""
+          },
+          {
+            "name": "PID05",
+            "content": "COFFEE ARABICA SUPREME MED 2.5Z"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "PK"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "64"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "UP"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "2.5OZ"
+          }
+        ]
+      },
+      {
+        "segment": "IT1",
+        "fields": [
+          {
+            "name": "IT101",
+            "content": "470"
+          },
+          {
+            "name": "IT102",
+            "content": "1"
+          },
+          {
+            "name": "IT103",
+            "content": "CA"
+          },
+          {
+            "name": "IT104",
+            "content": "22.82"
+          },
+          {
+            "name": "IT105",
+            "content": "UM"
+          },
+          {
+            "name": "IT106",
+            "content": "VN"
+          },
+          {
+            "name": "IT107",
+            "content": "1209912"
+          }
+        ]
+      },
+      {
+        "segment": "QTY",
+        "fields": [
+          {
+            "name": "QTY01",
+            "content": "01"
+          },
+          {
+            "name": "QTY02",
+            "content": "1"
+          }
+        ]
+      },
+      {
+        "segment": "PID",
+        "fields": [
+          {
+            "name": "PID01",
+            "content": "F"
+          },
+          {
+            "name": "PID02",
+            "content": ""
+          },
+          {
+            "name": "PID03",
+            "content": ""
+          },
+          {
+            "name": "PID04",
+            "content": ""
+          },
+          {
+            "name": "PID05",
+            "content": "APPLESAUCE PEACH MEDLEY U/SWT CUP"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "PK"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "12"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "UP"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "6X111G"
+          }
+        ]
+      },
+      {
+        "segment": "IT1",
+        "fields": [
+          {
+            "name": "IT101",
+            "content": "480"
+          },
+          {
+            "name": "IT102",
+            "content": "2"
+          },
+          {
+            "name": "IT103",
+            "content": "CA"
+          },
+          {
+            "name": "IT104",
+            "content": "22.82"
+          },
+          {
+            "name": "IT105",
+            "content": "UM"
+          },
+          {
+            "name": "IT106",
+            "content": "VN"
+          },
+          {
+            "name": "IT107",
+            "content": "2444405"
+          }
+        ]
+      },
+      {
+        "segment": "QTY",
+        "fields": [
+          {
+            "name": "QTY01",
+            "content": "01"
+          },
+          {
+            "name": "QTY02",
+            "content": "2"
+          }
+        ]
+      },
+      {
+        "segment": "PID",
+        "fields": [
+          {
+            "name": "PID01",
+            "content": "F"
+          },
+          {
+            "name": "PID02",
+            "content": ""
+          },
+          {
+            "name": "PID03",
+            "content": ""
+          },
+          {
+            "name": "PID04",
+            "content": ""
+          },
+          {
+            "name": "PID05",
+            "content": "APPLESAUCE U/SWT CUP"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "PK"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "12"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "UP"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "6X111G"
+          }
+        ]
+      },
+      {
+        "segment": "IT1",
+        "fields": [
+          {
+            "name": "IT101",
+            "content": "490"
+          },
+          {
+            "name": "IT102",
+            "content": "12"
+          },
+          {
+            "name": "IT103",
+            "content": "CA"
+          },
+          {
+            "name": "IT104",
+            "content": "12.68"
+          },
+          {
+            "name": "IT105",
+            "content": "UM"
+          },
+          {
+            "name": "IT106",
+            "content": "VN"
+          },
+          {
+            "name": "IT107",
+            "content": "1123286"
+          }
+        ]
+      },
+      {
+        "segment": "QTY",
+        "fields": [
+          {
+            "name": "QTY01",
+            "content": "01"
+          },
+          {
+            "name": "QTY02",
+            "content": "12"
+          }
+        ]
+      },
+      {
+        "segment": "PID",
+        "fields": [
+          {
+            "name": "PID01",
+            "content": "F"
+          },
+          {
+            "name": "PID02",
+            "content": ""
+          },
+          {
+            "name": "PID03",
+            "content": ""
+          },
+          {
+            "name": "PID04",
+            "content": ""
+          },
+          {
+            "name": "PID05",
+            "content": "PUDDING CHOC PORT"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "PK"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "24"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "UP"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "99G"
+          }
+        ]
+      },
+      {
+        "segment": "IT1",
+        "fields": [
+          {
+            "name": "IT101",
+            "content": "500"
+          },
+          {
+            "name": "IT102",
+            "content": "6"
+          },
+          {
+            "name": "IT103",
+            "content": "CA"
+          },
+          {
+            "name": "IT104",
+            "content": "28.26"
+          },
+          {
+            "name": "IT105",
+            "content": "UM"
+          },
+          {
+            "name": "IT106",
+            "content": "VN"
+          },
+          {
+            "name": "IT107",
+            "content": "1136456"
+          }
+        ]
+      },
+      {
+        "segment": "QTY",
+        "fields": [
+          {
+            "name": "QTY01",
+            "content": "01"
+          },
+          {
+            "name": "QTY02",
+            "content": "6"
+          }
+        ]
+      },
+      {
+        "segment": "PID",
+        "fields": [
+          {
+            "name": "PID01",
+            "content": "F"
+          },
+          {
+            "name": "PID02",
+            "content": ""
+          },
+          {
+            "name": "PID03",
+            "content": ""
+          },
+          {
+            "name": "PID04",
+            "content": ""
+          },
+          {
+            "name": "PID05",
+            "content": "PUDDING BAN CREAM PIE ZTF"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "PK"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "48"
+          }
+        ]
+      },
+      {
+        "segment": "PKG",
+        "fields": [
+          {
+            "name": "PKG01",
+            "content": "F"
+          },
+          {
+            "name": "PKG02",
+            "content": "UP"
+          },
+          {
+            "name": "PKG03",
+            "content": ""
+          },
+          {
+            "name": "PKG04",
+            "content": ""
+          },
+          {
+            "name": "PKG05",
+            "content": "99G"
+          }
+        ]
+      },
+      {
+        "segment": "TDS",
+        "fields": [
+          {
+            "name": "TDS01",
+            "content": "569436"
+          }
+        ]
+      },
+      {
+        "segment": "TXI",
+        "fields": [
+          {
+            "name": "TXI01",
+            "content": "OH"
+          },
+          {
+            "name": "TXI02",
+            "content": "110.72"
+          }
+        ]
+      },
+      {
+        "segment": "CTT",
+        "fields": [
+          {
+            "name": "CTT01",
+            "content": "46"
+          }
+        ]
+      },
+      {
+        "segment": "SE",
+        "fields": [
+          {
+            "name": "SE01",
+            "content": "SE"
+          },
+          {
+            "name": "SE02",
+            "content": "247"
+          },
+          {
+            "name": "SE03",
+            "content": "0001"
+          }
+        ]
+      },
+      {
+        "segment": "GE",
+        "fields": [
+          {
+            "name": "GE01",
+            "content": "GE"
+          },
+          {
+            "name": "GE02",
+            "content": "1"
+          },
+          {
+            "name": "GE03",
+            "content": "000002034"
+          }
+        ]
+      },
+      {
+        "segment": "IEA",
+        "fields": [
+          {
+            "name": "IEA01",
+            "content": "IEA"
+          },
+          {
+            "name": "IEA02",
+            "content": "1"
+          },
+          {
+            "name": "IEA03",
+            "content": "000002090"
+          }
+        ]
+      }
+    ]
+  },
+  "_transaction_type": "ST",
+  "_source_file": "CAN_20260401132836.810",
+  "_map_file": null,
+  "_is_unmapped": true
+}

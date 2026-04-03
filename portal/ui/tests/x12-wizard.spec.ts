@@ -73,4 +73,31 @@ test.describe('X12 Wizard E2E', () => {
     // Card header should show "Select X12 Transaction Type"
     await expect(page.getByText('Select X12 Transaction Type')).toBeVisible();
   });
+
+  test('Selecting 810 and clicking Review Schema shows fields table', async ({ page }) => {
+    await page.goto('/#onboard');
+    await page.waitForTimeout(2000);
+
+    await page.locator('button', { hasText: 'X12 EDI' }).click();
+    await page.waitForTimeout(2000);
+
+    // Select 810
+    await page.locator('select').selectOption('810');
+
+    // Click Review Schema
+    await page.getByRole('button', { name: 'Review Schema' }).click();
+    await page.waitForTimeout(2000);
+
+    // Schema Review card should appear
+    await expect(page.getByText('Schema Review')).toBeVisible();
+
+    // Field count badge
+    await expect(page.getByText('fields')).toBeVisible();
+
+    // At least one field row references BEG segment (source column shows "BEG.02" etc.)
+    await expect(page.getByText('BEG.02')).toBeVisible();
+
+    // Match key default shows BIG.BIG02
+    await expect(page.getByText('BIG.BIG02')).toBeVisible();
+  });
 });

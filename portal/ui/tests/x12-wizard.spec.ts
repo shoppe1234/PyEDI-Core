@@ -100,4 +100,31 @@ test.describe('X12 Wizard E2E', () => {
     // Match key default shows BIG.BIG02
     await expect(page.getByText('BIG.BIG02')).toBeVisible();
   });
+
+  test('Mode toggle switches between Existing Type and Upload New Mapping', async ({ page }) => {
+    await page.goto('/#onboard');
+    await page.waitForTimeout(2000);
+
+    await page.locator('button', { hasText: 'X12 EDI' }).click();
+    await page.waitForTimeout(2000);
+
+    // "Existing Type" should be active, select visible
+    const existingBtn = page.getByRole('button', { name: 'Existing Type' });
+    const uploadBtn = page.getByRole('button', { name: 'Upload New Mapping' });
+    await expect(existingBtn).toBeVisible();
+    await expect(page.locator('select')).toBeVisible();
+
+    // Click "Upload New Mapping"
+    await uploadBtn.click();
+    await page.waitForTimeout(500);
+
+    // File input should appear, select should be gone
+    await expect(page.locator('input[type="file"]')).toBeVisible();
+    await expect(page.locator('select')).not.toBeVisible();
+
+    // Click "Existing Type" — select returns
+    await existingBtn.click();
+    await page.waitForTimeout(500);
+    await expect(page.locator('select')).toBeVisible();
+  });
 });

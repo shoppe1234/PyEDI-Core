@@ -157,4 +157,31 @@ test.describe('X12 Wizard E2E', () => {
     const txnField = page.locator('input[placeholder="810"]');
     await expect(txnField).toHaveValue('810');
   });
+
+  test('Match key auto-populates with BIG / BIG02 for 810', async ({ page }) => {
+    await page.goto('/#onboard');
+    await page.waitForTimeout(2000);
+
+    // Step 0: select X12 EDI
+    await page.locator('button', { hasText: 'X12 EDI' }).click();
+    await page.waitForTimeout(2000);
+
+    // Step 1: select 810, review schema, advance
+    await page.locator('select').selectOption('810');
+    await page.getByRole('button', { name: 'Review Schema' }).click();
+    await page.waitForTimeout(2000);
+    await page.getByRole('button', { name: 'Next: Register Partner' }).click();
+    await page.waitForTimeout(2000);
+
+    // "X12 Segment/Field" toggle should be active (not "JSON Path")
+    await expect(page.getByRole('button', { name: 'X12 Segment/Field' })).toBeVisible();
+
+    // Segment input should have value "BIG"
+    const segmentInput = page.locator('input[placeholder="BIG"]');
+    await expect(segmentInput).toHaveValue('BIG');
+
+    // Field input should have value "BIG02"
+    const fieldInput = page.locator('input[placeholder="BIG02"]');
+    await expect(fieldInput).toHaveValue('BIG02');
+  });
 });

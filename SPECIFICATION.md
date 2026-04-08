@@ -432,3 +432,189 @@ Follow this exact sequence to avoid circular dependencies:
 •	pytest-cov reports 85%+ coverage on all core/ modules
 •	A single unknown X12 transaction type is processed via default_x12_map.yaml fallback without crashing
 •	pip install -e . completes without errors
+
+ 
+11. Onboarding New Trading Partners & Transaction Types
+Adding a new trading partner or transaction type requires zero Python code changes. The process is entirely configuration-driven: provide a schema definition, register the partner in config.yaml, and configure compare rules.
+
+11.1 Onboarding Checklist
+Every new onboarding must answer these 10 questions before configuration begins:
+
+1.	File scope — which files to process (all in directory, subset, specific files)
+2.	Match key — the field that uniquely identifies a transaction pair for comparison (e.g., InvoiceID, BIG02, BEG03)
+3.	Compare rules — create partner-specific YAML or use existing transaction-type defaults
+4.	Numeric fields — which fields require float comparison with precision tolerance
+5.	Field severity — hard (must match), soft (warning only), or ignore per field
+6.	Amount variance — tolerance threshold on numeric comparisons (e.g., ±$0.01)
+7.	Output granularity — split batch files into one JSON per transaction key, or single grouped file
+8.	Delimiter / format — pipe, comma, tab, fixed-width positions, X12 segment terminators, or XML
+9.	Crosswalk overrides — whether to enable runtime-configurable severity via SQLite field_crosswalk table
+10.	Automation level — manual YAML creation, scaffold from compiled schema, or both
+
+11.2 Onboarding Workflow — Step by Step
+The onboarding flow has three phases: Schema, Registration, and Rules. The portal Onboard page (/#onboard) provides a guided wizard; the same steps can be performed via CLI.
+
+Phase 1 — Schema Preparation
+
+For flat files (CSV / fixed-width):
+•	Place the DSL definition (.txt) in schemas/source/
+•	The schema compiler (compile_dsl) auto-compiles to _map.yaml + .meta.json in schemas/compiled/
+•	Compilation is idempotent — SHA-256 hash check skips recompilation if unchanged
+
+For XML:
+•	Place the XSD file in the project (e.g., artifacts/<partner>/)
+•	The XSD compiler (compile_xsd) produces a _map.yaml with xml_config section
+•	Adds root_element, transaction_element, header_path, line_container_path, line_element
+
+For X12 EDI:
+•	Select from the built-in standards catalog (X12 5010: 810, 850, 855, 856, 860, 820, 997, 834, 835, 837)
+•	Or upload a custom mapping YAML via POST /api/onboard/x12-upload-map
+•	X12 schemas include default match keys per transaction type:
+  - 810 → BIG02, 850 → BEG03, 856 → BSN02, 820 → BPR16, 855 → BAK03, 860 → BCH03
+
+Phase 2 — Partner Registration
+
+Register the partner in config.yaml. This creates entries in the appropriate schema registry and the compare profiles section.
+
+For CSV/fixed-width — add to csv_schema_registry:
+csv_schema_registry:
+  <profile_name>:
+    source_dsl: ./schemas/source/<file>.txt
+    compiled_output: ./schemas/compiled/<file>_map.yaml
+    inbound_dir: ./<path_to_data>
+    transaction_type: '<type>'
+    split_key: <field_name>        # Optional — enables batch splitting
+
+For XML — add to xml_schema_registry:
+xml_schema_registry:
+  <profile_name>:
+    source_xsd: ./artifacts/<partner>/<file>.xsd
+    compiled_output: ./schemas/compiled/<file>_map.yaml
+    inbound_dir: ./<path_to_data>
+    transaction_type: <TYPE>
+    namespace: <xml_namespace>     # Optional
+
+For X12 — add to transaction_registry:
+transaction_registry:
+  '<ST_code>': ./rules/<partner>_<code>_map.yaml
+
+Add a compare profile for every partner:
+compare:
+  profiles:
+    <profile_name>:
+      source_dir: ./<path_to_source_data>
+      target_dir: ./<path_to_target_data>
+      rules_file: ./config/compare_rules/<profile_name>.yaml
+      match_key: <field_name>
+      transaction_type: '<type>'
+      split_config:                # Optional — for batch files
+        split_key: <field_name>
+        boundary_record: <record_type>
+
+Portal equivalent: POST /api/onboard/register with a RegisterPartnerRequest body. Returns 409 if the profile name already exists.
+
+Phase 3 — Compare Rules Configuration
+
+Rules control how the comparison engine evaluates field differences. Three options for creating rules:
+
+Option A — Scaffold from compiled schema (recommended):
+pyedi scaffold-rules --schema schemas/compiled/<file>_map.yaml \
+  --output config/compare_rules/<profile>.yaml \
+  --profile <profile_name> --db data/compare.db
+
+The scaffolder auto-detects numeric fields (float/integer/decimal types), marks description fields as soft severity with ignore_case, and generates a wildcard catch-all. It optionally seeds the SQLite crosswalk table.
+
+Option B — Copy and customize an existing rules file from config/compare_rules/.
+
+Option C — Use the portal wizard (Step 3) which presents an editable grid auto-populated from the compiled schema, with dropdowns for severity and checkboxes for numeric/ignore_case.
+
+11.3 Compare Rule YAML Structure
+classification:
+  - segment: '<segment>'           # X12 segment ID, or '*' for flat files
+    field: '<field_name>'
+    severity: 'hard'               # hard | soft | ignore
+    ignore_case: false
+    numeric: false
+    conditional_qualifier: null    # Only validate if qualifier field has value
+    amount_variance: null          # Float tolerance (e.g., 0.01)
+  - segment: '*'                   # Wildcard catch-all (must be last)
+    field: '*'
+    severity: 'hard'
+    ignore_case: false
+    numeric: false
+ignore:
+  - segment: '<segment>'
+    field: '<field>'
+    reason: 'Human-readable reason for ignoring'
+
+11.4 Three-Tier Rule Resolution
+Rules are resolved from three tiers. The most specific tier wins for any given (segment, field) pair.
+
+Tier	File Pattern	Scope
+Universal	config/compare_rules/_universal.yaml	All profiles — envelope-level ignores (ISA, GS, GE, IEA, SE01)
+Transaction-type	config/compare_rules/_global_<TYPE>.yaml	All partners for a transaction type (e.g., _global_810.yaml)
+Partner	config/compare_rules/<partner>_<type>.yaml	Single partner — overrides above tiers
+
+Resolution order for a given (segment, field):
+1.	(exact segment, exact field) — checked at partner → transaction → universal tier
+2.	(exact segment, *) — wildcard field within specific segment
+3.	(*, exact field) — specific field across all segments
+4.	(*, *) — global wildcard fallback
+
+Functions: load_tiered_rules() reads all three tiers, merge_rules() flattens them, get_resolved_field_rule() returns the winning rule with tier provenance.
+
+API: GET /api/rules/effective/{profile} returns merged rules annotated with which tier assigned each field.
+
+11.5 Batch File Splitting
+When a single file contains multiple transactions (common in flat-file formats), the split_key mechanism groups lines by a key field and writes one JSON per unique value.
+
+Split key resolution priority:
+1.	CLI argument --split-key (highest)
+2.	csv_schema_registry[profile].split_key in config.yaml
+3.	Auto-detection from compiled YAML record_groups metadata
+
+Output naming: <split_key>_<value>.json (e.g., InvoiceID_INV-12345.json)
+
+Lines with no matching key value are grouped into a remainder file with _is_split_remainder: true in the header.
+
+Portal: GET /api/onboard/split-suggestion?compiled_yaml=<path> auto-detects split configuration from the compiled schema.
+
+11.6 Portal Onboard Wizard
+The Onboard page (/#onboard) provides a 3-step guided wizard with two parallel entry paths:
+
+Step 0 — Format selector: X12 EDI or Flat-File / XML
+
+X12 path (Step 1): select transaction type from standards catalog or upload custom mapping → review schema fields → auto-select match key
+
+Flat-file path (Step 1): upload DSL definition → compile schema → review columns and types
+
+Step 2 — Register partner: profile name, trading partner name, transaction type, description, inbound directory, match key, optional segment qualifiers
+
+Step 3 — Configure rules: auto-generated editable grid from compiled schema → set severity (hard/soft/ignore), numeric flag, ignore_case per field → save
+
+11.7 CLI Commands for Onboarding
+# Scaffold compare rules from compiled schema
+pyedi scaffold-rules --schema schemas/compiled/<file>_map.yaml \
+  --output config/compare_rules/<profile>.yaml
+
+# Seed SQLite crosswalk from existing rules
+pyedi scaffold-rules --schema schemas/compiled/<file>_map.yaml \
+  --profile <name> --db data/compare.db
+
+# Process a file with split-key
+pyedi process --input <file> --profile <name> --split-key <field>
+
+# Run comparison
+pyedi compare --source-file <a>.json --target-file <b>.json --profile <name>
+
+# List all compare profiles
+pyedi compare --list-profiles --config config/config.yaml
+
+11.8 Onboarding Definition of Done
+A trading partner is fully onboarded when:
+•	Schema is compiled and .meta.json sidecar exists in schemas/compiled/
+•	config.yaml has entries in the appropriate schema registry and compare.profiles
+•	Compare rules YAML exists in config/compare_rules/
+•	A test comparison runs successfully against sample source and target files
+•	Match key correctly pairs transactions across source and target outputs
+•	Split-key (if applicable) produces individual transaction JSONs

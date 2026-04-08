@@ -200,6 +200,23 @@ compare:
         field: BSN02
       segment_qualifiers: {}
       rules_file: config/compare_rules/856sean.yaml
+    costco850:
+      description: ''
+      trading_partner: costco
+      transaction_type: '850'
+      match_key:
+        segment: BEG
+        field: BEG03
+      segment_qualifiers: {}
+      rules_file: config/compare_rules/costco850.yaml
+    bevager810new:
+      description: ''
+      trading_partner: BevegrNew
+      transaction_type: 810_INVOICE
+      match_key:
+        json_path: header.InvoiceID
+      segment_qualifiers: {}
+      rules_file: config/compare_rules/bevager810new.yaml
 xml_schema_registry:
   darden_asbn_control:
     source_xsd: ./artifacts/darden/DardenInvoiceASBN.xsd
@@ -259,3 +276,13 @@ csv_schema_registry:
     compiled_output: ''
     inbound_dir: ''
     transaction_type: '856'
+  costco850:
+    source_dsl: ''
+    compiled_output: ''
+    inbound_dir: ''
+    transaction_type: '850'
+  bevager810new:
+    source_dsl: bevager810FF.ffSchema
+    compiled_output: schemas\compiled\bevager810FF_map.yaml
+    inbound_dir: ''
+    transaction_type: 810_INVOICE

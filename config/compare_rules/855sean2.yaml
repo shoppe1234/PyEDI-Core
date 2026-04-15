@@ -1,0 +1,7 @@
+classification:
+- segment: '*'
+  field: '*'
+  severity: hard
+  ignore_case: false
+  numeric: false
+ignore: []

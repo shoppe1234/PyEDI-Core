@@ -1,7 +1,7 @@
 """Onboard API routes — trading partner registration and rules template generation."""
 
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Union
 
 import yaml
 from fastapi import APIRouter, HTTPException, Query, UploadFile, File as FastAPIFile
@@ -44,7 +44,7 @@ class RegisterPartnerRequest(BaseModel):
     source_dsl: str
     compiled_output: str
     inbound_dir: str
-    match_key: Dict[str, str]
+    match_key: Union[Dict[str, str], List[Dict[str, str]]]
     segment_qualifiers: Dict[str, Optional[str]] = {}
     split_config: Optional[Dict[str, str]] = None
 
@@ -360,6 +360,35 @@ def register_partner(req: RegisterPartnerRequest) -> RegisterPartnerResponse:
 
     registry[req.profile_name] = registry_entry
 
+    # Normalize match_key: validate, collapse N=1 list → singleton dict
+    mk_in = req.match_key
+    if isinstance(mk_in, list):
+        if not mk_in:
+            raise HTTPException(status_code=400, detail="match_key list is empty")
+        has_x12 = any(p.get("segment") and p.get("field") for p in mk_in)
+        has_json = any(p.get("json_path") for p in mk_in)
+        if has_x12 and has_json:
+            raise HTTPException(
+                status_code=400,
+                detail="match_key parts must all be X12 segment/field or all json_path",
+            )
+        for p in mk_in:
+            if not ((p.get("segment") and p.get("field")) or p.get("json_path")):
+                raise HTTPException(
+                    status_code=400,
+                    detail="each match_key part needs segment+field or json_path",
+                )
+        match_key_out: Union[Dict[str, str], List[Dict[str, str]]] = (
+            dict(mk_in[0]) if len(mk_in) == 1 else [dict(p) for p in mk_in]
+        )
+    else:
+        if not ((mk_in.get("segment") and mk_in.get("field")) or mk_in.get("json_path")):
+            raise HTTPException(
+                status_code=400,
+                detail="match_key needs segment+field or json_path",
+            )
+        match_key_out = dict(mk_in)
+
     # Add compare profile entry
     rules_file = f"config/compare_rules/{req.profile_name}.yaml"
     compare = config.setdefault("compare", {})
@@ -368,7 +397,7 @@ def register_partner(req: RegisterPartnerRequest) -> RegisterPartnerResponse:
         "description": req.description,
         "trading_partner": req.trading_partner,
         "transaction_type": req.transaction_type,
-        "match_key": dict(req.match_key),
+        "match_key": match_key_out,
         "segment_qualifiers": {k: v for k, v in req.segment_qualifiers.items()},
         "rules_file": rules_file,
     }

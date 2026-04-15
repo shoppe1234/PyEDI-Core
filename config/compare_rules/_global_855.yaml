@@ -1,0 +1,59 @@
+# Transaction-type rules for EDI 855 (Purchase Order Acknowledgement).
+# Apply to all 855 profiles. Partner rules override these.
+
+classification:
+  # PO ack code
+  - segment: BAK
+    field: BAK01
+    severity: hard
+    ignore_case: false
+    numeric: false
+    conditional_qualifier: null
+    amount_variance: null
+
+  # Acknowledgement type
+  - segment: BAK
+    field: BAK02
+    severity: hard
+    ignore_case: false
+    numeric: false
+    conditional_qualifier: null
+    amount_variance: null
+
+  # PO number — case insensitive
+  - segment: BAK
+    field: BAK03
+    severity: hard
+    ignore_case: true
+    numeric: false
+    conditional_qualifier: null
+    amount_variance: null
+
+  # Line item — quantity (numeric)
+  - segment: PO1
+    field: PO102
+    severity: hard
+    ignore_case: false
+    numeric: true
+    conditional_qualifier: null
+    amount_variance: null
+
+  # Line item — unit price (numeric)
+  - segment: PO1
+    field: PO104
+    severity: hard
+    ignore_case: false
+    numeric: true
+    conditional_qualifier: null
+    amount_variance: null
+
+  # Total line count (numeric)
+  - segment: CTT
+    field: CTT01
+    severity: hard
+    ignore_case: false
+    numeric: true
+    conditional_qualifier: null
+    amount_variance: null
+
+ignore: []

@@ -20,12 +20,15 @@ interface RuleRow {
   numeric: boolean
   dsl_type?: string
   record_name?: string
+  inherited?: boolean
 }
 
 interface X12Field {
   name: string
   source: string
   section: string
+  min_occurs?: number
+  seg_min_occurs?: number
 }
 
 interface X12Schema {
@@ -121,7 +124,6 @@ export default function OnboardPage({ onNavigate }: { onNavigate?: (page: string
           <div className="mt-6">
             {step === 0 && wizard.formatMode === 'x12' && (
               <StepX12Select
-                wizard={wizard}
                 onUpdate={updateWizard}
                 onNext={() => setStep(1)}
                 onChangeFormat={() => updateWizard({ formatMode: '' })}
@@ -269,12 +271,10 @@ function FormatSelector({ onSelect }: { onSelect: (mode: 'x12' | 'other') => voi
    ═══════════════════════════════════════════════════════════════════════════ */
 
 function StepX12Select({
-  wizard,
   onUpdate,
   onNext,
   onChangeFormat,
 }: {
-  wizard: WizardState
   onUpdate: (p: Partial<WizardState>) => void
   onNext: () => void
   onChangeFormat: () => void
@@ -331,16 +331,31 @@ function StepX12Select({
   }, [selectedStandard, selectedVersion])
 
   const convertStandardSchema = (std: StandardSchemaResponse): X12Schema => {
+    const segMinOccurs: Record<string, number> = {}
+    const collectSegMinOccurs = (refs: StandardSchemaResponse['areas'][number]) => {
+      for (const ref of refs) {
+        if (ref.ref_type === 'segment') {
+          const prev = segMinOccurs[ref.name] ?? 0
+          if (ref.min_occurs > prev) segMinOccurs[ref.name] = ref.min_occurs
+        }
+        if (ref.children && ref.children.length) {
+          collectSegMinOccurs(ref.children)
+        }
+      }
+    }
+    for (const area of std.areas) {
+      collectSegMinOccurs(area)
+    }
     const segments: string[] = []
     const seen = new Set<string>()
     for (const area of std.areas) {
       for (const ref of area) {
-        if (ref.ref_type === 'segment' && !seen.has(ref.name)) {
+        if (ref.ref_type === 'segment' && !seen.has(ref.name) && (segMinOccurs[ref.name] ?? 0) >= 1) {
           seen.add(ref.name)
           segments.push(ref.name)
         }
         for (const child of ref.children || []) {
-          if (child.ref_type === 'segment' && !seen.has(child.name)) {
+          if (child.ref_type === 'segment' && !seen.has(child.name) && (segMinOccurs[child.name] ?? 0) >= 1) {
             seen.add(child.name)
             segments.push(child.name)
           }
@@ -358,6 +373,8 @@ function StepX12Select({
               name: `${segCode}${String(elem.position).padStart(2, '0')}`,
               source: `${segCode}.${elem.position}`,
               section,
+              min_occurs: elem.min_occurs,
+              seg_min_occurs: segMinOccurs[segCode] ?? 0,
             })
           }
         }
@@ -1015,9 +1032,16 @@ function StepRegister({
   const [description, setDescription] = useState('')
   const [inboundDir, setInboundDir] = useState('')
   const [matchKeyType, setMatchKeyType] = useState<'json' | 'x12'>(isX12 ? 'x12' : 'json')
-  const [jsonField, setJsonField] = useState(wizard.columns[0]?.name || '')
-  const [x12Segment, setX12Segment] = useState(isX12 ? (wizard.x12Schema?.match_key_default?.segment || '') : '')
-  const [x12Field, setX12Field] = useState(isX12 ? (wizard.x12Schema?.match_key_default?.field || '') : '')
+  const [matchKeys, setMatchKeys] = useState<Array<{ segment: string; field: string; json_path: string }>>(() => {
+    if (isX12) {
+      return [{
+        segment: wizard.x12Schema?.match_key_default?.segment || '',
+        field: wizard.x12Schema?.match_key_default?.field || '',
+        json_path: '',
+      }]
+    }
+    return [{ segment: '', field: '', json_path: `header.${wizard.columns[0]?.name || ''}` }]
+  })
   const [splitKey, setSplitKey] = useState<string | null>(null)
   const [splitBoundary, setSplitBoundary] = useState<string | null>(null)
   const [splitAutoDetected, setSplitAutoDetected] = useState(false)
@@ -1038,15 +1062,34 @@ function StepRegister({
   }, [wizard.compiledYamlPath])
 
   const profileNameValid = /^[a-z0-9_]+$/.test(profileName)
-  const canRegister = profileNameValid && tradingPartner && transactionType && !success
+  const matchKeysValid = matchKeys.length > 0 && matchKeys.every(k =>
+    matchKeyType === 'json' ? !!k.json_path : (!!k.segment && !!k.field)
+  )
+  const canRegister = profileNameValid && tradingPartner && transactionType && matchKeysValid && !success
+
+  const switchMatchKeyType = (t: 'json' | 'x12') => {
+    if (t === matchKeyType) return
+    setMatchKeyType(t)
+    setMatchKeys(t === 'x12'
+      ? [{ segment: wizard.x12Schema?.match_key_default?.segment || '', field: wizard.x12Schema?.match_key_default?.field || '', json_path: '' }]
+      : [{ segment: '', field: '', json_path: `header.${wizard.columns[0]?.name || ''}` }]
+    )
+  }
+
+  const updateKey = (i: number, patch: Partial<{ segment: string; field: string; json_path: string }>) => {
+    setMatchKeys(prev => prev.map((k, idx) => idx === i ? { ...k, ...patch } : k))
+  }
+  const addKey = () => setMatchKeys(prev => [...prev, { segment: '', field: '', json_path: '' }])
+  const removeKey = (i: number) => setMatchKeys(prev => prev.filter((_, idx) => idx !== i))
 
   const register = async () => {
     setError('')
     setLoading(true)
     try {
-      const matchKey: Record<string, string> = matchKeyType === 'json'
-        ? { json_path: `header.${jsonField}` }
-        : { segment: x12Segment, field: x12Field }
+      const asPart = (k: { segment: string; field: string; json_path: string }): Record<string, string> =>
+        matchKeyType === 'json' ? { json_path: k.json_path } : { segment: k.segment, field: k.field }
+      const matchKey: Record<string, string> | Array<Record<string, string>> =
+        matchKeys.length === 1 ? asPart(matchKeys[0]) : matchKeys.map(asPart)
 
       const res = await api.onboardRegister({
         profile_name: profileName,
@@ -1104,30 +1147,52 @@ function StepRegister({
         <div className="mt-5 pt-4 border-t border-gray-100">
           <label className="block text-xs font-medium text-gray-500 uppercase tracking-wide mb-2">Match Key</label>
           <div className="flex gap-1 bg-gray-100 rounded-lg p-1 w-fit mb-3">
-            <ToggleBtn active={matchKeyType === 'json'} onClick={() => setMatchKeyType('json')}>JSON Path</ToggleBtn>
-            <ToggleBtn active={matchKeyType === 'x12'} onClick={() => setMatchKeyType('x12')}>X12 Segment/Field</ToggleBtn>
+            <ToggleBtn active={matchKeyType === 'json'} onClick={() => switchMatchKeyType('json')}>JSON Path</ToggleBtn>
+            <ToggleBtn active={matchKeyType === 'x12'} onClick={() => switchMatchKeyType('x12')}>X12 Segment/Field</ToggleBtn>
           </div>
 
-          {matchKeyType === 'json' ? (
-            <div>
-              <label className="block text-xs text-gray-500 mb-1">Field (header.&lt;field&gt;)</label>
-              <select
-                value={jsonField}
-                onChange={e => setJsonField(e.target.value)}
-                className="border border-gray-200 rounded-lg px-3 py-2 text-sm bg-white w-64
-                           focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400"
-              >
-                {wizard.columns.map(c => (
-                  <option key={c.name} value={c.name}>header.{c.name}</option>
-                ))}
-              </select>
-            </div>
-          ) : (
-            <div className="flex gap-3">
-              <Input label="Segment" value={x12Segment} onChange={setX12Segment} placeholder="BIG" />
-              <Input label="Field" value={x12Field} onChange={setX12Field} placeholder="BIG02" />
-            </div>
-          )}
+          <div className="space-y-2">
+            {matchKeys.map((k, i) => (
+              <div key={i} className="flex gap-3 items-end">
+                {matchKeyType === 'json' ? (
+                  <div className="flex-1">
+                    <label className="block text-xs text-gray-500 mb-1">Field (header.&lt;field&gt;)</label>
+                    <select
+                      value={k.json_path.startsWith('header.') ? k.json_path.slice(7) : k.json_path}
+                      onChange={e => updateKey(i, { json_path: `header.${e.target.value}` })}
+                      className="border border-gray-200 rounded-lg px-3 py-2 text-sm bg-white w-64
+                                 focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400"
+                    >
+                      {wizard.columns.map(c => (
+                        <option key={c.name} value={c.name}>header.{c.name}</option>
+                      ))}
+                    </select>
+                  </div>
+                ) : (
+                  <>
+                    <Input label="Segment" value={k.segment} onChange={v => updateKey(i, { segment: v })} placeholder="BIG" />
+                    <Input label="Field" value={k.field} onChange={v => updateKey(i, { field: v })} placeholder="BIG02" />
+                  </>
+                )}
+                {matchKeys.length > 1 && (
+                  <button
+                    type="button"
+                    onClick={() => removeKey(i)}
+                    className="text-xs px-2 py-1 rounded border border-gray-200 text-gray-600 hover:bg-gray-50"
+                  >
+                    Remove
+                  </button>
+                )}
+              </div>
+            ))}
+          </div>
+          <button
+            type="button"
+            onClick={addKey}
+            className="mt-2 text-xs px-2 py-1 rounded border border-indigo-300 text-indigo-600 hover:bg-indigo-50"
+          >
+            + Add key
+          </button>
         </div>
 
         {/* Split key (flat-file only — X12 transactions are already split by ST/SE envelope) */}
@@ -1254,22 +1319,48 @@ function StepRules({
   // Load template on mount — X12 seeds from schema fields, flat-file from compiled YAML
   useEffect(() => {
     if (wizard.formatMode === 'x12' && wizard.x12Schema) {
-      const rows: RuleRow[] = wizard.x12Schema.fields.map(f => {
-        const seg = f.source.split('.')[0] || '*'
-        return {
-          segment: seg,
-          field: f.name,
-          severity: 'hard',
-          ignore_case: false,
-          numeric: false,
-          dsl_type: f.source,
-          record_name: f.section,
+      const schema = wizard.x12Schema
+      const txnType = wizard.transactionType
+      ;(async () => {
+        let tierClassification: any[] = []
+        try {
+          const tier = await api.ruleTransaction(txnType)
+          tierClassification = tier.classification || []
+        } catch {
+          // 404 = no tier file; all rows treated as non-inherited
         }
-      })
-      // Add catch-all
-      rows.push({ segment: '*', field: '*', severity: 'hard', ignore_case: false, numeric: false, record_name: '' })
-      setRules(rows)
-      setLoading(false)
+        const tierMap = new Map<string, any>()
+        tierClassification.forEach(t => {
+          tierMap.set(`${t.segment}|${t.field}`, t)
+        })
+        const rows: RuleRow[] = schema.fields.map(f => {
+          const seg = f.source.split('.')[0] || '*'
+          const row: RuleRow = {
+            segment: seg,
+            field: f.name,
+            severity:
+              (f.min_occurs ?? 0) >= 1 && (f.seg_min_occurs ?? 0) >= 1 ? 'hard' : 'soft',
+            ignore_case: false,
+            numeric: false,
+            dsl_type: f.source,
+            record_name: f.section,
+          }
+          const tierRow = tierMap.get(`${row.segment}|${row.field}`)
+          if (
+            tierRow &&
+            tierRow.severity === row.severity &&
+            tierRow.ignore_case === row.ignore_case &&
+            tierRow.numeric === row.numeric
+          ) {
+            row.inherited = true
+          }
+          return row
+        })
+        // Add catch-all (never inherited)
+        rows.push({ segment: '*', field: '*', severity: 'hard', ignore_case: false, numeric: false, record_name: '' })
+        setRules(rows)
+        setLoading(false)
+      })()
       return
     }
     if (!wizard.compiledYamlPath) return
@@ -1284,10 +1375,10 @@ function StepRules({
       })
       .catch(e => setError(e.message))
       .finally(() => setLoading(false))
-  }, [wizard.compiledYamlPath, wizard.formatMode, wizard.x12Schema])
+  }, [wizard.compiledYamlPath, wizard.formatMode, wizard.x12Schema, wizard.transactionType])
 
   const updateRule = (idx: number, patch: Partial<RuleRow>) => {
-    setRules(prev => prev.map((r, i) => i === idx ? { ...r, ...patch } : r))
+    setRules(prev => prev.map((r, i) => i === idx ? { ...r, ...patch, inherited: false } : r))
   }
 
   const groupedRules: {
@@ -1335,7 +1426,9 @@ function StepRules({
     setSaving(true)
     try {
       const payload = {
-        classification: rules.map(({ dsl_type, record_name, ...r }) => r),
+        classification: rules
+          .filter(r => r.inherited !== true)
+          .map(({ dsl_type, record_name, inherited, ...r }) => r),
         ignore: [],
       }
       await api.compareUpdateRules(wizard.profileName, payload)
@@ -1462,8 +1555,23 @@ function StepRules({
                     {recordRules.map((r, j) => {
                       const idx = indices[j]
                       return (
-                        <tr key={idx} className={j % 2 === 0 ? 'bg-white' : 'bg-gray-50/50'}>
-                          <td className="px-3 py-1.5 font-mono text-xs font-medium text-gray-800">{r.field}</td>
+                        <tr key={idx} className={`${j % 2 === 0 ? 'bg-white' : 'bg-gray-50/50'} ${r.inherited ? 'text-gray-400' : ''}`}>
+                          <td className="px-3 py-1.5 font-mono text-xs font-medium text-gray-800">
+                            <span className={r.inherited ? 'text-gray-400' : ''}>{r.field}</span>
+                            {r.inherited && (
+                              <>
+                                <span className="ml-2 text-xs text-indigo-600">
+                                  inherited from _global_{wizard.transactionType}.yaml
+                                </span>
+                                <button
+                                  onClick={() => updateRule(idx, {})}
+                                  className="ml-2 text-xs border border-indigo-200 text-indigo-600 rounded px-2 py-0.5 hover:bg-indigo-50"
+                                >
+                                  Override
+                                </button>
+                              </>
+                            )}
+                          </td>
                           <td className="px-3 py-1.5 text-gray-500 text-xs">{r.dsl_type}</td>
                           <td className="px-3 py-1.5">
                             <select

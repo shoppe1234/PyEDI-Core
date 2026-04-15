@@ -165,7 +165,7 @@ export const api = {
     source_dsl: string;
     compiled_output: string;
     inbound_dir: string;
-    match_key: Record<string, string>;
+    match_key: Record<string, string> | Array<Record<string, string>>;
     segment_qualifiers: Record<string, string | null>;
     split_config?: Record<string, string> | null;
   }) =>

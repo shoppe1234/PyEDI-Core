@@ -19,6 +19,7 @@ from pyedi_core.comparator.models import (
     DiscoveryRecord,
     FieldDiff,
     MatchKeyConfig,
+    MatchKeyPart,
     RunSummary,
 )
 from pyedi_core.comparator.rules import is_wildcard_match, load_crosswalk_overrides, load_rules
@@ -351,16 +352,36 @@ def list_profiles(config_path: str) -> list[CompareProfile]:
 
 def _parse_profile(name: str, data: dict) -> CompareProfile:
     """Parse a profile dict from config.yaml into a CompareProfile dataclass."""
-    mk = data.get("match_key", {})
+    mk_raw = data.get("match_key", {})
+    if isinstance(mk_raw, list):
+        parts = [
+            MatchKeyPart(
+                segment=p.get("segment"),
+                field=p.get("field"),
+                json_path=p.get("json_path"),
+                normalize=p.get("normalize"),
+            )
+            for p in mk_raw
+        ]
+        has_x12 = any(p.segment and p.field for p in parts)
+        has_json = any(p.json_path for p in parts)
+        if has_x12 and has_json:
+            raise ValueError(
+                f"Profile '{name}' match_key mixes X12 segment/field and json_path; "
+                "all parts must share one mode"
+            )
+        match_key = MatchKeyConfig(parts=parts)
+    else:
+        match_key = MatchKeyConfig(
+            segment=mk_raw.get("segment"),
+            field=mk_raw.get("field"),
+            json_path=mk_raw.get("json_path"),
+            normalize=mk_raw.get("normalize"),
+        )
     return CompareProfile(
         name=name,
         description=data.get("description", ""),
-        match_key=MatchKeyConfig(
-            segment=mk.get("segment"),
-            field=mk.get("field"),
-            json_path=mk.get("json_path"),
-            normalize=mk.get("normalize"),
-        ),
+        match_key=match_key,
         segment_qualifiers=data.get("segment_qualifiers", {}),
         rules_file=data.get("rules_file", ""),
         trading_partner=data.get("trading_partner", ""),

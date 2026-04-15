@@ -2,17 +2,43 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field as dc_field
+
+
+@dataclass
+class MatchKeyPart:
+    """One component of a (possibly multi-dimensional) match key."""
+
+    segment: str | None = None
+    field: str | None = None
+    json_path: str | None = None
+    normalize: str | None = None
 
 
 @dataclass
 class MatchKeyConfig:
     """Defines how to extract the pairing key from a document."""
 
-    segment: str | None = None       # X12 segment ID (e.g., "BIG")
-    field: str | None = None         # X12 field (e.g., "BIG02")
-    json_path: str | None = None     # Dot-notation for flat JSON (e.g., "header.invoice_number")
-    normalize: str | None = None     # Optional regex substitution: "pattern|replacement"
+    segment: str | None = None       # LEGACY — mirror of parts[0].segment
+    field: str | None = None         # LEGACY — mirror of parts[0].field
+    json_path: str | None = None     # LEGACY — mirror of parts[0].json_path
+    normalize: str | None = None     # LEGACY — mirror of parts[0].normalize
+    parts: list[MatchKeyPart] = dc_field(default_factory=list)
+
+    def __post_init__(self) -> None:
+        if not self.parts and (self.segment or self.field or self.json_path):
+            self.parts = [MatchKeyPart(
+                segment=self.segment,
+                field=self.field,
+                json_path=self.json_path,
+                normalize=self.normalize,
+            )]
+        elif self.parts and not (self.segment or self.field or self.json_path):
+            p = self.parts[0]
+            self.segment = p.segment
+            self.field = p.field
+            self.json_path = p.json_path
+            self.normalize = p.normalize
 
 
 @dataclass
@@ -64,17 +90,17 @@ class FieldRule:
 class CompareRules:
     """Complete rule set for a profile: classification rules + ignore list."""
 
-    classification: list[FieldRule] = field(default_factory=list)
-    ignore: list[dict[str, str]] = field(default_factory=list)
+    classification: list[FieldRule] = dc_field(default_factory=list)
+    ignore: list[dict[str, str]] = dc_field(default_factory=list)
 
 
 @dataclass
 class TieredRules:
     """Three-tier rule container: universal → transaction-type → partner."""
 
-    universal: CompareRules = field(default_factory=CompareRules)
-    transaction: CompareRules = field(default_factory=CompareRules)
-    partner: CompareRules = field(default_factory=CompareRules)
+    universal: CompareRules = dc_field(default_factory=CompareRules)
+    transaction: CompareRules = dc_field(default_factory=CompareRules)
+    partner: CompareRules = dc_field(default_factory=CompareRules)
 
 
 @dataclass

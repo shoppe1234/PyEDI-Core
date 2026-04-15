@@ -26,6 +26,7 @@ from pyedi_core.comparator.models import (
     FieldRule,
     MatchEntry,
     MatchKeyConfig,
+    MatchKeyPart,
     MatchPair,
     RunSummary,
 )
@@ -425,3 +426,50 @@ class TestStore:
         diffs_result = get_diffs(db, pair_id)
         assert len(diffs_result) == 2
         assert diffs_result[0].segment == "N1*ST"
+
+
+# ---------------------------------------------------------------------------
+# Multi-dimensional match keys
+# ---------------------------------------------------------------------------
+
+def _make_x12_tx_doc(segments: list[dict]) -> dict:
+    """Wrap a segment list as a single ST/SE transaction document."""
+    wrapped = [{"segment": "ST", "fields": [{"name": "ST01", "content": "855"}]}] \
+        + segments \
+        + [{"segment": "SE", "fields": []}]
+    return {"document": {"segments": wrapped}}
+
+
+def test_multi_key_tuple_pairs_all_match() -> None:
+    doc = _make_x12_tx_doc([
+        {"segment": "BIG", "fields": [
+            {"name": "BIG01", "content": "20260101"},
+            {"name": "BIG02", "content": "PO1"},
+        ]},
+        {"segment": "IT1", "fields": [
+            {"name": "IT101", "content": "1"},
+            {"name": "IT107", "content": "LINE1"},
+        ]},
+    ])
+    mk = MatchKeyConfig(parts=[
+        MatchKeyPart(segment="BIG", field="BIG02"),
+        MatchKeyPart(segment="IT1", field="IT107"),
+    ])
+    entries = extract_match_values(doc, mk)
+    assert len(entries) == 1
+    assert entries[0].match_value == "PO1\x1fLINE1"
+
+
+def test_multi_key_missing_part_drops_transaction() -> None:
+    doc = _make_x12_tx_doc([
+        {"segment": "BIG", "fields": [
+            {"name": "BIG02", "content": "PO1"},
+        ]},
+        # IT1 omitted
+    ])
+    mk = MatchKeyConfig(parts=[
+        MatchKeyPart(segment="BIG", field="BIG02"),
+        MatchKeyPart(segment="IT1", field="IT107"),
+    ])
+    entries = extract_match_values(doc, mk)
+    assert entries == []

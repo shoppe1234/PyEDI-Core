@@ -12,7 +12,9 @@ import logging
 import os
 import re
 
-from pyedi_core.comparator.models import MatchEntry, MatchKeyConfig, MatchPair
+from pyedi_core.comparator.models import MatchEntry, MatchKeyConfig, MatchKeyPart, MatchPair
+
+_COMPOSITE_SEP = "\x1f"
 
 logger = logging.getLogger(__name__)
 
@@ -77,53 +79,76 @@ def _resolve_json_path(data: dict, path: str) -> str | None:
     return str(current) if current is not None else None
 
 
+def _part_value_from_tx(tx_segments: list[dict], part: MatchKeyPart) -> str | None:
+    """Extract one part's value from an X12 transaction segment list."""
+    for seg in tx_segments:
+        if seg.get("segment") == part.segment:
+            value = _get_field_content(seg, part.field or "")
+            if value:
+                return _normalize_value(value, part.normalize)
+    return None
+
+
 def extract_match_values(json_data: dict, match_key: MatchKeyConfig) -> list[MatchEntry]:
     """Extract ALL matching values from a JSON file.
 
-    For X12: walks every ST/SE transaction, finds segment, extracts field.
-    For flat JSON (CSV/cXML): resolves dot-notation json_path.
-    Returns list of MatchEntry(match_value, transaction_index, transaction_data).
+    Composite keys: all configured parts must resolve (strict AND) or the
+    transaction is dropped. Parts are joined by unit separator \\x1f.
 
     Ported from: comparator.py find_invoice_in_json() — generalized from BIG02.
     """
     results: list[MatchEntry] = []
 
+    parts = match_key.parts
+    if not parts:
+        raise ValueError("match_key has no parts configured")
+
+    is_json_mode = all(p.json_path for p in parts)
+    is_x12_mode = all(p.segment and p.field for p in parts)
+    if not (is_json_mode or is_x12_mode):
+        raise ValueError(
+            "match_key parts must all be X12 segment/field or all json_path — not mixed"
+        )
+
     # Flat JSON path mode (CSV/cXML)
-    if match_key.json_path:
-        # Skip split-key remainder files (file-level metadata without a real key)
+    if is_json_mode:
         if json_data.get("header", {}).get("_is_split_remainder"):
             return results
-        value = _resolve_json_path(json_data, match_key.json_path)
-        if value:
-            value = _normalize_value(value, match_key.normalize)
-            results.append(MatchEntry(
-                file_path="",
-                match_value=value,
-                transaction_index=0,
-                transaction_data=json_data,
-            ))
+        values: list[str] = []
+        for p in parts:
+            v = _resolve_json_path(json_data, p.json_path or "")
+            if not v:
+                return results
+            values.append(_normalize_value(v, p.normalize))
+        results.append(MatchEntry(
+            file_path="",
+            match_value=_COMPOSITE_SEP.join(values),
+            transaction_index=0,
+            transaction_data=json_data,
+        ))
         return results
 
     # X12 segment/field mode
-    if not match_key.segment or not match_key.field:
-        return results
-
     segments = json_data.get("document", {}).get("segments", [])
     transactions = _split_transactions(segments)
 
     for tx_index, tx_segments in enumerate(transactions):
-        for seg in tx_segments:
-            if seg.get("segment") == match_key.segment:
-                value = _get_field_content(seg, match_key.field)
-                if value:
-                    value = _normalize_value(value, match_key.normalize)
-                    results.append(MatchEntry(
-                        file_path="",
-                        match_value=value,
-                        transaction_index=tx_index,
-                        transaction_data={"segments": tx_segments},
-                    ))
-                    break  # one match per transaction
+        values = []
+        missing = False
+        for p in parts:
+            v = _part_value_from_tx(tx_segments, p)
+            if v is None:
+                missing = True
+                break
+            values.append(v)
+        if missing:
+            continue
+        results.append(MatchEntry(
+            file_path="",
+            match_value=_COMPOSITE_SEP.join(values),
+            transaction_index=tx_index,
+            transaction_data={"segments": tx_segments},
+        ))
 
     return results
 

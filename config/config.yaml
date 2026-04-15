@@ -217,6 +217,22 @@ compare:
         json_path: header.InvoiceID
       segment_qualifiers: {}
       rules_file: config/compare_rules/bevager810new.yaml
+    sean850:
+      description: ''
+      trading_partner: sean
+      transaction_type: '850'
+      match_key:
+        segment: BEG
+        field: BEG03
+      segment_qualifiers:
+        N1: N101
+        REF: REF01
+        DTM: DTM01
+        PER: PER01
+        PO1: null
+        N3: null
+        N4: null
+      rules_file: config/compare_rules/sean850.yaml
 xml_schema_registry:
   darden_asbn_control:
     source_xsd: ./artifacts/darden/DardenInvoiceASBN.xsd
@@ -286,3 +302,8 @@ csv_schema_registry:
     compiled_output: schemas\compiled\bevager810FF_map.yaml
     inbound_dir: ''
     transaction_type: 810_INVOICE
+  sean850:
+    source_dsl: ''
+    compiled_output: ''
+    inbound_dir: ''
+    transaction_type: '850'

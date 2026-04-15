@@ -128,21 +128,70 @@ def extract_match_values(json_data: dict, match_key: MatchKeyConfig) -> list[Mat
     return results
 
 
+_X12_EXTENSIONS = (".txt", ".edi", ".x12")
+_SUPPORTED_EXTENSIONS = (".json",) + _X12_EXTENSIONS
+
+
+def _parse_x12_to_doc(file_path: str) -> dict:
+    """Parse a raw X12 file into pipeline-equivalent document form.
+
+    Detects element separator from ISA segment char[3] and segment terminator
+    from char[105]. Names fields positionally as `{segment_id}{NN:02d}`.
+    """
+    with open(file_path, "r", encoding="utf-8") as f:
+        content = f.read()
+
+    if len(content) < 106 or not content.startswith("ISA"):
+        raise ValueError(f"Not a valid X12 file (missing ISA header): {file_path}")
+
+    element_sep = content[3]
+    segment_term = content[105]
+
+    raw_segments = [s for s in content.split(segment_term) if s.strip()]
+
+    segments: list[dict] = []
+    transaction_type = ""
+    for raw in raw_segments:
+        raw = raw.strip("\r\n")
+        if not raw:
+            continue
+        elements = raw.split(element_sep)
+        seg_id = elements[0]
+        fields = [
+            {"name": f"{seg_id}{idx:02d}", "content": elements[idx]}
+            for idx in range(1, len(elements))
+        ]
+        segments.append({"segment": seg_id, "fields": fields})
+        if seg_id == "ST" and not transaction_type and len(elements) > 1:
+            transaction_type = elements[1]
+
+    return {
+        "document": {"segments": segments},
+        "_transaction_type": transaction_type,
+        "_is_unmapped": True,
+    }
+
+
 def build_match_index(directory: str, match_key: MatchKeyConfig) -> dict[str, list[MatchEntry]]:
-    """Scan all JSON files in a directory, return {match_value: [MatchEntry, ...]}.
+    """Scan all supported files in a directory, return {match_value: [MatchEntry, ...]}.
 
     Ported from: comparator.py load_target_files_cache() — generalized to index by any match key.
+    Accepts .json (pipeline output) and raw X12 (.txt/.edi/.x12).
     """
     index: dict[str, list[MatchEntry]] = {}
 
     for filename in os.listdir(directory):
-        if not filename.lower().endswith(".json"):
+        lower = filename.lower()
+        if not lower.endswith(_SUPPORTED_EXTENSIONS):
             continue
         filepath = os.path.join(directory, filename)
         try:
-            with open(filepath, "r", encoding="utf-8") as f:
-                data = json.load(f)
-        except (json.JSONDecodeError, OSError) as exc:
+            if lower.endswith(".json"):
+                with open(filepath, "r", encoding="utf-8") as f:
+                    data = json.load(f)
+            else:
+                data = _parse_x12_to_doc(filepath)
+        except (json.JSONDecodeError, OSError, IndexError, ValueError) as exc:
             logger.warning("Skipping %s: %s", filepath, exc)
             continue
 

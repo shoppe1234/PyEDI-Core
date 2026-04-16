@@ -92,6 +92,7 @@ class CompareRules:
 
     classification: list[FieldRule] = dc_field(default_factory=list)
     ignore: list[dict[str, str]] = dc_field(default_factory=list)
+    segment_qualifiers: dict[str, str | None] = dc_field(default_factory=dict)
 
 
 @dataclass

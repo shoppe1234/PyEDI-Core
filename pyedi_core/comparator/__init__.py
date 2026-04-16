@@ -89,13 +89,18 @@ def compare(
     unmatched = 0
     all_diffs: list[FieldDiff] = []
 
-    is_flat = not profile.segment_qualifiers
+    # Effective qualifiers: tier defaults overlaid by profile overrides (per-key).
+    effective_qualifiers = {**rules.segment_qualifiers, **profile.segment_qualifiers}
 
     for pair in pairs:
-        if is_flat:
-            result = compare_flat_pair(pair, rules, crosswalk=crosswalk)
+        side = pair.source or pair.target
+        tx_data = side.transaction_data if side else {}
+        is_x12 = isinstance(tx_data.get("segments"), list)
+
+        if is_x12:
+            result = compare_pair(pair, rules, effective_qualifiers)
         else:
-            result = compare_pair(pair, rules, profile.segment_qualifiers)
+            result = compare_flat_pair(pair, rules, crosswalk=crosswalk)
 
         pair_id = insert_pair(db_path, run_id, pair, result.status, len(result.diffs))
 

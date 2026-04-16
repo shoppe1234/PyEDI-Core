@@ -120,6 +120,40 @@ def main(args: Optional[List[str]] = None) -> int:
         help="Config file path (default: ./config/config.yaml)",
     )
 
+    # --- "scaffold-profile" subcommand ---
+    profile_parser = subparsers.add_parser(
+        "scaffold-profile",
+        help="Emit a compare.profiles block for a new partner/transaction-type",
+    )
+    profile_parser.add_argument(
+        "--partner", required=True,
+        help="Trading partner name (e.g. 'sean', 'bevager', 'darden')",
+    )
+    profile_parser.add_argument(
+        "--transaction-type", required=True, dest="transaction_type",
+        help="X12 transaction type (e.g. '810', '850', '855', '856', '820', '860')",
+    )
+    profile_parser.add_argument(
+        "--match-key", required=True, dest="match_key",
+        help="Match key as 'SEG:FIELD' for X12 (e.g. 'BIG:BIG02') or 'json:path.to.field' for flat",
+    )
+    profile_parser.add_argument(
+        "--name", default=None,
+        help="Profile name (default: '{partner}_{transaction_type}')",
+    )
+    profile_parser.add_argument(
+        "--rules-file", default=None, dest="rules_file",
+        help="Partner rules YAML path (default: config/compare_rules/{name}.yaml)",
+    )
+    profile_parser.add_argument(
+        "--rules-dir", default="config/compare_rules", dest="rules_dir",
+        help="Directory for rules files (default: config/compare_rules)",
+    )
+    profile_parser.add_argument(
+        "--description", default="",
+        help="Optional profile description",
+    )
+
     # --- "compare" subcommand ---
     compare_parser = subparsers.add_parser("compare", help="Compare source/target JSON outputs")
     compare_parser.add_argument(
@@ -187,6 +221,9 @@ def main(args: Optional[List[str]] = None) -> int:
 
     if parsed.command == "scaffold-rules":
         return _handle_scaffold(parsed)
+
+    if parsed.command == "scaffold-profile":
+        return _handle_scaffold_profile(parsed)
 
     if parsed.command == "compare":
         return _handle_compare(parsed)
@@ -546,6 +583,69 @@ def _handle_scaffold(parsed: argparse.Namespace) -> int:
     except (FileNotFoundError, ValueError) as exc:
         print(f"Error: {exc}", file=sys.stderr)
         return 1
+
+
+def _handle_scaffold_profile(parsed: argparse.Namespace) -> int:
+    """Emit a compare.profiles YAML block for a new partner/transaction-type.
+
+    Qualifiers are left as `{}` to inherit from `_global_<tx>.yaml` tier defaults.
+    Creates an empty partner rules file on disk if one does not exist.
+    """
+    import os
+
+    partner: str = parsed.partner
+    tx_type: str = parsed.transaction_type
+    match_key_raw: str = parsed.match_key
+    name: str = parsed.name or f"{partner}_{tx_type}"
+    rules_dir: str = parsed.rules_dir
+    rules_file: str = parsed.rules_file or os.path.join(rules_dir, f"{name}.yaml")
+    description: str = parsed.description
+
+    # Parse match key
+    if match_key_raw.lower().startswith("json:"):
+        match_key_lines = [f"        json_path: {match_key_raw[5:]}"]
+    elif ":" in match_key_raw:
+        seg, fld = match_key_raw.split(":", 1)
+        match_key_lines = [
+            f"        segment: {seg}",
+            f"        field: {fld}",
+        ]
+    else:
+        print(
+            f"Error: --match-key must be 'SEG:FIELD' or 'json:path.to.field', got {match_key_raw!r}",
+            file=sys.stderr,
+        )
+        return 1
+
+    # Create empty rules file if missing
+    if not os.path.isfile(rules_file):
+        os.makedirs(os.path.dirname(rules_file) or ".", exist_ok=True)
+        with open(rules_file, "w", encoding="utf-8") as f:
+            f.write(
+                f"# Partner rules for {name}. Overrides _global_{tx_type}.yaml.\n"
+                "classification: []\n"
+                "ignore: []\n"
+            )
+        print(f"Created empty partner rules file: {rules_file}", file=sys.stderr)
+
+    # Emit profile block to stdout
+    block_lines = [
+        f"    {name}:",
+        f"      description: '{description}'",
+        f"      trading_partner: {partner}",
+        f"      transaction_type: '{tx_type}'",
+        f"      match_key:",
+        *match_key_lines,
+        f"      segment_qualifiers: {{}}",
+        f"      rules_file: {rules_file.replace(os.sep, '/')}",
+    ]
+    print("\n".join(block_lines))
+    print(
+        f"\n# ↑ Paste the block above under compare.profiles in config.yaml.\n"
+        f"# Qualifiers inherit from config/compare_rules/_global_{tx_type}.yaml.",
+        file=sys.stderr,
+    )
+    return 0
 
 
 # ---------------------------------------------------------------------------

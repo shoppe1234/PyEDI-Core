@@ -79,3 +79,15 @@ ignore:
   - segment: ST
     field: ST02
     reason: "Transaction set control number — batch-dependent"
+
+# Canonical multi-instance segment qualifiers for 810.
+# Inherited by any 810 profile with segment_qualifiers: {} in config.yaml.
+# Profile-level entries override per-key.
+segment_qualifiers:
+  N1: N101
+  REF: REF01
+  DTM: DTM01
+  PER: PER01
+  IT1: IT101
+  N3: null
+  N4: null

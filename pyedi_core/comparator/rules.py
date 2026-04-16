@@ -43,8 +43,13 @@ def load_rules(rules_path: str) -> CompareRules:
         ))
 
     ignore: list[dict[str, str]] = data.get("ignore", [])
+    segment_qualifiers: dict[str, str | None] = data.get("segment_qualifiers", {}) or {}
 
-    return CompareRules(classification=classification, ignore=ignore)
+    return CompareRules(
+        classification=classification,
+        ignore=ignore,
+        segment_qualifiers=segment_qualifiers,
+    )
 
 
 def load_tiered_rules(
@@ -110,7 +115,17 @@ def merge_rules(tiered: TieredRules) -> CompareRules:
                 seen_ignores.add(key)
                 merged_ignores.append(entry)
 
-    return CompareRules(classification=list(merged.values()), ignore=merged_ignores)
+    # Merge segment_qualifiers: partner overrides transaction overrides universal
+    merged_qualifiers: dict[str, str | None] = {}
+    merged_qualifiers.update(tiered.universal.segment_qualifiers)
+    merged_qualifiers.update(tiered.transaction.segment_qualifiers)
+    merged_qualifiers.update(tiered.partner.segment_qualifiers)
+
+    return CompareRules(
+        classification=list(merged.values()),
+        ignore=merged_ignores,
+        segment_qualifiers=merged_qualifiers,
+    )
 
 
 def get_field_rule(rules: CompareRules, segment: str, field: str) -> FieldRule:

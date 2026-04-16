@@ -1,0 +1,34 @@
+# Transaction-type rules for EDI 856 (Advance Ship Notice).
+# Apply to all 856 profiles. Partner rules override these.
+
+classification:
+  # Wildcard fallback — everything else is hard match
+  - segment: '*'
+    field: '*'
+    severity: hard
+    ignore_case: false
+    numeric: false
+    conditional_qualifier: null
+    amount_variance: null
+
+ignore:
+  # ST control number — varies by batch
+  - segment: ST
+    field: ST02
+    reason: "Transaction set control number — batch-dependent"
+
+# Canonical multi-instance segment qualifiers for 856.
+# Inherited by any 856 profile with segment_qualifiers: {} in config.yaml.
+# Profile-level entries override per-key.
+segment_qualifiers:
+  N1: N101
+  REF: REF01
+  DTM: DTM01
+  HL: HL01
+  LIN: LIN01
+  PRF: null
+  TD1: null
+  TD3: null
+  TD5: null
+  N3: null
+  N4: null

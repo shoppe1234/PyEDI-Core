@@ -1,0 +1,31 @@
+# Transaction-type rules for EDI 850 (Purchase Order).
+# Apply to all 850 profiles. Partner rules override these.
+
+classification:
+  # Wildcard fallback — everything else is hard match
+  - segment: '*'
+    field: '*'
+    severity: hard
+    ignore_case: false
+    numeric: false
+    conditional_qualifier: null
+    amount_variance: null
+
+ignore:
+  # ST control number — varies by batch
+  - segment: ST
+    field: ST02
+    reason: "Transaction set control number — batch-dependent"
+
+# Canonical multi-instance segment qualifiers for 850.
+# Inherited by any 850 profile with segment_qualifiers: {} in config.yaml.
+# Profile-level entries override per-key.
+segment_qualifiers:
+  N1: N101
+  REF: REF01
+  DTM: DTM01
+  PER: PER01
+  PO1: PO101
+  PID: null
+  N3: null
+  N4: null

@@ -48,3 +48,17 @@ classification:
   numeric: false
   conditional_qualifier: N101
 ignore: []
+
+# Canonical multi-instance segment qualifiers for 855.
+# Inherited by any 855 profile with segment_qualifiers: {} in config.yaml.
+# Profile-level entries override per-key.
+segment_qualifiers:
+  N1: N101
+  REF: REF01
+  DTM: DTM01
+  PER: PER01
+  PO1: PO101
+  PID: null
+  ACK: null
+  N3: null
+  N4: null

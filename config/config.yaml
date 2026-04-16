@@ -260,6 +260,15 @@ compare:
         field: BCT01
       segment_qualifiers: {}
       rules_file: config/compare_rules/867.yaml
+    855sean3:
+      description: ''
+      trading_partner: Sean
+      transaction_type: '855'
+      match_key:
+        segment: BAK
+        field: BAK03
+      segment_qualifiers: {}
+      rules_file: config/compare_rules/855sean3.yaml
 xml_schema_registry:
   darden_asbn_control:
     source_xsd: ./artifacts/darden/DardenInvoiceASBN.xsd
@@ -349,3 +358,8 @@ csv_schema_registry:
     compiled_output: ''
     inbound_dir: ''
     transaction_type: '867'
+  855sean3:
+    source_dsl: ''
+    compiled_output: ''
+    inbound_dir: ''
+    transaction_type: '855'

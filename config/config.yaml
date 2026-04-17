@@ -278,6 +278,15 @@ compare:
         field: BAK03
       segment_qualifiers: {}
       rules_file: config/compare_rules/855x5.yaml
+    204a:
+      description: ''
+      trading_partner: SeanTransp
+      transaction_type: '204'
+      match_key:
+        segment: B2
+        field: B201
+      segment_qualifiers: {}
+      rules_file: config/compare_rules/204a.yaml
 xml_schema_registry:
   darden_asbn_control:
     source_xsd: ./artifacts/darden/DardenInvoiceASBN.xsd
@@ -377,3 +386,8 @@ csv_schema_registry:
     compiled_output: ''
     inbound_dir: ''
     transaction_type: '855'
+  204a:
+    source_dsl: ''
+    compiled_output: ''
+    inbound_dir: ''
+    transaction_type: '204'

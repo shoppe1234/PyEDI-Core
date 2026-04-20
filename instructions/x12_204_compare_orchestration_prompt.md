@@ -40,6 +40,9 @@ You are a precise Python engineer working in `C:\Users\SeanHoppe\VS\pycoreEdi`. 
     - After loop, if index empty: compose a setup-error message ("0 transactions parsed from <dir>; transaction_type '<tt>' registered=<bool>; per-file errors: ...").
     - Persist to `compare_runs.run_notes` via the existing store path in `store.py`.
     - Return the run with `total_pairs=0` (do NOT raise). Match existing run-persistence pattern.
+    - Distinguish two error classes in `run_notes` so future tx types (214, 990, 210, 997, etc.) surface the right fix-path:
+      - `REGISTRY_MISS`: tx_type not in `transaction_registry` → message names the tx_type and the config path (`config/config.yaml:transaction_registry`).
+      - `PARSE_FAIL`: tx_type registered but map/parse raised → message names the file path, tx_type, and exception class.
 11. 🛑 **CHECKPOINT 3** — Stop. Report the diff for matcher.py + store.py (if touched). Wait for user confirm before D4.
 12. **D4** — Verify two cases via portal:
     - (a) Point compare at a dir with no `.edi` files → run row has `total_pairs=0` and `run_notes` contains the setup error.

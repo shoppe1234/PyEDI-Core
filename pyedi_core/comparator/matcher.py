@@ -197,11 +197,18 @@ def _parse_x12_to_doc(file_path: str) -> dict:
     }
 
 
-def build_match_index(directory: str, match_key: MatchKeyConfig) -> dict[str, list[MatchEntry]]:
+def build_match_index(
+    directory: str,
+    match_key: MatchKeyConfig,
+    errors_out: list[str] | None = None,
+) -> dict[str, list[MatchEntry]]:
     """Scan all supported files in a directory, return {match_value: [MatchEntry, ...]}.
 
     Ported from: comparator.py load_target_files_cache() — generalized to index by any match key.
     Accepts .json (pipeline output) and raw X12 (.txt/.edi/.x12).
+
+    If errors_out is provided, per-file diagnostic strings (PARSE_FAIL, NO_MATCH_VALUES)
+    are appended so callers can surface silent-skip reasons to run_notes.
     """
     index: dict[str, list[MatchEntry]] = {}
 
@@ -217,10 +224,24 @@ def build_match_index(directory: str, match_key: MatchKeyConfig) -> dict[str, li
             else:
                 data = _parse_x12_to_doc(filepath)
         except (json.JSONDecodeError, OSError, IndexError, ValueError) as exc:
-            logger.warning("Skipping %s: %s", filepath, exc)
+            msg = f"PARSE_FAIL {filepath}: {type(exc).__name__}: {exc}"
+            logger.warning(msg)
+            if errors_out is not None:
+                errors_out.append(msg)
             continue
 
         entries = extract_match_values(data, match_key)
+        if not entries:
+            mk_desc = (
+                f"json_path={match_key.json_path}"
+                if match_key.json_path
+                else f"{match_key.segment}.{match_key.field}"
+            )
+            msg = f"NO_MATCH_VALUES {filepath}: match_key {mk_desc} resolved empty"
+            logger.warning(msg)
+            if errors_out is not None:
+                errors_out.append(msg)
+            continue
         for entry in entries:
             entry.file_path = filepath
             index.setdefault(entry.match_value, []).append(entry)
@@ -232,14 +253,15 @@ def pair_transactions(
     source_dir: str,
     target_dir: str,
     match_key: MatchKeyConfig,
+    errors_out: list[str] | None = None,
 ) -> list[MatchPair]:
     """Pair source and target transactions by match key value.
 
     Ported from: comparator.py find_target_file_for_invoice() — direct dir scan
-    instead of Sheet lookup.
+    instead of Sheet lookup. errors_out optionally receives per-file diagnostics.
     """
-    source_index = build_match_index(source_dir, match_key)
-    target_index = build_match_index(target_dir, match_key)
+    source_index = build_match_index(source_dir, match_key, errors_out=errors_out)
+    target_index = build_match_index(target_dir, match_key, errors_out=errors_out)
 
     pairs: list[MatchPair] = []
 

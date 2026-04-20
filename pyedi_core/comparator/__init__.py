@@ -37,6 +37,7 @@ from pyedi_core.comparator.store import (
     insert_discoveries,
     insert_pair,
     insert_run,
+    set_run_notes,
     update_run,
 )
 
@@ -70,7 +71,8 @@ def compare(
         scaffold_crosswalk_from_rules(profile.rules_file, profile.name, db_path)
         crosswalk = load_crosswalk_overrides(db_path, profile.name)
 
-    pairs = pair_transactions(source_dir, target_dir, profile.match_key)
+    pair_errors: list[str] = []
+    pairs = pair_transactions(source_dir, target_dir, profile.match_key, errors_out=pair_errors)
 
     # Build match_key string for storage
     if profile.match_key.json_path:
@@ -83,6 +85,17 @@ def compare(
         trading_partner=profile.trading_partner,
         transaction_type=profile.transaction_type,
     )
+
+    if not pairs:
+        notes = (
+            f"0 transactions paired from source='{source_dir}' target='{target_dir}' "
+            f"with match_key {mk_str}."
+        )
+        if pair_errors:
+            notes += " Per-file diagnostics: " + " | ".join(pair_errors)
+        else:
+            notes += " No supported files (.json/.txt/.edi/.x12) found in either directory."
+        set_run_notes(db_path, run_id, notes)
 
     matched = 0
     mismatched = 0

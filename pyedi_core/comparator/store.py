@@ -191,6 +191,19 @@ def insert_run(
         conn.close()
 
 
+def set_run_notes(db_path: str, run_id: int, notes: str) -> None:
+    """Persist diagnostic notes (parse/match errors) to compare_runs.run_notes."""
+    conn = _connect(db_path)
+    try:
+        conn.execute(
+            "UPDATE compare_runs SET run_notes = ? WHERE id = ?",
+            (notes, run_id),
+        )
+        conn.commit()
+    finally:
+        conn.close()
+
+
 def update_run(db_path: str, run_id: int, summary: RunSummary) -> None:
     """Update run with finished_at and summary counts."""
     conn = _connect(db_path)
